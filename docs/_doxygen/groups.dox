@@ -1,0 +1,19 @@
+/**
+ * @defgroup joybus Joybus
+ * Joybus library core functionality
+ */
+
+/**
+ * @defgroup joybus_host Host Commands
+ * Commands for communicating with GameCube and N64 controllers.
+ */
+
+/**
+ * @defgroup joybus_target Target Interface
+ * Interface for implementing Joybus targets (controllers).
+ */
+
+/**
+ * @defgroup joybus_backends Backends
+ * Joybus backend implementations.
+ */

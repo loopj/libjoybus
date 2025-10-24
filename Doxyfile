@@ -1,0 +1,30 @@
+# Basic configuration
+PROJECT_NAME           = libjoybus
+PROJECT_BRIEF          = Joybus implementation for 32-bit MCUs
+OUTPUT_DIRECTORY       = .
+INPUT                  = README.md src include docs/_doxygen/groups.dox
+RECURSIVE              = YES
+USE_MDFILE_AS_MAINPAGE = README.md
+HTML_HEADER            = docs/_doxygen/header.html
+
+# Doxygen Awesome configuration
+GENERATE_TREEVIEW      = YES
+DISABLE_INDEX          = NO
+FULL_SIDEBAR           = NO
+HTML_COLORSTYLE        = LIGHT
+HTML_EXTRA_STYLESHEET  = docs/_doxygen/doxygen-awesome.css \
+                         docs/_doxygen/doxygen-awesome-sidebar-only.css \
+                         docs/_doxygen/doxygen-awesome-sidebar-only-darkmode-toggle.css \
+                         docs/_doxygen/custom.css
+HTML_EXTRA_FILES       = docs/_doxygen/doxygen-awesome-darkmode-toggle.js \
+                         docs/_doxygen/doxygen-awesome-fragment-copy-button.js \ 
+                         docs/_doxygen/doxygen-awesome-paragraph-link.js \
+                         docs/_doxygen/custom.js
+HTML_COPY_CLIPBOARD    = NO # Conflicts with fragment copy button
+
+# Tweaks for our codebase
+JAVADOC_AUTOBRIEF      = YES
+OPTIMIZE_OUTPUT_FOR_C  = YES
+EXTRACT_STATIC         = YES
+ENUM_VALUES_PER_LINE   = 1
+GENERATE_LATEX         = NO

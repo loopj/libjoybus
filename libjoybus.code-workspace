@@ -1,0 +1,45 @@
+{
+  "folders": [
+    {
+      "path": "."
+    },
+    {
+      "name": "Gecko/GCN Host",
+      "path": "examples/gecko/gcn-host"
+    },
+    {
+      "name": "Pico SDK/GCN Host",
+      "path": "examples/pico-sdk/gcn-host"
+    },
+    {
+      "name": "Pico SDK/GCC Target",
+      "path": "examples/pico-sdk/gcn-controller-target"
+    },
+    {
+      "name": "Pico SDK/GCC Adapter",
+      "path": "examples/pico-sdk/gcc-adapter"
+    },
+    {
+      "name": "Pico SDK/GCC Adapter Simple",
+      "path": "examples/pico-sdk/gcc-adapter-simple"
+    },
+    {
+      "name": "Zephyr/GCN Host",
+      "path": "examples/zephyr/gcn-host"
+    },
+    {
+      "name": "Zephyr/N64 Host",
+      "path": "examples/zephyr/n64-host"
+    },
+    {
+      "name": "Zephyr/Joybus Shell",
+      "path": "examples/zephyr/joybus-shell"
+    }
+  ],
+  "settings": {
+    "C_Cpp.autoAddFileAssociations": false,
+    "files.associations": {
+      "*.h": "c"
+    }
+  }
+}

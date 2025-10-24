@@ -1,0 +1,73 @@
+; Copyright (c) 2025 James Smith <james@loopj.com>
+; SPDX-License-Identifier: MIT
+;
+; Joybus "target" implementation for reading commands from a host and sending responses.
+; Received bytes are stored in the RX FIFO with an IRQ fired after each complete byte.
+; Responses are transmitted from the TX FIFO when software jumps to the transmit entry point.
+
+.program joybus_target
+.side_set 1 pindirs                       ; Side-set controls pin direction
+
+.define Q 6                               ; Quarter pulse width in cycles
+.define S Q*3/2                           ; Sample after this many cycles low
+.define public TICKS_PER_BIT Q*4          ; Number of PIO cycles per bit
+
+; Clock in each byte
+byteloop_rx:
+    set x, 7              side 0
+
+; Clock in each bit
+bitloop_rx:
+    wait 0 pin 0          side 0 [S-1]    ; Wait for falling edge, then delay to sample point
+    in pins, 1            side 0          ; Read the bit
+    wait 1 pin 0          side 0          ; Wait for line to go high again
+    jmp x-- bitloop_rx    side 0          ; Move to next bit or finish byte
+
+    irq 0 rel             side 0          ; Fire IRQ when each byte is ready
+    jmp byteloop_rx       side 0          ; Move to next byte
+
+; Block until we have data to send
+public transmit:
+    pull block            side 0 [Q*2-1]  ; Wait for data and guarantee a short delay
+
+; Clock out each bit
+bitloop_tx:
+    out x, 1              side 1          ; Fetch next bit to write, pull line low for a quarter pulse
+    jmp !x do_zero        side 1 [Q-2]
+do_one:
+    jmp release           side 0 [Q*2-1]  ; Release line for a half pulse for a one
+do_zero:
+    nop                   side 1 [Q*2-1]  ; or keep it low for a half pulse for a zero
+release:
+    jmp !osre bitloop_tx  side 0 [Q-1]    ; Release line for a quarter pulse, continue if more bits
+
+; Send stop bit and fire IRQ when no more data
+do_stop:
+    nop                   side 1 [Q*2-1]  ; Send target stop bit (low for a half pulse)
+    irq 0 rel             side 0          ; Fire IRQ and release line when reply has been sent
+
+
+; Recommended C SDK integration initialization function
+% c-sdk {
+#include "hardware/clocks.h"
+
+static inline void joybus_target_program_init(PIO pio, uint sm, uint offset, uint pin, uint bus_freq) {
+  pio_sm_config c = joybus_target_program_get_default_config(offset);
+
+  // Set pin configuration
+  sm_config_set_in_pins(&c, pin);
+  sm_config_set_sideset_pins(&c, pin);
+
+  // Auto-pull and auto-push with 8-bit thresholds
+  sm_config_set_out_shift(&c, false, true, 8);
+  sm_config_set_in_shift(&c, false, true, 8);
+
+  // Set clock divider based on desired bus frequency and internal timing
+  float div = (float)clock_get_hz(clk_sys) / (joybus_target_TICKS_PER_BIT * bus_freq);
+  sm_config_set_clkdiv(&c, div);
+
+  // Initialize and enable the state machine
+  pio_sm_init(pio, sm, offset, &c);
+  pio_sm_set_enabled(pio, sm, true);
+}
+%}

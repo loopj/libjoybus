@@ -1,0 +1,8 @@
+html {
+    --side-nav-fixed-width: 300px;
+}
+
+/* Always show nav-tree arrows */
+#nav-tree .arrow {
+    opacity: 1.0 !important;
+}

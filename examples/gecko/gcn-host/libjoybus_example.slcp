@@ -1,0 +1,8 @@
+project_name: libjoybus_example
+description: Example project using libjoybus with Gecko SDK
+quality: production
+
+component:
+  - id: emlib
+  - id: dmadrv
+  - id: udelay
