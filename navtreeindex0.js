@@ -46,6 +46,11 @@ var NAVTREEINDEX0 =
 "common_8h_source.html":[5,0,0,0,1,0],
 "crc8_8h_source.html":[5,0,0,0,5],
 "dir_11bfe2aeffd25593654c3f2cacc8984c.html":[5,0,0,0],
+"dir_3f615ade772d23cefe5e20dcb18424a2.html":[5,0,1,0],
+"dir_68267d1309a1af8e8297ef4c3efbcdba.html":[5,0,1],
+"dir_7f49758eceac96639539101177dad3c0.html":[5,0,1,0,1],
+"dir_852c1f860c0e1668d92578290afc3183.html":[5,0,1,0,0],
+"dir_a0af1123aa73b425e6696dc25ded3916.html":[5,0,1,0,2],
 "dir_a5951e18549d21f91acffc8bcafe0689.html":[5,0,0,0,0],
 "dir_b38d5ee79e2e612bee26fb1046f5856e.html":[5,0,0,0,2],
 "dir_d44c64559bbebec7f509842c48db8b23.html":[5,0,0],
@@ -159,7 +164,6 @@ var NAVTREEINDEX0 =
 "index.html#autotoc_md3":[2],
 "joybus_8h_source.html":[5,0,0,0,8],
 "loopback_8h_source.html":[5,0,0,0,0,1],
-"modules.html":[3],
 "n64_8h_source.html":[5,0,0,0,9],
 "n64__controller_8h_source.html":[5,0,0,0,2,1],
 "pages.html":[],
@@ -200,5 +204,6 @@ var NAVTREEINDEX0 =
 "structjoybus__target.html":[3,2,3],
 "structjoybus__target__api.html":[3,2,2],
 "structjoybus__target__api.html#a35bfc70b5f445a45680b229a12c43f26":[3,2,2,0],
-"target_8h_source.html":[5,0,0,0,10]
+"target_8h_source.html":[5,0,0,0,10],
+"topics.html":[3]
 };

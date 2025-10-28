@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['libjoybus_0',['libjoybus',['../index.html',1,'']]]
+  ['a_20controller_0',['Emulating a Controller',['../index.html#autotoc_md3',1,'']]]
 ];

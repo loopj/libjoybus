@@ -1,4 +1,4 @@
-var modules =
+var topics =
 [
     [ "Joybus", "group__joybus.html", "group__joybus" ],
     [ "Host Commands", "group__joybus__host.html", "group__joybus__host" ],

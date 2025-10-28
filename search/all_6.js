@@ -1,6 +1,8 @@
 var searchData=
 [
-  ['id_0',['id',['../structjoybus__n64__controller.html#ae1fc6857cd053dd97c24455231b5f6b4',1,'joybus_n64_controller']]],
-  ['input_1',['input',['../structjoybus__gc__controller.html#abd3546570e63af18beffbb952082c9db',1,'joybus_gc_controller::input()'],['../structjoybus__n64__controller.html#a1f6e35bf415b3b799ec8f794fa04e98b',1,'joybus_n64_controller::input()']]],
-  ['input_5fvalid_2',['input_valid',['../structjoybus__gc__controller.html#af1aad13306130b6e29ebde6434f17c3d',1,'joybus_gc_controller']]]
+  ['gamecube_20controller_20target_0',['GameCube Controller Target',['../group__joybus__target__gc__controller.html',1,'']]],
+  ['gamecube_2eh_1',['gamecube.h',['../gamecube_8h.html',1,'']]],
+  ['gecko_20backend_2',['Gecko Backend',['../group__joybus__backend__gecko.html',1,'']]],
+  ['gecko_20backend_20for_20libjoybus_3',['Gecko Backend for libjoybus',['..//home/runner/work/libjoybus/libjoybus/src/backend/gecko/README.md#autotoc_md4',1,'']]],
+  ['gecko_20backend_20for_20rp2xxx_4',['Gecko Backend for rp2xxx',['..//home/runner/work/libjoybus/libjoybus/src/backend/rp2xxx/README.md#autotoc_md8',1,'']]]
 ];

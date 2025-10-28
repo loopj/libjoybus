@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['target_20interface_0',['Target Interface',['../group__joybus__target.html',1,'']]]
+  ['n64_20controller_20target_0',['N64 Controller Target',['../group__joybus__target__n64__controller.html',1,'']]]
 ];
