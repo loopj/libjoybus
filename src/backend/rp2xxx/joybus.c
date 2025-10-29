@@ -69,15 +69,22 @@ static inline void enter_idle_mode(struct joybus *bus, bool await_bus_idle)
   if (bus->target) {
     // TODO: Wait for bus idle if requested
 
-    // Make sure the PIO state machine is in target mode
-    configure_state_machine(bus, BUS_MODE_TARGET);
-
     // Reset read state
     data->read_buf   = bus->command_buffer;
     data->read_len   = JOYBUS_BLOCK_SIZE;
     data->read_count = 0;
 
+    // Make sure the state machine is in target mode
+    configure_state_machine(bus, BUS_MODE_TARGET);
+
+    // Restart the state machine
+    // TODO: Consider performing the state machine reset only when strictly needed
+    pio_sm_set_enabled(data->pio, data->pio_sm, false);
+    pio_sm_clear_fifos(data->pio, data->pio_sm);
+    dma_channel_abort(data->dma_chan_tx);
     pio_sm_restart(data->pio, data->pio_sm);
+    pio_sm_exec(data->pio, data->pio_sm, pio_encode_jmp(pio_state[PIO_NUM(data->pio)].target_offset));
+    pio_sm_set_enabled(data->pio, data->pio_sm, true);
 
     // Transition state
     data->state = BUS_STATE_TARGET_RX;
@@ -86,6 +93,7 @@ static inline void enter_idle_mode(struct joybus *bus, bool await_bus_idle)
     configure_state_machine(bus, BUS_MODE_HOST);
 
     // Enter host idle mode
+    // TODO: Consider performing the state machine reset only when strictly needed
     pio_sm_set_enabled(data->pio, data->pio_sm, false);
     dma_channel_abort(data->dma_chan_rx);
     pio_sm_restart(data->pio, data->pio_sm);
@@ -145,13 +153,25 @@ int64_t transfer_timeout(alarm_id_t id, void *user_data)
   return 0;
 }
 
+// Handle target rx byte timeouts
+int64_t target_rx_timeout(alarm_id_t id, void *user_data)
+{
+  struct joybus *bus              = (struct joybus *)user_data;
+  struct joybus_rp2xxx_data *data = &JOYBUS_RP2XXX(bus)->data;
+
+  // Timeout occurred, switch back to idle/read mode
+  enter_idle_mode(bus, true);
+
+  return 0;
+}
+
 // Handle host tx complete (all command bytes sent)
 static inline void host_tx_complete(struct joybus *bus)
 {
   struct joybus_rp2xxx_data *data = &JOYBUS_RP2XXX(bus)->data;
 
   // Add a timeout alarm
-  data->transfer_alarm_id = add_alarm_in_us(JOYBUS_REPLY_TIMEOUT_US, transfer_timeout, bus, true);
+  data->rx_timeout_alarm = add_alarm_in_us(JOYBUS_REPLY_TIMEOUT_US, transfer_timeout, bus, true);
 
   // Update the state machine for the next interrupt
   data->state = BUS_STATE_HOST_RX;
@@ -163,18 +183,19 @@ static inline void host_byte_received(struct joybus *bus)
   struct joybus_rp2xxx_data *data = &JOYBUS_RP2XXX(bus)->data;
 
   // Cancel the transfer timeout
-  cancel_alarm(data->transfer_alarm_id);
+  cancel_alarm(data->rx_timeout_alarm);
 
+  // Track the received byte
   data->read_count++;
 
   if (data->read_count < data->read_len) {
     // Set a new timeout for the next byte
-    data->transfer_alarm_id = add_alarm_in_us(JOYBUS_REPLY_TIMEOUT_US, transfer_timeout, bus, true);
+    data->rx_timeout_alarm = add_alarm_in_us(JOYBUS_REPLY_TIMEOUT_US, transfer_timeout, bus, true);
   } else if (data->read_count == data->read_len) {
     // All bytes received, switch back to idle/read mode
     enter_idle_mode(bus, false);
 
-    // Record the completion time for enforcing minimum delay between transfers
+    // Record the completion time for enforcing minimum interval between transfers
     data->last_transfer_time = get_absolute_time();
 
     // Call the transfer complete callback
@@ -188,6 +209,9 @@ static inline void target_byte_received(struct joybus *bus)
 {
   struct joybus_rp2xxx_data *data = &JOYBUS_RP2XXX(bus)->data;
 
+  // Cancel the transfer timeout
+  cancel_alarm(data->rx_timeout_alarm);
+
   // Save the received byte in the buffer
   data->read_buf[data->read_count] = pio_sm_get(data->pio, data->pio_sm) & 0xFF;
   data->read_count++;
@@ -195,13 +219,15 @@ static inline void target_byte_received(struct joybus *bus)
   // Call the target handler to prepare a response if needed
   int rc = joybus_target_byte_received(bus->target, data->read_buf, data->read_count, handle_command_response, bus);
   if (rc == 0) {
-    // No more bytes expected
+    // No more bytes expected, start transmitting the response
     pio_sm_exec(data->pio, data->pio_sm,
                 pio_encode_jmp(pio_state[PIO_NUM(data->pio)].target_offset + joybus_target_offset_transmit));
 
-    // Start the response transfer
     data->state = BUS_STATE_TARGET_TX;
-  } else if (rc < 0) {
+  } else if (rc > 0) {
+    // More bytes expected, set a timeout for the next byte
+    data->rx_timeout_alarm = add_alarm_in_us(JOYBUS_REPLY_TIMEOUT_US, target_rx_timeout, bus, true);
+  } else {
     // Error handling command, or command not supported, switch back to idle/read mode
     enter_idle_mode(bus, true);
   }
@@ -356,7 +382,7 @@ static int joybus_rp2xxx_transfer(struct joybus *bus, const uint8_t *write_buf, 
   // Schedule the transfer to start at last_completion + the minimum intra-transfer delay
   // If the time has already passed, the callback fires immediately
   absolute_time_t ready_time = delayed_by_us(data->last_transfer_time, JOYBUS_INTER_TRANSFER_DELAY_US);
-  data->transfer_alarm_id    = add_alarm_at(ready_time, transfer_start, bus, true);
+  data->transfer_start_alarm = add_alarm_at(ready_time, transfer_start, bus, true);
 
   return 0;
 }

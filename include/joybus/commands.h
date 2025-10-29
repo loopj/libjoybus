@@ -7,6 +7,9 @@
 
 #include <stdint.h>
 
+// Some commands (EEPROM read/write, RTC read/write) are only used by the internal
+// N64 joybus line, but we are including them here for completeness.
+
 // Joybus command codes
 #define JOYBUS_CMD_RESET                  0xFF    ///< Joybus "reset" command
 #define JOYBUS_CMD_IDENTIFY               0x00    ///< Joybus "identify" command

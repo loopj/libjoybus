@@ -39,20 +39,19 @@ struct joybus_rp2xxx_data {
   uint dma_chan_tx;
   uint dma_chan_rx;
 
-  // Transfer state
+  // RX/TX state
   uint8_t *read_buf;
   uint8_t read_len;
   uint8_t read_count;
   uint8_t *write_buf;
   uint8_t write_len;
+  alarm_id_t rx_timeout_alarm;
 
-  // Transfer callback
+  // Transfer state
   joybus_transfer_cb_t done_callback;
   void *done_user_data;
-
-  // Transfer timekeeping (timeouts, inter-transfer delay)
   absolute_time_t last_transfer_time;
-  alarm_id_t transfer_alarm_id;
+  alarm_id_t transfer_start_alarm;
 };
 
 /**
