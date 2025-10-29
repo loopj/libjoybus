@@ -8,11 +8,15 @@
       "path": "examples/gecko/gcn-host"
     },
     {
+      "name": "Gecko/GCN Target",
+      "path": "examples/gecko/gcn-target"
+    },
+    {
       "name": "Pico SDK/GCN Host",
       "path": "examples/pico-sdk/gcn-host"
     },
     {
-      "name": "Pico SDK/GCC Target",
+      "name": "Pico SDK/GCN Target",
       "path": "examples/pico-sdk/gcn-controller-target"
     },
     {
