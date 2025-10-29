@@ -19,8 +19,5 @@ add_executable(app main.c)
 # Link with the standard library and libjoybus
 target_link_libraries(app pico_stdlib joybus)
 
-pico_enable_stdio_usb(app 1)
-pico_enable_stdio_uart(app 0)
-
 # Generate additional binary outputs
 pico_add_extra_outputs(app)

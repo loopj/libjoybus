@@ -15,13 +15,11 @@ static struct joybus_gc_controller gc_controller;
 
 int main()
 {
-  stdio_init_all();
-
   // Initialize the Joybus
   joybus_rp2xxx_init(&rp2xxx_bus, SI_DATA_GPIO, pio0);
   joybus_enable(bus);
 
-  // Initialize a GameCube controller target
+  // Initialize a GameCube controller target as a standard controller
   joybus_gc_controller_init(&gc_controller, JOYBUS_GAMECUBE_CONTROLLER);
 
   // Register the target on the bus
