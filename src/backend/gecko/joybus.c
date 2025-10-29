@@ -13,8 +13,6 @@
  * - Ping-pong DMA allows encoding of next byte while transmitting current byte, no need to pre-encode entire message
  * - After each byte is buffered to the USART, an interrupt is fired
  * - Using the "looped transfer" mode of LDMA, we can move on to the stop bit automatically
- *
- * TODO: Timeout timer on TIMER CC1 for 100us rx timeout
  */
 
 #include <stddef.h>
@@ -250,6 +248,46 @@ idle_detected:
   TIMER_Enable(data->rx_timer, false);
 }
 
+// Handle transfer timeouts
+void transfer_timeout(sl_sleeptimer_timer_handle_t *handle, void *user_data)
+{
+  struct joybus *bus             = (struct joybus *)user_data;
+  struct joybus_gecko_data *data = &JOYBUS_GECKO(bus)->data;
+
+  // Timeout occurred, switch back to idle/read mode
+  if (bus->target) {
+    enter_target_read_mode(bus, true);
+  } else {
+    data->state = BUS_STATE_HOST_IDLE;
+  }
+
+  // Call the transfer complete callback with an error
+  if (data->done_callback)
+    data->done_callback(bus, -JOYBUS_ERR_TIMEOUT, data->done_user_data);
+}
+
+// Handle target rx byte timeouts
+void target_rx_timeout(sl_sleeptimer_timer_handle_t *handle, void *user_data)
+{
+  struct joybus *bus             = (struct joybus *)user_data;
+  struct joybus_gecko_data *data = &JOYBUS_GECKO(bus)->data;
+
+  // Timeout occurred, switch back to idle/read mode
+  if (bus->target) {
+    enter_target_read_mode(bus, true);
+  } else {
+    data->state = BUS_STATE_HOST_IDLE;
+  }
+}
+
+static inline uint32_t sl_sleeptimer_us_to_tick(uint32_t time_us)
+{
+  uint64_t ticks = (uint64_t)time_us * sl_sleeptimer_get_timer_frequency();
+  ticks += 1000000 - 1; // ceil: ensure at least the requested delay
+  ticks /= 1000000;
+  return (uint32_t)ticks;
+}
+
 // LDMA interrupt handler for RX, called when a 16 timings have been captured
 static bool ldma_rx_handler(unsigned int chan, unsigned int iteration, void *user_data)
 {
@@ -262,8 +300,8 @@ static bool ldma_rx_handler(unsigned int chan, unsigned int iteration, void *use
                   data->target_pulse_period_half, iteration - 1);
     data->rx_current_buffer ^= 1;
 
-    // Last byte, call the transfer callback and stop the timer
     if (iteration == data->read_len) {
+      // No more bytes expected
       // Stop input capture
       TIMER_Enable(data->rx_timer, false);
 
@@ -277,9 +315,22 @@ static bool ldma_rx_handler(unsigned int chan, unsigned int iteration, void *use
       // Call the transfer complete callback
       if (data->done_callback)
         data->done_callback(bus, data->read_len, data->done_user_data);
-    } else if (iteration == 1) {
+
+      // Cancel rx timeout
+      sl_sleeptimer_stop_timer(&data->rx_timeout_timer);
+    } else {
+      // More bytes expected
       // After the first byte, switch to full 16-edge captures
-      data->rx_descriptors[0].xfer.xferCnt = EDGES_PER_BYTE - 1;
+      if (iteration == 1) {
+        data->rx_descriptors[0].xfer.xferCnt = EDGES_PER_BYTE - 1;
+
+        sl_sleeptimer_start_timer(&data->rx_timeout_timer, sl_sleeptimer_us_to_tick(60), transfer_timeout, bus, 0,
+                                  SL_SLEEPTIMER_NO_HIGH_PRECISION_HF_CLOCKS_REQUIRED_FLAG);
+      } else {
+        // Reset rx timeout for the next byte
+        sl_sleeptimer_restart_timer(&data->rx_timeout_timer, sl_sleeptimer_us_to_tick(60), transfer_timeout, bus, 0,
+                                    SL_SLEEPTIMER_NO_HIGH_PRECISION_HF_CLOCKS_REQUIRED_FLAG);
+      }
     }
   } else if (data->state == BUS_STATE_TARGET_RX) {
     // Process the received pulses into the byte buffer
@@ -290,16 +341,17 @@ static bool ldma_rx_handler(unsigned int chan, unsigned int iteration, void *use
     // Handle the received byte
     int rc = joybus_target_byte_received(bus->target, data->read_buf, iteration, handle_command_response, bus);
     if (rc == 0) {
+      // No more bytes expected
       // Start the response transfer if there is one
       if (data->write_len > 0) {
         // Prepare and start the response transfer
         LDMA->REQDIS_CLR = 1 << data->tx_dma_channel;
         data->state      = BUS_STATE_TARGET_TX;
 
-        // No more bytes expected, stop input capture
+        // Stop input capture
         TIMER_Enable(data->rx_timer, false);
       } else {
-        // No more bytes expected, stop input capture
+        // Stop input capture
         TIMER_Enable(data->rx_timer, false);
 
         // No response to send, switch back to read mode or idle
@@ -309,7 +361,20 @@ static bool ldma_rx_handler(unsigned int chan, unsigned int iteration, void *use
           data->state = BUS_STATE_HOST_IDLE;
         }
       }
-    } else if (rc < 0) {
+
+      // Cancel rx timeout
+      sl_sleeptimer_stop_timer(&data->rx_timeout_timer);
+    } else if (rc > 0) {
+      // More bytes expected
+      // After the first byte, switch to 16-edge captures
+      if (iteration == 1)
+        data->rx_descriptors[0].xfer.xferCnt = EDGES_PER_BYTE - 1;
+
+      // Reset rx timeout for the next byte
+      sl_sleeptimer_restart_timer(&data->rx_timeout_timer, sl_sleeptimer_us_to_tick(60), target_rx_timeout, bus, 0,
+                                  SL_SLEEPTIMER_NO_HIGH_PRECISION_HF_CLOCKS_REQUIRED_FLAG);
+
+    } else {
       // Error handling command, or command not supported
       // Stop input capture
       TIMER_Enable(data->rx_timer, false);
@@ -320,9 +385,9 @@ static bool ldma_rx_handler(unsigned int chan, unsigned int iteration, void *use
       } else {
         data->state = BUS_STATE_HOST_IDLE;
       }
-    } else if (iteration == 1) {
-      // After the first byte, switch to 16-edge captures
-      data->rx_descriptors[0].xfer.xferCnt = EDGES_PER_BYTE - 1;
+
+      // Cancel rx timeout
+      sl_sleeptimer_stop_timer(&data->rx_timeout_timer);
     }
   }
 
@@ -357,6 +422,10 @@ static bool ldma_tx_handler(unsigned int chan, unsigned int iteration, void *use
         // Immediately flip into read mode, we've already pre-armed the RX LDMA
         data->state = BUS_STATE_HOST_RX;
         TIMER_Enable(data->rx_timer, true);
+
+        // Start the RX timeout timer
+        sl_sleeptimer_start_timer(&data->rx_timeout_timer, sl_sleeptimer_us_to_tick(100), transfer_timeout, bus, 0,
+                                  SL_SLEEPTIMER_NO_HIGH_PRECISION_HF_CLOCKS_REQUIRED_FLAG);
       } else {
         // No reply expected, go idle and call the transfer complete callback
         data->state = BUS_STATE_HOST_IDLE;
@@ -598,6 +667,9 @@ static int joybus_gecko_enable(struct joybus *bus)
   // Initialize RX and TX peripherals
   enable_rx(bus);
   enable_tx(bus);
+
+  // Initialize sleeptimer for timeouts
+  sl_sleeptimer_init();
 
   // Connect the LDMA interrupt if building for Zephyr
 #ifdef __ZEPHYR__

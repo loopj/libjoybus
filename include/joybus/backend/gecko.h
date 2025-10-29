@@ -35,6 +35,8 @@
 #include "em_timer.h"
 #include "em_usart.h"
 
+#include "sl_sleeptimer.h"
+
 #include <joybus/bus.h>
 
 /**
@@ -65,15 +67,16 @@ struct joybus_gecko_data {
   TIMER_TypeDef *rx_timer;
   USART_TypeDef *tx_usart;
 
-  // Transfer state
+  // RX/TX state
   uint8_t *read_buf;
   uint8_t read_len;
   uint8_t read_count;
   uint8_t *write_buf;
   uint8_t write_len;
   bool rx_trailing_bit;
+  sl_sleeptimer_timer_handle_t rx_timeout_timer;
 
-  // Transfer callback
+  // Transfer state
   joybus_transfer_cb_t done_callback;
   void *done_user_data;
 
