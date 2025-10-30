@@ -225,7 +225,8 @@ static inline void target_byte_received(struct joybus *bus)
 
     data->state = BUS_STATE_TARGET_TX;
   } else if (rc > 0) {
-    // More bytes expected, set a timeout for the next byte
+    // More bytes expected
+    // Set a timeout for the next byte
     data->rx_timeout_alarm = add_alarm_in_us(JOYBUS_REPLY_TIMEOUT_US, target_rx_timeout, bus, true);
   } else {
     // Error handling command, or command not supported, switch back to idle/read mode

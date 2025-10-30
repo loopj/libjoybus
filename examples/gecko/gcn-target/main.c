@@ -15,13 +15,19 @@
 #define BTN_PORT          gpioPortC
 #define BTN_PIN           7
 
+// Joybus instance
 struct joybus_gecko gecko_bus;
 struct joybus *bus = JOYBUS(&gecko_bus);
 
+// GameCube controller target instance
 static struct joybus_gc_controller gc_controller;
 
-static void clock_init()
+// Initialize system
+static void system_init()
 {
+  // Chip errata
+  CHIP_Init();
+
   // HFXO initialization
   CMU_HFXOInit_TypeDef hfxoInit = CMU_HFXOINIT_DEFAULT;
   hfxoInit.ctuneXoAna           = 121;
@@ -39,15 +45,18 @@ static void clock_init()
   CMU_ClockSelectSet(cmuClock_EM01GRPACLK, cmuSelect_HFXO);
 }
 
-int main()
+// Initialize GPIO for button
+static void gpio_init()
 {
-  // Initialize chip and clocks
-  CHIP_Init();
-  clock_init();
-
-  // Set up GPIO for button
   CMU_ClockEnable(cmuClock_GPIO, true);
   GPIO_PinModeSet(BTN_PORT, BTN_PIN, gpioModeInput, 1);
+}
+
+int main()
+{
+  // Initialize system
+  system_init();
+  gpio_init();
 
   // Initialize the Joybus
   joybus_gecko_init(&gecko_bus, JOYBUS_DATA_PORT, JOYBUS_DATA_PIN, JOYBUS_TIMER, JOYBUS_USART);
@@ -58,9 +67,6 @@ int main()
 
   // Register the target on the bus
   joybus_target_register(bus, JOYBUS_TARGET(&gc_controller));
-
-  // Wait a bit before starting
-  sl_udelay_wait(100000);
 
   while (1) {
     // Clear previous button state

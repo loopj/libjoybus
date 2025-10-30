@@ -5,4 +5,5 @@ quality: production
 component:
   - id: emlib
   - id: dmadrv
+  - id: sleeptimer
   - id: udelay

@@ -92,7 +92,7 @@ int main()
   joybus_rp2xxx_init(&rp2xxx_bus, JOYBUS_GPIO, pio0);
   joybus_enable(bus);
 
-  // Poll for Joybus data and send HID reports at regular intervals
+  // Poll for Joybus data at regular intervals
   struct repeating_timer poll_timer;
   add_repeating_timer_ms(JOYBUS_POLL_INTERVAL_MS, poll_task, NULL, &poll_timer);
 
