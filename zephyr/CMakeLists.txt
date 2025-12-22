@@ -18,10 +18,20 @@ zephyr_library_sources(
 zephyr_include_directories(${LIBJOYBUS_DIR}/include)
 
 # Gecko backend and dependencies
+# TODO: Gate these on CONFIG_JOYBUS_SILABS
 zephyr_library_sources(${LIBJOYBUS_DIR}/src/backend/gecko/joybus.c)
 
 zephyr_library_sources(
   ${ZEPHYR_HAL_SILABS_MODULE_DIR}/simplicity_sdk/platform/emlib/src/em_timer.c
+)
+
+# TODO: Make libjoybus depend on CONFIG_SILABS_SISDK_USART which pulls in this file
+zephyr_library_sources_ifndef(CONFIG_SILABS_SISDK_USART
+  ${ZEPHYR_HAL_SILABS_MODULE_DIR}/simplicity_sdk/platform/emlib/src/em_usart.c
+)
+
+# TODO: Make libjoybus depend on CONFIG_SILABS_SISDK_LDMA which pulls in these files
+zephyr_library_sources_ifndef(CONFIG_SILABS_SISDK_LDMA
   ${ZEPHYR_HAL_SILABS_MODULE_DIR}/simplicity_sdk/platform/emlib/src/em_ldma.c
   ${ZEPHYR_HAL_SILABS_MODULE_DIR}/simplicity_sdk/platform/emdrv/dmadrv/src/dmadrv.c
 )
