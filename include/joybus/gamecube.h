@@ -24,7 +24,7 @@
 #define JOYBUS_GCN_BUTTON_R       (1 << 13)
 #define JOYBUS_GCN_BUTTON_L       (1 << 14)
 #define JOYBUS_GCN_USE_ORIGIN     (1 << 15)
-#define JOYBUS_GCN_BUTTON_MASK    0x7F1F;
+#define JOYBUS_GCN_BUTTON_MASK    0x7F1F
 
 /**
  * GameCube controller input state.
