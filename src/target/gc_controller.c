@@ -376,7 +376,7 @@ void joybus_gc_controller_set_wireless_id(struct joybus_gc_controller *controlle
 void joybus_gc_controller_set_origin(struct joybus_gc_controller *controller,
                                      struct joybus_gc_controller_input *new_origin)
 {
-  // Check if the origin packet is different from the last known origin
+  // Check if the analog values in the new origin differ from the current origin
   if (memcmp(&controller->origin.stick_x, &new_origin->stick_x, 6) != 0) {
     // Update the origin state
     memcpy(&controller->origin.stick_x, &new_origin->stick_x, 6);
