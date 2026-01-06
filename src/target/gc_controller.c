@@ -345,6 +345,7 @@ void joybus_gc_controller_init(struct joybus_gc_controller *controller, uint16_t
   target->api                  = &gc_controller_api;
 
   // Set the initial controller ID
+  memset(controller->id, 0, sizeof(controller->id));
   joybus_id_set_type_flags(controller->id, type);
 
   // Set the initial origin
