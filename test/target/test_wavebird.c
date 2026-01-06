@@ -27,13 +27,9 @@ void setUp(void)
   joybus_loopback_init(&bus);
   joybus_enable(&bus);
 
-  // Register a standard GameCube controller target
+  // Register a WaveBird receiver controller target
   joybus_gc_controller_init(&controller, JOYBUS_WAVEBIRD_RECEIVER);
   joybus_target_register(&bus, JOYBUS_TARGET(&controller));
-
-  // Reset response capture
-  response_len = -1;
-  memset(response, 0, sizeof(response));
 }
 
 void tearDown(void)

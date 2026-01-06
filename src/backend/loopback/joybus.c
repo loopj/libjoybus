@@ -19,21 +19,24 @@ static int joybus_loopback_disable(struct joybus *bus)
 
 static void handle_command_response(const uint8_t *buffer, uint8_t result, void *user_data)
 {
-  struct joybus *bus = (struct joybus *)user_data;
+  if (response_buffer == NULL || result <= 0)
+    return;
 
-  // Our loopback "transfer" is just to copy all the bytes
+  // Copy the bytes provided by the target into the read buffer
   memcpy(response_buffer, buffer, result);
+  response_length = result;
 }
 
 static int joybus_loopback_transfer(struct joybus *bus, const uint8_t *write_buf, uint8_t write_len, uint8_t *read_buf,
                                     uint8_t read_len, joybus_transfer_cb_t callback, void *user_data)
 {
-  // Save the buffer to write the response to
+  // Save the buffer to write the response to, default to zero length
   response_buffer = read_buf;
+  response_length = 0;
 
   // Handle the command using the registered target
   for (int i = 1; i <= write_len; i++) {
-    int rc = joybus_target_byte_received(bus->target, write_buf, i, handle_command_response, NULL);
+    int rc = joybus_target_byte_received(bus->target, write_buf, i, handle_command_response, bus);
     if (rc == 0) {
       // No more bytes expected
       break;
@@ -45,7 +48,7 @@ static int joybus_loopback_transfer(struct joybus *bus, const uint8_t *write_buf
   }
 
   // Call the transfer complete callback
-  callback(bus, read_len, user_data);
+  callback(bus, response_length, user_data);
 
   return 0;
 }
