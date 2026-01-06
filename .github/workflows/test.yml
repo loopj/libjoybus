@@ -1,0 +1,24 @@
+name: Run Tests
+
+on:
+  workflow_dispatch:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake build-essential
+
+      - name: Build test suite
+        run: cmake -Bbuild -DJOYBUS_BACKEND_LOOPBACK=1 && cmake --build build
+
+      - name: Run tests
+        run: ctest --test-dir build --output-on-failure
