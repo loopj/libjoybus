@@ -1,7 +1,7 @@
 var searchData=
 [
   ['backend_0',['Backend',['../group__joybus__backend__gecko.html',1,'Gecko Backend'],['../group__joybus__backend__loopback.html',1,'Loopback Backend'],['../group__joybus__backend__rp2xxx.html',1,'RP2xxx Backend']]],
-  ['backend_20for_20libjoybus_1',['Backend for libjoybus',['..//home/runner/work/libjoybus/libjoybus/src/backend/gecko/README.md#autotoc_md4',1,'Gecko Backend for libjoybus'],['..//home/runner/work/libjoybus/libjoybus/src/backend/loopback/README.md#autotoc_md7',1,'Loopback Backend for libjoybus']]],
+  ['backend_20for_20libjoybus_1',['Backend for libjoybus',['..//home/runner/work/libjoybus/libjoybus/src/backend/gecko_sdk/README.md#autotoc_md4',1,'Gecko Backend for libjoybus'],['..//home/runner/work/libjoybus/libjoybus/src/backend/loopback/README.md#autotoc_md7',1,'Loopback Backend for libjoybus']]],
   ['backend_20for_20rp2xxx_2',['Gecko Backend for rp2xxx',['..//home/runner/work/libjoybus/libjoybus/src/backend/rp2xxx/README.md#autotoc_md8',1,'']]],
   ['backends_3',['Backends',['../group__joybus__backends.html',1,'']]],
   ['base_4',['base',['../structjoybus__gc__controller.html#abd39ba1c94ce1d0bee3bc175f90a07c0',1,'joybus_gc_controller']]],

@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['checklist_0',['Checklist',['..//home/runner/work/libjoybus/libjoybus/src/backend/gecko/README.md#autotoc_md6',1,'Checklist'],['..//home/runner/work/libjoybus/libjoybus/src/backend/rp2xxx/README.md#autotoc_md10',1,'Checklist']]],
+  ['checklist_0',['Checklist',['..//home/runner/work/libjoybus/libjoybus/src/backend/gecko_sdk/README.md#autotoc_md6',1,'Checklist'],['..//home/runner/work/libjoybus/libjoybus/src/backend/rp2xxx/README.md#autotoc_md10',1,'Checklist']]],
   ['commands_1',['Host Commands',['../group__joybus__host.html',1,'']]],
   ['commands_2eh_2',['commands.h',['../commands_8h.html',1,'']]],
   ['communicating_20with_20controllers_3',['Communicating with Controllers',['../index.html#autotoc_md2',1,'']]],
