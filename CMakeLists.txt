@@ -25,7 +25,7 @@ target_include_directories(joybus INTERFACE include)
 
 # Add the appropriate backend
 if(DEFINED JOYBUS_BACKEND_GECKO)
-  add_subdirectory(src/backend/gecko)
+  add_subdirectory(src/backend/gecko_sdk)
 elseif(DEFINED JOYBUS_BACKEND_RP2XXX)
   add_subdirectory(src/backend/rp2xxx)
 elseif(DEFINED JOYBUS_BACKEND_LOOPBACK)
