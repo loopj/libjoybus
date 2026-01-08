@@ -1,0 +1,15 @@
+project_name: gcn_host
+description: GameCube Controller Host Example for Gecko SDK
+quality: production
+
+component:
+  - id: sl_main
+  - id: device_init
+  - id: emlib
+  - id: sleeptimer
+  - id: udelay
+  - id: libjoybus
+    from: libjoybus
+
+source:
+  - path: main.c

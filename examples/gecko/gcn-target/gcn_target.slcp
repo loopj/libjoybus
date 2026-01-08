@@ -1,0 +1,14 @@
+project_name: gcn_target
+description: GameCube Controller Target Example for Gecko SDK
+quality: production
+
+component:
+  - id: sl_main
+  - id: device_init
+  - id: emlib
+  - id: udelay
+  - id: libjoybus
+    from: libjoybus
+
+source:
+  - path: main.c

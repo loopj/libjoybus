@@ -1,0 +1,27 @@
+id: libjoybus
+label: libjoybus
+package: "ext-comp"
+description: >
+  Implementation of the Joybus protocol used by N64 and GameCube controllers.
+category: External
+quality: production
+
+requires:
+  - name: emlib
+  - name: dmadrv
+  - name: sleeptimer
+
+provides:
+  - name: libjoybus
+
+include:
+  - path: include
+
+source:
+  - path: src/crc8.c
+  - path: src/backend/gecko_sdk/joybus.c
+  - path: src/host/common.c
+  - path: src/host/gamecube.c
+  - path: src/host/n64.c
+  - path: src/target/gc_controller.c
+  - path: src/target/n64_controller.c
