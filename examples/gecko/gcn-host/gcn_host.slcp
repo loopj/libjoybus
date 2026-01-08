@@ -4,6 +4,7 @@ quality: production
 
 component:
   - id: sl_main
+  - id: sl_main_custom_main
   - id: device_init
   - id: emlib
   - id: sleeptimer

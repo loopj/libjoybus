@@ -11,6 +11,5 @@ slc generate gcn_host.slcp  --with $TARGET --export-destination target/$TARGET -
 
 # Build the project
 cd target/$TARGET/gcn_host_cmake
-cmake -Bbuild -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake
-cmake --build build
+cmake --workflow --preset project
 ```
