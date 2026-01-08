@@ -1,18 +1,18 @@
-#include "em_chip.h"
 #include "em_cmu.h"
 #include "em_gpio.h"
 
+#include "sl_main_init.h"
 #include "sl_sleeptimer.h"
 #include "sl_udelay.h"
 
 #include <joybus/joybus.h>
 #include <joybus/backend/gecko.h>
 
+// Change these defines to match your hardware setup
 #define JOYBUS_PORT             gpioPortD
 #define JOYBUS_PIN              3
 #define JOYBUS_TIMER            TIMER0
 #define JOYBUS_USART            USART0
-
 #define LED_PORT                gpioPortA
 #define LED_PIN                 4
 
@@ -71,26 +71,6 @@ void joybus_read_cb(struct joybus *bus, int result, void *user_data)
   }
 }
 
-// Initialize system clocks
-static void clock_init()
-{
-  // HFXO initialization
-  CMU_HFXOInit_TypeDef hfxoInit = CMU_HFXOINIT_DEFAULT;
-  hfxoInit.ctuneXoAna           = 121;
-  hfxoInit.ctuneXiAna           = 121;
-  CMU_HFXOInit(&hfxoInit);
-  SystemHFXOClockSet(38400000);
-
-  // PLL initialization
-  CMU_DPLLInit_TypeDef dpllInit = CMU_DPLL_HFXO_TO_76_8MHZ;
-  bool dpllLock                 = false;
-  while (!dpllLock)
-    dpllLock = CMU_DPLLLock(&dpllInit);
-
-  CMU_ClockSelectSet(cmuClock_SYSCLK, cmuSelect_HFRCODPLL);
-  CMU_ClockSelectSet(cmuClock_EM01GRPACLK, cmuSelect_HFXO);
-}
-
 // Poll Joybus for data
 static void poll_task(sl_sleeptimer_timer_handle_t *handle, void *data)
 {
@@ -107,9 +87,8 @@ static void poll_task(sl_sleeptimer_timer_handle_t *handle, void *data)
 
 int main()
 {
-  // Initialize chip and clocks
-  CHIP_Init();
-  clock_init();
+  // Initialize chip
+  sl_main_init();
 
   // Set up GPIO for status LED
   CMU_ClockEnable(cmuClock_GPIO, true);

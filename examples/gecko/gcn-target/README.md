@@ -1,13 +1,16 @@
-# GeckoSDK Host Example
+# GeckoSDK GameCube Target Example
 
-Act as a Joybus host on EFR32 devices using the Gecko SDK.
+Act as a GameCube controller on EFR32 devices using the Gecko SDK.
 
 ```bash
+# Replace brd2710a with your board or chip
+TARGET=brd2710a
+
 # Generate the project files
-# Replace EFR32MG22C224F512IM40 with your device
-slc generate --with EFR32MG22C224F512IM40 --project-file libjoybus_example.slcp --export-destination slc_project
+slc generate gcn_target.slcp  --with $TARGET --export-destination target/$TARGET --output-type cmake --sdk-extensions=../../..
 
 # Build the project
-cmake -Bbuild -DCMAKE_TOOLCHAIN_FILE=slc_project/libjoybus_example_cmake/toolchain.cmake
-cmake --build build --target app
+cd target/$TARGET/gcn_target_cmake
+cmake -Bbuild -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake
+cmake --build build
 ```
