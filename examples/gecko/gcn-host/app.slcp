@@ -3,14 +3,13 @@ description: GameCube Controller Host Example for Gecko SDK
 quality: production
 
 component:
-  - id: sl_main
-  - id: sl_main_custom_main
+  - id: clock_manager
   - id: device_init
+  - id: sl_main
   - id: emlib
   - id: sleeptimer
-  - id: udelay
   - id: libjoybus
     from: libjoybus
 
 source:
-  - path: main.c
+  - path: app.c

@@ -1,7 +1,6 @@
 #include "em_cmu.h"
 #include "em_gpio.h"
 
-#include "sl_main_init.h"
 #include "sl_udelay.h"
 
 #include <joybus/joybus.h>
@@ -22,11 +21,8 @@ struct joybus *bus = JOYBUS(&gecko_bus);
 // GameCube controller target instance
 static struct joybus_gc_controller gc_controller;
 
-int main()
+void app_init(void)
 {
-  // Initialize chip
-  sl_main_init();
-
   // Initialize GPIO for button
   CMU_ClockEnable(cmuClock_GPIO, true);
   GPIO_PinModeSet(BTN_PORT, BTN_PIN, gpioModeInput, 1);
@@ -40,16 +36,17 @@ int main()
 
   // Register the target on the bus
   joybus_target_register(bus, JOYBUS_TARGET(&gc_controller));
+}
 
-  while (1) {
-    // Clear previous button state
-    gc_controller.input.buttons &= ~JOYBUS_GCN_BUTTON_MASK;
+void app_process_action(void)
+{
+  // Clear previous button state
+  gc_controller.input.buttons &= ~JOYBUS_GCN_BUTTON_MASK;
 
-    // Simulate pressing the A button when the BUTTON_GPIO (active low) is pressed
-    if (GPIO_PinInGet(BTN_PORT, BTN_PIN) == 0)
-      gc_controller.input.buttons |= JOYBUS_GCN_BUTTON_A;
+  // Simulate pressing the A button when the BUTTON_GPIO (active low) is pressed
+  if (GPIO_PinInGet(BTN_PORT, BTN_PIN) == 0)
+    gc_controller.input.buttons |= JOYBUS_GCN_BUTTON_A;
 
-    // Chill for a bit
-    sl_udelay_wait(10000);
-  }
+  // Chill for a bit
+  sl_udelay_wait(10000);
 }

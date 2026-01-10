@@ -1,9 +1,7 @@
 #include "em_cmu.h"
 #include "em_gpio.h"
 
-#include "sl_main_init.h"
 #include "sl_sleeptimer.h"
-#include "sl_udelay.h"
 
 #include <joybus/joybus.h>
 #include <joybus/backend/gecko.h>
@@ -28,6 +26,9 @@ static uint8_t joybus_response[JOYBUS_BLOCK_SIZE] = {0};
 // Polling mode
 enum { POLL_MODE_IDENTIFY, POLL_MODE_READ };
 static uint8_t poll_mode = POLL_MODE_IDENTIFY;
+
+// Sleeptimer handle for polling
+static sl_sleeptimer_timer_handle_t poll_timer;
 
 void joybus_identify_cb(struct joybus *bus, int result, void *user_data)
 {
@@ -85,11 +86,8 @@ static void poll_task(sl_sleeptimer_timer_handle_t *handle, void *data)
   }
 }
 
-int main()
+void app_init(void)
 {
-  // Initialize chip
-  sl_main_init();
-
   // Set up GPIO for status LED
   CMU_ClockEnable(cmuClock_GPIO, true);
   GPIO_PinModeSet(LED_PORT, LED_PIN, gpioModePushPull, 0);
@@ -99,14 +97,12 @@ int main()
   joybus_enable(bus);
 
   // Poll for Joybus data at regular intervals
-  sl_sleeptimer_timer_handle_t poll_timer;
   sl_sleeptimer_init();
   sl_sleeptimer_start_periodic_timer(&poll_timer, sl_sleeptimer_ms_to_tick(JOYBUS_POLL_INTERVAL_MS), poll_task, bus, 0,
                                      SL_SLEEPTIMER_NO_HIGH_PRECISION_HF_CLOCKS_REQUIRED_FLAG);
+}
 
-  // No work to do in main loop
-  while (true)
-    ;
-
-  return 0;
+void app_process_action(void)
+{
+  // Nothing to do here, everything is handled in the timer callback
 }
