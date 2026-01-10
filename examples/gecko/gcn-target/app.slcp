@@ -1,4 +1,4 @@
-project_name: gcn_target
+project_name: gcn-target
 description: GameCube Controller Target Example for Gecko SDK
 quality: production
 

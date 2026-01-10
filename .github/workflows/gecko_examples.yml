@@ -1,0 +1,74 @@
+name: Build Gecko Examples
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build-examples:
+    runs-on: ubuntu-latest
+
+    env:
+      ARM_GNU_TOOLCHAIN_VERSION: 13.3.rel1
+      SIMPLICITY_SDK_VERSION: v2025.6.2
+
+    strategy:
+      matrix:
+        board: [brd2710a]
+        example: [gcn-host, gcn-target]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake ninja-build unzip wget
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: "corretto"
+          java-version: "21"
+
+      - name: Install ARM GNU Toolchain
+        run: |
+          wget -q https://developer.arm.com/-/media/Files/downloads/gnu/${{ env.ARM_GNU_TOOLCHAIN_VERSION }}/binrel/arm-gnu-toolchain-${{ env.ARM_GNU_TOOLCHAIN_VERSION }}-x86_64-arm-none-eabi.tar.xz
+          tar xf arm-gnu-toolchain-${{ env.ARM_GNU_TOOLCHAIN_VERSION }}-x86_64-arm-none-eabi.tar.xz
+          echo "$PWD/arm-gnu-toolchain-${{ env.ARM_GNU_TOOLCHAIN_VERSION }}-x86_64-arm-none-eabi/bin" >> $GITHUB_PATH
+
+      - name: Install Simplicity SDK
+        run: |
+          wget -q https://github.com/SiliconLabs/simplicity_sdk/releases/download/${{ env.SIMPLICITY_SDK_VERSION }}/simplicity-sdk.zip
+          unzip -q simplicity-sdk.zip -d simplicity_sdk
+
+      - name: Install SLC CLI
+        run: |
+          wget -q https://www.silabs.com/documents/login/software/slc_cli_linux.zip
+          unzip -q slc_cli_linux.zip
+          chmod +x slc_cli/slc
+          echo "$PWD/slc_cli" >> $GITHUB_PATH
+
+      - name: Configure SLC CLI
+        run: |
+          slc configuration --sdk simplicity_sdk
+          slc configuration --gcc-toolchain arm-gnu-toolchain-${{ env.ARM_GNU_TOOLCHAIN_VERSION }}-x86_64-arm-none-eabi
+          slc signature trust --sdk simplicity_sdk
+
+      - name: Generate project files
+        working-directory: examples/gecko/${{ matrix.example }}
+        run: |
+          slc generate app.slcp \
+            --with ${{ matrix.board }} \
+            --output-type cmake \
+            --sdk-extensions=../../.. \
+            -d target/${{ matrix.board }}
+
+      - name: Build project
+        working-directory: examples/gecko/${{ matrix.example }}/target/${{ matrix.board }}/${{ matrix.example }}_cmake
+        run: |
+          cmake --workflow --preset project

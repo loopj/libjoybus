@@ -10,6 +10,6 @@ TARGET=brd2710a
 slc generate gcn_target.slcp  --with $TARGET --export-destination target/$TARGET --output-type cmake --sdk-extensions=../../..
 
 # Build the project
-cd target/$TARGET/gcn_target_cmake
+cd target/$TARGET/gcn-target_cmake
 cmake --workflow --preset project
 ```
