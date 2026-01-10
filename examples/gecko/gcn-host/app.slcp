@@ -1,4 +1,4 @@
-project_name: gcn_host
+project_name: gcn-host
 description: GameCube Controller Host Example for Gecko SDK
 quality: production
 
