@@ -50,6 +50,10 @@ jobs:
           wget -q https://developer.arm.com/-/media/Files/downloads/gnu/${{ env.ARM_GNU_TOOLCHAIN_VERSION }}/binrel/arm-gnu-toolchain-${{ env.ARM_GNU_TOOLCHAIN_VERSION }}-x86_64-arm-none-eabi.tar.xz
           tar xf arm-gnu-toolchain-${{ env.ARM_GNU_TOOLCHAIN_VERSION }}-x86_64-arm-none-eabi.tar.xz
 
+      - name: Add ARM toolchain to PATH
+        run: |
+          echo "$PWD/arm-gnu-toolchain-${{ env.ARM_GNU_TOOLCHAIN_VERSION }}-x86_64-arm-none-eabi/bin" >> $GITHUB_PATH
+
       # Setup Simplicity SDK
       - name: Cache Simplicity SDK
         id: cache-simplicity-sdk
