@@ -238,8 +238,6 @@ static void test_wavebird_probe_response()
   joybus_gcn_probe_device(&bus, response, spy, NULL);
 
   // Test probe response is ignored after setting wireless ID
-  // TODO: Fix loopback implementation (and maybe gecko) to handle this correctly!
-  // If the target did not queue up any response to be written, the response length should be zero!
   TEST_ASSERT_EQUAL(0, response_len);
 }
 
