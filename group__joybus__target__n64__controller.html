@@ -128,6 +128,8 @@ Typedefs</h2></td></tr>
 Functions</h2></td></tr>
 <tr class="memitem:ga93a4a4e12704cd14d471695198214c9a" id="r_ga93a4a4e12704cd14d471695198214c9a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga93a4a4e12704cd14d471695198214c9a">joybus_n64_controller_init</a> (struct <a class="el" href="structjoybus__n64__controller.html">joybus_n64_controller</a> *controller, uint8_t type)</td></tr>
 <tr class="memdesc:ga93a4a4e12704cd14d471695198214c9a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize an N64 controller.  <br /></td></tr>
+<tr class="memitem:gac9d7f1d7d2857e227948eb4bf291ec71" id="r_gac9d7f1d7d2857e227948eb4bf291ec71"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#gac9d7f1d7d2857e227948eb4bf291ec71">joybus_n64_controller_set_reset_callback</a> (struct <a class="el" href="structjoybus__n64__controller.html">joybus_n64_controller</a> *controller, <a class="el" href="#ga1c32462fcdf6291c430ffd87aa6b81ee">joybus_n64_controller_reset_cb_t</a> callback)</td></tr>
+<tr class="memdesc:gac9d7f1d7d2857e227948eb4bf291ec71"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the reset callback for the controller.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <p>N64 controller Joybus target. </p>
@@ -202,6 +204,37 @@ Functions</h2></td></tr>
   <table class="params">
     <tr><td class="paramname">controller</td><td>the controller to initialize </td></tr>
     <tr><td class="paramname">type</td><td>the device type flags </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="gac9d7f1d7d2857e227948eb4bf291ec71" name="gac9d7f1d7d2857e227948eb4bf291ec71"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gac9d7f1d7d2857e227948eb4bf291ec71">&#9670;&#160;</a></span>joybus_n64_controller_set_reset_callback()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void joybus_n64_controller_set_reset_callback </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structjoybus__n64__controller.html">joybus_n64_controller</a> *</td>          <td class="paramname"><span class="paramname"><em>controller</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="#ga1c32462fcdf6291c430ffd87aa6b81ee">joybus_n64_controller_reset_cb_t</a></td>          <td class="paramname"><span class="paramname"><em>callback</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set the reset callback for the controller. </p>
+<p>NOTE: Reset callbacks are called from interrupt context, do not perform any blocking operations within the callback.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">controller</td><td>the controller to set the callback for </td></tr>
+    <tr><td class="paramname">callback</td><td>the callback function </td></tr>
   </table>
   </dd>
 </dl>

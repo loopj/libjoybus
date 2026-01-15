@@ -130,6 +130,10 @@ Typedefs</h2></td></tr>
 Functions</h2></td></tr>
 <tr class="memitem:ga5b817ac573a6a4161df04f861250ab07" id="r_ga5b817ac573a6a4161df04f861250ab07"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga5b817ac573a6a4161df04f861250ab07">joybus_gc_controller_init</a> (struct <a class="el" href="structjoybus__gc__controller.html">joybus_gc_controller</a> *controller, uint16_t type)</td></tr>
 <tr class="memdesc:ga5b817ac573a6a4161df04f861250ab07"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize a GameCube controller.  <br /></td></tr>
+<tr class="memitem:gae1c5d902cec6f7d9519c60d7680f7753" id="r_gae1c5d902cec6f7d9519c60d7680f7753"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#gae1c5d902cec6f7d9519c60d7680f7753">joybus_gc_controller_set_reset_callback</a> (struct <a class="el" href="structjoybus__gc__controller.html">joybus_gc_controller</a> *controller, <a class="el" href="#gaaf97e81f342ca25576484c66839e9f24">joybus_gc_controller_reset_cb_t</a> callback)</td></tr>
+<tr class="memdesc:gae1c5d902cec6f7d9519c60d7680f7753"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the reset callback for the controller.  <br /></td></tr>
+<tr class="memitem:ga9d894cde26abc0e10969b6a752f0eba6" id="r_ga9d894cde26abc0e10969b6a752f0eba6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga9d894cde26abc0e10969b6a752f0eba6">joybus_gc_controller_set_motor_callback</a> (struct <a class="el" href="structjoybus__gc__controller.html">joybus_gc_controller</a> *controller, <a class="el" href="#gad675b006f5f6a1190770252534ffd68a">joybus_gc_controller_motor_cb_t</a> callback)</td></tr>
+<tr class="memdesc:ga9d894cde26abc0e10969b6a752f0eba6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the motor state change callback for the controller.  <br /></td></tr>
 <tr class="memitem:ga45a59ef359535ac96ffaeebb1d5ea823" id="r_ga45a59ef359535ac96ffaeebb1d5ea823"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga45a59ef359535ac96ffaeebb1d5ea823">joybus_gc_controller_is_wireless</a> (struct <a class="el" href="structjoybus__gc__controller.html">joybus_gc_controller</a> *controller)</td></tr>
 <tr class="memdesc:ga45a59ef359535ac96ffaeebb1d5ea823"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the controller is a WaveBird controller.  <br /></td></tr>
 <tr class="memitem:ga6c868911084c2cbbe91b1cf63db90f7c" id="r_ga6c868911084c2cbbe91b1cf63db90f7c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga6c868911084c2cbbe91b1cf63db90f7c">joybus_gc_controller_set_wireless_id</a> (struct <a class="el" href="structjoybus__gc__controller.html">joybus_gc_controller</a> *controller, uint16_t wireless_id)</td></tr>
@@ -352,6 +356,37 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="ga9d894cde26abc0e10969b6a752f0eba6" name="ga9d894cde26abc0e10969b6a752f0eba6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga9d894cde26abc0e10969b6a752f0eba6">&#9670;&#160;</a></span>joybus_gc_controller_set_motor_callback()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void joybus_gc_controller_set_motor_callback </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structjoybus__gc__controller.html">joybus_gc_controller</a> *</td>          <td class="paramname"><span class="paramname"><em>controller</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="#gad675b006f5f6a1190770252534ffd68a">joybus_gc_controller_motor_cb_t</a></td>          <td class="paramname"><span class="paramname"><em>callback</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set the motor state change callback for the controller. </p>
+<p>NOTE: Motor state callbacks are called from interrupt context, do not perform any blocking operations within the callback.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">controller</td><td>the controller to set the callback for </td></tr>
+    <tr><td class="paramname">callback</td><td>the callback function </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="ga1529819f64d555712b19ca8d6d33df6f" name="ga1529819f64d555712b19ca8d6d33df6f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga1529819f64d555712b19ca8d6d33df6f">&#9670;&#160;</a></span>joybus_gc_controller_set_origin()</h2>
 
@@ -377,6 +412,37 @@ Functions</h2></td></tr>
   <table class="params">
     <tr><td class="paramname">controller</td><td>the controller to set the wireless origin for </td></tr>
     <tr><td class="paramname">new_origin</td><td>pointer to the new origin data (6 bytes) </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="gae1c5d902cec6f7d9519c60d7680f7753" name="gae1c5d902cec6f7d9519c60d7680f7753"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gae1c5d902cec6f7d9519c60d7680f7753">&#9670;&#160;</a></span>joybus_gc_controller_set_reset_callback()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void joybus_gc_controller_set_reset_callback </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structjoybus__gc__controller.html">joybus_gc_controller</a> *</td>          <td class="paramname"><span class="paramname"><em>controller</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="#gaaf97e81f342ca25576484c66839e9f24">joybus_gc_controller_reset_cb_t</a></td>          <td class="paramname"><span class="paramname"><em>callback</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set the reset callback for the controller. </p>
+<p>NOTE: Reset callbacks are called from interrupt context, do not perform any blocking operations within the callback.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">controller</td><td>the controller to set the callback for </td></tr>
+    <tr><td class="paramname">callback</td><td>the callback function </td></tr>
   </table>
   </dd>
 </dl>

@@ -16,7 +16,9 @@ var group__joybus__target__gc__controller =
     [ "joybus_gc_controller_init", "group__joybus__target__gc__controller.html#ga5b817ac573a6a4161df04f861250ab07", null ],
     [ "joybus_gc_controller_input_valid", "group__joybus__target__gc__controller.html#gabfb7b822bc565812d0e2adb635f28685", null ],
     [ "joybus_gc_controller_is_wireless", "group__joybus__target__gc__controller.html#ga45a59ef359535ac96ffaeebb1d5ea823", null ],
+    [ "joybus_gc_controller_set_motor_callback", "group__joybus__target__gc__controller.html#ga9d894cde26abc0e10969b6a752f0eba6", null ],
     [ "joybus_gc_controller_set_origin", "group__joybus__target__gc__controller.html#ga1529819f64d555712b19ca8d6d33df6f", null ],
+    [ "joybus_gc_controller_set_reset_callback", "group__joybus__target__gc__controller.html#gae1c5d902cec6f7d9519c60d7680f7753", null ],
     [ "joybus_gc_controller_set_wireless_id", "group__joybus__target__gc__controller.html#ga6c868911084c2cbbe91b1cf63db90f7c", null ],
     [ "joybus_gc_controller_wireless_id_fixed", "group__joybus__target__gc__controller.html#gaa958a4e3baa08bbb11e6319e25985b4c", null ]
 ];
