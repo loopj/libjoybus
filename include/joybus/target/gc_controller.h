@@ -72,6 +72,30 @@ struct joybus_gc_controller {
 void joybus_gc_controller_init(struct joybus_gc_controller *controller, uint16_t type);
 
 /**
+ * Set the reset callback for the controller.
+ *
+ * NOTE: Reset callbacks are called from interrupt context, do not perform any
+ *       blocking operations within the callback.
+ *
+ * @param controller the controller to set the callback for
+ * @param callback the callback function
+ */
+void joybus_gc_controller_set_reset_callback(struct joybus_gc_controller *controller,
+                                             joybus_gc_controller_reset_cb_t callback);
+
+/**
+ * Set the motor state change callback for the controller.
+ *
+ * NOTE: Motor state callbacks are called from interrupt context, do not
+ *       perform any blocking operations within the callback.
+ *
+ * @param controller the controller to set the callback for
+ * @param callback the callback function
+ */
+void joybus_gc_controller_set_motor_callback(struct joybus_gc_controller *controller,
+                                             joybus_gc_controller_motor_cb_t callback);
+
+/**
  * Check if the controller is a WaveBird controller.
  *
  * @param controller the controller to check

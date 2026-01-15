@@ -82,3 +82,9 @@ void joybus_n64_controller_init(struct joybus_n64_controller *controller, uint8_
   controller->id[1] = 0x00;
   controller->id[2] = 0x00;
 }
+
+void joybus_n64_controller_set_reset_callback(struct joybus_n64_controller *controller,
+                                              joybus_n64_controller_reset_cb_t callback)
+{
+  controller->on_reset = callback;
+}

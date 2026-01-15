@@ -104,7 +104,8 @@ static inline int handle_reset(struct joybus_gc_controller *controller, const ui
     controller->on_reset(controller);
 
   // Stop the rumble motor
-  // TODO
+  if (controller->on_motor_state_change)
+    controller->on_motor_state_change(controller, JOYBUS_GCN_MOTOR_STOP);
 
   return 0;
 }
@@ -155,13 +156,18 @@ static inline int handle_read(struct joybus_gc_controller *controller, const uin
       // Update the origin flags
       controller->input.buttons |= JOYBUS_GCN_USE_ORIGIN;
 
+      // Get the previous motor state
+      uint8_t last_motor_state =
+        (joybus_id_get_status(controller->id) & JOYBUS_ID_GCN_MOTOR_STATE_MASK) >> JOYBUS_ID_GCN_MOTOR_STATE_SHIFT;
+
       // Save the analog mode and motor state
       joybus_id_clear_status_flags(controller->id, JOYBUS_ID_GCN_MOTOR_STATE_MASK | JOYBUS_ID_GCN_ANALOG_MODE_MASK);
       joybus_id_set_status_flags(controller->id, motor_state << JOYBUS_ID_GCN_MOTOR_STATE_SHIFT | analog_mode);
-    }
 
-    // If motor state has changed, call the motor state change callback
-    // TODO
+      // If motor state has changed, call the motor state change callback
+      if (last_motor_state != motor_state && controller->on_motor_state_change)
+        controller->on_motor_state_change(controller, motor_state);
+    }
   }
 
   return JOYBUS_CMD_GCN_READ_TX - bytes_read;
@@ -237,13 +243,18 @@ static inline int handle_read_long(struct joybus_gc_controller *controller, cons
       // Update the origin flags
       controller->input.buttons |= JOYBUS_GCN_USE_ORIGIN;
 
+      // Get the previous motor state
+      uint8_t last_motor_state =
+        (joybus_id_get_status(controller->id) & JOYBUS_ID_GCN_MOTOR_STATE_MASK) >> JOYBUS_ID_GCN_MOTOR_STATE_SHIFT;
+
       // Save the analog mode and motor state
       joybus_id_clear_status_flags(controller->id, JOYBUS_ID_GCN_MOTOR_STATE_MASK | JOYBUS_ID_GCN_ANALOG_MODE_MASK);
       joybus_id_set_status_flags(controller->id, motor_state << JOYBUS_ID_GCN_MOTOR_STATE_SHIFT | analog_mode);
-    }
 
-    // If motor state has changed, call the motor state change callback
-    // TODO
+      // If motor state has changed, call the motor state change callback
+      if (last_motor_state != motor_state && controller->on_motor_state_change)
+        controller->on_motor_state_change(controller, motor_state);
+    }
   }
 
   return JOYBUS_CMD_GCN_READ_LONG_TX - bytes_read;
@@ -360,6 +371,18 @@ void joybus_gc_controller_init(struct joybus_gc_controller *controller, uint16_t
 
   // Mark the input as valid initially
   controller->input_valid = true;
+}
+
+void joybus_gc_controller_set_reset_callback(struct joybus_gc_controller *controller,
+                                             joybus_gc_controller_reset_cb_t callback)
+{
+  controller->on_reset = callback;
+}
+
+void joybus_gc_controller_set_motor_callback(struct joybus_gc_controller *controller,
+                                             joybus_gc_controller_motor_cb_t callback)
+{
+  controller->on_motor_state_change = callback;
 }
 
 void joybus_gc_controller_set_wireless_id(struct joybus_gc_controller *controller, uint16_t wireless_id)

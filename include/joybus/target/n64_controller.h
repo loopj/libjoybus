@@ -49,4 +49,16 @@ struct joybus_n64_controller {
  */
 void joybus_n64_controller_init(struct joybus_n64_controller *controller, uint8_t type);
 
+/**
+ * Set the reset callback for the controller.
+ *
+ * NOTE: Reset callbacks are called from interrupt context, do not perform any
+ *       blocking operations within the callback.
+ *
+ * @param controller the controller to set the callback for
+ * @param callback the callback function
+ */
+void joybus_n64_controller_set_reset_callback(struct joybus_n64_controller *controller,
+                                              joybus_n64_controller_reset_cb_t callback);
+
 /** @} */
