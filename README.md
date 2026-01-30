@@ -96,3 +96,11 @@ void main() {
   }
 }
 ```
+
+## Special Thanks
+
+The (insane) accessory detection logic for N64 accessory paks is *heavily* based on the implementation in the fantastic [`libdragon`](https://github.com/DragonMinded/libdragon), which I consider the gold standard for this.
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
