@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['supported_20platforms_0',['Supported Platforms',['../index.html#autotoc_md1',1,'']]]
+  ['special_20thanks_0',['Special Thanks',['../index.html#autotoc_md4',1,'']]],
+  ['supported_20platforms_1',['Supported Platforms',['../index.html#autotoc_md1',1,'']]]
 ];

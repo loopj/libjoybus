@@ -28,6 +28,8 @@ var NAVTREE =
     [ "Supported Platforms", "index.html#autotoc_md1", null ],
     [ "Communicating with Controllers", "index.html#autotoc_md2", null ],
     [ "Emulating a Controller", "index.html#autotoc_md3", null ],
+    [ "Special Thanks", "index.html#autotoc_md4", null ],
+    [ "License", "index.html#autotoc_md5", null ],
     [ "Topics", "topics.html", "topics" ],
     [ "Data Structures", "annotated.html", [
       [ "Data Structures", "annotated.html", "annotated_dup" ],
