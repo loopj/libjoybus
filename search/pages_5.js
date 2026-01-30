@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['gecko_20backend_20for_20libjoybus_0',['Gecko Backend for libjoybus',['..//home/runner/work/libjoybus/libjoybus/src/backend/gecko_sdk/README.md#autotoc_md6',1,'']]],
-  ['gecko_20backend_20for_20rp2xxx_1',['Gecko Backend for rp2xxx',['..//home/runner/work/libjoybus/libjoybus/src/backend/rp2xxx/README.md#autotoc_md10',1,'']]]
+  ['gecko_20backend_20for_20libjoybus_0',['Gecko Backend for libjoybus',['..//home/runner/work/libjoybus/libjoybus/src/backend/gecko_sdk/README.md#autotoc_md10',1,'']]],
+  ['gecko_20backend_20for_20rp2xxx_1',['Gecko Backend for rp2xxx',['..//home/runner/work/libjoybus/libjoybus/src/backend/rp2xxx/README.md#autotoc_md14',1,'']]]
 ];

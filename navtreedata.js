@@ -25,11 +25,16 @@
 var NAVTREE =
 [
   [ "libjoybus", "index.html", [
-    [ "Supported Platforms", "index.html#autotoc_md1", null ],
-    [ "Communicating with Controllers", "index.html#autotoc_md2", null ],
-    [ "Emulating a Controller", "index.html#autotoc_md3", null ],
-    [ "Special Thanks", "index.html#autotoc_md4", null ],
-    [ "License", "index.html#autotoc_md5", null ],
+    [ "Features", "index.html#autotoc_md1", null ],
+    [ "Supported Platforms", "index.html#autotoc_md2", null ],
+    [ "Examples", "index.html#autotoc_md3", null ],
+    [ "Usage", "index.html#autotoc_md4", [
+      [ "Initializing the Joybus", "index.html#autotoc_md5", null ],
+      [ "Communicating with Controllers", "index.html#autotoc_md6", null ],
+      [ "Emulating a Controller", "index.html#autotoc_md7", null ]
+    ] ],
+    [ "Special Thanks", "index.html#autotoc_md8", null ],
+    [ "License", "index.html#autotoc_md9", null ],
     [ "Topics", "topics.html", "topics" ],
     [ "Data Structures", "annotated.html", [
       [ "Data Structures", "annotated.html", "annotated_dup" ],
