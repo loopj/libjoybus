@@ -9,6 +9,7 @@
 
 #include <stdbool.h>
 
+#include <joybus/commands.h>
 #include <joybus/gamecube.h>
 #include <joybus/target.h>
 
