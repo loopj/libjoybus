@@ -17,15 +17,15 @@
     },
     {
       "name": "Pico SDK/GCN Target",
-      "path": "examples/pico-sdk/gcn-controller-target"
+      "path": "examples/pico-sdk/gcn-target"
     },
     {
-      "name": "Pico SDK/GCC Adapter",
-      "path": "examples/pico-sdk/gcc-adapter"
+      "name": "Pico SDK/GCN Adapter (Nintendo)",
+      "path": "examples/pico-sdk/gcn-adapter-nintendo"
     },
     {
-      "name": "Pico SDK/GCC Adapter Simple",
-      "path": "examples/pico-sdk/gcc-adapter-simple"
+      "name": "Pico SDK/GCN Adapter (USB HID)",
+      "path": "examples/pico-sdk/gcn-adapter-usb-hid"
     },
     {
       "name": "Zephyr/GCN Host",

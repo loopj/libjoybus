@@ -5,10 +5,10 @@ cmake_minimum_required(VERSION 3.20)
 include($ENV{PICO_SDK_PATH}/external/pico_sdk_import.cmake)
 
 # Configure project
-project(gcc-adapter C CXX ASM)
+project(gcn-adapter-nintendo C CXX ASM)
 
 # CMake target
-set(TARGET gcc-adapter)
+set(TARGET gcn-adapter-nintendo)
 
 # Initialize the Pico SDK
 pico_sdk_init()

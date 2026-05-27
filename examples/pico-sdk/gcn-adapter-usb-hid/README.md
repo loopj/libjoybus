@@ -11,10 +11,10 @@ cmake -Bbuild . && cmake --build build
 
 ## Flashing
 
-Enter bootloader mode by holding the BOOTSEL button while plugging in the Pico. Then copy the generated `build/gcc-adapter-simple.uf2` file to the RPI-RP2 drive that appears, or use `picotool`:
+Enter bootloader mode by holding the BOOTSEL button while plugging in the Pico. Then copy the generated `build/gcn-adapter-usb-hid.uf2` file to the RPI-RP2 drive that appears, or use `picotool`:
 
 ```bash
-picotool load -f build/gcc-adapter-simple.uf2
+picotool load -f build/gcn-adapter-usb-hid.uf2
 ```
 
 ## Wiring

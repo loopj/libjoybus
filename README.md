@@ -23,7 +23,7 @@ for 32-bit microcontrollers.
 
 The project is used in [WavePhoenix](https://github.com/loopj/wavephoenix), an open source implementation of a GameCube WaveBird receiver.
 
-You can find a number of additonal examples in the [`examples/`](examples/) directory, including a [full implementation of the GameCube USB adapter for Pi Pico](examples/pico-sdk/gcc-adapter).
+You can find a number of additonal examples in the [`examples/`](examples/) directory, including a [full implementation of the official Nintendo GameCube Controller Adapter for Pi Pico](examples/pico-sdk/gcn-adapter-nintendo).
 
 Please let me know if you build something with `libjoybus`! I love seeing my projects used in the wild, and I'll consider adding it to the examples list!
 
