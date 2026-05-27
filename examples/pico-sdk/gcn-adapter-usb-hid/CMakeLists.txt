@@ -5,10 +5,10 @@ cmake_minimum_required(VERSION 3.20)
 include($ENV{PICO_SDK_PATH}/external/pico_sdk_import.cmake)
 
 # Configure project
-project(gcc-adapter-simple C CXX ASM)
+project(gcn-adapter-usb-hid C CXX ASM)
 
 # CMake target
-set(TARGET gcc-adapter-simple)
+set(TARGET gcn-adapter-usb-hid)
 
 # Initialize the Pico SDK
 pico_sdk_init()

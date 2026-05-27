@@ -1,6 +1,6 @@
 # GameCube Controller Adapter for Raspberry Pi Pico
 
-A full implementation of a 4-port USB GameCube Controller Adapter, compatible with the official Wii U GameCube Controller Adapter protocols.
+A full implementation of a 4-port USB GameCube Controller Adapter, compatible with the official Nintendo GameCube Controller Adapter protocol.
 
 By default it polls the Joybus at 1kHz and tells USB hosts to poll at 1kHz as well, which results in lower input latency compared to the official adapter.
 
@@ -20,10 +20,10 @@ cmake -Bbuild . && cmake --build build
 
 ## Flashing
 
-Enter bootloader mode by holding the BOOTSEL button while plugging in the Pico. Then copy the generated `build/gcc-adapter.uf2` file to the RPI-RP2 drive that appears, or use `picotool`:
+Enter bootloader mode by holding the BOOTSEL button while plugging in the Pico. Then copy the generated `build/gcn-adapter-nintendo.uf2` file to the RPI-RP2 drive that appears, or use `picotool`:
 
 ```bash
-picotool load -f build/gcc-adapter.uf2
+picotool load -f build/gcn-adapter-nintendo.uf2
 ```
 
 ## Wiring
