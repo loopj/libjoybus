@@ -1,3 +1,5 @@
+#include <string.h>
+
 #include <joybus/commands.h>
 #include <joybus/errors.h>
 #include <joybus/target/n64_controller.h>
@@ -71,16 +73,15 @@ static const struct joybus_target_api n64_controller_api = {
   .byte_received = n64_controller_byte_received,
 };
 
-void joybus_n64_controller_init(struct joybus_n64_controller *controller, uint8_t type)
+void joybus_n64_controller_init(struct joybus_n64_controller *controller, uint16_t type)
 {
   // Set the target callbacks
   struct joybus_target *target = JOYBUS_TARGET(controller);
   target->api                  = &n64_controller_api;
 
   // Initialize the controller ID
-  controller->id[0] = type;
-  controller->id[1] = 0x00;
-  controller->id[2] = 0x00;
+  memset(controller->id, 0, sizeof(controller->id));
+  joybus_id_set_type_flags(controller->id, type);
 }
 
 void joybus_n64_controller_set_reset_callback(struct joybus_n64_controller *controller,
