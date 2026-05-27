@@ -5,8 +5,8 @@
 #include <joybus/joybus.h>
 #include <joybus/backend/rp2xxx.h>
 
-#define BUTTON_GPIO   11
-#define SI_DATA_GPIO  12
+#define JOYBUS_GPIO       0
+#define BUTTON_A_GPIO     1
 
 struct joybus_rp2xxx rp2xxx_bus;
 struct joybus *bus = JOYBUS(&rp2xxx_bus);
@@ -15,6 +15,10 @@ static struct joybus_gc_controller gc_controller;
 
 int main()
 {
+  // Configure GPIO as input with pull-up (active low)
+  gpio_init(BUTTON_A_GPIO);
+  gpio_pull_up(BUTTON_A_GPIO);
+
   // Initialize the Joybus
   joybus_rp2xxx_init(&rp2xxx_bus, SI_DATA_GPIO, pio0);
   joybus_enable(bus);
