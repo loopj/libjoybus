@@ -157,7 +157,7 @@ var NAVTREEINDEX0 =
 "group__joybus__target__n64__controller.html":[6,2,1],
 "group__joybus__target__n64__controller.html#ga1c32462fcdf6291c430ffd87aa6b81ee":[6,2,1,2],
 "group__joybus__target__n64__controller.html#ga7b5d26ec0e2d223895e5b11a91405775":[6,2,1,1],
-"group__joybus__target__n64__controller.html#ga93a4a4e12704cd14d471695198214c9a":[6,2,1,3],
+"group__joybus__target__n64__controller.html#ga900e66eb0b9aa64a96de531c6ae8f2aa":[6,2,1,3],
 "group__joybus__target__n64__controller.html#gac9d7f1d7d2857e227948eb4bf291ec71":[6,2,1,4],
 "host_2gamecube_8h_source.html":[8,0,0,0,1,1],
 "host_2n64_8h_source.html":[8,0,0,0,1,2],
