@@ -47,7 +47,7 @@ struct joybus_n64_controller {
  * @param controller the controller to initialize
  * @param type the device type flags
  */
-void joybus_n64_controller_init(struct joybus_n64_controller *controller, uint8_t type);
+void joybus_n64_controller_init(struct joybus_n64_controller *controller, uint16_t type);
 
 /**
  * Set the reset callback for the controller.
