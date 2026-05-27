@@ -32,6 +32,10 @@
       "path": "examples/pico-sdk/n64-adapter-usb-hid"
     },
     {
+      "name": "Pico SDK/N64 Target",
+      "path": "examples/pico-sdk/n64-target"
+    },
+    {
       "name": "Zephyr/GCN Host",
       "path": "examples/zephyr/gcn-host"
     },
