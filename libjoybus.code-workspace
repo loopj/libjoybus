@@ -36,6 +36,10 @@
       "path": "examples/pico-sdk/n64-target"
     },
     {
+      "name": "Pico SDK/Joybus Shell",
+      "path": "examples/pico-sdk/joybus-shell"
+    },
+    {
       "name": "Zephyr/GCN Host",
       "path": "examples/zephyr/gcn-host"
     },
