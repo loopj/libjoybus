@@ -24,10 +24,26 @@ uint8_t joybus_response[JOYBUS_BLOCK_SIZE] = {0};
 volatile bool transfer_done  = false;
 volatile int transfer_result = 0;
 
+// State for background polling of a raw command
+struct repeating_timer poll_timer;
+bool poll_active                         = false;
+uint32_t poll_interval_us                = 1000000 / 60; // default 60 Hz
+uint8_t poll_command[JOYBUS_BLOCK_SIZE]  = {0};
+int poll_command_len                     = 0; // 0 means no command configured
+uint8_t poll_read_len                    = 0;
+uint8_t poll_response[JOYBUS_BLOCK_SIZE] = {0};
+int poll_last_result                     = 0;
+bool poll_has_result                     = false;
+
 // Command forward declarations
 static void cmd_help(int argc, char **argv);
 static void cmd_clear(int argc, char **argv);
 static void cmd_transfer(int argc, char **argv);
+static void cmd_poll_command(int argc, char **argv);
+static void cmd_poll_rate(int argc, char **argv);
+static void cmd_poll_start(int argc, char **argv);
+static void cmd_poll_stop(int argc, char **argv);
+static void cmd_poll_peek(int argc, char **argv);
 static void cmd_identify(int argc, char **argv);
 static void cmd_reset(int argc, char **argv);
 static void cmd_n64_read(int argc, char **argv);
@@ -47,6 +63,11 @@ static const struct {
   {"help", cmd_help, "Show this help message"},
   {"clear", cmd_clear, "Clear the console"},
   {"transfer", cmd_transfer, "Perform a raw Joybus transfer of the given data bytes"},
+  {"poll_command", cmd_poll_command, "Set the raw Joybus command to poll in the background"},
+  {"poll_rate", cmd_poll_rate, "Set the background polling rate in Hz (default 60)"},
+  {"poll_start", cmd_poll_start, "Start polling the configured command in the background"},
+  {"poll_stop", cmd_poll_stop, "Stop background polling"},
+  {"poll_peek", cmd_poll_peek, "Print the result of the most recent poll"},
   {"identify", cmd_identify, "Identify the target device attached to the Joybus"},
   {"reset", cmd_reset, "Reset the target device attached to the Joybus"},
   {"n64_read", cmd_n64_read, "Read the current input state of a N64 controller"},
@@ -136,8 +157,8 @@ static int sync_wait(int start_result)
 // Wrapper to send a joybus command and wait for the response synchronously
 #define sync_command(fn, ...) (transfer_done = false, sync_wait(fn(__VA_ARGS__, transfer_cb, NULL)))
 
-// Print a command response or error message
-static void print_response(int result)
+// Print a response buffer or error message
+static void print_data(const uint8_t *buf, int result)
 {
   if (result < 0) {
     printf("! %s\r\n", joybus_error_str(result));
@@ -146,8 +167,37 @@ static void print_response(int result)
 
   printf("<");
   for (int i = 0; i < result; i++)
-    printf(" %02x", joybus_response[i]);
+    printf(" %02x", buf[i]);
   printf("\r\n");
+}
+
+// Print the shared response buffer or an error message
+static void print_response(int result)
+{
+  print_data(joybus_response, result);
+}
+
+// Background poll completion callback: stash the result for poll_peek
+static void poll_cb(struct joybus *bus, int result, void *user_data)
+{
+  poll_last_result = result;
+  poll_has_result  = true;
+}
+
+// Repeating timer callback: fire the configured command asynchronously
+static bool poll_task(struct repeating_timer *timer)
+{
+  if (poll_active && poll_command_len > 0)
+    joybus_transfer(bus, poll_command, (uint8_t)poll_command_len, poll_response, poll_read_len, poll_cb, NULL);
+
+  return true;
+}
+
+// (Re)arm the repeating timer at the current interval, using a negative delay for a fixed firing rate
+static void poll_rearm(void)
+{
+  cancel_repeating_timer(&poll_timer);
+  add_repeating_timer_us(-(int64_t)poll_interval_us, poll_task, NULL, &poll_timer);
 }
 
 // Tokenize a command line into arguments
@@ -194,7 +244,7 @@ static void cmd_transfer(int argc, char **argv)
 {
   // Require an expected response length plus at least one data byte to send
   if (argc < 3) {
-    printf("usage: transfer <read_len> <command> [arg0] [arg1] ...\r\n", JOYBUS_BLOCK_SIZE);
+    printf("usage: transfer <read_len> <command> [arg0] [arg1] ...\r\n");
     return;
   }
 
@@ -213,6 +263,97 @@ static void cmd_transfer(int argc, char **argv)
 
   // Write the bytes and read back the requested number of bytes in response
   print_response(sync_command(joybus_transfer, bus, data, (uint8_t)len, joybus_response, read_len));
+}
+
+static void cmd_poll_command(int argc, char **argv)
+{
+  // With no arguments, print the currently configured command
+  if (argc < 2) {
+    if (poll_command_len == 0) {
+      printf("no poll command set\r\n");
+      printf("usage: poll_command <read_len> <command> [arg0] [arg1] ...\r\n");
+      return;
+    }
+    printf("read_len=%u, command=0x%02x, args=[", poll_command[0], poll_read_len);
+    for (int i = 1; i < poll_command_len; i++)
+      printf("%s0x%02x", i > 1 ? ", " : "", poll_command[i]);
+    printf("]\r\n");
+    return;
+  }
+
+  // Require an expected response length plus at least the command byte
+  if (argc < 3) {
+    printf("usage: poll_command <read_len> <command> [arg0] [arg1] ...\r\n");
+    return;
+  }
+
+  // Parse the expected response length
+  uint8_t read_len;
+  if (parse_byte(argv[1], &read_len) < 0)
+    return;
+
+  // Parse each remaining argument as a data byte to write
+  uint8_t data[JOYBUS_BLOCK_SIZE];
+  int len = argc - 2;
+  for (int i = 0; i < len; i++) {
+    if (parse_byte(argv[i + 2], &data[i]) < 0)
+      return;
+  }
+
+  // Store the parsed command for the background poller
+  memcpy(poll_command, data, len);
+  poll_command_len = len;
+  poll_read_len    = read_len;
+  poll_has_result  = false;
+}
+
+static void cmd_poll_rate(int argc, char **argv)
+{
+  // With no arguments, print the current polling rate
+  if (argc < 2) {
+    printf("poll rate: %u Hz\r\n", 1000000 / poll_interval_us);
+    return;
+  }
+
+  // Parse the rate and convert to a microsecond interval
+  unsigned int hz;
+  if (parse_uint(argv[1], &hz) < 0 || hz == 0) {
+    printf("invalid rate: %s\r\n", argv[1]);
+    return;
+  }
+  poll_interval_us = 1000000 / hz;
+
+  // Apply the new rate immediately if we're already polling
+  if (poll_active)
+    poll_rearm();
+}
+
+static void cmd_poll_start(int argc, char **argv)
+{
+  // Refuse to start without a configured command
+  if (poll_command_len == 0) {
+    printf("no poll command set; use poll_command first\r\n");
+    return;
+  }
+
+  poll_active = true;
+  poll_rearm();
+}
+
+static void cmd_poll_stop(int argc, char **argv)
+{
+  poll_active = false;
+  cancel_repeating_timer(&poll_timer);
+}
+
+static void cmd_poll_peek(int argc, char **argv)
+{
+  if (!poll_has_result) {
+    printf("no poll result yet\r\n");
+    return;
+  }
+
+  print_data(poll_response, poll_last_result);
 }
 
 static void cmd_reset(int argc, char **argv)
