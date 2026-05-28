@@ -27,6 +27,7 @@ volatile int transfer_result = 0;
 // Command forward declarations
 static void cmd_help(int argc, char **argv);
 static void cmd_clear(int argc, char **argv);
+static void cmd_transfer(int argc, char **argv);
 static void cmd_identify(int argc, char **argv);
 static void cmd_reset(int argc, char **argv);
 static void cmd_n64_read(int argc, char **argv);
@@ -45,6 +46,7 @@ static const struct {
 } commands[] = {
   {"help", cmd_help, "Show this help message"},
   {"clear", cmd_clear, "Clear the console"},
+  {"transfer", cmd_transfer, "Perform a raw Joybus transfer of the given data bytes"},
   {"identify", cmd_identify, "Identify the target device attached to the Joybus"},
   {"reset", cmd_reset, "Reset the target device attached to the Joybus"},
   {"n64_read", cmd_n64_read, "Read the current input state of a N64 controller"},
@@ -186,6 +188,31 @@ static void cmd_help(int argc, char **argv)
 static void cmd_clear(int argc, char **argv)
 {
   printf("\033[2J\033[H");
+}
+
+static void cmd_transfer(int argc, char **argv)
+{
+  // Require an expected response length plus at least one data byte to send
+  if (argc < 3) {
+    printf("usage: transfer <read_len> <command> [arg0] [arg1] ...\r\n", JOYBUS_BLOCK_SIZE);
+    return;
+  }
+
+  // Parse the expected response length
+  uint8_t read_len;
+  if (parse_byte(argv[1], &read_len) < 0)
+    return;
+
+  // Parse each remaining argument as a data byte to write
+  uint8_t data[JOYBUS_BLOCK_SIZE];
+  int len = argc - 2;
+  for (int i = 0; i < len; i++) {
+    if (parse_byte(argv[i + 2], &data[i]) < 0)
+      return;
+  }
+
+  // Write the bytes and read back the requested number of bytes in response
+  print_response(sync_command(joybus_transfer, bus, data, (uint8_t)len, joybus_response, read_len));
 }
 
 static void cmd_reset(int argc, char **argv)
