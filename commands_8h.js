@@ -1,5 +1,6 @@
 var commands_8h =
 [
+    [ "JOYBUS_ACCESSORY_DATA_SIZE", "commands_8h.html#a8c0ca9fee7249e4d6e08d5bf4196ff24", null ],
     [ "JOYBUS_CMD_IDENTIFY", "commands_8h.html#a58c45a432c2bb7a972532a90c39fbcca", null ],
     [ "JOYBUS_CMD_N64_ACCESSORY_READ", "commands_8h.html#afc3d9f1eb40cf2ffa252a78f88254d9e", null ],
     [ "JOYBUS_CMD_N64_ACCESSORY_WRITE", "commands_8h.html#a5002b53ee1e64004a248c5fc38246934", null ],
