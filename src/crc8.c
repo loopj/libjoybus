@@ -18,13 +18,18 @@ const uint8_t CRC8_LUT[] = {
   0x3E, 0x1C, 0x99, 0x93, 0x16, 0x87, 0x02, 0x08, 0x8D,
 };
 
-uint8_t si_crc8(uint8_t *data, size_t size)
+uint8_t joybus_crc8_update(uint8_t crc, uint8_t byte)
 {
-  uint8_t val  = 0;
-  uint8_t *end = data + size;
+  return CRC8_LUT[crc ^ byte];
+}
+
+uint8_t joybus_crc8(const uint8_t *data, size_t size)
+{
+  uint8_t val        = 0;
+  const uint8_t *end = data + size;
 
   while (data < end) {
-    val = CRC8_LUT[val ^ *data];
+    val = joybus_crc8_update(val, *data);
     data++;
   }
 

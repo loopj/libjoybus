@@ -112,7 +112,7 @@ int joybus_n64_accessory_read(struct joybus *bus, uint16_t addr, uint8_t *respon
 // Check (and respond) to failures during accessory detection write operations
 static int validate_detection_write(struct detection_state *state)
 {
-  uint8_t expected_crc = si_crc8(state->write_buf, 32);
+  uint8_t expected_crc = joybus_crc8(state->write_buf, 32);
   if (state->response[0] == (expected_crc ^ 0xFF)) {
     state->user_callback(JOYBUS_N64_ACCESSORY_NONE, state->user_data);
     return -1;
@@ -130,7 +130,7 @@ static int validate_detection_write(struct detection_state *state)
 // Check (and respond) to failures during accessory detection read operations
 static int validate_detection_read(struct detection_state *state)
 {
-  uint8_t expected_crc = si_crc8(state->response, 32);
+  uint8_t expected_crc = joybus_crc8(state->response, 32);
   if (state->response[32] == (expected_crc ^ 0xFF)) {
     state->user_callback(JOYBUS_N64_ACCESSORY_NONE, state->user_data);
     return -1;
