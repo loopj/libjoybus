@@ -1,0 +1,333 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#include "pico/stdlib.h"
+
+#include <joybus/joybus.h>
+#include <joybus/backend/rp2xxx.h>
+
+// GPIO pin for Joybus data line
+#define JOYBUS_GPIO 0
+
+#define MAX_LINE    256
+#define MAX_ARGS    JOYBUS_BLOCK_SIZE
+
+// Joybus instance
+struct joybus_rp2xxx rp2xxx_bus;
+struct joybus *bus = JOYBUS(&rp2xxx_bus);
+
+// Buffer for Joybus responses
+uint8_t joybus_response[JOYBUS_BLOCK_SIZE] = {0};
+
+// State for synchronous transfers
+volatile bool transfer_done  = false;
+volatile int transfer_result = 0;
+
+// Command forward declarations
+static void cmd_help(int argc, char **argv);
+static void cmd_clear(int argc, char **argv);
+static void cmd_identify(int argc, char **argv);
+static void cmd_reset(int argc, char **argv);
+static void cmd_n64_read(int argc, char **argv);
+static void cmd_n64_accessory_read(int argc, char **argv);
+static void cmd_n64_accessory_write(int argc, char **argv);
+static void cmd_gcn_read(int argc, char **argv);
+static void cmd_gcn_read_origin(int argc, char **argv);
+static void cmd_gcn_calibrate(int argc, char **argv);
+static void cmd_gcn_read_long(int argc, char **argv);
+
+// Command dispatch table
+static const struct {
+  const char *name;
+  void (*fn)(int, char **);
+  const char *help;
+} commands[] = {
+  {"help", cmd_help, "Show this help message"},
+  {"clear", cmd_clear, "Clear the console"},
+  {"identify", cmd_identify, "Identify the target device attached to the Joybus"},
+  {"reset", cmd_reset, "Reset the target device attached to the Joybus"},
+  {"n64_read", cmd_n64_read, "Read the current input state of a N64 controller"},
+  {"n64_accessory_read", cmd_n64_accessory_read, "Read data from a N64 controller pak"},
+  {"n64_accessory_write", cmd_n64_accessory_write, "Write data to a N64 controller pak"},
+  {"gcn_read", cmd_gcn_read, "Read the current input state of a GameCube controller"},
+  {"gcn_read_origin", cmd_gcn_read_origin, "Read the origin state of a GameCube controller"},
+  {"gcn_calibrate", cmd_gcn_calibrate,
+   "Calibrate a GameCube controller, setting its current input state as the origin"},
+  {"gcn_read_long", cmd_gcn_read_long, "Read the current input state of a GameCube controller, with full precision"},
+};
+#define NUM_CMDS (sizeof(commands) / sizeof(commands[0]))
+
+// Human-readable message for a Joybus error code
+static const char *joybus_error_str(int result)
+{
+  switch (-result) {
+    case JOYBUS_ERR_DISABLED:
+      return "bus not enabled";
+    case JOYBUS_ERR_BUSY:
+      return "bus is busy";
+    case JOYBUS_ERR_TIMEOUT:
+      return "command timeout";
+    default:
+      return "unknown error";
+  }
+}
+
+// Parse a hex or decimal number from a string
+static int parse_uint(const char *s, unsigned int *out)
+{
+  // strtoul silently accepts a leading '-' and wraps it, so reject signs ourselves
+  if (*s == '-' || *s == '+')
+    return -1;
+
+  char *end;
+  unsigned long v = strtoul(s, &end, 0);
+  if (end == s || *end != '\0')
+    return -1;
+  *out = (unsigned int)v;
+  return 0;
+}
+
+// Parse a 16-bit Joybus accessory address from a string, printing an error on failure
+static int parse_addr(const char *s, uint16_t *out)
+{
+  unsigned int addr;
+  if (parse_uint(s, &addr) < 0 || addr > 0xFFFF) {
+    printf("invalid address: %s\r\n", s);
+    return -1;
+  }
+  *out = (uint16_t)addr;
+  return 0;
+}
+
+// Parse a single data byte from a string, printing an error on failure
+static int parse_byte(const char *s, uint8_t *out)
+{
+  unsigned int byte;
+  if (parse_uint(s, &byte) < 0 || byte > 0xFF) {
+    printf("invalid data byte: %s\r\n", s);
+    return -1;
+  }
+  *out = (uint8_t)byte;
+  return 0;
+}
+
+// Generic transfer callback
+static void transfer_cb(struct joybus *bus, int result, void *user_data)
+{
+  transfer_result = result;
+  transfer_done   = true;
+}
+
+// Block until the in-flight transfer completes and return its result
+static int sync_wait(int start_result)
+{
+  if (start_result < 0)
+    return start_result;
+
+  while (!transfer_done)
+    tight_loop_contents();
+
+  return transfer_result;
+}
+
+// Wrapper to send a joybus command and wait for the response synchronously
+#define sync_command(fn, ...) (transfer_done = false, sync_wait(fn(__VA_ARGS__, transfer_cb, NULL)))
+
+// Print a command response or error message
+static void print_response(int result)
+{
+  if (result < 0) {
+    printf("! %s\r\n", joybus_error_str(result));
+    return;
+  }
+
+  printf("<");
+  for (int i = 0; i < result; i++)
+    printf(" %02x", joybus_response[i]);
+  printf("\r\n");
+}
+
+// Tokenize a command line into arguments
+static int tokenize(char *line, char **argv, int max)
+{
+  int argc  = 0;
+  char *tok = strtok(line, " \t");
+  while (tok && argc < max) {
+    argv[argc++] = tok;
+    tok          = strtok(NULL, " \t");
+  }
+  return argc;
+}
+
+// Dispatch a command line to the appropriate handler
+static void dispatch(char *line)
+{
+  char *argv[MAX_ARGS];
+  int argc = tokenize(line, argv, MAX_ARGS);
+  if (argc == 0)
+    return;
+
+  for (size_t i = 0; i < NUM_CMDS; i++) {
+    if (strcmp(argv[0], commands[i].name) == 0) {
+      commands[i].fn(argc, argv);
+      return;
+    }
+  }
+  printf("unknown command: %s\r\n", argv[0]);
+}
+
+static void cmd_help(int argc, char **argv)
+{
+  for (size_t i = 0; i < NUM_CMDS; i++)
+    printf("%-20s %s\r\n", commands[i].name, commands[i].help);
+}
+
+static void cmd_clear(int argc, char **argv)
+{
+  printf("\033[2J\033[H");
+}
+
+static void cmd_reset(int argc, char **argv)
+{
+  print_response(sync_command(joybus_reset, bus, joybus_response));
+}
+
+static void cmd_identify(int argc, char **argv)
+{
+  print_response(sync_command(joybus_identify, bus, joybus_response));
+}
+
+static void cmd_n64_read(int argc, char **argv)
+{
+  print_response(sync_command(joybus_n64_read, bus, joybus_response));
+}
+
+static void cmd_n64_accessory_read(int argc, char **argv)
+{
+  // Require an address argument
+  if (argc < 2) {
+    printf("usage: n64_accessory_read <addr>\r\n");
+    return;
+  }
+
+  // Parse the address argument
+  uint16_t addr;
+  if (parse_addr(argv[1], &addr) < 0)
+    return;
+
+  // Send the command and print the response
+  print_response(sync_command(joybus_n64_accessory_read, bus, addr, joybus_response));
+}
+
+static void cmd_n64_accessory_write(int argc, char **argv)
+{
+  // Require an address plus a full block of data bytes
+  if (argc < 2 + JOYBUS_ACCESSORY_DATA_SIZE) {
+    printf("usage: n64_accessory_write <addr> <data0> <data1> ... <data31>\r\n");
+    return;
+  }
+
+  // Parse the address argument
+  uint16_t addr;
+  if (parse_addr(argv[1], &addr) < 0)
+    return;
+
+  // Parse the block of data bytes as hex or decimal
+  uint8_t data[JOYBUS_ACCESSORY_DATA_SIZE];
+  for (int i = 0; i < JOYBUS_ACCESSORY_DATA_SIZE; i++) {
+    if (parse_byte(argv[i + 2], &data[i]) < 0)
+      return;
+  }
+
+  print_response(sync_command(joybus_n64_accessory_write, bus, addr, data, joybus_response));
+}
+
+static void cmd_gcn_read(int argc, char **argv)
+{
+  // Require an analog mode and motor state argument
+  if (argc < 3) {
+    printf("usage: gcn_read <analog_mode> <motor_state>\r\n");
+    return;
+  }
+
+  // Parse the analog mode and motor state arguments
+  uint8_t analog_mode, motor_state;
+  if (parse_byte(argv[1], &analog_mode) < 0 || parse_byte(argv[2], &motor_state) < 0)
+    return;
+
+  print_response(sync_command(joybus_gcn_read, bus, analog_mode, motor_state, joybus_response));
+}
+
+static void cmd_gcn_read_origin(int argc, char **argv)
+{
+  print_response(sync_command(joybus_gcn_read_origin, bus, joybus_response));
+}
+
+static void cmd_gcn_calibrate(int argc, char **argv)
+{
+  print_response(sync_command(joybus_gcn_calibrate, bus, joybus_response));
+}
+
+static void cmd_gcn_read_long(int argc, char **argv)
+{
+  // Require a motor state argument
+  if (argc < 2) {
+    printf("usage: gcn_read_long <motor_state>\r\n");
+    return;
+  }
+
+  // Parse the motor state argument
+  uint8_t motor_state;
+  if (parse_byte(argv[1], &motor_state) < 0)
+    return;
+
+  print_response(sync_command(joybus_gcn_read_long, bus, motor_state, joybus_response));
+}
+
+int main()
+{
+  // Initialize stdio
+  stdio_init_all();
+
+  // Wait for USB serial connection so we don't start printing before the user can see it
+  while (!stdio_usb_connected()) {
+    sleep_ms(100);
+  }
+
+  // Initialize Joybus
+  joybus_rp2xxx_init(&rp2xxx_bus, JOYBUS_GPIO, pio0);
+  joybus_enable(bus);
+
+  // Print welcome message and help prompt
+  printf("\033[2J\033[H");
+  printf("Joybus Interactive Shell\r\n");
+  printf("Type 'help' for a list of commands.\r\n");
+
+  char line[MAX_LINE];
+  int len = 0;
+  printf("> ");
+
+  while (true) {
+    int c = getchar();
+    if (c == PICO_ERROR_TIMEOUT)
+      continue;
+
+    if (c == '\r' || c == '\n') {
+      putchar('\r');
+      putchar('\n');
+      line[len] = 0;
+      dispatch(line);
+      len = 0;
+      printf("> ");
+    } else if (c == '\b' || c == 127) { // backspace
+      if (len > 0) {
+        len--;
+        printf("\b \b");
+      }
+    } else if (len < MAX_LINE - 1 && c >= 32) {
+      line[len++] = c;
+      putchar(c); // echo
+    }
+  }
+}
