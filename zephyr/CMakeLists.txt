@@ -6,7 +6,7 @@ set(LIBJOYBUS_DIR ${CMAKE_CURRENT_LIST_DIR}/..)
 
 # Add the common source files
 zephyr_library_sources(
-  ${LIBJOYBUS_DIR}/src/crc8.c
+  ${LIBJOYBUS_DIR}/src/checksum.c
   ${LIBJOYBUS_DIR}/src/host/common.c
   ${LIBJOYBUS_DIR}/src/host/gamecube.c
   ${LIBJOYBUS_DIR}/src/host/n64.c

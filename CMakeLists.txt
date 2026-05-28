@@ -12,7 +12,7 @@ add_library(joybus INTERFACE)
 target_sources(
   joybus
   INTERFACE
-    src/crc8.c
+    src/checksum.c
     src/host/common.c
     src/host/gamecube.c
     src/host/n64.c
