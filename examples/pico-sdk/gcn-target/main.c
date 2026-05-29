@@ -20,7 +20,7 @@ int main()
   gpio_pull_up(BUTTON_A_GPIO);
 
   // Initialize the Joybus
-  joybus_rp2xxx_init(&rp2xxx_bus, SI_DATA_GPIO, pio0);
+  joybus_rp2xxx_init(&rp2xxx_bus, JOYBUS_GPIO, pio0);
   joybus_enable(bus);
 
   // Initialize a GameCube controller target as a standard controller
@@ -33,8 +33,8 @@ int main()
     // Clear previous button state
     gc_controller.input.buttons &= ~JOYBUS_GCN_BUTTON_MASK;
 
-    // Simulate pressing the A button when the BUTTON_GPIO (active low) is pressed
-    if (gpio_get(BUTTON_GPIO) == 0)
+    // Simulate pressing the A button when the BUTTON_A_GPIO (active low) is pressed
+    if (gpio_get(BUTTON_A_GPIO) == 0)
       gc_controller.input.buttons |= JOYBUS_GCN_BUTTON_A;
 
     // Chill for a bit
