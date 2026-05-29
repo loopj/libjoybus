@@ -55,13 +55,11 @@ static int joybus_loopback_transfer(struct joybus *bus, const uint8_t *write_buf
 
 static int joybus_loopback_target_register(struct joybus *bus, struct joybus_target *target)
 {
-  bus->target = target;
   return 0;
 }
 
 static int joybus_loopback_target_unregister(struct joybus *bus, struct joybus_target *target)
 {
-  bus->target = NULL;
   return 0;
 }
 
