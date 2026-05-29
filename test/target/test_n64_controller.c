@@ -23,6 +23,13 @@ static void spy(struct joybus *bus, int result, void *user_data)
   response_len = result;
 }
 
+// Track reset callback invocations
+static int reset_callback_count;
+static void on_reset(struct joybus_n64_controller *controller)
+{
+  reset_callback_count++;
+}
+
 void setUp(void)
 {
   // Initialize the loopback bus
@@ -36,10 +43,34 @@ void setUp(void)
   // Reset response capture
   response_len = -1;
   memset(response, 0, sizeof(response));
+
+  // Reset reset-callback tracking
+  reset_callback_count = 0;
 }
 
 void tearDown(void)
 {
+}
+
+// Test that reset returns the controller ID and invokes the reset callback
+static void test_n64_controller_reset()
+{
+  // Register the reset callback before "power on"
+  joybus_n64_controller_set_reset_callback(&controller, on_reset);
+
+  // Power on (no accessory)
+  joybus_target_register(&bus, JOYBUS_TARGET(&controller));
+
+  // Send a reset command
+  joybus_reset(&bus, response, spy, NULL);
+
+  // Expect the response to be the controller ID
+  uint8_t expected[] = {0x05, 0x00, 0x02};
+  TEST_ASSERT_EQUAL(3, response_len);
+  TEST_ASSERT_EQUAL_HEX8_ARRAY(expected, response, 3);
+
+  // Expect the reset callback to have fired exactly once
+  TEST_ASSERT_EQUAL(1, reset_callback_count);
 }
 
 // Test that the "identify" response is correct for a standard N64 controller with no accessory
@@ -235,8 +266,7 @@ static void test_n64_controller_accessory_write_no_accessory()
   TEST_ASSERT_EQUAL_HEX8(expected, response[0]);
 }
 
-// Test that accessory_read on a hotplugged accessory (still in CHANGED state, no identify yet)
-// behaves as if no accessory is present
+// Test that accessory_read on a non-acked hotplugged accessory behaves as if no accessory is present
 static void test_n64_controller_accessory_read_while_changed()
 {
   // Power on (no accessory), then hotplug — status is now CHANGED, identify not yet called
@@ -253,8 +283,7 @@ static void test_n64_controller_accessory_read_while_changed()
   TEST_ASSERT_EQUAL_HEX8_ARRAY(expected, response, JOYBUS_CMD_N64_ACCESSORY_READ_RX);
 }
 
-// Test that accessory_write on a hotplugged accessory (still in CHANGED state, no identify yet)
-// behaves as if no accessory is present
+// Test that accessory_write on a non-acked hotplugged accessory behaves as if no accessory is present
 static void test_n64_controller_accessory_write_while_changed()
 {
   // Power on (no accessory), then hotplug — status is now CHANGED, identify not yet called
@@ -276,6 +305,7 @@ int main(int argc, char **argv)
 {
   UNITY_BEGIN();
 
+  RUN_TEST(test_n64_controller_reset);
   RUN_TEST(test_n64_controller_identify);
   RUN_TEST(test_n64_controller_accessory_hotplug);
   RUN_TEST(test_n64_controller_accessory_unplug);
