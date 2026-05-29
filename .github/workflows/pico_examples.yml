@@ -7,13 +7,33 @@ on:
     branches: [main]
   workflow_dispatch:
 
+env:
+  PICO_SDK_VERSION: 2.2.0
+  PICO_SDK_PATH: ${{ github.workspace }}/pico-sdk
+
 jobs:
-  build-pico-examples:
+  # Cache the Pico SDK once so matrix jobs only restore, never racing to save.
+  setup:
     runs-on: ubuntu-latest
 
-    env:
-      PICO_SDK_VERSION: 2.2.0
-      PICO_SDK_PATH: ${{ github.workspace }}/pico-sdk
+    steps:
+      - name: Cache Pico SDK
+        id: cache-pico-sdk
+        uses: actions/cache@v4
+        with:
+          path: pico-sdk
+          key: pico-sdk-${{ env.PICO_SDK_VERSION }}
+
+      - name: Install Pico SDK
+        if: steps.cache-pico-sdk.outputs.cache-hit != 'true'
+        run: |
+          git clone --depth 1 --branch ${{ env.PICO_SDK_VERSION }} \
+            --recurse-submodules --shallow-submodules \
+            https://github.com/raspberrypi/pico-sdk.git pico-sdk
+
+  build-pico-examples:
+    needs: setup
+    runs-on: ubuntu-latest
 
     strategy:
       matrix:
@@ -34,22 +54,15 @@ jobs:
       - name: Install system dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y cmake python3 build-essential gcc-arm-none-eabi libnewlib-arm-none-eabi libstdc++-arm-none-eabi-newlib
+          sudo apt-get install -y cmake ninja-build python3 build-essential gcc-arm-none-eabi libnewlib-arm-none-eabi libstdc++-arm-none-eabi-newlib
 
-      # Setup Pico SDK
-      - name: Cache Pico SDK
-        id: cache-pico-sdk
-        uses: actions/cache@v4
+      # Restore the Pico SDK populated by the setup job
+      - name: Restore Pico SDK
+        uses: actions/cache/restore@v4
         with:
           path: pico-sdk
           key: pico-sdk-${{ env.PICO_SDK_VERSION }}
-
-      - name: Install Pico SDK
-        if: steps.cache-pico-sdk.outputs.cache-hit != 'true'
-        run: |
-          git clone --depth 1 --branch ${{ env.PICO_SDK_VERSION }} \
-            --recurse-submodules --shallow-submodules \
-            https://github.com/raspberrypi/pico-sdk.git pico-sdk
+          fail-on-cache-miss: true
 
       # Build each example
       - name: Build project

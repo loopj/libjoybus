@@ -7,13 +7,64 @@ on:
     branches: [main]
   workflow_dispatch:
 
+env:
+  ARM_GNU_TOOLCHAIN_VERSION: 13.3.rel1
+  SIMPLICITY_SDK_VERSION: v2025.6.2
+
 jobs:
-  build-gecko-examples:
+  # Cache the toolchain and SDKs once so matrix jobs only restore, never racing to save.
+  setup:
     runs-on: ubuntu-latest
 
-    env:
-      ARM_GNU_TOOLCHAIN_VERSION: 13.3.rel1
-      SIMPLICITY_SDK_VERSION: v2025.6.2
+    steps:
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y unzip wget
+
+      - name: Cache ARM GNU Toolchain
+        id: cache-arm-toolchain
+        uses: actions/cache@v4
+        with:
+          path: arm-gnu-toolchain-${{ env.ARM_GNU_TOOLCHAIN_VERSION }}-x86_64-arm-none-eabi
+          key: arm-toolchain-${{ env.ARM_GNU_TOOLCHAIN_VERSION }}
+
+      - name: Install ARM GNU Toolchain
+        if: steps.cache-arm-toolchain.outputs.cache-hit != 'true'
+        run: |
+          wget -q https://developer.arm.com/-/media/Files/downloads/gnu/${{ env.ARM_GNU_TOOLCHAIN_VERSION }}/binrel/arm-gnu-toolchain-${{ env.ARM_GNU_TOOLCHAIN_VERSION }}-x86_64-arm-none-eabi.tar.xz
+          tar xf arm-gnu-toolchain-${{ env.ARM_GNU_TOOLCHAIN_VERSION }}-x86_64-arm-none-eabi.tar.xz
+
+      - name: Cache Simplicity SDK
+        id: cache-simplicity-sdk
+        uses: actions/cache@v4
+        with:
+          path: simplicity_sdk
+          key: simplicity-sdk-${{ env.SIMPLICITY_SDK_VERSION }}
+
+      - name: Install Simplicity SDK
+        if: steps.cache-simplicity-sdk.outputs.cache-hit != 'true'
+        run: |
+          wget -q https://github.com/SiliconLabs/simplicity_sdk/releases/download/${{ env.SIMPLICITY_SDK_VERSION }}/simplicity-sdk.zip
+          unzip -q simplicity-sdk.zip -d simplicity_sdk
+
+      - name: Cache SLC-CLI
+        id: cache-slc-cli
+        uses: actions/cache@v4
+        with:
+          path: slc_cli
+          key: slc-cli-${{ runner.os }}
+
+      - name: Install SLC-CLI
+        if: steps.cache-slc-cli.outputs.cache-hit != 'true'
+        run: |
+          wget -q https://www.silabs.com/documents/login/software/slc_cli_linux.zip
+          unzip -q slc_cli_linux.zip
+          chmod +x slc_cli/slc
+
+  build-gecko-examples:
+    needs: setup
+    runs-on: ubuntu-latest
 
     strategy:
       matrix:
@@ -28,7 +79,7 @@ jobs:
       - name: Install system dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y cmake ninja-build unzip wget
+          sudo apt-get install -y cmake ninja-build
 
       - name: Set up Java
         uses: actions/setup-java@v4
@@ -36,52 +87,31 @@ jobs:
           distribution: "corretto"
           java-version: "21"
 
-      # Setup ARM GNU Toolchain
-      - name: Cache ARM GNU Toolchain
-        id: cache-arm-toolchain
-        uses: actions/cache@v4
+      # Restore the toolchain and SDKs populated by the setup job
+      - name: Restore ARM GNU Toolchain
+        uses: actions/cache/restore@v4
         with:
           path: arm-gnu-toolchain-${{ env.ARM_GNU_TOOLCHAIN_VERSION }}-x86_64-arm-none-eabi
           key: arm-toolchain-${{ env.ARM_GNU_TOOLCHAIN_VERSION }}
-
-      - name: Install ARM GNU Toolchain
-        if: steps.cache-arm-toolchain.outputs.cache-hit != 'true'
-        run: |
-          wget -q https://developer.arm.com/-/media/Files/downloads/gnu/${{ env.ARM_GNU_TOOLCHAIN_VERSION }}/binrel/arm-gnu-toolchain-${{ env.ARM_GNU_TOOLCHAIN_VERSION }}-x86_64-arm-none-eabi.tar.xz
-          tar xf arm-gnu-toolchain-${{ env.ARM_GNU_TOOLCHAIN_VERSION }}-x86_64-arm-none-eabi.tar.xz
+          fail-on-cache-miss: true
 
       - name: Add ARM toolchain to PATH
         run: |
           echo "$PWD/arm-gnu-toolchain-${{ env.ARM_GNU_TOOLCHAIN_VERSION }}-x86_64-arm-none-eabi/bin" >> $GITHUB_PATH
 
-      # Setup Simplicity SDK
-      - name: Cache Simplicity SDK
-        id: cache-simplicity-sdk
-        uses: actions/cache@v4
+      - name: Restore Simplicity SDK
+        uses: actions/cache/restore@v4
         with:
           path: simplicity_sdk
           key: simplicity-sdk-${{ env.SIMPLICITY_SDK_VERSION }}
+          fail-on-cache-miss: true
 
-      - name: Install Simplicity SDK
-        if: steps.cache-simplicity-sdk.outputs.cache-hit != 'true'
-        run: |
-          wget -q https://github.com/SiliconLabs/simplicity_sdk/releases/download/${{ env.SIMPLICITY_SDK_VERSION }}/simplicity-sdk.zip
-          unzip -q simplicity-sdk.zip -d simplicity_sdk
-
-      # Setup SLC-CLI
-      - name: Cache SLC-CLI
-        id: cache-slc-cli
-        uses: actions/cache@v4
+      - name: Restore SLC-CLI
+        uses: actions/cache/restore@v4
         with:
           path: slc_cli
           key: slc-cli-${{ runner.os }}
-
-      - name: Install SLC-CLI
-        if: steps.cache-slc-cli.outputs.cache-hit != 'true'
-        run: |
-          wget -q https://www.silabs.com/documents/login/software/slc_cli_linux.zip
-          unzip -q slc_cli_linux.zip
-          chmod +x slc_cli/slc
+          fail-on-cache-miss: true
 
       - name: Add SLC-CLI to PATH
         run: |
