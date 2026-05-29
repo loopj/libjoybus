@@ -88,6 +88,7 @@
 #define JOYBUS_ID_N64_ACCESSORY_PRESENT   0x01    ///< Accessory present
 #define JOYBUS_ID_N64_ACCESSORY_ABSENT    0x02    ///< Accessory absent
 #define JOYBUS_ID_N64_ACCESSORY_CHANGED   0x03    ///< Accessory changed
+#define JOYBUS_ID_N64_CHECKSUM_ERROR      0x04    ///< Transfer checksum error
 
 // N64 identify status values (VRU)
 #define JOYBUS_ID_N64_VRU_UNINITIALIZED   0x00    ///< VRU is uninitialized

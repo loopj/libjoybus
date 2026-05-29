@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
 
@@ -38,3 +39,11 @@ uint8_t joybus_crc8(const uint8_t *data, size_t size);
  * @return     5-bit checksum in the low bits of the returned byte
  */
 uint8_t joybus_address_checksum(uint16_t addr);
+
+/**
+ * Validate the 5-bit address checksum for an N64 data transfer command.
+ *
+ * @param addr 16-bit address with checksum in the low 5 bits
+ * @return     true if the checksum is valid, false if not
+ */
+bool joybus_address_checksum_valid(uint16_t addr);

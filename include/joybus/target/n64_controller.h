@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include <joybus/bus.h>
 #include <joybus/n64.h>
 #include <joybus/target.h>
 
@@ -23,6 +24,13 @@ struct joybus_n64_controller;
 typedef void (*joybus_n64_controller_reset_cb_t)(struct joybus_n64_controller *controller);
 
 /**
+ * N64 controller accessory, such as a rumble pak or memory pak.
+ */
+struct joybus_n64_accessory {
+  // TODO
+};
+
+/**
  * N64 controller Joybus target.
  */
 struct joybus_n64_controller {
@@ -36,6 +44,15 @@ struct joybus_n64_controller {
 
   /** Callback for controller reset events */
   joybus_n64_controller_reset_cb_t on_reset;
+
+  /** Currently attached accessory */
+  struct joybus_n64_accessory *accessory;
+
+  /** CRC for data transfer commands */
+  uint8_t crc;
+
+  /** Response buffer */
+  uint8_t response[JOYBUS_BLOCK_SIZE];
 };
 
 /**
@@ -45,9 +62,8 @@ struct joybus_n64_controller {
  * handlers for OEM N64 controller commands.
  *
  * @param controller the controller to initialize
- * @param type the device type flags
  */
-void joybus_n64_controller_init(struct joybus_n64_controller *controller, uint16_t type);
+void joybus_n64_controller_init(struct joybus_n64_controller *controller);
 
 /**
  * Set the reset callback for the controller.
@@ -61,4 +77,19 @@ void joybus_n64_controller_init(struct joybus_n64_controller *controller, uint16
 void joybus_n64_controller_set_reset_callback(struct joybus_n64_controller *controller,
                                               joybus_n64_controller_reset_cb_t callback);
 
+/**
+ * Attach an accessory to the controller.
+ *
+ * @param controller the controller to attach the accessory to
+ * @param accessory the accessory to attach
+ */
+void joybus_n64_controller_attach_accessory(struct joybus_n64_controller *controller,
+                                            struct joybus_n64_accessory *accessory);
+
+/**
+ * Detach the currently attached accessory from the controller.
+ *
+ * @param controller the controller to detach the accessory from
+ */
+void joybus_n64_controller_detach_accessory(struct joybus_n64_controller *controller);
 /** @} */
