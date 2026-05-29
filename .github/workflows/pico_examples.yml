@@ -1,0 +1,59 @@
+name: Build Pico Examples
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build-pico-examples:
+    runs-on: ubuntu-latest
+
+    env:
+      PICO_SDK_VERSION: 2.2.0
+      PICO_SDK_PATH: ${{ github.workspace }}/pico-sdk
+
+    strategy:
+      matrix:
+        example:
+          - gcn-adapter-nintendo
+          - gcn-adapter-usb-hid
+          - gcn-host
+          - gcn-target
+          - joybus-shell
+          - n64-adapter-usb-hid
+          - n64-target
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      # Setup dependencies
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake python3 build-essential gcc-arm-none-eabi libnewlib-arm-none-eabi libstdc++-arm-none-eabi-newlib
+
+      # Setup Pico SDK
+      - name: Cache Pico SDK
+        id: cache-pico-sdk
+        uses: actions/cache@v4
+        with:
+          path: pico-sdk
+          key: pico-sdk-${{ env.PICO_SDK_VERSION }}
+
+      - name: Install Pico SDK
+        if: steps.cache-pico-sdk.outputs.cache-hit != 'true'
+        run: |
+          git clone --depth 1 --branch ${{ env.PICO_SDK_VERSION }} \
+            --recurse-submodules --shallow-submodules \
+            https://github.com/raspberrypi/pico-sdk.git pico-sdk
+
+      # Build each example
+      - name: Build project
+        working-directory: examples/pico-sdk/${{ matrix.example }}
+        run: |
+          cmake -Bbuild -GNinja .
+          cmake --build build
