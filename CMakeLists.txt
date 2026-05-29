@@ -18,6 +18,7 @@ target_sources(
     src/host/n64.c
     src/target/gc_controller.c
     src/target/n64_controller.c
+    src/target/n64_rumble_pak.c
 )
 
 # Specify the include paths

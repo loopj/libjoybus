@@ -10,6 +10,7 @@
 #include <joybus/bus.h>
 #include <joybus/n64.h>
 #include <joybus/target.h>
+#include <joybus/target/n64_accessory.h>
 
 struct joybus_n64_controller;
 
@@ -22,13 +23,6 @@ struct joybus_n64_controller;
  * @param controller the controller that was reset
  */
 typedef void (*joybus_n64_controller_reset_cb_t)(struct joybus_n64_controller *controller);
-
-/**
- * N64 controller accessory, such as a rumble pak or memory pak.
- */
-struct joybus_n64_accessory {
-  // TODO
-};
 
 /**
  * N64 controller Joybus target.

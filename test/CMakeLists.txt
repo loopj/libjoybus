@@ -26,3 +26,4 @@ add_libjoybus_test(test_wavebird target/test_wavebird.c)
 
 # N64 controller target tests
 add_libjoybus_test(test_n64_controller target/test_n64_controller.c)
+add_libjoybus_test(test_n64_rumble_pak target/test_n64_rumble_pak.c)

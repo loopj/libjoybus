@@ -10,6 +10,24 @@
 
 #include "unity.h"
 
+// Dummy accessory backend
+static void dummy_read_block(struct joybus_n64_accessory *acc, uint16_t addr, uint8_t buf[JOYBUS_ACCESSORY_BLOCK_SIZE])
+{
+  // Return 32 zero bytes for all reads
+  memset(buf, 0, JOYBUS_ACCESSORY_BLOCK_SIZE);
+}
+
+static void dummy_write_block(struct joybus_n64_accessory *acc, uint16_t addr,
+                              const uint8_t buf[JOYBUS_ACCESSORY_BLOCK_SIZE])
+{
+  // No-op
+}
+
+static const struct joybus_n64_accessory_api dummy_accessory_api = {
+  .read_block  = dummy_read_block,
+  .write_block = dummy_write_block,
+};
+
 // A loopback Joybus and an N64 controller target
 struct joybus bus;
 struct joybus_n64_controller controller;
@@ -39,6 +57,9 @@ void setUp(void)
   // Initialize a standard N64 controller target — tests call joybus_target_register
   // to simulate "power on" at the moment of their choosing
   joybus_n64_controller_init(&controller);
+
+  // Wire up the dummy accessory backend
+  accessory.api = &dummy_accessory_api;
 
   // Reset response capture
   response_len = -1;
@@ -256,7 +277,7 @@ static void test_n64_controller_accessory_write_no_accessory()
   joybus_target_register(&bus, JOYBUS_TARGET(&controller));
 
   // Send an accessory write with a valid address and 32 bytes of 0x80
-  uint8_t data[JOYBUS_ACCESSORY_DATA_SIZE];
+  uint8_t data[JOYBUS_ACCESSORY_BLOCK_SIZE];
   memset(data, 0x80, sizeof(data));
   joybus_n64_accessory_write(&bus, 0x8000, data, response, spy, NULL);
 
@@ -291,7 +312,7 @@ static void test_n64_controller_accessory_write_while_changed()
   joybus_n64_controller_attach_accessory(&controller, &accessory);
 
   // Send an accessory write with a valid address and 32 bytes of 0x80
-  uint8_t data[JOYBUS_ACCESSORY_DATA_SIZE];
+  uint8_t data[JOYBUS_ACCESSORY_BLOCK_SIZE];
   memset(data, 0x80, sizeof(data));
   joybus_n64_accessory_write(&bus, 0x8000, data, response, spy, NULL);
 
@@ -331,12 +352,12 @@ static void test_n64_controller_accessory_write_bad_checksum()
   bad_write_cmd[0] = JOYBUS_CMD_N64_ACCESSORY_WRITE;
   bad_write_cmd[1] = 0x80;
   bad_write_cmd[2] = 0x00;
-  memset(&bad_write_cmd[3], 0x80, JOYBUS_ACCESSORY_DATA_SIZE);
+  memset(&bad_write_cmd[3], 0x80, JOYBUS_ACCESSORY_BLOCK_SIZE);
 
   joybus_transfer(&bus, bad_write_cmd, sizeof(bad_write_cmd), response, JOYBUS_CMD_N64_ACCESSORY_WRITE_RX, spy, NULL);
 
   // Expect crc8(data) ^ 0xFF — the "no pak" marker
-  uint8_t expected = joybus_crc8(&bad_write_cmd[3], JOYBUS_ACCESSORY_DATA_SIZE) ^ 0xFF;
+  uint8_t expected = joybus_crc8(&bad_write_cmd[3], JOYBUS_ACCESSORY_BLOCK_SIZE) ^ 0xFF;
   TEST_ASSERT_EQUAL(JOYBUS_CMD_N64_ACCESSORY_WRITE_RX, response_len);
   TEST_ASSERT_EQUAL_HEX8(expected, response[0]);
 }

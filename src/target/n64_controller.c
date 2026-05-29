@@ -103,13 +103,20 @@ static int handle_accessory_read(struct joybus_n64_controller *controller, const
 
   // Prepare and send the response
   if (accessory_ready(controller) && checksum_valid) {
-    // TODO: Read data from attached accessory
-    // memset(controller->response, 0, JOYBUS_CMD_N64_ACCESSORY_READ_RX);
-    // send_response(controller->response, JOYBUS_CMD_N64_ACCESSORY_READ_RX, user_data);
+    // Ask the accessory to fill the response buffer
+    uint16_t block_addr              = addr & 0xFFE0;
+    struct joybus_n64_accessory *acc = controller->accessory;
+    acc->api->read_block(acc, block_addr, controller->response);
+
+    // Calculate and append the CRC8
+    controller->response[JOYBUS_ACCESSORY_BLOCK_SIZE] = joybus_crc8(controller->response, JOYBUS_ACCESSORY_BLOCK_SIZE);
+
+    // Send the response
+    send_response(controller->response, JOYBUS_CMD_N64_ACCESSORY_READ_RX, user_data);
   } else {
     // Prepare a zero response with the "no accessory" CRC
     memset(controller->response, 0, JOYBUS_CMD_N64_ACCESSORY_READ_RX);
-    controller->response[32] = 0xFF;
+    controller->response[JOYBUS_ACCESSORY_BLOCK_SIZE] = 0xFF;
 
     // Send the response
     send_response(controller->response, JOYBUS_CMD_N64_ACCESSORY_READ_RX, user_data);
@@ -152,16 +159,23 @@ static int handle_accessory_write(struct joybus_n64_controller *controller, cons
   // Full payload received, respond with the CRC
   if (bytes_read == JOYBUS_CMD_N64_ACCESSORY_WRITE_TX) {
     bool checksum_valid = (joybus_id_get_status(controller->id) & JOYBUS_ID_N64_CHECKSUM_ERROR) == 0;
-    if (accessory_ready(controller) && checksum_valid) {
-      // TODO: Write data to attached accessory?
-      // NOTE: Should we write all at once, or stream as bytes are received?
-    } else {
-      // Mark the CRC as a "no accessory" response
+    bool ready          = accessory_ready(controller) && checksum_valid;
+
+    // Mark the CRC as "no accessory" if we're not ready to commit the write
+    if (!ready) {
       controller->crc ^= 0xFF;
     }
 
-    // Send the CRC response
+    // Send the CRC response first to keep the storage write off the response critical path
     send_response(&controller->crc, JOYBUS_CMD_N64_ACCESSORY_WRITE_RX, user_data);
+
+    // Hand the payload to the accessory after the host has its response
+    if (ready) {
+      uint16_t addr                    = ((uint16_t)command[1] << 8) | command[2];
+      uint16_t block_addr              = addr & 0xFFE0;
+      struct joybus_n64_accessory *acc = controller->accessory;
+      acc->api->write_block(acc, block_addr, &command[3]);
+    }
   }
 
   return JOYBUS_CMD_N64_ACCESSORY_WRITE_TX - bytes_read;

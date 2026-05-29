@@ -12,6 +12,7 @@ zephyr_library_sources(
   ${LIBJOYBUS_DIR}/src/host/n64.c
   ${LIBJOYBUS_DIR}/src/target/gc_controller.c
   ${LIBJOYBUS_DIR}/src/target/n64_controller.c
+  ${LIBJOYBUS_DIR}/src/target/n64_rumble_pak.c
 )
 
 # Specify the include paths

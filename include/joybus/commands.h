@@ -119,8 +119,8 @@
 /// Device type for a WaveBird receiver
 #define JOYBUS_WAVEBIRD_RECEIVER          (JOYBUS_ID_GCN_DEVICE | JOYBUS_ID_GCN_WIRELESS | JOYBUS_ID_GCN_NO_MOTOR)
 
-/// Size of a Joybus N64 accessory read/write payload
-#define JOYBUS_ACCESSORY_DATA_SIZE        32
+/// Size of a Joybus N64 accessory read/write block
+#define JOYBUS_ACCESSORY_BLOCK_SIZE       32
 
 /**
  * Get the controller type from an "identify" buffer

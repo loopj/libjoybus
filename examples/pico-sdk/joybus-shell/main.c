@@ -427,8 +427,8 @@ static void cmd_n64_accessory_write(int argc, char **argv)
     return;
 
   // Parse the block of data bytes as hex or decimal
-  uint8_t data[JOYBUS_ACCESSORY_DATA_SIZE];
-  for (int i = 0; i < JOYBUS_ACCESSORY_DATA_SIZE; i++) {
+  uint8_t data[JOYBUS_ACCESSORY_BLOCK_SIZE];
+  for (int i = 0; i < JOYBUS_ACCESSORY_BLOCK_SIZE; i++) {
     if (parse_byte(argv[i + 2], &data[i]) < 0)
       return;
   }
