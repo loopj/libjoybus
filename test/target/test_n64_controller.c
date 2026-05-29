@@ -301,6 +301,46 @@ static void test_n64_controller_accessory_write_while_changed()
   TEST_ASSERT_EQUAL_HEX8(expected, response[0]);
 }
 
+// Test that a bad-checksum read with the accessory present returns the "no pak" response
+static void test_n64_controller_accessory_read_bad_checksum()
+{
+  // Power on with accessory attached (status = PRESENT, not CHANGED)
+  joybus_n64_controller_attach_accessory(&controller, &accessory);
+  joybus_target_register(&bus, JOYBUS_TARGET(&controller));
+
+  // Send a raw accessory read with a bad address checksum
+  uint8_t bad_read_cmd[] = {JOYBUS_CMD_N64_ACCESSORY_READ, 0x80, 0x00};
+  joybus_transfer(&bus, bad_read_cmd, sizeof(bad_read_cmd), response, JOYBUS_CMD_N64_ACCESSORY_READ_RX, spy, NULL);
+
+  // Expect 32 zero bytes followed by 0xFF — the "no pak" CRC
+  uint8_t expected[JOYBUS_CMD_N64_ACCESSORY_READ_RX] = {0};
+  expected[32]                                       = 0xFF;
+  TEST_ASSERT_EQUAL(JOYBUS_CMD_N64_ACCESSORY_READ_RX, response_len);
+  TEST_ASSERT_EQUAL_HEX8_ARRAY(expected, response, JOYBUS_CMD_N64_ACCESSORY_READ_RX);
+}
+
+// Test that a bad-checksum write with the accessory present returns the "no pak" response
+static void test_n64_controller_accessory_write_bad_checksum()
+{
+  // Power on with accessory attached (status = PRESENT, not CHANGED)
+  joybus_n64_controller_attach_accessory(&controller, &accessory);
+  joybus_target_register(&bus, JOYBUS_TARGET(&controller));
+
+  // Build a raw accessory write with a bad address checksum (low 5 bits zero, doesn't match)
+  uint8_t bad_write_cmd[JOYBUS_CMD_N64_ACCESSORY_WRITE_TX];
+  bad_write_cmd[0] = JOYBUS_CMD_N64_ACCESSORY_WRITE;
+  bad_write_cmd[1] = 0x80;
+  bad_write_cmd[2] = 0x00;
+  memset(&bad_write_cmd[3], 0x80, JOYBUS_ACCESSORY_DATA_SIZE);
+
+  joybus_transfer(&bus, bad_write_cmd, sizeof(bad_write_cmd), response, JOYBUS_CMD_N64_ACCESSORY_WRITE_RX, spy, NULL);
+
+  // Expect crc8(data) ^ 0xFF — the "no pak" marker
+  uint8_t expected = joybus_crc8(&bad_write_cmd[3], JOYBUS_ACCESSORY_DATA_SIZE) ^ 0xFF;
+  TEST_ASSERT_EQUAL(JOYBUS_CMD_N64_ACCESSORY_WRITE_RX, response_len);
+  TEST_ASSERT_EQUAL_HEX8(expected, response[0]);
+}
+
 int main(int argc, char **argv)
 {
   UNITY_BEGIN();
@@ -316,6 +356,8 @@ int main(int argc, char **argv)
   RUN_TEST(test_n64_controller_accessory_write_no_accessory);
   RUN_TEST(test_n64_controller_accessory_read_while_changed);
   RUN_TEST(test_n64_controller_accessory_write_while_changed);
+  RUN_TEST(test_n64_controller_accessory_read_bad_checksum);
+  RUN_TEST(test_n64_controller_accessory_write_bad_checksum);
 
   return UNITY_END();
 }

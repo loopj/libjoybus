@@ -107,7 +107,7 @@ static int handle_accessory_read(struct joybus_n64_controller *controller, const
     // memset(controller->response, 0, JOYBUS_CMD_N64_ACCESSORY_READ_RX);
     // send_response(controller->response, JOYBUS_CMD_N64_ACCESSORY_READ_RX, user_data);
   } else {
-    // Prepare a "zero" response with the "no pak" CRC
+    // Prepare a zero response with the "no accessory" CRC
     memset(controller->response, 0, JOYBUS_CMD_N64_ACCESSORY_READ_RX);
     controller->response[32] = 0xFF;
 
@@ -151,11 +151,12 @@ static int handle_accessory_write(struct joybus_n64_controller *controller, cons
 
   // Full payload received, respond with the CRC
   if (bytes_read == JOYBUS_CMD_N64_ACCESSORY_WRITE_TX) {
-    if (accessory_ready(controller)) {
+    bool checksum_valid = (joybus_id_get_status(controller->id) & JOYBUS_ID_N64_CHECKSUM_ERROR) == 0;
+    if (accessory_ready(controller) && checksum_valid) {
       // TODO: Write data to attached accessory?
       // NOTE: Should we write all at once, or stream as bytes are received?
     } else {
-      // XOR the CRC with 0xFF if no accessory is present
+      // Mark the CRC as a "no accessory" response
       controller->crc ^= 0xFF;
     }
 
