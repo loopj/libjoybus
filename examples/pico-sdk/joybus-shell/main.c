@@ -54,30 +54,36 @@ static void cmd_gcn_read_origin(int argc, char **argv);
 static void cmd_gcn_calibrate(int argc, char **argv);
 static void cmd_gcn_read_long(int argc, char **argv);
 
-// Command dispatch table
+// Command dispatch table.
 static const struct {
   const char *name;
   void (*fn)(int, char **);
+  int min_args;
+  const char *usage;
   const char *help;
 } commands[] = {
-  {"help", cmd_help, "Show this help message"},
-  {"clear", cmd_clear, "Clear the console"},
-  {"transfer", cmd_transfer, "Perform a raw Joybus transfer of the given data bytes"},
-  {"poll_command", cmd_poll_command, "Set the raw Joybus command to poll in the background"},
-  {"poll_rate", cmd_poll_rate, "Set the background polling rate in Hz (default 60)"},
-  {"poll_start", cmd_poll_start, "Start polling the configured command in the background"},
-  {"poll_stop", cmd_poll_stop, "Stop background polling"},
-  {"poll_peek", cmd_poll_peek, "Print the result of the most recent poll"},
-  {"identify", cmd_identify, "Identify the target device attached to the Joybus"},
-  {"reset", cmd_reset, "Reset the target device attached to the Joybus"},
-  {"n64_read", cmd_n64_read, "Read the current input state of a N64 controller"},
-  {"n64_accessory_read", cmd_n64_accessory_read, "Read data from a N64 controller pak"},
-  {"n64_accessory_write", cmd_n64_accessory_write, "Write data to a N64 controller pak"},
-  {"gcn_read", cmd_gcn_read, "Read the current input state of a GameCube controller"},
-  {"gcn_read_origin", cmd_gcn_read_origin, "Read the origin state of a GameCube controller"},
-  {"gcn_calibrate", cmd_gcn_calibrate,
+  {"help", cmd_help, 0, "[command]", "Show this help message, or detailed help for a command"},
+  {"clear", cmd_clear, 0, NULL, "Clear the console"},
+  {"transfer", cmd_transfer, 2, "<read_len> <command> [arg0] [arg1] ...",
+   "Perform a raw Joybus transfer of the given data bytes"},
+  {"poll_command", cmd_poll_command, 0, "<read_len> <command> [arg0] [arg1] ...",
+   "Set the raw Joybus command to poll in the background"},
+  {"poll_rate", cmd_poll_rate, 0, "<hz>", "Set the background polling rate in Hz (default 60)"},
+  {"poll_start", cmd_poll_start, 0, NULL, "Start polling the configured command in the background"},
+  {"poll_stop", cmd_poll_stop, 0, NULL, "Stop background polling"},
+  {"poll_peek", cmd_poll_peek, 0, NULL, "Print the result of the most recent poll"},
+  {"identify", cmd_identify, 0, NULL, "Identify the target device attached to the Joybus"},
+  {"reset", cmd_reset, 0, NULL, "Reset the target device attached to the Joybus"},
+  {"n64_read", cmd_n64_read, 0, NULL, "Read the current input state of a N64 controller"},
+  {"n64_accessory_read", cmd_n64_accessory_read, 1, "<addr>", "Read data from a N64 controller pak"},
+  {"n64_accessory_write", cmd_n64_accessory_write, 33, "<addr> <data0> <data1> ... <data31>",
+   "Write data to a N64 controller pak"},
+  {"gcn_read", cmd_gcn_read, 2, "<analog_mode> <motor_state>", "Read the current input state of a GameCube controller"},
+  {"gcn_read_origin", cmd_gcn_read_origin, 0, NULL, "Read the origin state of a GameCube controller"},
+  {"gcn_calibrate", cmd_gcn_calibrate, 0, NULL,
    "Calibrate a GameCube controller, setting its current input state as the origin"},
-  {"gcn_read_long", cmd_gcn_read_long, "Read the current input state of a GameCube controller, with full precision"},
+  {"gcn_read_long", cmd_gcn_read_long, 1, "<motor_state>",
+   "Read the current input state of a GameCube controller, with full precision"},
 };
 #define NUM_CMDS (sizeof(commands) / sizeof(commands[0]))
 
@@ -212,25 +218,61 @@ static int tokenize(char *line, char **argv, int max)
   return argc;
 }
 
+// Print the usage line for a named command
+static void print_usage(const char *name)
+{
+  for (size_t i = 0; i < NUM_CMDS; i++) {
+    if (strcmp(name, commands[i].name) == 0) {
+      printf("Usage: %s %s\r\n", name, commands[i].usage ? commands[i].usage : "");
+      return;
+    }
+  }
+}
+
 // Dispatch a command line to the appropriate handler
 static void dispatch(char *line)
 {
+  // Tokenize the line into arguments
   char *argv[MAX_ARGS];
   int argc = tokenize(line, argv, MAX_ARGS);
   if (argc == 0)
     return;
 
+  // Look up the command
   for (size_t i = 0; i < NUM_CMDS; i++) {
     if (strcmp(argv[0], commands[i].name) == 0) {
+      // Enforce minimum argument count
+      if (argc - 1 < commands[i].min_args) {
+        print_usage(commands[i].name);
+        return;
+      }
+
+      // Call the handler
       commands[i].fn(argc, argv);
       return;
     }
   }
-  printf("unknown command: %s\r\n", argv[0]);
+
+  printf("Unknown command: \"%s\"\r\n", argv[0]);
 }
 
 static void cmd_help(int argc, char **argv)
 {
+  // With a command name, print its description and usage
+  if (argc >= 2) {
+    for (size_t i = 0; i < NUM_CMDS; i++) {
+      if (strcmp(argv[1], commands[i].name) == 0) {
+        printf("%s\r\n", commands[i].help);
+        print_usage(commands[i].name);
+        return;
+      }
+    }
+
+    printf("Unknown command: \"%s\"\r\n", argv[1]);
+    return;
+  }
+
+  // Otherwise list every command with its description
   for (size_t i = 0; i < NUM_CMDS; i++)
     printf("%-20s %s\r\n", commands[i].name, commands[i].help);
 }
@@ -242,12 +284,6 @@ static void cmd_clear(int argc, char **argv)
 
 static void cmd_transfer(int argc, char **argv)
 {
-  // Require an expected response length plus at least one data byte to send
-  if (argc < 3) {
-    printf("usage: transfer <read_len> <command> [arg0] [arg1] ...\r\n");
-    return;
-  }
-
   // Parse the expected response length
   uint8_t read_len;
   if (parse_byte(argv[1], &read_len) < 0)
@@ -271,10 +307,11 @@ static void cmd_poll_command(int argc, char **argv)
   if (argc < 2) {
     if (poll_command_len == 0) {
       printf("no poll command set\r\n");
-      printf("usage: poll_command <read_len> <command> [arg0] [arg1] ...\r\n");
+      print_usage("poll_command");
       return;
     }
-    printf("read_len=%u, command=0x%02x, args=[", poll_command[0], poll_read_len);
+
+    printf("read_len=%u, command=0x%02x, args=[", poll_read_len, poll_command[0]);
     for (int i = 1; i < poll_command_len; i++)
       printf("%s0x%02x", i > 1 ? ", " : "", poll_command[i]);
     printf("]\r\n");
@@ -283,7 +320,7 @@ static void cmd_poll_command(int argc, char **argv)
 
   // Require an expected response length plus at least the command byte
   if (argc < 3) {
-    printf("usage: poll_command <read_len> <command> [arg0] [arg1] ...\r\n");
+    print_usage("poll_command");
     return;
   }
 
@@ -373,12 +410,6 @@ static void cmd_n64_read(int argc, char **argv)
 
 static void cmd_n64_accessory_read(int argc, char **argv)
 {
-  // Require an address argument
-  if (argc < 2) {
-    printf("usage: n64_accessory_read <addr>\r\n");
-    return;
-  }
-
   // Parse the address argument
   uint16_t addr;
   if (parse_addr(argv[1], &addr) < 0)
@@ -390,12 +421,6 @@ static void cmd_n64_accessory_read(int argc, char **argv)
 
 static void cmd_n64_accessory_write(int argc, char **argv)
 {
-  // Require an address plus a full block of data bytes
-  if (argc < 2 + JOYBUS_ACCESSORY_DATA_SIZE) {
-    printf("usage: n64_accessory_write <addr> <data0> <data1> ... <data31>\r\n");
-    return;
-  }
-
   // Parse the address argument
   uint16_t addr;
   if (parse_addr(argv[1], &addr) < 0)
@@ -413,12 +438,6 @@ static void cmd_n64_accessory_write(int argc, char **argv)
 
 static void cmd_gcn_read(int argc, char **argv)
 {
-  // Require an analog mode and motor state argument
-  if (argc < 3) {
-    printf("usage: gcn_read <analog_mode> <motor_state>\r\n");
-    return;
-  }
-
   // Parse the analog mode and motor state arguments
   uint8_t analog_mode, motor_state;
   if (parse_byte(argv[1], &analog_mode) < 0 || parse_byte(argv[2], &motor_state) < 0)
@@ -439,12 +458,6 @@ static void cmd_gcn_calibrate(int argc, char **argv)
 
 static void cmd_gcn_read_long(int argc, char **argv)
 {
-  // Require a motor state argument
-  if (argc < 2) {
-    printf("usage: gcn_read_long <motor_state>\r\n");
-    return;
-  }
-
   // Parse the motor state argument
   uint8_t motor_state;
   if (parse_byte(argv[1], &motor_state) < 0)
