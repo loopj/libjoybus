@@ -392,9 +392,6 @@ static int joybus_rp2xxx_target_register(struct joybus *bus, struct joybus_targe
 {
   struct joybus_rp2xxx_data *data = &JOYBUS_RP2XXX(bus)->data;
 
-  // Save the target
-  bus->target = target;
-
   // Switch to target read mode if bus is enabled
   if (data->state != BUS_STATE_DISABLED)
     enter_idle_mode(bus, true);
@@ -405,9 +402,6 @@ static int joybus_rp2xxx_target_register(struct joybus *bus, struct joybus_targe
 static int joybus_rp2xxx_target_unregister(struct joybus *bus, struct joybus_target *target)
 {
   struct joybus_rp2xxx_data *data = &JOYBUS_RP2XXX(bus)->data;
-
-  // Clear the target
-  bus->target = NULL;
 
   // Switch to host idle mode if bus is enabled
   if (data->state != BUS_STATE_DISABLED)

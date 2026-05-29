@@ -7,7 +7,7 @@
 #include <string.h>
 
 #include <joybus/commands.h>
-#include <joybus/crc8.h>
+#include <joybus/checksum.h>
 #include <joybus/host/n64.h>
 
 #define ACCESSORY_ADDR_LABEL              0x0000
@@ -49,21 +49,6 @@ struct detection_state {
   void *user_data;
 };
 
-// LUT for computing address checksum
-static const uint8_t cs_tab[11] = {0x01, 0x1A, 0x0D, 0x1C, 0x0E, 0x07, 0x19, 0x16, 0x0B, 0x1F, 0x15};
-
-// Compute address with checksum for N64 memory operations
-static uint16_t address_with_checksum(uint16_t addr)
-{
-  uint8_t sum = 0;
-  for (int i = 0; i < 11; i++) {
-    if (addr & (1u << (15 - i)))
-      sum ^= cs_tab[i];
-  }
-
-  return (addr & 0xFFE0) | (sum & 0x1F);
-}
-
 int joybus_n64_read(struct joybus *bus, uint8_t *response, joybus_transfer_cb_t callback, void *user_data)
 {
   // Build command
@@ -78,7 +63,7 @@ int joybus_n64_accessory_write(struct joybus *bus, uint16_t addr, const uint8_t 
                                joybus_transfer_cb_t callback, void *user_data)
 {
   // Generate address with checksum
-  uint16_t with_checksum = address_with_checksum(addr);
+  uint16_t with_checksum = (addr & 0xFFE0) | joybus_address_checksum(addr);
 
   // Build command
   bus->command_buffer[0] = JOYBUS_CMD_N64_ACCESSORY_WRITE;
@@ -97,7 +82,7 @@ int joybus_n64_accessory_read(struct joybus *bus, uint16_t addr, uint8_t *respon
                               void *user_data)
 {
   // Generate address with checksum
-  uint16_t with_checksum = address_with_checksum(addr);
+  uint16_t with_checksum = (addr & 0xFFE0) | joybus_address_checksum(addr);
 
   // Build command
   bus->command_buffer[0] = JOYBUS_CMD_N64_ACCESSORY_READ;
@@ -112,7 +97,7 @@ int joybus_n64_accessory_read(struct joybus *bus, uint16_t addr, uint8_t *respon
 // Check (and respond) to failures during accessory detection write operations
 static int validate_detection_write(struct detection_state *state)
 {
-  uint8_t expected_crc = si_crc8(state->write_buf, 32);
+  uint8_t expected_crc = joybus_crc8(state->write_buf, 32);
   if (state->response[0] == (expected_crc ^ 0xFF)) {
     state->user_callback(JOYBUS_N64_ACCESSORY_NONE, state->user_data);
     return -1;
@@ -130,7 +115,7 @@ static int validate_detection_write(struct detection_state *state)
 // Check (and respond) to failures during accessory detection read operations
 static int validate_detection_read(struct detection_state *state)
 {
-  uint8_t expected_crc = si_crc8(state->response, 32);
+  uint8_t expected_crc = joybus_crc8(state->response, 32);
   if (state->response[32] == (expected_crc ^ 0xFF)) {
     state->user_callback(JOYBUS_N64_ACCESSORY_NONE, state->user_data);
     return -1;

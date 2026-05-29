@@ -5,6 +5,7 @@
 
 #pragma once
 
+#include <stdbool.h>
 #include <stdint.h>
 
 struct joybus_target;
@@ -44,6 +45,7 @@ struct joybus_target_api {
  */
 struct joybus_target {
   const struct joybus_target_api *api;
+  bool registered;
 };
 
 /**
