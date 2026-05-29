@@ -232,7 +232,7 @@ void joybus_n64_controller_attach_accessory(struct joybus_n64_controller *contro
   controller->accessory = accessory;
 
   joybus_id_clear_status_flags(controller->id, JOYBUS_ID_N64_ACCESSORY_CHANGED);
-  if (((struct joybus_target *)controller)->registered) {
+  if (joybus_target_is_registered(JOYBUS_TARGET(controller))) {
     joybus_id_set_status_flags(controller->id, JOYBUS_ID_N64_ACCESSORY_CHANGED);
   } else {
     joybus_id_set_status_flags(controller->id, JOYBUS_ID_N64_ACCESSORY_PRESENT);

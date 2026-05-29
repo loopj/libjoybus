@@ -26,12 +26,12 @@
  * N64 controller input state.
  */
 struct joybus_n64_controller_input {
-  /** Button state */
+  /// Button state
   uint16_t buttons;
 
-  /** Stick x-axis position */
+  /// Stick x-axis position
   uint8_t stick_x;
 
-  /** Stick y-axis position */
+  /// Stick y-axis position
   uint8_t stick_y;
 } __attribute__((packed));

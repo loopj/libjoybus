@@ -10,9 +10,7 @@
 
 struct joybus_target;
 
-/**
- * Macro to cast a concrete Joybus target instance to a generic Joybus target instance.
- */
+/// Macro to cast a concrete Joybus target instance to a generic Joybus target instance.
 #define JOYBUS_TARGET(target) ((struct joybus_target *)(target))
 
 /**
@@ -24,7 +22,9 @@ struct joybus_target;
  */
 typedef void (*joybus_target_response_cb_t)(const uint8_t *response, uint8_t len, void *user_data);
 
-// API for a Joybus target.
+/**
+ * API for implementing a Joybus target.
+ */
 struct joybus_target_api {
   /**
    * Handle a received command byte.
@@ -41,10 +41,13 @@ struct joybus_target_api {
 };
 
 /**
- * A Joybus target, a device on the Joybus that can respond to commands.
+ * Interface for a Joybus target, a device on the Joybus which responds to commands from a host.
  */
 struct joybus_target {
+  /// API for handling received commands
   const struct joybus_target_api *api;
+
+  /// Whether the target is currently registered on the bus
   bool registered;
 };
 
@@ -62,6 +65,17 @@ static inline int joybus_target_byte_received(struct joybus_target *target, cons
                                               joybus_target_response_cb_t send_response, void *user_data)
 {
   return target->api->byte_received(target, command, byte_idx, send_response, user_data);
+}
+
+/**
+ * Check if a target is currently registered on the bus.
+ *
+ * @param target the target to check
+ * @return true if the target is registered, false otherwise
+ */
+static inline bool joybus_target_is_registered(struct joybus_target *target)
+{
+  return target->registered;
 }
 
 /** @} */

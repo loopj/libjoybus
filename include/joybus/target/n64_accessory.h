@@ -13,21 +13,17 @@
 
 struct joybus_n64_accessory;
 
-/** Macro to cast to an N64 accessory */
+/// Macro to cast a concrete N64 accessory instance to a generic N64 accessory instance.
 #define JOYBUS_N64_ACCESSORY(acc) ((struct joybus_n64_accessory *)(acc))
 
 /**
- * N64 accessory backend API.
- *
- * All accessory I/O is block-aligned: every read and write covers exactly
- * JOYBUS_ACCESSORY_BLOCK_SIZE bytes at a block-aligned address.
+ * API for implementing an N64 controller accessory.
  */
 struct joybus_n64_accessory_api {
   /**
    * Read a 32-byte block from the accessory.
    *
-   * Called from interrupt context, on the response critical path. Must
-   * complete quickly (well under the 62.5 us response budget).
+   * Called from interrupt context, on the response critical path.
    *
    * @param accessory the accessory being read from
    * @param addr      block-aligned address (low 5 bits are zero)
@@ -39,9 +35,6 @@ struct joybus_n64_accessory_api {
    * Write a 32-byte block to the accessory.
    *
    * Called from interrupt context, AFTER the CRC response has been sent.
-   * The host is no longer waiting, so this may take longer than the
-   * response budget, but `buf` is borrowed and must not be retained
-   * after this function returns.
    *
    * @param accessory the accessory being written to
    * @param addr      block-aligned address (low 5 bits are zero)
@@ -55,6 +48,7 @@ struct joybus_n64_accessory_api {
  * An N64 controller accessory, such as a rumble pak or controller pak.
  */
 struct joybus_n64_accessory {
+  /// API for handling reads and writes to the accessory
   const struct joybus_n64_accessory_api *api;
 };
 

@@ -1,6 +1,6 @@
 /**
  * @defgroup joybus_target_n64_controller N64 Controller Target
- * N64 controller Joybus target
+ * Joybus target implementation for standard N64 controllers.
  * @ingroup joybus_target
  * @{
  */
@@ -14,7 +14,7 @@
 
 struct joybus_n64_controller;
 
-/** Macro to cast to a N64 controller target */
+/// Macro to cast from a generic Joybus target to an N64 controller target
 #define JOYBUS_N64_CONTROLLER(target) ((struct joybus_n64_controller *)(target))
 
 /**
@@ -28,31 +28,32 @@ typedef void (*joybus_n64_controller_reset_cb_t)(struct joybus_n64_controller *c
  * N64 controller Joybus target.
  */
 struct joybus_n64_controller {
+  /// Base target interface
   struct joybus_target base;
 
-  /** Controller ID */
+  /// Controller ID
   uint8_t id[3];
 
-  /** Current input state */
+  /// Current input state
   struct joybus_n64_controller_input input;
 
-  /** Callback for controller reset events */
+  /// Callback for controller reset events
   joybus_n64_controller_reset_cb_t on_reset;
 
-  /** Currently attached accessory */
+  /// Currently attached accessory (if any)
   struct joybus_n64_accessory *accessory;
 
-  /** CRC for data transfer commands */
+  /// CRC for data transfer commands
   uint8_t crc;
 
-  /** Response buffer */
+  /// Response buffer
   uint8_t response[JOYBUS_BLOCK_SIZE];
 };
 
 /**
  * Initialize an N64 controller.
  *
- * This function sets up the initial state, and registers SI command
+ * This function sets up the initial state, and registers Joybus command
  * handlers for OEM N64 controller commands.
  *
  * @param controller the controller to initialize
