@@ -426,7 +426,8 @@ static bool ldma_tx_handler(unsigned int chan, unsigned int iteration, void *use
       } else {
         // No reply expected, go idle and call the transfer complete callback
         data->state = BUS_STATE_HOST_IDLE;
-        data->done_callback(bus, 0, data->done_user_data);
+        if (data->done_callback)
+          data->done_callback(bus, 0, data->done_user_data);
       }
     } else if (data->state == BUS_STATE_TARGET_TX) {
       // If we are handling a command response (target mode), and a target is
