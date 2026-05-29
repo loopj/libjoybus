@@ -17,6 +17,9 @@ function(add_libjoybus_test TEST_NAME)
   add_test(NAME ${TEST_NAME} COMMAND ${TEST_NAME})
 endfunction()
 
+# Checksum tests
+add_libjoybus_test(test_checksum test_checksum.c)
+
 # GameCube controller target tests
 add_libjoybus_test(test_gc_controller target/test_gc_controller.c)
 add_libjoybus_test(test_wavebird target/test_wavebird.c)
