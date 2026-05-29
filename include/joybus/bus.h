@@ -5,6 +5,7 @@
 
 #pragma once
 
+#include <stddef.h>
 #include <stdint.h>
 
 #include <joybus/target.h>
@@ -114,6 +115,11 @@ static inline int joybus_transfer(struct joybus *bus, const uint8_t *write_buf, 
  */
 static inline int joybus_target_register(struct joybus *bus, struct joybus_target *target)
 {
+  // Common setup
+  bus->target        = target;
+  target->registered = true;
+
+  // Backend-specific registration
   return bus->api->target_register(bus, target);
 }
 
@@ -126,7 +132,14 @@ static inline int joybus_target_register(struct joybus *bus, struct joybus_targe
  */
 static inline int joybus_target_unregister(struct joybus *bus, struct joybus_target *target)
 {
-  return bus->api->target_unregister(bus, target);
+  // Backend-specific unregistration
+  int result = bus->api->target_unregister(bus, target);
+
+  // Common teardown
+  bus->target        = NULL;
+  target->registered = false;
+
+  return result;
 }
 
 /** @} */

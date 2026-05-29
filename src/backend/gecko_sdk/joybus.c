@@ -745,9 +745,6 @@ static int joybus_gecko_target_register(struct joybus *bus, struct joybus_target
 {
   struct joybus_gecko_data *data = &JOYBUS_GECKO(bus)->data;
 
-  // Save the target
-  bus->target = target;
-
   // Immediately start listening for commands if the bus is enabled
   if (data->state != BUS_STATE_DISABLED) {
     set_tx_timings(bus, BUS_MODE_TARGET);
@@ -772,9 +769,6 @@ static int joybus_gecko_target_unregister(struct joybus *bus, struct joybus_targ
 
   // Set bus state to idle
   data->state = BUS_STATE_HOST_IDLE;
-
-  // Clear the target
-  bus->target = NULL;
 
   return 0;
 }
