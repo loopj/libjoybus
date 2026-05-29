@@ -2,7 +2,7 @@
 
 #include <joybus/bus.h>
 #include <joybus/commands.h>
-#include <joybus/crc8.h>
+#include <joybus/checksum.h>
 #include <joybus/errors.h>
 #include <joybus/gamecube.h>
 #include <joybus/n64.h>
