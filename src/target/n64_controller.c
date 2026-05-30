@@ -43,7 +43,9 @@ static int handle_identify(struct joybus_n64_controller *controller, const uint8
                            joybus_target_response_cb_t send_response, void *user_data)
 {
   // Snapshot the controller ID into the response buffer so id can be mutated below
-  memcpy(controller->response, controller->id, sizeof(controller->id));
+  controller->response[0] = controller->id[0];
+  controller->response[1] = controller->id[1];
+  controller->response[2] = controller->id[2];
 
   // Respond with the controller ID
   send_response(controller->response, JOYBUS_CMD_IDENTIFY_RX, user_data);
