@@ -1,6 +1,6 @@
 var commands_8h =
 [
-    [ "JOYBUS_ACCESSORY_DATA_SIZE", "commands_8h.html#a8c0ca9fee7249e4d6e08d5bf4196ff24", null ],
+    [ "JOYBUS_ACCESSORY_BLOCK_SIZE", "commands_8h.html#aeba0b3392291f316c3279dfd07b383e2", null ],
     [ "JOYBUS_CMD_IDENTIFY", "commands_8h.html#a58c45a432c2bb7a972532a90c39fbcca", null ],
     [ "JOYBUS_CMD_N64_ACCESSORY_READ", "commands_8h.html#afc3d9f1eb40cf2ffa252a78f88254d9e", null ],
     [ "JOYBUS_CMD_N64_ACCESSORY_WRITE", "commands_8h.html#a5002b53ee1e64004a248c5fc38246934", null ],
@@ -23,6 +23,7 @@ var commands_8h =
     [ "JOYBUS_ID_N64_ACCESSORY_ABSENT", "commands_8h.html#a4a634a6465272ea529931aaec2c2f98d", null ],
     [ "JOYBUS_ID_N64_ACCESSORY_CHANGED", "commands_8h.html#a71ebacc7fdf9f01f94d4cbc98b59dff0", null ],
     [ "JOYBUS_ID_N64_ACCESSORY_PRESENT", "commands_8h.html#ac426fc36cfaa38ea21a3f31c152e9440", null ],
+    [ "JOYBUS_ID_N64_CHECKSUM_ERROR", "commands_8h.html#a80a960b270462d4efe7e7af62f26a779", null ],
     [ "JOYBUS_ID_N64_CONTROLLER", "commands_8h.html#a1c23d39042a7ed4ae2c67df5601970dc", null ],
     [ "JOYBUS_ID_N64_GBA_LINK", "commands_8h.html#a5617be08ae54fcf0e20a23d5f6ff3473", null ],
     [ "JOYBUS_ID_N64_KEYBOARD", "commands_8h.html#a74e73bc0e62fd623ee5ffa7af38163b7", null ],

@@ -2,6 +2,7 @@ var group__joybus__target__gc__controller =
 [
     [ "joybus_gc_controller", "structjoybus__gc__controller.html", [
       [ "base", "structjoybus__gc__controller.html#abd39ba1c94ce1d0bee3bc175f90a07c0", null ],
+      [ "id", "structjoybus__gc__controller.html#a5ec16eaedc1f83f6afa5968f3ff6852a", null ],
       [ "input", "structjoybus__gc__controller.html#abd3546570e63af18beffbb952082c9db", null ],
       [ "input_valid", "structjoybus__gc__controller.html#af1aad13306130b6e29ebde6434f17c3d", null ],
       [ "on_motor_state_change", "structjoybus__gc__controller.html#a48db0b1e78a739a2d6a2e26995b81319", null ],

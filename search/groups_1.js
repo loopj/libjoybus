@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['commands_0',['Host Commands',['../group__joybus__host.html',1,'']]],
-  ['controller_20target_1',['Controller Target',['../group__joybus__target__gc__controller.html',1,'GameCube Controller Target'],['../group__joybus__target__n64__controller.html',1,'N64 Controller Target']]]
+  ['backend_0',['Backend',['../group__joybus__backend__gecko.html',1,'Gecko Backend'],['../group__joybus__backend__loopback.html',1,'Loopback Backend'],['../group__joybus__backend__rp2xxx.html',1,'RP2xxx Backend']]],
+  ['backends_1',['Backends',['../group__joybus__backends.html',1,'']]]
 ];

@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['joybus_5faccessory_5fdata_5fsize_0',['JOYBUS_ACCESSORY_DATA_SIZE',['../commands_8h.html#a8c0ca9fee7249e4d6e08d5bf4196ff24',1,'commands.h']]],
+  ['joybus_5faccessory_5fblock_5fsize_0',['JOYBUS_ACCESSORY_BLOCK_SIZE',['../commands_8h.html#aeba0b3392291f316c3279dfd07b383e2',1,'commands.h']]],
   ['joybus_5fcmd_5fidentify_1',['JOYBUS_CMD_IDENTIFY',['../commands_8h.html#a58c45a432c2bb7a972532a90c39fbcca',1,'commands.h']]],
   ['joybus_5fcmd_5fn64_5faccessory_5fread_2',['JOYBUS_CMD_N64_ACCESSORY_READ',['../commands_8h.html#afc3d9f1eb40cf2ffa252a78f88254d9e',1,'commands.h']]],
   ['joybus_5fcmd_5fn64_5faccessory_5fwrite_3',['JOYBUS_CMD_N64_ACCESSORY_WRITE',['../commands_8h.html#a5002b53ee1e64004a248c5fc38246934',1,'commands.h']]],
@@ -24,12 +24,13 @@ var searchData=
   ['joybus_5fid_5fn64_5faccessory_5fabsent_21',['JOYBUS_ID_N64_ACCESSORY_ABSENT',['../commands_8h.html#a4a634a6465272ea529931aaec2c2f98d',1,'commands.h']]],
   ['joybus_5fid_5fn64_5faccessory_5fchanged_22',['JOYBUS_ID_N64_ACCESSORY_CHANGED',['../commands_8h.html#a71ebacc7fdf9f01f94d4cbc98b59dff0',1,'commands.h']]],
   ['joybus_5fid_5fn64_5faccessory_5fpresent_23',['JOYBUS_ID_N64_ACCESSORY_PRESENT',['../commands_8h.html#ac426fc36cfaa38ea21a3f31c152e9440',1,'commands.h']]],
-  ['joybus_5fid_5fn64_5fcontroller_24',['JOYBUS_ID_N64_CONTROLLER',['../commands_8h.html#a1c23d39042a7ed4ae2c67df5601970dc',1,'commands.h']]],
-  ['joybus_5fid_5fn64_5fgba_5flink_25',['JOYBUS_ID_N64_GBA_LINK',['../commands_8h.html#a5617be08ae54fcf0e20a23d5f6ff3473',1,'commands.h']]],
-  ['joybus_5fid_5fn64_5fkeyboard_26',['JOYBUS_ID_N64_KEYBOARD',['../commands_8h.html#a74e73bc0e62fd623ee5ffa7af38163b7',1,'commands.h']]],
-  ['joybus_5fid_5fn64_5fmouse_27',['JOYBUS_ID_N64_MOUSE',['../commands_8h.html#a0ae4bc2a61597299a375964fbd6c71ce',1,'commands.h']]],
-  ['joybus_5fid_5fn64_5fvru_28',['JOYBUS_ID_N64_VRU',['../commands_8h.html#a5b0e06e006f67ed4941df53147edad62',1,'commands.h']]],
-  ['joybus_5fid_5fn64_5fvru_5finitialized_29',['JOYBUS_ID_N64_VRU_INITIALIZED',['../commands_8h.html#a0b4b23776c85ce38ec764b8ef43e6385',1,'commands.h']]],
-  ['joybus_5fid_5fn64_5fvru_5funinitialized_30',['JOYBUS_ID_N64_VRU_UNINITIALIZED',['../commands_8h.html#aa720707fa151d7a9f82f7091f48b7a09',1,'commands.h']]],
-  ['joybus_5fwavebird_5freceiver_31',['JOYBUS_WAVEBIRD_RECEIVER',['../commands_8h.html#aa17f1bbd200905f375932d921adf750e',1,'commands.h']]]
+  ['joybus_5fid_5fn64_5fchecksum_5ferror_24',['JOYBUS_ID_N64_CHECKSUM_ERROR',['../commands_8h.html#a80a960b270462d4efe7e7af62f26a779',1,'commands.h']]],
+  ['joybus_5fid_5fn64_5fcontroller_25',['JOYBUS_ID_N64_CONTROLLER',['../commands_8h.html#a1c23d39042a7ed4ae2c67df5601970dc',1,'commands.h']]],
+  ['joybus_5fid_5fn64_5fgba_5flink_26',['JOYBUS_ID_N64_GBA_LINK',['../commands_8h.html#a5617be08ae54fcf0e20a23d5f6ff3473',1,'commands.h']]],
+  ['joybus_5fid_5fn64_5fkeyboard_27',['JOYBUS_ID_N64_KEYBOARD',['../commands_8h.html#a74e73bc0e62fd623ee5ffa7af38163b7',1,'commands.h']]],
+  ['joybus_5fid_5fn64_5fmouse_28',['JOYBUS_ID_N64_MOUSE',['../commands_8h.html#a0ae4bc2a61597299a375964fbd6c71ce',1,'commands.h']]],
+  ['joybus_5fid_5fn64_5fvru_29',['JOYBUS_ID_N64_VRU',['../commands_8h.html#a5b0e06e006f67ed4941df53147edad62',1,'commands.h']]],
+  ['joybus_5fid_5fn64_5fvru_5finitialized_30',['JOYBUS_ID_N64_VRU_INITIALIZED',['../commands_8h.html#a0b4b23776c85ce38ec764b8ef43e6385',1,'commands.h']]],
+  ['joybus_5fid_5fn64_5fvru_5funinitialized_31',['JOYBUS_ID_N64_VRU_UNINITIALIZED',['../commands_8h.html#aa720707fa151d7a9f82f7091f48b7a09',1,'commands.h']]],
+  ['joybus_5fwavebird_5freceiver_32',['JOYBUS_WAVEBIRD_RECEIVER',['../commands_8h.html#aa17f1bbd200905f375932d921adf750e',1,'commands.h']]]
 ];

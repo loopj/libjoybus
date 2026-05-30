@@ -106,7 +106,7 @@ $(function(){initNavTree('group__joybus__target__gc__controller.html','',''); })
 </div><!--header-->
 <div class="contents">
 
-<p>GameCube controller Joybus target.  
+<p>Joybus target implementation for standard GameCube controllers and WaveBird receivers.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-nested-classes" class="groupheader"><a id="nested-classes" name="nested-classes"></a>
@@ -117,7 +117,7 @@ Data Structures</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 id="header-define-members" class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
 <tr class="memitem:ga28b4f42874751bcab650de9b35e9e195" id="r_ga28b4f42874751bcab650de9b35e9e195"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga28b4f42874751bcab650de9b35e9e195">JOYBUS_GC_CONTROLLER</a>(target)</td></tr>
-<tr class="memdesc:ga28b4f42874751bcab650de9b35e9e195"><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro to cast to a GameCube controller target.  <br /></td></tr>
+<tr class="memdesc:ga28b4f42874751bcab650de9b35e9e195"><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro to cast from a generic Joybus target to a GameCube controller target.  <br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-typedef-members" class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
@@ -148,7 +148,7 @@ Functions</h2></td></tr>
 <tr class="memdesc:ga1529819f64d555712b19ca8d6d33df6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update the origin of the controller.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
-<p>GameCube controller Joybus target. </p>
+<p>Joybus target implementation for standard GameCube controllers and WaveBird receivers. </p>
 <a name="doc-define-members" id="doc-define-members"></a><h2 id="header-doc-define-members" class="groupheader">Macro Definition Documentation</h2>
 <a id="ga28b4f42874751bcab650de9b35e9e195" name="ga28b4f42874751bcab650de9b35e9e195"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga28b4f42874751bcab650de9b35e9e195">&#9670;&#160;</a></span>JOYBUS_GC_CONTROLLER</h2>
@@ -167,7 +167,7 @@ Functions</h2></td></tr>
 <b>Value:</b><div class="fragment"><div class="line">((<span class="keyword">struct </span><a class="code hl_struct" href="structjoybus__gc__controller.html">joybus_gc_controller</a> *)(target))</div>
 <div class="ttc" id="astructjoybus__gc__controller_html"><div class="ttname"><a href="structjoybus__gc__controller.html">joybus_gc_controller</a></div><div class="ttdoc">GameCube controller Joybus target.</div><div class="ttdef"><b>Definition</b> gc_controller.h:39</div></div>
 </div><!-- fragment -->
-<p>Macro to cast to a GameCube controller target. </p>
+<p>Macro to cast from a generic Joybus target to a GameCube controller target. </p>
 
 </div>
 </div>
@@ -272,7 +272,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Initialize a GameCube controller. </p>
-<p>This function sets up the initial state, and registers SI command handlers for OEM GameCube controller, and WaveBird controller commands.</p>
+<p>This function sets up the initial state, and registers Joybus command handlers for OEM GameCube controller, and WaveBird controller commands.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">controller</td><td>the controller to initialize </td></tr>

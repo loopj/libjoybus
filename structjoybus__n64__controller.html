@@ -115,6 +115,7 @@ $(function(){initNavTree('structjoybus__n64__controller.html','',''); });
 Data Fields</h2></td></tr>
 <tr class="memitem:aa9cc8fb1d27a69b0dbe30d3d5b6cde76" id="r_aa9cc8fb1d27a69b0dbe30d3d5b6cde76"><td class="memItemLeft" align="right" valign="top"><a id="aa9cc8fb1d27a69b0dbe30d3d5b6cde76" name="aa9cc8fb1d27a69b0dbe30d3d5b6cde76"></a>
 struct <a class="el" href="structjoybus__target.html">joybus_target</a>&#160;</td><td class="memItemRight" valign="bottom"><b>base</b></td></tr>
+<tr class="memdesc:aa9cc8fb1d27a69b0dbe30d3d5b6cde76"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base target interface. <br /></td></tr>
 <tr class="memitem:ae1fc6857cd053dd97c24455231b5f6b4" id="r_ae1fc6857cd053dd97c24455231b5f6b4"><td class="memItemLeft" align="right" valign="top"><a id="ae1fc6857cd053dd97c24455231b5f6b4" name="ae1fc6857cd053dd97c24455231b5f6b4"></a>
 uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>id</b> [3]</td></tr>
 <tr class="memdesc:ae1fc6857cd053dd97c24455231b5f6b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Controller ID. <br /></td></tr>
@@ -124,6 +125,15 @@ struct <a class="el" href="structjoybus__n64__controller__input.html">joybus_n64
 <tr class="memitem:a3e2f81eb628f21a0e576bf04cb6a99e1" id="r_a3e2f81eb628f21a0e576bf04cb6a99e1"><td class="memItemLeft" align="right" valign="top"><a id="a3e2f81eb628f21a0e576bf04cb6a99e1" name="a3e2f81eb628f21a0e576bf04cb6a99e1"></a>
 <a class="el" href="group__joybus__target__n64__controller.html#ga1c32462fcdf6291c430ffd87aa6b81ee">joybus_n64_controller_reset_cb_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>on_reset</b></td></tr>
 <tr class="memdesc:a3e2f81eb628f21a0e576bf04cb6a99e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback for controller reset events. <br /></td></tr>
+<tr class="memitem:aab0f7b573cd2b7326d17f988af40d246" id="r_aab0f7b573cd2b7326d17f988af40d246"><td class="memItemLeft" align="right" valign="top"><a id="aab0f7b573cd2b7326d17f988af40d246" name="aab0f7b573cd2b7326d17f988af40d246"></a>
+struct <a class="el" href="structjoybus__n64__accessory.html">joybus_n64_accessory</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>accessory</b></td></tr>
+<tr class="memdesc:aab0f7b573cd2b7326d17f988af40d246"><td class="mdescLeft">&#160;</td><td class="mdescRight">Currently attached accessory (if any) <br /></td></tr>
+<tr class="memitem:a249ffda2b5714659e3368533e9341b52" id="r_a249ffda2b5714659e3368533e9341b52"><td class="memItemLeft" align="right" valign="top"><a id="a249ffda2b5714659e3368533e9341b52" name="a249ffda2b5714659e3368533e9341b52"></a>
+uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>crc</b></td></tr>
+<tr class="memdesc:a249ffda2b5714659e3368533e9341b52"><td class="mdescLeft">&#160;</td><td class="mdescRight">CRC for data transfer commands. <br /></td></tr>
+<tr class="memitem:a0b902d3aafdc265ab9ad56d47eb70121" id="r_a0b902d3aafdc265ab9ad56d47eb70121"><td class="memItemLeft" align="right" valign="top"><a id="a0b902d3aafdc265ab9ad56d47eb70121" name="a0b902d3aafdc265ab9ad56d47eb70121"></a>
+uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>response</b> [<a class="el" href="group__joybus.html#ga96357e747d908aa6c354b507d9b0fdc4">JOYBUS_BLOCK_SIZE</a>]</td></tr>
+<tr class="memdesc:a0b902d3aafdc265ab9ad56d47eb70121"><td class="mdescLeft">&#160;</td><td class="mdescRight">Response buffer. <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>N64 controller Joybus target. </p>

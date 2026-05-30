@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['joybus_0',['Joybus',['../group__joybus.html',1,'']]]
+  ['interface_0',['Target Interface',['../group__joybus__target.html',1,'']]]
 ];
