@@ -62,12 +62,20 @@ static void configure_state_machine(struct joybus *bus, int mode)
 }
 
 // Enter either host idle mode or target read mode, depending on whether a target is registered
-static inline void enter_idle_mode(struct joybus *bus, bool await_bus_idle)
+static inline void enter_idle_mode(struct joybus *bus, bool await_idle)
 {
   struct joybus_rp2xxx_data *data = &JOYBUS_RP2XXX(bus)->data;
 
   if (bus->target) {
-    // TODO: Wait for bus idle if requested
+    // Wait for bus idle
+    if (await_idle) {
+      absolute_time_t high_since = get_absolute_time();
+      while (absolute_time_diff_us(high_since, get_absolute_time()) < JOYBUS_BUS_IDLE_US) {
+        if (!gpio_get(data->gpio)) {
+          high_since = get_absolute_time();
+        }
+      }
+    }
 
     // Reset read state
     data->read_buf   = bus->command_buffer;

@@ -12,23 +12,26 @@
 
 struct joybus;
 
-/** Bus frequency of an OEM GameCube controller */
+/// Bus frequency of an OEM GameCube controller
 #define JOYBUS_FREQ_GCC                 250000
 
-/** Bus frequency of WaveBird receiver */
+/// Bus frequency of WaveBird receiver
 #define JOYBUS_FREQ_WAVEBIRD            225000
 
-/** Bus frequency of a console */
+/// Bus frequency of a console
 #define JOYBUS_FREQ_CONSOLE             200000
 
-/** Maximum size of a Joybus transfer, in bytes */
+/// Maximum size of a Joybus transfer, in bytes
 #define JOYBUS_BLOCK_SIZE               64
 
-/** Minimum delay between Joybus transfers, in microseconds */
+/// Minimum delay between Joybus transfers, in microseconds
 #define JOYBUS_INTER_TRANSFER_DELAY_US  20
 
-/** Timeout for waiting for a reply from a target, in microseconds */
+/// Timeout for waiting for a reply from a target, in microseconds
 #define JOYBUS_REPLY_TIMEOUT_US         100
+
+/// Minimum line-high time to consider the bus idle, in microseconds
+#define JOYBUS_BUS_IDLE_US              100
 
 /**
  * Macro to cast a backend-specific Joybus instance to a generic Joybus instance.

@@ -40,9 +40,6 @@ ISR_DIRECT_DECLARE(ldma_zli_isr)
 }
 #endif
 
-// SI bus idle period (in microseconds)
-#define BUS_IDLE_US             100
-
 enum {
   BUS_MODE_HOST,
   BUS_MODE_TARGET,
@@ -550,7 +547,7 @@ static int enable_rx(struct joybus *bus)
   uint32_t rx_timer_freq         = CMU_ClockFreqGet(get_timer_clock(data->rx_timer));
   data->host_pulse_period_half   = (rx_timer_freq / data->host_freq) / 2;
   data->target_pulse_period_half = (rx_timer_freq / data->target_freq) / 2;
-  data->bus_idle_period          = rx_timer_freq / 1000000UL * BUS_IDLE_US;
+  data->bus_idle_period          = rx_timer_freq / 1000000UL * JOYBUS_BUS_IDLE_US;
 
   // LDMA RX configuration
   data->rx_config = (LDMA_TransferCfg_t)LDMA_TRANSFER_CFG_PERIPHERAL(get_timer_ldma_signal(data->rx_timer));
