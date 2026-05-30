@@ -30,16 +30,6 @@
 #include <joybus/target.h>
 #include <joybus/backend/gecko.h>
 
-#ifdef __ZEPHYR__
-#include <zephyr/irq.h>
-
-ISR_DIRECT_DECLARE(ldma_zli_isr)
-{
-  LDMA_IRQHandler();
-  return 0;
-}
-#endif
-
 enum {
   BUS_MODE_HOST,
   BUS_MODE_TARGET,
@@ -668,12 +658,6 @@ static int joybus_gecko_enable(struct joybus *bus)
 
   // Initialize sleeptimer for timeouts
   sl_sleeptimer_init();
-
-  // Connect the LDMA interrupt if building for Zephyr
-#ifdef __ZEPHYR__
-  IRQ_DIRECT_CONNECT(LDMA_IRQn, 0, ldma_zli_isr, IRQ_ZERO_LATENCY);
-  irq_enable(LDMA_IRQn);
-#endif
 
   if (bus->target) {
     set_tx_timings(bus, BUS_MODE_TARGET);
