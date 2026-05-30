@@ -14,25 +14,25 @@
  * N64 controller accessory types.
  */
 enum joybus_n64_accessory_type {
-  /** No accessory connected */
+  /// No accessory connected
   JOYBUS_N64_ACCESSORY_NONE = 0,
 
-  /** Accessory type could not be determined */
+  /// Accessory type could not be determined
   JOYBUS_N64_ACCESSORY_UNKNOWN,
 
-  /** Controller Pak */
+  /// Controller Pak
   JOYBUS_N64_ACCESSORY_CONTROLLER_PAK,
 
-  /** Rumble Pak */
+  /// Rumble Pak
   JOYBUS_N64_ACCESSORY_RUMBLE_PAK,
 
-  /** Transfer Pak */
+  /// Transfer Pak
   JOYBUS_N64_ACCESSORY_TRANSFER_PAK,
 
-  /** Bio Sensor */
+  /// Bio Sensor
   JOYBUS_N64_ACCESSORY_BIO_SENSOR,
 
-  /** Snap Station */
+  /// Snap Station
   JOYBUS_N64_ACCESSORY_SNAP_STATION,
 };
 

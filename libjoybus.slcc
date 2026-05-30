@@ -25,3 +25,4 @@ source:
   - path: src/host/n64.c
   - path: src/target/gc_controller.c
   - path: src/target/n64_controller.c
+  - path: src/target/n64_rumble_pak.c

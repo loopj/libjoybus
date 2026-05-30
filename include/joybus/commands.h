@@ -88,6 +88,7 @@
 #define JOYBUS_ID_N64_ACCESSORY_PRESENT   0x01    ///< Accessory present
 #define JOYBUS_ID_N64_ACCESSORY_ABSENT    0x02    ///< Accessory absent
 #define JOYBUS_ID_N64_ACCESSORY_CHANGED   0x03    ///< Accessory changed
+#define JOYBUS_ID_N64_CHECKSUM_ERROR      0x04    ///< Transfer checksum error
 
 // N64 identify status values (VRU)
 #define JOYBUS_ID_N64_VRU_UNINITIALIZED   0x00    ///< VRU is uninitialized
@@ -118,8 +119,8 @@
 /// Device type for a WaveBird receiver
 #define JOYBUS_WAVEBIRD_RECEIVER          (JOYBUS_ID_GCN_DEVICE | JOYBUS_ID_GCN_WIRELESS | JOYBUS_ID_GCN_NO_MOTOR)
 
-/// Size of a Joybus N64 accessory read/write payload
-#define JOYBUS_ACCESSORY_DATA_SIZE        32
+/// Size of a Joybus N64 accessory read/write block
+#define JOYBUS_ACCESSORY_BLOCK_SIZE       32
 
 /**
  * Get the controller type from an "identify" buffer

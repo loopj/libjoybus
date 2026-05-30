@@ -217,8 +217,9 @@ static inline void target_byte_received(struct joybus *bus)
 {
   struct joybus_rp2xxx_data *data = &JOYBUS_RP2XXX(bus)->data;
 
-  // Cancel the transfer timeout
-  cancel_alarm(data->rx_timeout_alarm);
+  // Cancel the transfer timeout (only armed after the first byte)
+  if (data->read_count > 0)
+    cancel_alarm(data->rx_timeout_alarm);
 
   // Save the received byte in the buffer
   data->read_buf[data->read_count] = pio_sm_get(data->pio, data->pio_sm) & 0xFF;

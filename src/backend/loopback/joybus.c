@@ -42,13 +42,16 @@ static int joybus_loopback_transfer(struct joybus *bus, const uint8_t *write_buf
       break;
     } else if (rc < 0) {
       // Error handling command, or command not supported
-      callback(bus, 0, user_data);
+      if (callback)
+        callback(bus, 0, user_data);
+
       return rc;
     }
   }
 
   // Call the transfer complete callback
-  callback(bus, response_length, user_data);
+  if (callback)
+    callback(bus, response_length, user_data);
 
   return 0;
 }

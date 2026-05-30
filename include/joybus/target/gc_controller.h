@@ -1,6 +1,6 @@
 /**
  * @defgroup joybus_target_gc_controller GameCube Controller Target
- * GameCube controller Joybus target
+ * Joybus target implementation for standard GameCube controllers and WaveBird receivers.
  * @ingroup joybus_target
  * @{
  */
@@ -15,7 +15,7 @@
 
 struct joybus_gc_controller;
 
-/** Macro to cast to a GameCube controller target */
+/// Macro to cast from a generic Joybus target to a GameCube controller target
 #define JOYBUS_GC_CONTROLLER(target) ((struct joybus_gc_controller *)(target))
 
 /**
@@ -37,34 +37,35 @@ typedef void (*joybus_gc_controller_motor_cb_t)(struct joybus_gc_controller *con
  * GameCube controller Joybus target.
  */
 struct joybus_gc_controller {
+  /// Base target interface
   struct joybus_target base;
 
-  /**< Controller ID */
+  /// Controller ID
   uint8_t id[3];
 
-  /** Origin input state */
+  /// Origin input state
   struct joybus_gc_controller_input origin;
 
-  /** Current input state */
+  /// Current input state
   struct joybus_gc_controller_input input;
 
-  /** Packed input state buffer */
+  /// Packed input state buffer
   uint8_t packed_input[8];
 
-  /** Whether the input state is valid */
+  /// Whether the input state is valid
   bool input_valid;
 
-  /** Callback for controller reset events */
+  /// Callback for controller reset events
   joybus_gc_controller_reset_cb_t on_reset;
 
-  /** Callback for controller motor state change events */
+  /// Callback for controller motor state change events
   joybus_gc_controller_motor_cb_t on_motor_state_change;
 };
 
 /**
  * Initialize a GameCube controller.
  *
- * This function sets up the initial state, and registers SI command
+ * This function sets up the initial state, and registers Joybus command
  * handlers for OEM GameCube controller, and WaveBird controller commands.
  *
  * @param controller the controller to initialize

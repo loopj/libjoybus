@@ -24,7 +24,7 @@ int main()
   joybus_enable(bus);
 
   // Initialize a N64 controller target as a standard controller
-  joybus_n64_controller_init(&n64_controller, JOYBUS_ID_N64_CONTROLLER);
+  joybus_n64_controller_init(&n64_controller);
 
   // Register the target on the bus
   joybus_target_register(bus, JOYBUS_TARGET(&n64_controller));
