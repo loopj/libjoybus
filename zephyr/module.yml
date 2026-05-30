@@ -1,3 +1,0 @@
-name: libjoybus
-build:
-  cmake: zephyr
