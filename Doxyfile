@@ -3,6 +3,7 @@ PROJECT_NAME           = libjoybus
 PROJECT_BRIEF          = Joybus implementation for 32-bit MCUs
 OUTPUT_DIRECTORY       = .
 INPUT                  = README.md src include docs/_doxygen/groups.dox
+IMAGE_PATH             = images
 RECURSIVE              = YES
 USE_MDFILE_AS_MAINPAGE = README.md
 HTML_HEADER            = docs/_doxygen/header.html
