@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['thanks_0',['Special Thanks',['../index.html#autotoc_md8',1,'']]],
-  ['the_20joybus_1',['Initializing the Joybus',['../index.html#autotoc_md5',1,'']]]
+  ['usage_0',['Usage',['../index.html#autotoc_md4',1,'Usage'],['../group__joybus__backend__gecko.html#autotoc_md11',1,'Usage']]]
 ];

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['usage_0',['Usage',['../index.html#autotoc_md4',1,'Usage'],['../group__joybus__backend__gecko.html#autotoc_md12',1,'Usage']]]
+  ['with_20controllers_0',['Communicating with Controllers',['../index.html#autotoc_md6',1,'']]]
 ];
