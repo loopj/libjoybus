@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['rp2xxx_0',['Gecko Backend for rp2xxx',['..//home/runner/work/libjoybus/libjoybus/src/backend/rp2xxx/README.md#autotoc_md14',1,'']]]
+  ['thanks_0',['Special Thanks',['../index.html#autotoc_md8',1,'']]],
+  ['the_20joybus_1',['Initializing the Joybus',['../index.html#autotoc_md5',1,'']]]
 ];

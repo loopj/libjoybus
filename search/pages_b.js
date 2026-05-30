@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['special_20thanks_0',['Special Thanks',['../index.html#autotoc_md8',1,'']]],
-  ['supported_20platforms_1',['Supported Platforms',['../index.html#autotoc_md2',1,'']]]
+  ['usage_0',['Usage',['../index.html#autotoc_md4',1,'Usage'],['../group__joybus__backend__gecko.html#autotoc_md12',1,'Usage']]]
 ];
