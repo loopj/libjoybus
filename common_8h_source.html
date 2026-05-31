@@ -107,19 +107,19 @@ $(function(){initNavTree('common_8h_source.html','',''); });
 </div><!--header-->
 <div class="contents">
 <div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span></div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#pragma once</span></div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &lt;joybus/bus.h&gt;</span></div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span></div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="keywordtype">int</span> <a class="code hl_function" href="group__joybus__host.html#ga97a43162b8baf8334fc07aaf87ce0360">joybus_identify</a>(<span class="keyword">struct</span> <a class="code hl_struct" href="structjoybus.html">joybus</a> *bus, uint8_t *response, <a class="code hl_typedef" href="group__joybus.html#ga9b3c1aac9f12c49896a283fd635233da">joybus_transfer_cb_t</a> callback, <span class="keywordtype">void</span> *user_data);</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span></div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="keywordtype">int</span> <a class="code hl_function" href="group__joybus__host.html#gae2c44cda5516179c768b5d34a6a57ab1">joybus_reset</a>(<span class="keyword">struct</span> <a class="code hl_struct" href="structjoybus.html">joybus</a> *bus, uint8_t *response, <a class="code hl_typedef" href="group__joybus.html#ga9b3c1aac9f12c49896a283fd635233da">joybus_transfer_cb_t</a> callback, <span class="keywordtype">void</span> *user_data);</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &lt;joybus/bus.h&gt;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="keywordtype">int</span> <a class="code hl_function" href="group__joybus__host.html#ga97a43162b8baf8334fc07aaf87ce0360">joybus_identify</a>(<span class="keyword">struct</span> <a class="code hl_struct" href="structjoybus.html">joybus</a> *bus, uint8_t *response, <a class="code hl_typedef" href="group__joybus.html#ga9b3c1aac9f12c49896a283fd635233da">joybus_transfer_cb_t</a> callback, <span class="keywordtype">void</span> *user_data);</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span></div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="keywordtype">int</span> <a class="code hl_function" href="group__joybus__host.html#gae2c44cda5516179c768b5d34a6a57ab1">joybus_reset</a>(<span class="keyword">struct</span> <a class="code hl_struct" href="structjoybus.html">joybus</a> *bus, uint8_t *response, <a class="code hl_typedef" href="group__joybus.html#ga9b3c1aac9f12c49896a283fd635233da">joybus_transfer_cb_t</a> callback, <span class="keywordtype">void</span> *user_data);</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span></div>
 <div class="ttc" id="agroup__joybus__host_html_ga97a43162b8baf8334fc07aaf87ce0360"><div class="ttname"><a href="group__joybus__host.html#ga97a43162b8baf8334fc07aaf87ce0360">joybus_identify</a></div><div class="ttdeci">int joybus_identify(struct joybus *bus, uint8_t *response, joybus_transfer_cb_t callback, void *user_data)</div><div class="ttdoc">Identify the target device attached to the Joybus.</div><div class="ttdef"><b>Definition</b> common.c:4</div></div>
 <div class="ttc" id="agroup__joybus__host_html_gae2c44cda5516179c768b5d34a6a57ab1"><div class="ttname"><a href="group__joybus__host.html#gae2c44cda5516179c768b5d34a6a57ab1">joybus_reset</a></div><div class="ttdeci">int joybus_reset(struct joybus *bus, uint8_t *response, joybus_transfer_cb_t callback, void *user_data)</div><div class="ttdoc">Reset the target device attached to the Joybus.</div><div class="ttdef"><b>Definition</b> common.c:12</div></div>
-<div class="ttc" id="agroup__joybus_html_ga9b3c1aac9f12c49896a283fd635233da"><div class="ttname"><a href="group__joybus.html#ga9b3c1aac9f12c49896a283fd635233da">joybus_transfer_cb_t</a></div><div class="ttdeci">void(* joybus_transfer_cb_t)(struct joybus *bus, int result, void *user_data)</div><div class="ttdoc">Function type for transfer completion callbacks.</div><div class="ttdef"><b>Definition</b> bus.h:48</div></div>
-<div class="ttc" id="astructjoybus_html"><div class="ttname"><a href="structjoybus.html">joybus</a></div><div class="ttdoc">A Joybus instance.</div><div class="ttdef"><b>Definition</b> bus.h:63</div></div>
+<div class="ttc" id="agroup__joybus_html_ga9b3c1aac9f12c49896a283fd635233da"><div class="ttname"><a href="group__joybus.html#ga9b3c1aac9f12c49896a283fd635233da">joybus_transfer_cb_t</a></div><div class="ttdeci">void(* joybus_transfer_cb_t)(struct joybus *bus, int result, void *user_data)</div><div class="ttdoc">Function type for transfer completion callbacks.</div><div class="ttdef"><b>Definition</b> bus.h:49</div></div>
+<div class="ttc" id="astructjoybus_html"><div class="ttname"><a href="structjoybus.html">joybus</a></div><div class="ttdoc">A Joybus instance.</div><div class="ttdef"><b>Definition</b> bus.h:64</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 </div><!-- container -->

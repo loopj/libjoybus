@@ -11,6 +11,16 @@ var group__joybus =
     [ "JOYBUS_INTER_TRANSFER_DELAY_US", "group__joybus.html#gac5ab3e6873e93e3f6c2ba0759f227912", null ],
     [ "JOYBUS_REPLY_TIMEOUT_US", "group__joybus.html#ga26e7ebcd25e8c5ffabf856df2a3ced6c", null ],
     [ "joybus_transfer_cb_t", "group__joybus.html#ga9b3c1aac9f12c49896a283fd635233da", null ],
+    [ "joybus_error", "group__joybus.html#ga47435eba4c98726f93fdae3c8bb9fd76", [
+      [ "JOYBUS_ERR_DISABLED", "group__joybus.html#gga47435eba4c98726f93fdae3c8bb9fd76a6496af2c91935e2e37a48a43f14dda21", null ],
+      [ "JOYBUS_ERR_BUSY", "group__joybus.html#gga47435eba4c98726f93fdae3c8bb9fd76a861b6a4876c1569f6117a3f4d7601a3d", null ],
+      [ "JOYBUS_ERR_TIMEOUT", "group__joybus.html#gga47435eba4c98726f93fdae3c8bb9fd76a2130afe5fb23ff6f7f2ee49df1441e14", null ],
+      [ "JOYBUS_ERR_NOT_SUPPORTED", "group__joybus.html#gga47435eba4c98726f93fdae3c8bb9fd76a274cd46970af05945e6218f49e40efe0", null ]
+    ] ],
+    [ "joybus_address_checksum", "group__joybus.html#ga395ca3d9f9844388c1b7372a0ae8bedf", null ],
+    [ "joybus_address_checksum_valid", "group__joybus.html#ga03671e51a2e7cdfc222fbe0c39fa1109", null ],
+    [ "joybus_crc8", "group__joybus.html#ga8b7e68726e152ecf2c8e067a50cdc87c", null ],
+    [ "joybus_crc8_update", "group__joybus.html#gaeda8424d5d03778bc6272d81c4b7aba6", null ],
     [ "joybus_disable", "group__joybus.html#gaabcba7cb477ed6aff47bc7db467f348b", null ],
     [ "joybus_enable", "group__joybus.html#ga10316dbaf35990b5c627b2d2f6330248", null ],
     [ "joybus_target_register", "group__joybus.html#gadb1ce9137d553ae521755b77238fc45c", null ],

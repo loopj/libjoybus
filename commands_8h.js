@@ -1,11 +1,6 @@
 var commands_8h =
 [
     [ "JOYBUS_ACCESSORY_BLOCK_SIZE", "commands_8h.html#aeba0b3392291f316c3279dfd07b383e2", null ],
-    [ "JOYBUS_CMD_IDENTIFY", "commands_8h.html#a58c45a432c2bb7a972532a90c39fbcca", null ],
-    [ "JOYBUS_CMD_N64_ACCESSORY_READ", "commands_8h.html#afc3d9f1eb40cf2ffa252a78f88254d9e", null ],
-    [ "JOYBUS_CMD_N64_ACCESSORY_WRITE", "commands_8h.html#a5002b53ee1e64004a248c5fc38246934", null ],
-    [ "JOYBUS_CMD_N64_READ", "commands_8h.html#ab9c855a9fb7def0b7c622df90eb3c71b", null ],
-    [ "JOYBUS_CMD_RESET", "commands_8h.html#aca8d9fbe16523ffdb975099e0e68224a", null ],
     [ "JOYBUS_GAMECUBE_CONTROLLER", "commands_8h.html#a53af24c6c7a7159751a9ec9ccb0560df", null ],
     [ "JOYBUS_ID_GCN_ANALOG_MODE_MASK", "commands_8h.html#a209e0e540f3a932983406923d82d95d7", null ],
     [ "JOYBUS_ID_GCN_DEVICE", "commands_8h.html#a97d4b67ad41a6cb0b2faeb3dd022abb9", null ],

@@ -103,17 +103,17 @@ $(function(){initNavTree('group__joybus__target__n64__accessory.html','',''); })
 </div>
 
 <div class="header">
-  <div class="headertitle"><div class="title">N64 Controller Accessory <div class="ingroups"><a class="el" href="group__joybus__target.html">Target Interface</a> &raquo; <a class="el" href="group__joybus__target__n64__controller.html">N64 Controller Target</a></div></div></div>
+  <div class="headertitle"><div class="title">N64 Controller Accessory <div class="ingroups"><a class="el" href="group__joybus__target.html">Targets</a> &raquo; <a class="el" href="group__joybus__target__n64__controller.html">N64 Controller Target</a></div></div></div>
 </div><!--header-->
 <div class="contents">
 
-<p>Base interface for N64 controller accessories (rumble pak, controller pak, etc.)  
+<p>Interface for implementing N64 controller accessories (rumble pak, controller pak, etc.)  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-groups" class="groupheader"><a id="groups" name="groups"></a>
 Topics</h2></td></tr>
 <tr class="memitem:joybus_5Ftarget_5Fn64_5Frumble_5Fpak" id="r_joybus_5Ftarget_5Fn64_5Frumble_5Fpak"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__joybus__target__n64__rumble__pak.html">N64 Rumble Pak</a></td></tr>
-<tr class="memdesc:group__joybus__target__n64__rumble__pak"><td class="mdescLeft">&#160;</td><td class="mdescRight">N64 rumble pak accessory which exposes a callback for motor state changes. <br /></td></tr>
+<tr class="memdesc:group__joybus__target__n64__rumble__pak"><td class="mdescLeft">&#160;</td><td class="mdescRight">N64 rumble pak accessory implementation which exposes a callback for motor state changes. <br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-nested-classes" class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Data Structures</h2></td></tr>
@@ -128,8 +128,46 @@ Macros</h2></td></tr>
 <tr class="memdesc:ga5a31a063f99ad92fb437b20fdd806e54"><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro to cast a concrete N64 accessory instance to a generic N64 accessory instance.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
-<p>Base interface for N64 controller accessories (rumble pak, controller pak, etc.) </p>
-<a name="doc-define-members" id="doc-define-members"></a><h2 id="header-doc-define-members" class="groupheader">Macro Definition Documentation</h2>
+<p>Interface for implementing N64 controller accessories (rumble pak, controller pak, etc.) </p>
+<p>An N64 controller accessory plugs into the expansion port (officially the "Joyport") on the back of an N64 controller, such as a Rumble Pak, Controller Pak, or Transfer Pak. The console reaches it indirectly: it sends read and write commands to the controller, which forwards them to whatever accessory is attached.</p>
+<p>Every accessory presents a flat 16-bit address space, read and written 32 bytes at a time (<a class="el" href="commands_8h.html#aeba0b3392291f316c3279dfd07b383e2" title="Size of a Joybus N64 accessory read/write block.">JOYBUS_ACCESSORY_BLOCK_SIZE</a>). It is up to the accessory how it manages the address space, and what reads and writes to each address do. For example, a Controller Pak uses the address space to map to 32 KB of storage, but a Rumble Pak treats the addresses as control registers for the rumble motor.</p>
+<p>The protocol details (command framing, the address checksum, and the data CRC) are handled by libjoybus, so accessory implementations just need to implement the logic for responding to reads and writes at each address.</p>
+<p>To create your own accessory, define a struct whose first member is a <a class="el" href="structjoybus__n64__accessory.html" title="An N64 controller accessory, such as a rumble pak or controller pak.">joybus_n64_accessory</a> (so it can be cast through <a class="el" href="#ga5a31a063f99ad92fb437b20fdd806e54" title="Macro to cast a concrete N64 accessory instance to a generic N64 accessory instance.">JOYBUS_N64_ACCESSORY</a>), point its api at a <a class="el" href="structjoybus__n64__accessory__api.html" title="API for implementing an N64 controller accessory.">joybus_n64_accessory_api</a> table implementing read_block and write_block, and attach it with <a class="el" href="group__joybus__target__n64__controller.html#gaedb778418fa0d4be9f8c3ebbef50d4c2" title="Attach an accessory to the controller.">joybus_n64_controller_attach_accessory()</a>.</p>
+<h3 class="doxsection"><a class="anchor" id="autotoc_md10"></a>
+Example</h3>
+<div class="fragment"><div class="line"><span class="comment">// Implement the read/write handlers for your accessory</span></div>
+<div class="line"><span class="keyword">static</span> <span class="keywordtype">void</span> my_accessory_read(<span class="keyword">struct</span> <a class="code hl_struct" href="structjoybus__n64__accessory.html">joybus_n64_accessory</a> *acc, uint16_t addr, uint8_t buf[32]) {</div>
+<div class="line">  <span class="comment">// Fill buf with the 32 bytes the console should receive for this block</span></div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line"><span class="keyword">static</span> <span class="keywordtype">void</span> my_accessory_write(<span class="keyword">struct</span> <a class="code hl_struct" href="structjoybus__n64__accessory.html">joybus_n64_accessory</a> *acc, uint16_t addr, <span class="keyword">const</span> uint8_t buf[32]) {</div>
+<div class="line">  <span class="comment">// Handle the 32 bytes the console sent for this block</span></div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Expose the handlers through an API table</span></div>
+<div class="line"><span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">struct </span><a class="code hl_struct" href="structjoybus__n64__accessory__api.html">joybus_n64_accessory_api</a> my_accessory_api = {</div>
+<div class="line">  .read_block = my_accessory_read,</div>
+<div class="line">  .write_block = my_accessory_write,</div>
+<div class="line">};</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Define the accessory struct</span></div>
+<div class="line"><span class="keyword">struct </span>my_accessory {</div>
+<div class="line">  <span class="comment">// Base accessory interface, must be first member for casting to work</span></div>
+<div class="line">  <span class="keyword">struct </span>joybus_n64_accessory base;</div>
+<div class="line"> </div>
+<div class="line">  <span class="comment">// Any custom state your accessory needs goes here</span></div>
+<div class="line">};</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Provide an init function to set up the api pointer and any state</span></div>
+<div class="line"><span class="keywordtype">void</span> my_accessory_init(<span class="keyword">struct</span> my_accessory *acc) {</div>
+<div class="line">  <span class="comment">// Attach the API table</span></div>
+<div class="line">  acc-&gt;base.api = &amp;my_accessory_api;</div>
+<div class="line"> </div>
+<div class="line">  <span class="comment">// Initialize any custom state here</span></div>
+<div class="line">}</div>
+<div class="ttc" id="astructjoybus__n64__accessory__api_html"><div class="ttname"><a href="structjoybus__n64__accessory__api.html">joybus_n64_accessory_api</a></div><div class="ttdoc">API for implementing an N64 controller accessory.</div><div class="ttdef"><b>Definition</b> n64_accessory.h:82</div></div>
+<div class="ttc" id="astructjoybus__n64__accessory_html"><div class="ttname"><a href="structjoybus__n64__accessory.html">joybus_n64_accessory</a></div><div class="ttdoc">An N64 controller accessory, such as a rumble pak or controller pak.</div><div class="ttdef"><b>Definition</b> n64_accessory.h:113</div></div>
+</div><!-- fragment --> <a name="doc-define-members" id="doc-define-members"></a><h2 id="header-doc-define-members" class="groupheader">Macro Definition Documentation</h2>
 <a id="ga5a31a063f99ad92fb437b20fdd806e54" name="ga5a31a063f99ad92fb437b20fdd806e54"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga5a31a063f99ad92fb437b20fdd806e54">&#9670;&#160;</a></span>JOYBUS_N64_ACCESSORY</h2>
 
@@ -145,7 +183,6 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line">((<span class="keyword">struct </span><a class="code hl_struct" href="structjoybus__n64__accessory.html">joybus_n64_accessory</a> *)(acc))</div>
-<div class="ttc" id="astructjoybus__n64__accessory_html"><div class="ttname"><a href="structjoybus__n64__accessory.html">joybus_n64_accessory</a></div><div class="ttdoc">An N64 controller accessory, such as a rumble pak or controller pak.</div><div class="ttdef"><b>Definition</b> n64_accessory.h:50</div></div>
 </div><!-- fragment -->
 <p>Macro to cast a concrete N64 accessory instance to a generic N64 accessory instance. </p>
 

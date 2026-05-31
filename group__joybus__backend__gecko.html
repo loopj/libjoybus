@@ -107,7 +107,7 @@ $(function(){initNavTree('group__joybus__backend__gecko.html','',''); });
 </div><!--header-->
 <div class="contents">
 
-<p>Joybus backend for Silicon Labs EFM32/EFR32 MCUs using the Gecko SDK.  
+<p>Silicon Labs EFM32/EFR32 Joybus backend.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-nested-classes" class="groupheader"><a id="nested-classes" name="nested-classes"></a>
@@ -131,31 +131,8 @@ Functions</h2></td></tr>
 <tr class="memdesc:gaf6ce4eb5cfc3d9b3e697ed48be6630f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize a Gecko Joybus instance.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
-<p>Joybus backend for Silicon Labs EFM32/EFR32 MCUs using the Gecko SDK. </p>
-<h3 class="doxsection"><a class="anchor" id="autotoc_md10"></a>
-Configuration</h3>
-<p>The Gecko backend is made available by setting <span class="tt">JOYBUS_BACKEND_GECKO=ON</span> in your CMake configuration.</p>
-<h3 class="doxsection"><a class="anchor" id="autotoc_md11"></a>
-Usage</h3>
-<div class="fragment"><div class="line"><span class="preprocessor">#include &lt;joybus/joybus.h&gt;</span></div>
-<div class="line"><span class="preprocessor">#include &lt;joybus/backend/gecko.h&gt;</span></div>
-<div class="line"> </div>
-<div class="line"><span class="keyword">struct </span><a class="code hl_struct" href="structjoybus__gecko.html">joybus_gecko</a> gecko_bus;</div>
-<div class="line"><span class="keyword">struct </span><a class="code hl_struct" href="structjoybus.html">joybus</a> *bus = <a class="code hl_define" href="group__joybus.html#gaf06db642865d9aae04c89330d3b9cc25">JOYBUS</a>(&amp;gecko_bus);</div>
-<div class="line"> </div>
-<div class="line"><span class="keywordtype">void</span> main() {</div>
-<div class="line">  <span class="comment">// Initialize and enable the bus using the Gecko backend</span></div>
-<div class="line">  <a class="code hl_function" href="#gaf6ce4eb5cfc3d9b3e697ed48be6630f5">joybus_gecko_init</a>(&amp;gecko_bus, gpioPortD, 3, TIMER1, USART0);</div>
-<div class="line">  <a class="code hl_function" href="group__joybus.html#ga10316dbaf35990b5c627b2d2f6330248">joybus_enable</a>(bus);</div>
-<div class="line"> </div>
-<div class="line">  <span class="comment">// Use the bus...</span></div>
-<div class="line">}</div>
-<div class="ttc" id="agroup__joybus__backend__gecko_html_gaf6ce4eb5cfc3d9b3e697ed48be6630f5"><div class="ttname"><a href="#gaf6ce4eb5cfc3d9b3e697ed48be6630f5">joybus_gecko_init</a></div><div class="ttdeci">int joybus_gecko_init(struct joybus_gecko *gecko_bus, GPIO_Port_TypeDef port, uint8_t pin, TIMER_TypeDef *rx_timer, USART_TypeDef *tx_usart)</div><div class="ttdoc">Initialize a Gecko Joybus instance.</div><div class="ttdef"><b>Definition</b> joybus.c:766</div></div>
-<div class="ttc" id="agroup__joybus_html_ga10316dbaf35990b5c627b2d2f6330248"><div class="ttname"><a href="group__joybus.html#ga10316dbaf35990b5c627b2d2f6330248">joybus_enable</a></div><div class="ttdeci">static int joybus_enable(struct joybus *bus)</div><div class="ttdoc">Enable the Joybus instance.</div><div class="ttdef"><b>Definition</b> bus.h:75</div></div>
-<div class="ttc" id="agroup__joybus_html_gaf06db642865d9aae04c89330d3b9cc25"><div class="ttname"><a href="group__joybus.html#gaf06db642865d9aae04c89330d3b9cc25">JOYBUS</a></div><div class="ttdeci">#define JOYBUS(bus)</div><div class="ttdoc">Macro to cast a backend-specific Joybus instance to a generic Joybus instance.</div><div class="ttdef"><b>Definition</b> bus.h:39</div></div>
-<div class="ttc" id="astructjoybus__gecko_html"><div class="ttname"><a href="structjoybus__gecko.html">joybus_gecko</a></div><div class="ttdoc">A Gecko Joybus instance.</div><div class="ttdef"><b>Definition</b> gecko.h:108</div></div>
-<div class="ttc" id="astructjoybus_html"><div class="ttname"><a href="structjoybus.html">joybus</a></div><div class="ttdoc">A Joybus instance.</div><div class="ttdef"><b>Definition</b> bus.h:63</div></div>
-</div><!-- fragment --> <a name="doc-define-members" id="doc-define-members"></a><h2 id="header-doc-define-members" class="groupheader">Macro Definition Documentation</h2>
+<p>Silicon Labs EFM32/EFR32 Joybus backend. </p>
+<a name="doc-define-members" id="doc-define-members"></a><h2 id="header-doc-define-members" class="groupheader">Macro Definition Documentation</h2>
 <a id="ga9f354a31f6221e2ccad2a803a899da42" name="ga9f354a31f6221e2ccad2a803a899da42"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga9f354a31f6221e2ccad2a803a899da42">&#9670;&#160;</a></span>JOYBUS_GECKO</h2>
 
@@ -171,6 +148,7 @@ Usage</h3>
       </table>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line">((<span class="keyword">struct </span><a class="code hl_struct" href="structjoybus__gecko.html">joybus_gecko</a> *)(bus))</div>
+<div class="ttc" id="astructjoybus__gecko_html"><div class="ttname"><a href="structjoybus__gecko.html">joybus_gecko</a></div><div class="ttdoc">A Gecko Joybus instance.</div><div class="ttdef"><b>Definition</b> gecko.h:87</div></div>
 </div><!-- fragment -->
 <p>Macro to cast a generic Joybus instance to a Gecko Joybus instance. </p>
 

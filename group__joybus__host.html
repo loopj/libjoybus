@@ -154,7 +154,7 @@ Functions</h2></td></tr>
 <tr class="memitem:ga2d8a6c27b535f426efb8435bde3d796c" id="r_ga2d8a6c27b535f426efb8435bde3d796c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga2d8a6c27b535f426efb8435bde3d796c">joybus_gcn_fix_device</a> (struct <a class="el" href="structjoybus.html">joybus</a> *bus, uint16_t wireless_id, uint8_t *response, <a class="el" href="group__joybus.html#ga9b3c1aac9f12c49896a283fd635233da">joybus_transfer_cb_t</a> callback, void *user_data)</td></tr>
 <tr class="memdesc:ga2d8a6c27b535f426efb8435bde3d796c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send a "fix device" command to a WaveBird controller.  <br /></td></tr>
 <tr class="memitem:gae06d49245a8575ca2528d0e6ea1dd3ef" id="r_gae06d49245a8575ca2528d0e6ea1dd3ef"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#gae06d49245a8575ca2528d0e6ea1dd3ef">joybus_gcn_unpack_input</a> (struct <a class="el" href="structjoybus__gc__controller__input.html">joybus_gc_controller_input</a> *dest, const uint8_t *src, enum <a class="el" href="gamecube_8h.html#a33b898739d5994e2a707715229a240b5">joybus_gcn_analog_mode</a> analog_mode)</td></tr>
-<tr class="memdesc:gae06d49245a8575ca2528d0e6ea1dd3ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unpack raw input data from a GameCube controller.  <br /></td></tr>
+<tr class="memdesc:gae06d49245a8575ca2528d0e6ea1dd3ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper function to unpack raw input data from a GameCube controller.  <br /></td></tr>
 <tr class="memitem:gafdf1ab60182bbb42cb54e4b5c802ec68" id="r_gafdf1ab60182bbb42cb54e4b5c802ec68"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#gafdf1ab60182bbb42cb54e4b5c802ec68">joybus_n64_read</a> (struct <a class="el" href="structjoybus.html">joybus</a> *bus, uint8_t *response, <a class="el" href="group__joybus.html#ga9b3c1aac9f12c49896a283fd635233da">joybus_transfer_cb_t</a> callback, void *user_data)</td></tr>
 <tr class="memdesc:gafdf1ab60182bbb42cb54e4b5c802ec68"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read the current input state of an N64 controller.  <br /></td></tr>
 <tr class="memitem:gaf59f4b654e2024cdda5252811508fd8b" id="r_gaf59f4b654e2024cdda5252811508fd8b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#gaf59f4b654e2024cdda5252811508fd8b">joybus_n64_accessory_write</a> (struct <a class="el" href="structjoybus.html">joybus</a> *bus, uint16_t addr, const uint8_t *data, uint8_t *response, <a class="el" href="group__joybus.html#ga9b3c1aac9f12c49896a283fd635233da">joybus_transfer_cb_t</a> callback, void *user_data)</td></tr>
@@ -162,17 +162,14 @@ Functions</h2></td></tr>
 <tr class="memitem:gac23da3d20e51c21a336c86746c517d92" id="r_gac23da3d20e51c21a336c86746c517d92"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#gac23da3d20e51c21a336c86746c517d92">joybus_n64_accessory_read</a> (struct <a class="el" href="structjoybus.html">joybus</a> *bus, uint16_t addr, uint8_t *response, <a class="el" href="group__joybus.html#ga9b3c1aac9f12c49896a283fd635233da">joybus_transfer_cb_t</a> callback, void *user_data)</td></tr>
 <tr class="memdesc:gac23da3d20e51c21a336c86746c517d92"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read data from a N64 controller's accessory port.  <br /></td></tr>
 <tr class="memitem:gab82e436c793c21bad3d6485aec730887" id="r_gab82e436c793c21bad3d6485aec730887"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#gab82e436c793c21bad3d6485aec730887">joybus_n64_accessory_detect</a> (struct <a class="el" href="structjoybus.html">joybus</a> *bus, <a class="el" href="#ga0c99b5404b7fbbc67ba19b225c3fdb2c">joybus_n64_accessory_detect_cb_t</a> callback, void *user_data)</td></tr>
-<tr class="memdesc:gab82e436c793c21bad3d6485aec730887"><td class="mdescLeft">&#160;</td><td class="mdescRight">Detect the accessory connected to a N64 controller.  <br /></td></tr>
+<tr class="memdesc:gab82e436c793c21bad3d6485aec730887"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper function to detect the accessory connected to a N64 controller.  <br /></td></tr>
 <tr class="memitem:gafa93b884577b45cd89fb68fa17e28f05" id="r_gafa93b884577b45cd89fb68fa17e28f05"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#gafa93b884577b45cd89fb68fa17e28f05">joybus_n64_motor_start</a> (struct <a class="el" href="structjoybus.html">joybus</a> *bus)</td></tr>
-<tr class="memdesc:gafa93b884577b45cd89fb68fa17e28f05"><td class="mdescLeft">&#160;</td><td class="mdescRight">Start the rumble motor in a N64 Rumble Pak.  <br /></td></tr>
+<tr class="memdesc:gafa93b884577b45cd89fb68fa17e28f05"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper function to start the rumble motor in a N64 Rumble Pak.  <br /></td></tr>
 <tr class="memitem:gaea5b0a29a01b1ee582c8ea1a2981b11d" id="r_gaea5b0a29a01b1ee582c8ea1a2981b11d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#gaea5b0a29a01b1ee582c8ea1a2981b11d">joybus_n64_motor_stop</a> (struct <a class="el" href="structjoybus.html">joybus</a> *bus)</td></tr>
-<tr class="memdesc:gaea5b0a29a01b1ee582c8ea1a2981b11d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stop the rumble motor in a N64 Rumble Pak.  <br /></td></tr>
+<tr class="memdesc:gaea5b0a29a01b1ee582c8ea1a2981b11d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper function to stop the rumble motor in a N64 Rumble Pak.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <p>Commands for communicating with GameCube and N64 controllers. </p>
-<p>N64 specific Joybus commands.</p>
-<p>GameCube specific Joybus commands.</p>
-<p>Common Joybus commands.</p>
 <a name="doc-typedef-members" id="doc-typedef-members"></a><h2 id="header-doc-typedef-members" class="groupheader">Typedef Documentation</h2>
 <a id="ga0c99b5404b7fbbc67ba19b225c3fdb2c" name="ga0c99b5404b7fbbc67ba19b225c3fdb2c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga0c99b5404b7fbbc67ba19b225c3fdb2c">&#9670;&#160;</a></span>joybus_n64_accessory_detect_cb_t</h2>
@@ -538,7 +535,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Unpack raw input data from a GameCube controller. </p>
+<p>Helper function to unpack raw input data from a GameCube controller. </p>
 <p>The "full" internal input state of a GameCube controller is 10 bytes long, so there are various ways to "pack" the input state into 8 bytes. Depending on the analog mode, either one pair of analog inputs can be omitted, or two pairs of analog inputs can be truncated to 4 bits.</p>
 <p>All production games, with the exception of Luigi's Mansion, use analog mode 3. This mode omits the analog A/B inputs, and sends the substick X/Y and triggers at full precision. Analog A/B buttons were only present in pre-production GameCube controllers.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -620,7 +617,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Detect the accessory connected to a N64 controller. </p>
+<p>Helper function to detect the accessory connected to a N64 controller. </p>
 <p>This function initiates an asynchronous sequence of commands to detect the accessory type. The provided callback will be called with the detected accessory type once the detection sequence is complete.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -754,7 +751,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Start the rumble motor in a N64 Rumble Pak. </p>
+<p>Helper function to start the rumble motor in a N64 Rumble Pak. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">bus</td><td>the Joybus to use </td></tr>
@@ -779,7 +776,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Stop the rumble motor in a N64 Rumble Pak. </p>
+<p>Helper function to stop the rumble motor in a N64 Rumble Pak. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">bus</td><td>the Joybus to use </td></tr>
