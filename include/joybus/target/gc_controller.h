@@ -1,7 +1,9 @@
 /**
  * @defgroup joybus_target_gc_controller GameCube Controller Target
- * Joybus target implementation for standard GameCube controllers and WaveBird receivers.
  * @ingroup joybus_target
+ *
+ * Joybus target implementation for standard GameCube controllers and WaveBird receivers.
+ *
  * @{
  */
 

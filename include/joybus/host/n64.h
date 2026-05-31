@@ -1,7 +1,6 @@
 /**
- * N64 specific Joybus commands.
- *
  * @addtogroup joybus_host
+ *
  * @{
  */
 
@@ -90,7 +89,7 @@ int joybus_n64_accessory_read(struct joybus *bus, uint16_t addr, uint8_t *respon
                               void *user_data);
 
 /**
- * Detect the accessory connected to a N64 controller.
+ * Helper function to detect the accessory connected to a N64 controller.
  *
  * This function initiates an asynchronous sequence of commands to detect the accessory type.
  * The provided callback will be called with the detected accessory type once the detection
@@ -103,14 +102,14 @@ int joybus_n64_accessory_read(struct joybus *bus, uint16_t addr, uint8_t *respon
 void joybus_n64_accessory_detect(struct joybus *bus, joybus_n64_accessory_detect_cb_t callback, void *user_data);
 
 /**
- * Start the rumble motor in a N64 Rumble Pak.
+ * Helper function to start the rumble motor in a N64 Rumble Pak.
  *
  * @param bus the Joybus to use
  */
 void joybus_n64_motor_start(struct joybus *bus);
 
 /**
- * Stop the rumble motor in a N64 Rumble Pak.
+ * Helper function to stop the rumble motor in a N64 Rumble Pak.
  *
  * @param bus the Joybus to use
  */

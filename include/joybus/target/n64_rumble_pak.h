@@ -1,7 +1,10 @@
 /**
  * @defgroup joybus_target_n64_rumble_pak N64 Rumble Pak
- * N64 rumble pak accessory which exposes a callback for motor state changes.
  * @ingroup joybus_target_n64_accessory
+ *
+ * N64 rumble pak accessory implementation which exposes a callback for motor
+ * state changes.
+ *
  * @{
  */
 

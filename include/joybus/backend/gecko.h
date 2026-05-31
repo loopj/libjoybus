@@ -1,30 +1,9 @@
 /**
- * Joybus backend for Silicon Labs EFM32/EFR32 MCUs using the Gecko SDK
- *
- * ### Configuration
- *
- * The Gecko backend is made available by setting `JOYBUS_BACKEND_GECKO=ON` in your CMake configuration.
- *
- * ### Usage
- *
- * ```c
- * #include <joybus/joybus.h>
- * #include <joybus/backend/gecko.h>
- *
- * struct joybus_gecko gecko_bus;
- * struct joybus *bus = JOYBUS(&gecko_bus);
- *
- * void main() {
- *   // Initialize and enable the bus using the Gecko backend
- *   joybus_gecko_init(&gecko_bus, gpioPortD, 3, TIMER1, USART0);
- *   joybus_enable(bus);
- *
- *   // Use the bus...
- * }
- * ```
- *
  * @defgroup joybus_backend_gecko Gecko Backend
  * @ingroup joybus_backends
+ *
+ * Silicon Labs EFM32/EFR32 Joybus backend.
+ *
  * @{
  */
 

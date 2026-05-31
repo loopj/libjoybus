@@ -1,8 +1,9 @@
 /**
- * Raspberry Pi RP2040/RP2350 Joybus backend
- *
  * @defgroup joybus_backend_rp2xxx RP2xxx Backend
  * @ingroup joybus_backends
+ *
+ * Raspberry Pi RP2040/RP2350 Joybus backend
+ *
  * @{
  */
 
