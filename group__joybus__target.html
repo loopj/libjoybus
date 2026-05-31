@@ -143,7 +143,56 @@ Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <p>Interfaces for implementing Joybus targets and N64 accessories. </p>
-<a name="doc-define-members" id="doc-define-members"></a><h2 id="header-doc-define-members" class="groupheader">Macro Definition Documentation</h2>
+<p>A Joybus target is a device on the bus that responds to commands from a host (the console), such as an N64 or GameCube controller.</p>
+<p>Commands arrive one byte at a time. As each byte is received, libjoybus calls the <a class="el" href="structjoybus__target__api.html#a35bfc70b5f445a45680b229a12c43f26" title="Handle a received command byte.">joybus_target_api::byte_received</a> handler with the bytes accumulated so far. The handler inspects them to decide how many more bytes the command needs, returning the count of bytes still expected.</p>
+<p>To send a response, the handler must call the "response ready" callback with a pointer to the (long-lived) response data and its length.</p>
+<p>Handlers should call the response callback as soon as the response is ready, even if they are still expecting more command bytes. For many commands, the response data is fully determined by the first few bytes of the command. This allows the backend to start transmitting the response <em>immediately</em> after the last byte is received.</p>
+<p>To create your own target, define a struct whose first member is a <a class="el" href="structjoybus__target.html" title="Interface for a Joybus target, a device on the Joybus which responds to commands from a host.">joybus_target</a> (so it can be cast through <a class="el" href="#ga261618f4fa23d85cf113ee51f67d4a61" title="Macro to cast a concrete Joybus target instance to a generic Joybus target instance.">JOYBUS_TARGET</a>), point its api at a <a class="el" href="structjoybus__target__api.html" title="API for implementing a Joybus target.">joybus_target_api</a> table, and register it on a bus with <a class="el" href="group__joybus.html#gadb1ce9137d553ae521755b77238fc45c" title="Enable Joybus &quot;target&quot; mode, and register a target to handle commands.">joybus_target_register()</a>.</p>
+<h3 class="doxsection"><a class="anchor" id="autotoc_md10"></a>
+Example</h3>
+<div class="fragment"><div class="line"><span class="comment">// Command handler for the target</span></div>
+<div class="line"><span class="keyword">static</span> <span class="keywordtype">int</span> my_target_byte_received(<span class="keyword">struct</span> <a class="code hl_struct" href="structjoybus__target.html">joybus_target</a> *target, <span class="keyword">const</span> uint8_t *command, uint8_t byte_idx,</div>
+<div class="line">                                   <a class="code hl_typedef" href="#ga332cb12fb4b59bad4e8738d22b6499b1">joybus_target_response_cb_t</a> response_ready, <span class="keywordtype">void</span> *user_data) {</div>
+<div class="line">  <span class="keywordflow">switch</span> (command[0]) {</div>
+<div class="line">    <span class="keywordflow">case</span> 0x00:</div>
+<div class="line">      uint8_t response[] = {0x05, 0x00, 0x01};</div>
+<div class="line">      response_ready(response, <span class="keyword">sizeof</span>(response), user_data);</div>
+<div class="line">      <span class="keywordflow">return</span> 0;</div>
+<div class="line">  }</div>
+<div class="line"> </div>
+<div class="line">  <span class="keywordflow">return</span> -<a class="code hl_enumvalue" href="group__joybus.html#gga47435eba4c98726f93fdae3c8bb9fd76a274cd46970af05945e6218f49e40efe0">JOYBUS_ERR_NOT_SUPPORTED</a>;</div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Expose the handler through an API table</span></div>
+<div class="line"><span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">struct </span><a class="code hl_struct" href="structjoybus__target__api.html">joybus_target_api</a> my_target_api = {</div>
+<div class="line">  .byte_received = my_target_byte_received,</div>
+<div class="line">};</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Define the target struct</span></div>
+<div class="line"><span class="keyword">struct </span>my_target {</div>
+<div class="line">  <span class="comment">// Base target interface, must be first member for casting to work</span></div>
+<div class="line">  <span class="keyword">struct </span>joybus_target base;</div>
+<div class="line"> </div>
+<div class="line">  <span class="comment">// Any custom state your target needs goes here</span></div>
+<div class="line">};</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Provide an init function to set up the api pointer and any state</span></div>
+<div class="line"><span class="keywordtype">void</span> my_target_init(<span class="keyword">struct</span> my_target *target) {</div>
+<div class="line">  <span class="comment">// Attach the API table</span></div>
+<div class="line">  target-&gt;base.api = &amp;my_target_api;</div>
+<div class="line"> </div>
+<div class="line">  <span class="comment">// Initialize any custom state here</span></div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Register the target on a bus to start handling commands</span></div>
+<div class="line"><a class="code hl_function" href="group__joybus.html#gadb1ce9137d553ae521755b77238fc45c">joybus_target_register</a>(bus, <a class="code hl_define" href="#ga261618f4fa23d85cf113ee51f67d4a61">JOYBUS_TARGET</a>(&amp;my_target));</div>
+<div class="ttc" id="agroup__joybus__target_html_ga261618f4fa23d85cf113ee51f67d4a61"><div class="ttname"><a href="#ga261618f4fa23d85cf113ee51f67d4a61">JOYBUS_TARGET</a></div><div class="ttdeci">#define JOYBUS_TARGET(target)</div><div class="ttdoc">Macro to cast a concrete Joybus target instance to a generic Joybus target instance.</div><div class="ttdef"><b>Definition</b> target.h:78</div></div>
+<div class="ttc" id="agroup__joybus__target_html_ga332cb12fb4b59bad4e8738d22b6499b1"><div class="ttname"><a href="#ga332cb12fb4b59bad4e8738d22b6499b1">joybus_target_response_cb_t</a></div><div class="ttdeci">void(* joybus_target_response_cb_t)(const uint8_t *response, uint8_t len, void *user_data)</div><div class="ttdoc">Callback type for sending responses from target command handlers.</div><div class="ttdef"><b>Definition</b> target.h:87</div></div>
+<div class="ttc" id="agroup__joybus_html_gadb1ce9137d553ae521755b77238fc45c"><div class="ttname"><a href="group__joybus.html#gadb1ce9137d553ae521755b77238fc45c">joybus_target_register</a></div><div class="ttdeci">static int joybus_target_register(struct joybus *bus, struct joybus_target *target)</div><div class="ttdoc">Enable Joybus &quot;target&quot; mode, and register a target to handle commands.</div><div class="ttdef"><b>Definition</b> bus.h:120</div></div>
+<div class="ttc" id="agroup__joybus_html_gga47435eba4c98726f93fdae3c8bb9fd76a274cd46970af05945e6218f49e40efe0"><div class="ttname"><a href="group__joybus.html#gga47435eba4c98726f93fdae3c8bb9fd76a274cd46970af05945e6218f49e40efe0">JOYBUS_ERR_NOT_SUPPORTED</a></div><div class="ttdeci">@ JOYBUS_ERR_NOT_SUPPORTED</div><div class="ttdoc">Command not supported by Joybus target.</div><div class="ttdef"><b>Definition</b> errors.h:22</div></div>
+<div class="ttc" id="astructjoybus__target__api_html"><div class="ttname"><a href="structjoybus__target__api.html">joybus_target_api</a></div><div class="ttdoc">API for implementing a Joybus target.</div><div class="ttdef"><b>Definition</b> target.h:92</div></div>
+<div class="ttc" id="astructjoybus__target_html"><div class="ttname"><a href="structjoybus__target.html">joybus_target</a></div><div class="ttdoc">Interface for a Joybus target, a device on the Joybus which responds to commands from a host.</div><div class="ttdef"><b>Definition</b> target.h:110</div></div>
+</div><!-- fragment --> <a name="doc-define-members" id="doc-define-members"></a><h2 id="header-doc-define-members" class="groupheader">Macro Definition Documentation</h2>
 <a id="ga261618f4fa23d85cf113ee51f67d4a61" name="ga261618f4fa23d85cf113ee51f67d4a61"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga261618f4fa23d85cf113ee51f67d4a61">&#9670;&#160;</a></span>JOYBUS_TARGET</h2>
 
@@ -159,7 +208,6 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line">((<span class="keyword">struct </span><a class="code hl_struct" href="structjoybus__target.html">joybus_target</a> *)(target))</div>
-<div class="ttc" id="astructjoybus__target_html"><div class="ttname"><a href="structjoybus__target.html">joybus_target</a></div><div class="ttdoc">Interface for a Joybus target, a device on the Joybus which responds to commands from a host.</div><div class="ttdef"><b>Definition</b> target.h:46</div></div>
 </div><!-- fragment -->
 <p>Macro to cast a concrete Joybus target instance to a generic Joybus target instance. </p>
 
