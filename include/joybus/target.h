@@ -1,5 +1,69 @@
 /**
  * @addtogroup joybus_target
+ *
+ * A Joybus target is a device on the bus that responds to commands from a host
+ * (the console), such as an N64 or GameCube controller.
+ *
+ * Commands arrive one byte at a time. As each byte is received, libjoybus
+ * calls the ::joybus_target_api::byte_received handler with the bytes
+ * accumulated so far. The handler inspects them to decide how many more bytes
+ * the command needs, returning the count of bytes still expected.
+ *
+ * To send a response, the handler must call the "response ready" callback with
+ * a pointer to the (long-lived) response data and its length.
+ *
+ * Handlers should call the response callback as soon as the response is ready,
+ * even if they are still expecting more command bytes. For many commands, the
+ * response data is fully determined by the first few bytes of the command. This
+ * allows the backend to start transmitting the response *immediately* after
+ * the last byte is received.
+ *
+ * To create your own target, define a struct whose first member is a
+ * ::joybus_target (so it can be cast through ::JOYBUS_TARGET), point its api
+ * at a ::joybus_target_api table, and register it on a bus with
+ * joybus_target_register().
+ *
+ * ### Example
+ *
+ * ```c
+ * // Command handler for the target
+ * static int my_target_byte_received(struct joybus_target *target, const uint8_t *command, uint8_t byte_idx,
+ *                                    joybus_target_response_cb_t response_ready, void *user_data) {
+ *   switch (command[0]) {
+ *     case 0x00:
+ *       uint8_t response[] = {0x05, 0x00, 0x01};
+ *       response_ready(response, sizeof(response), user_data);
+ *       return 0;
+ *   }
+ *
+ *   return -JOYBUS_ERR_NOT_SUPPORTED;
+ * }
+ *
+ * // Expose the handler through an API table
+ * static const struct joybus_target_api my_target_api = {
+ *   .byte_received = my_target_byte_received,
+ * };
+ *
+ * // Define the target struct
+ * struct my_target {
+ *   // Base target interface, must be first member for casting to work
+ *   struct joybus_target base;
+ *
+ *   // Any custom state your target needs goes here
+ * };
+ *
+ * // Provide an init function to set up the api pointer and any state
+ * void my_target_init(struct my_target *target) {
+ *   // Attach the API table
+ *   target->base.api = &my_target_api;
+ *
+ *   // Initialize any custom state here
+ * }
+ *
+ * // Register the target on a bus to start handling commands
+ * joybus_target_register(bus, JOYBUS_TARGET(&my_target));
+ * ```
+ *
  * @{
  */
 
