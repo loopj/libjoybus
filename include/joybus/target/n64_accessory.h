@@ -24,8 +24,8 @@
  *
  * To create your own accessory, define a struct whose first member is a
  * ::joybus_n64_accessory (so it can be cast through ::JOYBUS_N64_ACCESSORY),
- * point its api at a ::joybus_n64_accessory_api table implementing read_block
- * and write_block, and attach it with joybus_n64_controller_attach_accessory().
+ * point its api at a ::joybus_n64_accessory_api table, and attach it with
+ * joybus_n64_controller_attach_accessory().
  *
  * ### Example
  *
