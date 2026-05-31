@@ -17,7 +17,7 @@ add_subdirectory(${LIBJOYBUS_ROOT} ${CMAKE_BINARY_DIR}/_deps/libjoybus-build)
 add_executable(n64-target main.c)
 
 # Link with the standard library and libjoybus
-target_link_libraries(n64-target pico_stdlib joybus)
+target_link_libraries(n64-target pico_stdlib hardware_adc joybus)
 
 # Generate additional binary outputs
 pico_add_extra_outputs(n64-target)
