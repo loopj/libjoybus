@@ -1,6 +1,6 @@
 # Pico SDK N64 Controller Target Example
 
-Act as a N64 controller on RP2XXX devices using the Pico SDK. Simulates A button presses when a physical button is pressed on the Pico.
+Act as a N64 controller on Pi Pico device using the Pico SDK. Maps button presses from GPIO inputs and stick positions from ADC channels to the N64 controller state.
 
 ## Building
 
@@ -10,8 +10,8 @@ cmake -Bbuild . && cmake --build build
 
 ## Flashing
 
-Enter bootloader mode by holding the BOOTSEL button while plugging in the Pico. Then copy the generated `build/app.uf2` file to the RPI-RP2 drive that appears, or use `picotool`:
+Enter bootloader mode by holding the BOOTSEL button while plugging in the Pico. Then copy the generated `build/n64-target.uf2` file to the RPI-RP2 drive that appears, or use `picotool`:
 
 ```bash
-picotool load -f build/app.uf2
+picotool load -f build/n64-target.uf2
 ```
