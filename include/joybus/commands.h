@@ -11,11 +11,11 @@
 // N64 joybus line, but we are including them here for completeness.
 
 // Joybus command codes
-#define JOYBUS_CMD_RESET                  0xFF    ///< Joybus "reset" command
-#define JOYBUS_CMD_IDENTIFY               0x00    ///< Joybus "identify" command
-#define JOYBUS_CMD_N64_READ               0x01    ///< N64 controller "read" command
-#define JOYBUS_CMD_N64_ACCESSORY_READ     0x02    ///< N64 controller "accessory read" command
-#define JOYBUS_CMD_N64_ACCESSORY_WRITE    0x03    ///< N64 controller "accessory write" command
+#define JOYBUS_CMD_RESET                  0xFF
+#define JOYBUS_CMD_IDENTIFY               0x00
+#define JOYBUS_CMD_N64_READ               0x01
+#define JOYBUS_CMD_N64_ACCESSORY_READ     0x02
+#define JOYBUS_CMD_N64_ACCESSORY_WRITE    0x03
 #define JOYBUS_CMD_N64_EEPROM_READ        0x04
 #define JOYBUS_CMD_N64_EEPROM_WRITE       0x05
 #define JOYBUS_CMD_N64_RTC_INFO           0x06

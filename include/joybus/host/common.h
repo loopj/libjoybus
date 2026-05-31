@@ -1,7 +1,6 @@
 /**
- * Common Joybus commands.
- *
  * @addtogroup joybus_host
+ *
  * @{
  */
 

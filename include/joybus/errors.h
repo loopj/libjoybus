@@ -1,3 +1,8 @@
+/**
+ * @addtogroup joybus
+ *
+ * @{
+ */
 #pragma once
 
 /**
@@ -16,3 +21,5 @@ enum joybus_error {
   /// Command not supported by Joybus target
   JOYBUS_ERR_NOT_SUPPORTED,
 };
+
+/** @} */

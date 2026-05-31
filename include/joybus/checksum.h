@@ -1,5 +1,9 @@
 /**
+ * @addtogroup joybus
+ *
  * Checksum routines used by various joybus commands.
+ *
+ * @{
  */
 
 #pragma once
@@ -47,3 +51,5 @@ uint8_t joybus_address_checksum(uint16_t addr);
  * @return     true if the checksum is valid, false if not
  */
 bool joybus_address_checksum_valid(uint16_t addr);
+
+/** @} */

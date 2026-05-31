@@ -1,8 +1,9 @@
 /**
- * Loopback Joybus backend for testing
- *
  * @defgroup joybus_backend_loopback Loopback Backend
  * @ingroup joybus_backends
+ *
+ * Loopback Joybus backend (for testing)
+ *
  * @{
  */
 

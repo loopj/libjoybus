@@ -1,7 +1,6 @@
 /**
- * GameCube specific Joybus commands.
- *
  * @addtogroup joybus_host
+ *
  * @{
  */
 
@@ -94,7 +93,7 @@ int joybus_gcn_fix_device(struct joybus *bus, uint16_t wireless_id, uint8_t *res
                           void *user_data);
 
 /**
- * Unpack raw input data from a GameCube controller.
+ * Helper function to unpack raw input data from a GameCube controller.
  *
  * The "full" internal input state of a GameCube controller is 10 bytes long,
  * so there are various ways to "pack" the input state into 8 bytes. Depending

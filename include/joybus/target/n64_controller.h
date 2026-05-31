@@ -1,7 +1,9 @@
 /**
  * @defgroup joybus_target_n64_controller N64 Controller Target
- * Joybus target implementation for standard N64 controllers.
  * @ingroup joybus_target
+ *
+ * Joybus target implementation for standard N64 controllers.
+ *
  * @{
  */
 

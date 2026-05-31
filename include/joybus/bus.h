@@ -1,5 +1,6 @@
 /**
  * @addtogroup joybus
+ *
  * @{
  */
 
