@@ -27,17 +27,13 @@
 // Macro to convert GPIO number to ADC channel
 #define ADC_CHANNEL(gpio)   ((gpio) - ADC_BASE_PIN)
 
-struct joybus_rp2xxx rp2xxx_bus;
-struct joybus *bus = JOYBUS(&rp2xxx_bus);
-
+// Joybus and target instances
+static struct joybus_rp2xxx rp2xxx_bus;
+static struct joybus *bus = JOYBUS(&rp2xxx_bus);
 static struct joybus_n64_controller n64_controller;
 
-typedef struct {
-  uint gpio;
-  uint16_t mask;
-} button_t;
-
-const button_t button_map[] = {
+// Mapping of button GPIOs to their corresponding bits in the N64 controller input state
+const uint button_map[][2] = {
   {BUTTON_A_GPIO, JOYBUS_N64_BUTTON_A},           {BUTTON_B_GPIO, JOYBUS_N64_BUTTON_B},
   {BUTTON_Z_GPIO, JOYBUS_N64_BUTTON_Z},           {BUTTON_START_GPIO, JOYBUS_N64_BUTTON_START},
   {BUTTON_UP_GPIO, JOYBUS_N64_BUTTON_UP},         {BUTTON_DOWN_GPIO, JOYBUS_N64_BUTTON_DOWN},
@@ -69,8 +65,8 @@ int main()
 
   // Configure button GPIOs as input with pull-up (active low)
   for (size_t i = 0; i < sizeof(button_map) / sizeof(button_map[0]); i++) {
-    gpio_init(button_map[i].gpio);
-    gpio_pull_up(button_map[i].gpio);
+    gpio_init(button_map[i][0]);
+    gpio_pull_up(button_map[i][0]);
   }
 
   // Initialize ADC for reading stick positions
@@ -84,8 +80,8 @@ int main()
 
     // Read button state from each GPIO and set corresponding bits in the controller input
     for (size_t i = 0; i < sizeof(button_map) / sizeof(button_map[0]); i++) {
-      if (gpio_get(button_map[i].gpio) == 0) {
-        n64_controller.input.buttons |= button_map[i].mask;
+      if (gpio_get(button_map[i][0]) == 0) {
+        n64_controller.input.buttons |= button_map[i][1];
       }
     }
 
