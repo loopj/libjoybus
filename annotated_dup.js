@@ -14,6 +14,7 @@ var annotated_dup =
     [ "joybus_n64_rumble_pak", "structjoybus__n64__rumble__pak.html", "structjoybus__n64__rumble__pak" ],
     [ "joybus_rp2xxx", "structjoybus__rp2xxx.html", null ],
     [ "joybus_rp2xxx_data", "structjoybus__rp2xxx__data.html", null ],
+    [ "joybus_sync_ctx", "structjoybus__sync__ctx.html", null ],
     [ "joybus_target", "structjoybus__target.html", "structjoybus__target" ],
     [ "joybus_target_api", "structjoybus__target__api.html", "structjoybus__target__api" ]
 ];

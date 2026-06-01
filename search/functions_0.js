@@ -51,5 +51,6 @@ var searchData=
   ['joybus_5ftarget_5fis_5fregistered_48',['joybus_target_is_registered',['../group__joybus__target.html#ga60c8cf845660abf4c0aac3a3cc26b902',1,'target.h']]],
   ['joybus_5ftarget_5fregister_49',['joybus_target_register',['../group__joybus.html#gadb1ce9137d553ae521755b77238fc45c',1,'bus.h']]],
   ['joybus_5ftarget_5funregister_50',['joybus_target_unregister',['../group__joybus.html#gaa31869a974628cc7428404e0affc68b2',1,'bus.h']]],
-  ['joybus_5ftransfer_51',['joybus_transfer',['../group__joybus.html#ga2c8bd40f7ab99754d8b64cb7baa447fd',1,'bus.h']]]
+  ['joybus_5ftransfer_51',['joybus_transfer',['../group__joybus.html#ga2c8bd40f7ab99754d8b64cb7baa447fd',1,'bus.h']]],
+  ['joybus_5ftransfer_5fsync_52',['joybus_transfer_sync',['../group__joybus.html#gaa23c09a3db2e9880ab6dda70b0239061',1,'joybus_transfer_sync(struct joybus *bus, const uint8_t *write_buf, uint8_t write_len, uint8_t *read_buf, uint8_t read_len):&#160;common.c'],['../group__joybus.html#gaa23c09a3db2e9880ab6dda70b0239061',1,'joybus_transfer_sync(struct joybus *bus, const uint8_t *write_buf, uint8_t write_len, uint8_t *read_buf, uint8_t read_len):&#160;common.c']]]
 ];

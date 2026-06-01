@@ -25,5 +25,6 @@ var group__joybus =
     [ "joybus_enable", "group__joybus.html#ga10316dbaf35990b5c627b2d2f6330248", null ],
     [ "joybus_target_register", "group__joybus.html#gadb1ce9137d553ae521755b77238fc45c", null ],
     [ "joybus_target_unregister", "group__joybus.html#gaa31869a974628cc7428404e0affc68b2", null ],
-    [ "joybus_transfer", "group__joybus.html#ga2c8bd40f7ab99754d8b64cb7baa447fd", null ]
+    [ "joybus_transfer", "group__joybus.html#ga2c8bd40f7ab99754d8b64cb7baa447fd", null ],
+    [ "joybus_transfer_sync", "group__joybus.html#gaa23c09a3db2e9880ab6dda70b0239061", null ]
 ];

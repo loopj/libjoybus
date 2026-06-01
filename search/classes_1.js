@@ -13,6 +13,7 @@ var searchData=
   ['joybus_5fn64_5frumble_5fpak_10',['joybus_n64_rumble_pak',['../structjoybus__n64__rumble__pak.html',1,'']]],
   ['joybus_5frp2xxx_11',['joybus_rp2xxx',['../structjoybus__rp2xxx.html',1,'']]],
   ['joybus_5frp2xxx_5fdata_12',['joybus_rp2xxx_data',['../structjoybus__rp2xxx__data.html',1,'']]],
-  ['joybus_5ftarget_13',['joybus_target',['../structjoybus__target.html',1,'']]],
-  ['joybus_5ftarget_5fapi_14',['joybus_target_api',['../structjoybus__target__api.html',1,'']]]
+  ['joybus_5fsync_5fctx_13',['joybus_sync_ctx',['../structjoybus__sync__ctx.html',1,'']]],
+  ['joybus_5ftarget_14',['joybus_target',['../structjoybus__target.html',1,'']]],
+  ['joybus_5ftarget_5fapi_15',['joybus_target_api',['../structjoybus__target__api.html',1,'']]]
 ];
