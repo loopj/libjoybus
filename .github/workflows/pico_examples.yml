@@ -42,7 +42,6 @@ jobs:
           - gcn-adapter-usb-hid
           - gcn-host
           - gcn-target
-          - joybus-shell
           - n64-adapter-usb-hid
           - n64-target
 
