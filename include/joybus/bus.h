@@ -111,6 +111,23 @@ static inline int joybus_transfer(struct joybus *bus, const uint8_t *write_buf, 
 }
 
 /**
+ * Perform a synchronous "write then read" Joybus transfer.
+ *
+ * Sends a command to a device, and waits for the response before returning.
+ *
+ * @param bus the Joybus instance to use
+ * @param write_buf the buffer containing the command to send
+ * @param write_len the number of bytes to write
+ * @param read_buf the buffer to store the response in
+ * @param read_len the number of bytes to read
+ * @param timeout_ms the timeout for the transfer, in milliseconds
+ *
+ * @return positive number of bytes read on success, negative error code on failure
+ */
+int joybus_transfer_sync(struct joybus *bus, const uint8_t *write_buf, uint8_t write_len, uint8_t *read_buf,
+                         uint8_t read_len);
+
+/**
  * Enable Joybus "target" mode, and register a target to handle commands.
  *
  * @param bus the Joybus instance to use
