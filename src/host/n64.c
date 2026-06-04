@@ -6,8 +6,8 @@
 
 #include <string.h>
 
-#include <joybus/commands.h>
 #include <joybus/checksum.h>
+#include <joybus/commands.h>
 #include <joybus/host/n64.h>
 
 #define ACCESSORY_ADDR_LABEL              0x0000
@@ -92,6 +92,63 @@ int joybus_n64_accessory_read(struct joybus *bus, uint16_t addr, uint8_t *respon
   // Send command
   return joybus_transfer(bus, bus->command_buffer, JOYBUS_CMD_N64_ACCESSORY_READ_TX, response,
                          JOYBUS_CMD_N64_ACCESSORY_READ_RX, callback, user_data);
+}
+
+int joybus_n64_eeprom_read_block(struct joybus *bus, uint16_t addr, uint8_t *response, joybus_transfer_cb_t callback,
+                                 void *user_data)
+{
+  // Build command
+  bus->command_buffer[0] = JOYBUS_CMD_N64_EEPROM_READ_BLOCK;
+  // TODO
+
+  // Send command
+  return joybus_transfer(bus, bus->command_buffer, JOYBUS_CMD_N64_EEPROM_READ_BLOCK_TX, response,
+                         JOYBUS_CMD_N64_EEPROM_READ_BLOCK_RX, callback, user_data);
+}
+
+int joybus_n64_eeprom_write_block(struct joybus *bus, uint16_t addr, const uint8_t *data, uint8_t *response,
+                                  joybus_transfer_cb_t callback, void *user_data)
+{
+  // Build command
+  bus->command_buffer[0] = JOYBUS_CMD_N64_EEPROM_WRITE_BLOCK;
+  // TODO
+
+  // Send command
+  return joybus_transfer(bus, bus->command_buffer, JOYBUS_CMD_N64_EEPROM_WRITE_BLOCK_TX, response,
+                         JOYBUS_CMD_N64_EEPROM_WRITE_BLOCK_RX, callback, user_data);
+}
+
+int joybus_n64_rtc_identify(struct joybus *bus, uint8_t *response, joybus_transfer_cb_t callback, void *user_data)
+{
+  // Build command
+  bus->command_buffer[0] = JOYBUS_CMD_N64_RTC_INFO;
+
+  // Send command
+  return joybus_transfer(bus, bus->command_buffer, JOYBUS_CMD_N64_RTC_INFO_TX, response, JOYBUS_CMD_N64_RTC_INFO_RX,
+                         callback, user_data);
+}
+
+int joybus_n64_rtc_read(struct joybus *bus, uint8_t *response, joybus_transfer_cb_t callback, void *user_data)
+{
+  // Build command
+  bus->command_buffer[0] = JOYBUS_CMD_N64_RTC_READ;
+  // TODO
+
+  // Send command
+  return joybus_transfer(bus, bus->command_buffer, JOYBUS_CMD_N64_RTC_READ_TX, response, JOYBUS_CMD_N64_RTC_READ_RX,
+                         callback, user_data);
+}
+
+int joybus_n64_rtc_write(struct joybus *bus, const uint8_t *data, uint8_t *response, joybus_transfer_cb_t callback,
+                         void *user_data)
+{
+  // Build command
+  bus->command_buffer[0] = JOYBUS_CMD_N64_RTC_WRITE;
+  // TODO
+
+  // Send command
+  return joybus_transfer(bus, bus->command_buffer, JOYBUS_CMD_N64_RTC_WRITE_TX, response, JOYBUS_CMD_N64_RTC_WRITE_RX,
+                         callback, user_data);
 }
 
 // Check (and respond) to failures during accessory detection write operations

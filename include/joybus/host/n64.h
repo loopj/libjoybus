@@ -89,6 +89,76 @@ int joybus_n64_accessory_read(struct joybus *bus, uint16_t addr, uint8_t *respon
                               void *user_data);
 
 /**
+ * Read an 8-byte block from a N64 cartridge's EEPROM.
+ *
+ * @param bus the Joybus to use
+ * @param addr the block address to read from (8-byte aligned)
+ * @param response buffer to store the response in, must be at least JOYBUS_CMD_N64_EEPROM_READ_RX bytes
+ * @param callback a callback function to call when the transfer is complete
+ * @param user_data user data to pass to the callback function
+ *
+ * @return 0 on success, negative error code on failure
+ */
+int joybus_n64_eeprom_read_block(struct joybus *bus, uint16_t addr, uint8_t *response, joybus_transfer_cb_t callback,
+                                 void *user_data);
+
+/**
+ * Write an 8-byte block to a N64 cartridge's EEPROM.
+ *
+ * @param bus the Joybus to use
+ * @param addr the block address to write to (8-byte aligned)
+ * @param data the data to write
+ * @param response buffer to store the response in, must be at least JOYBUS_CMD_N64_EEPROM_WRITE_RX bytes
+ * @param callback a callback function to call when the transfer is complete
+ * @param user_data user data to pass to the callback function
+ *
+ * @return 0 on success, negative error code on failure
+ */
+int joybus_n64_eeprom_write_block(struct joybus *bus, uint16_t addr, const uint8_t *data, uint8_t *response,
+                                  joybus_transfer_cb_t callback, void *user_data);
+
+/**
+ * Identify command for a N64 cartridge's RTC.
+ *
+ * Since N64 cartridges can contain both an EEPROM and an RTC, this command can be used to check for the presence of an
+ * RTC and get its type, like an "identify" command.
+ *
+ * @param bus the Joybus to use
+ * @param response buffer to store the response in, must be at least JOYBUS_CMD_N64_RTC_INFO_RX bytes
+ * @param callback a callback function to call when the transfer is complete
+ * @param user_data user data to pass to the callback function
+ *
+ * @return 0 on success, negative error code on failure
+ */
+int joybus_n64_rtc_identify(struct joybus *bus, uint8_t *response, joybus_transfer_cb_t callback, void *user_data);
+
+/**
+ * Read data from a N64 cartridge's RTC.
+ *
+ * @param bus the Joybus to use
+ * @param response buffer to store the response in, must be at least JOYBUS_CMD_N64_RTC_READ_RX bytes
+ * @param callback a callback function to call when the transfer is complete
+ * @param user_data user data to pass to the callback function
+ *
+ * @return 0 on success, negative error code on failure
+ */
+int joybus_n64_rtc_read(struct joybus *bus, uint8_t *response, joybus_transfer_cb_t callback, void *user_data);
+
+/**
+ * Write data to a N64 cartridge's RTC.
+ *
+ * @param bus the Joybus to use
+ * @param data the data to write, must be JOYBUS_CMD_N64_RTC_WRITE_TX bytes
+ * @param response buffer to store the response in, must be at least JOYBUS_CMD_N64_RTC_WRITE_RX bytes
+ * @param callback a callback function to call when the transfer is complete
+ * @param user_data user data to pass to the callback function
+ *
+ * @return 0 on success, negative error code on failure
+ */
+int joybus_n64_rtc_write(struct joybus *bus, const uint8_t *data, uint8_t *response, joybus_transfer_cb_t callback,
+                         void *user_data);
+
+/**
  * Helper function to detect the accessory connected to a N64 controller.
  *
  * This function initiates an asynchronous sequence of commands to detect the accessory type.
