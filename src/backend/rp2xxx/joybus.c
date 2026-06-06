@@ -440,8 +440,8 @@ int joybus_rp2xxx_init(struct joybus_rp2xxx *rp2xxx_bus, uint8_t gpio, PIO pio)
   data->pio                       = pio;
   data->pio_sm_mode               = BUS_MODE_NONE;
   data->state                     = BUS_STATE_DISABLED;
-  data->host_freq                 = JOYBUS_FREQ_CONSOLE;
-  data->target_freq               = JOYBUS_FREQ_GCC;
+  data->host_freq                 = JOYBUS_FREQ_GCN_CONSOLE;
+  data->target_freq               = JOYBUS_FREQ_GCN_CONTROLLER;
   data->last_transfer_time        = nil_time;
 
   return 0;
