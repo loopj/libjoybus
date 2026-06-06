@@ -4,6 +4,7 @@
 #include <joybus/checksum.h>
 #include <joybus/commands.h>
 #include <joybus/errors.h>
+#include <joybus/identify.h>
 #include <joybus/target/n64_controller.h>
 
 // Helper to check if an accessory is currently read for accessory read/write commands

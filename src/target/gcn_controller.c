@@ -2,6 +2,7 @@
 
 #include <joybus/commands.h>
 #include <joybus/errors.h>
+#include <joybus/identify.h>
 #include <joybus/target/gcn_controller.h>
 
 /*

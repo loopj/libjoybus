@@ -11,9 +11,9 @@
 
 #include <stdbool.h>
 
-#include <joybus/commands.h>
-#include <joybus/common/gcn_controller.h>
+#include <joybus/identify.h>
 #include <joybus/target.h>
+#include <joybus/common/gcn_controller.h>
 
 struct joybus_gcn_controller;
 

@@ -1,7 +1,7 @@
 #include <string.h>
 
 #include <joybus/bus.h>
-#include <joybus/commands.h>
+#include <joybus/identify.h>
 #include <joybus/backend/loopback.h>
 #include <joybus/host/common.h>
 #include <joybus/host/gcn.h>

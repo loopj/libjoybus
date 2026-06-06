@@ -4,6 +4,7 @@
 #include <joybus/commands.h>
 #include <joybus/checksum.h>
 #include <joybus/errors.h>
+#include <joybus/identify.h>
 #include <joybus/common/gcn_controller.h>
 #include <joybus/common/n64_controller.h>
 #include <joybus/target.h>
