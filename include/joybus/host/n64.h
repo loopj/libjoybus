@@ -7,7 +7,7 @@
 #pragma once
 
 #include <joybus/bus.h>
-#include <joybus/n64.h>
+#include <joybus/common/n64_controller.h>
 
 /**
  * N64 controller accessory types.

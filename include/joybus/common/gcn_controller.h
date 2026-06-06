@@ -1,5 +1,7 @@
 /**
  * @file
+ *
+ * Common definitions for GameCube controllers.
  */
 
 #pragma once

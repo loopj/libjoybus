@@ -1,3 +1,9 @@
+/**
+ * @file
+ *
+ * Common definitions for N64 controllers.
+ */
+
 #pragma once
 
 #include <stdint.h>

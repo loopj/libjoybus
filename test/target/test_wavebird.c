@@ -4,7 +4,7 @@
 #include <joybus/commands.h>
 #include <joybus/backend/loopback.h>
 #include <joybus/host/common.h>
-#include <joybus/host/gamecube.h>
+#include <joybus/host/gcn.h>
 #include <joybus/target/gcn_controller.h>
 
 #include "unity.h"

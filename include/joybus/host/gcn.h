@@ -7,7 +7,7 @@
 #pragma once
 
 #include <joybus/bus.h>
-#include <joybus/gamecube.h>
+#include <joybus/common/gcn_controller.h>
 
 /**
  * Read the current input state of a GameCube controller.

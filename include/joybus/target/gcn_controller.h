@@ -12,7 +12,7 @@
 #include <stdbool.h>
 
 #include <joybus/commands.h>
-#include <joybus/gamecube.h>
+#include <joybus/common/gcn_controller.h>
 #include <joybus/target.h>
 
 struct joybus_gcn_controller;

@@ -61,7 +61,7 @@ controllers in your projects.
 
 ```c
 #include <joybus/joybus.h>
-#include <joybus/host/gamecube.h>
+#include <joybus/host/gcn.h>
 
 struct joybus_rp2xxx rp2xxx_bus;
 struct joybus *bus = JOYBUS(&rp2xxx_bus);

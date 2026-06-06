@@ -1,7 +1,7 @@
 #include <string.h>
 
 #include <joybus/commands.h>
-#include <joybus/host/gamecube.h>
+#include <joybus/host/gcn.h>
 
 int joybus_gcn_read(struct joybus *bus, enum joybus_gcn_analog_mode analog_mode,
                     enum joybus_gcn_motor_state motor_state, uint8_t *response, joybus_transfer_cb_t callback,

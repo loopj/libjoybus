@@ -21,7 +21,7 @@ source:
   - path: src/checksum.c
   - path: src/backend/gecko_sdk/joybus.c
   - path: src/host/common.c
-  - path: src/host/gamecube.c
+  - path: src/host/gcn.c
   - path: src/host/n64.c
   - path: src/target/gcn_controller.c
   - path: src/target/n64_controller.c
