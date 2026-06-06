@@ -95,15 +95,9 @@ int joybus_gcn_fix_device(struct joybus *bus, uint16_t wireless_id, uint8_t *res
 /**
  * Helper function to unpack raw input data from a GameCube controller.
  *
- * The "full" internal input state of a GameCube controller is 10 bytes long,
- * so there are various ways to "pack" the input state into 8 bytes. Depending
- * on the analog mode, either one pair of analog inputs can be omitted, or two
- * pairs of analog inputs can be truncated to 4 bits.
- *
- * All production games, with the exception of Luigi's Mansion, use analog mode 3.
- * This mode omits the analog A/B inputs, and sends the substick X/Y and
- * triggers at full precision. Analog A/B buttons were only present in
- * pre-production GameCube controllers.
+ * The raw response from a "read" command packs the controller's input state into
+ * 8 bytes according to the analog mode. See enum joybus_gcn_analog_mode for more
+ * details.
  *
  * @param dest pointer to a joybus_gcn_controller_input struct to store the unpacked data
  * @param src pointer to the response buffer from a "read" command

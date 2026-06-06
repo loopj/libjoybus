@@ -5,19 +5,8 @@
 #include <joybus/target/gcn_controller.h>
 
 /*
- * Pack an "full" input state into a "short" input state, depending on the analog mode.
- *
- * The "read" command used by games expects 8-byte responses, this is presumably
- * so it fit in a nice round multiple of 32-bit words.
- *
- * The full input state is 10 bytes long, so there are various ways to "pack" the input
- * state into 8 bytes. Depending on the analog mode, either one pair of analog inputs
- * can be omitted, or two pairs of analog inputs can be truncated to 4 bits.
- *
- * All production games, with the exception of Luigi's Mansion, use analog mode 3. This
- * mode omits the analog A/B inputs, and sends the substick X/Y and triggers at full
- * precision. Analog A/B buttons were only present in pre-production GameCube
- * controllers.
+ * Pack a "full" input state into a "short" 8-byte input state, depending on the
+ * analog mode. See enum joybus_gcn_analog_mode for more details.
  */
 static inline uint8_t *pack_input_state(uint8_t *dest, const struct joybus_gcn_controller_input *src,
                                         enum joybus_gcn_analog_mode analog_mode)
