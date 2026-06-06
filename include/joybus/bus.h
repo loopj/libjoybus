@@ -13,17 +13,26 @@
 
 struct joybus;
 
-/// Bus frequency of an OEM GameCube controller
-#define JOYBUS_FREQ_GCC                 250000
+/// Joybus frequency of an N64 console (NUS-001).
+#define JOYBUS_FREQ_N64_CONSOLE         244141 // PIF-NUS @ 15.625MHz / 64
 
-/// Bus frequency of WaveBird receiver
-#define JOYBUS_FREQ_WAVEBIRD            225000
+/// Joybus frequency of an N64 controller (NUS-005).
+#define JOYBUS_FREQ_N64_CONTROLLER      250000 // CNT-NUS @ 2MHz / 8
 
-/// Bus frequency of a console
-#define JOYBUS_FREQ_CONSOLE             200000
+/// Joybus frequency of a GameCube console (DOL-001 / DOL-101).
+#define JOYBUS_FREQ_GCN_CONSOLE         202500 // Flipper @ 162MHz / 800
 
-/// Maximum size of a Joybus transfer, in bytes
-#define JOYBUS_BLOCK_SIZE               64
+/// Joybus frequency of a GameCube controller (DOL-003).
+#define JOYBUS_FREQ_GCN_CONTROLLER      250000 // CNT-DOL @ 4MHz / 16
+
+/// Joybus frequency of WaveBird receiver (DOL-005)
+#define JOYBUS_FREQ_WAVEBIRD_RECEIVER   225000 // WCRX-DOL @ 28.8MHz / 128
+
+/// Joybus frequency of a Wii console (RVL-001 / RVL-101 / RVL-201).
+#define JOYBUS_FREQ_WII_CONSOLE         202500 // Hollywood @ 243MHz / 1200
+
+/// Joybus frequency of a GameCube Game Boy Advance cable (DOL-011).
+#define JOYBUS_FREQ_GCN_GBA_CABLE       262144 // CPU-AGB @ 16.777216MHz / 64
 
 /// Minimum delay between Joybus transfers, in microseconds
 #define JOYBUS_INTER_TRANSFER_DELAY_US  20
@@ -33,6 +42,9 @@ struct joybus;
 
 /// Minimum line-high time to consider the bus idle, in microseconds
 #define JOYBUS_BUS_IDLE_US              100
+
+/// Maximum size of a Joybus transfer, in bytes
+#define JOYBUS_BLOCK_SIZE               64
 
 /**
  * Macro to cast a backend-specific Joybus instance to a generic Joybus instance.

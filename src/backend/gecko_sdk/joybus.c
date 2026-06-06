@@ -777,8 +777,8 @@ int joybus_gecko_init(struct joybus_gecko *gecko_bus, GPIO_Port_TypeDef port, ui
   data->rx_timer                 = rx_timer;
   data->tx_usart                 = tx_usart;
   data->state                    = BUS_STATE_DISABLED;
-  data->host_freq                = JOYBUS_FREQ_CONSOLE;
-  data->target_freq              = JOYBUS_FREQ_GCC;
+  data->host_freq                = JOYBUS_FREQ_GCN_CONSOLE;
+  data->target_freq              = JOYBUS_FREQ_GCN_CONTROLLER;
 
   return 0;
 }
