@@ -18,7 +18,6 @@
  * @param response buffer to store the response in, must be at least JOYBUS_CMD_GCN_READ_RX bytes
  * @param callback a callback function to call when the transfer is complete
  * @param user_data user data to pass to the callback function
- *
  * @return 0 on success, negative error code on failure
  */
 int joybus_gcn_read(struct joybus *bus, enum joybus_gcn_analog_mode analog_mode,
@@ -32,7 +31,6 @@ int joybus_gcn_read(struct joybus *bus, enum joybus_gcn_analog_mode analog_mode,
  * @param response buffer to store the response in, must be at least JOYBUS_CMD_GCN_READ_ORIGIN_RX bytes
  * @param callback a callback function to call when the transfer is complete
  * @param user_data user data to pass to the callback function
- *
  * @return 0 on success, negative error code on failure
  */
 int joybus_gcn_read_origin(struct joybus *bus, uint8_t *response, joybus_transfer_cb_t callback, void *user_data);
@@ -44,7 +42,6 @@ int joybus_gcn_read_origin(struct joybus *bus, uint8_t *response, joybus_transfe
  * @param response buffer to store the response in, must be at least JOYBUS_CMD_GCN_CALIBRATE_RX bytes
  * @param callback a callback function to call when the transfer is complete
  * @param user_data user data to pass to the callback function
- *
  * @return 0 on success, negative error code on failure
  */
 int joybus_gcn_calibrate(struct joybus *bus, uint8_t *response, joybus_transfer_cb_t callback, void *user_data);
@@ -57,7 +54,6 @@ int joybus_gcn_calibrate(struct joybus *bus, uint8_t *response, joybus_transfer_
  * @param response buffer to store the response in, must be at least JOYBUS_CMD_GCN_READ_LONG_RX bytes
  * @param callback a callback function to call when the transfer is complete
  * @param user_data user data to pass to the callback function
- *
  * @return 0 on success, negative error code on failure
  */
 int joybus_gcn_read_long(struct joybus *bus, enum joybus_gcn_motor_state motor_state, uint8_t *response,
@@ -86,7 +82,6 @@ int joybus_gcn_probe_device(struct joybus *bus, uint8_t *response, joybus_transf
  * @param response buffer to store the response in, must be at least JOYBUS_CMD_GCN_FIX_DEVICE_RX bytes
  * @param callback a callback function to call when the transfer is complete
  * @param user_data user data to pass to the callback function
- *
  * @return 0 on success, negative error code on failure
  */
 int joybus_gcn_fix_device(struct joybus *bus, uint16_t wireless_id, uint8_t *response, joybus_transfer_cb_t callback,

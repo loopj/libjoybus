@@ -121,7 +121,6 @@ void joybus_gcn_controller_set_motor_callback(struct joybus_gcn_controller *cont
  * Check if the controller is a WaveBird controller.
  *
  * @param controller the controller to check
- *
  * @return true if the controller is a WaveBird controller
  */
 static inline bool joybus_gcn_controller_is_wireless(struct joybus_gcn_controller *controller)
@@ -146,7 +145,6 @@ void joybus_gcn_controller_set_wireless_id(struct joybus_gcn_controller *control
  * Get the current wireless ID of the controller.
  *
  * @param controller the controller to get the wireless ID from
- *
  * @return the current 10-bit wireless ID
  */
 static inline uint16_t joybus_gcn_controller_get_wireless_id(struct joybus_gcn_controller *controller)
@@ -160,7 +158,6 @@ static inline uint16_t joybus_gcn_controller_get_wireless_id(struct joybus_gcn_c
  * Fixing the wireless ID is used to bind a WaveBird controller to a specific receiver.
  *
  * @param controller the controller to check
- *
  * @return true if the wireless ID is fixed
  */
 static inline bool joybus_gcn_controller_wireless_id_fixed(struct joybus_gcn_controller *controller)
