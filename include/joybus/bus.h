@@ -46,6 +46,9 @@ struct joybus;
 /// Maximum size of a Joybus transfer, in bytes
 #define JOYBUS_BLOCK_SIZE               64
 
+/// Size of a Joybus N64 accessory read/write block
+#define JOYBUS_ACCESSORY_BLOCK_SIZE     32
+
 /**
  * Macro to cast a backend-specific Joybus instance to a generic Joybus instance.
  */

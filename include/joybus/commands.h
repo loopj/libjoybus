@@ -76,6 +76,3 @@
 #define JOYBUS_CMD_GCN_FIX_DEVICE_RX      3
 #define JOYBUS_CMD_GCN_KEYBOARD_READ_TX   3
 #define JOYBUS_CMD_GCN_KEYBOARD_READ_RX   8
-
-/// Size of a Joybus N64 accessory read/write block
-#define JOYBUS_ACCESSORY_BLOCK_SIZE       32

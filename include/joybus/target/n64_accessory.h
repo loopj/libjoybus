@@ -69,7 +69,7 @@
 
 #include <stdint.h>
 
-#include <joybus/commands.h>
+#include <joybus/bus.h>
 
 struct joybus_n64_accessory;
 
