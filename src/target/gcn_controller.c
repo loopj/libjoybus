@@ -339,7 +339,7 @@ static const struct joybus_target_api gcn_controller_api = {
   .byte_received = gcn_controller_byte_received,
 };
 
-void joybus_gcn_controller_init(struct joybus_gcn_controller *controller, uint16_t type)
+void joybus_gcn_controller_init_with_type(struct joybus_gcn_controller *controller, uint16_t type)
 {
   // Set the target callbacks
   struct joybus_target *target = JOYBUS_TARGET(controller);

@@ -28,7 +28,7 @@ void setUp(void)
   joybus_enable(&bus);
 
   // Register a WaveBird receiver controller target
-  joybus_gcn_controller_init(&controller, JOYBUS_WAVEBIRD_RECEIVER);
+  joybus_gcn_controller_init_wavebird(&controller);
   joybus_target_register(&bus, JOYBUS_TARGET(&controller));
 }
 

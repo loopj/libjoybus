@@ -65,15 +65,33 @@ struct joybus_gcn_controller {
 };
 
 /**
- * Initialize a GameCube controller.
- *
- * This function sets up the initial state, and registers Joybus command
- * handlers for OEM GameCube controller, and WaveBird controller commands.
+ * Initialize a GameCube controller target with a specific controller type.
  *
  * @param controller the controller to initialize
- * @param type the device type flags
+ * @param type the controller type, a combination of JOYBUS_ID_GCN_* flags
  */
-void joybus_gcn_controller_init(struct joybus_gcn_controller *controller, uint16_t type);
+void joybus_gcn_controller_init_with_type(struct joybus_gcn_controller *controller, uint16_t type);
+
+/**
+ * Initialize a GameCube controller target as a regular wired controller.
+ *
+ * @param controller the controller to initialize
+ */
+static inline void joybus_gcn_controller_init(struct joybus_gcn_controller *controller)
+{
+  joybus_gcn_controller_init_with_type(controller, JOYBUS_ID_GCN_DEVICE | JOYBUS_ID_GCN_STANDARD);
+}
+
+/**
+ * Initialize a GameCube controller target as a WaveBird receiver.
+ *
+ * @param controller the controller to initialize
+ */
+static inline void joybus_gcn_controller_init_wavebird(struct joybus_gcn_controller *controller)
+{
+  joybus_gcn_controller_init_with_type(controller,
+                                       JOYBUS_ID_GCN_DEVICE | JOYBUS_ID_GCN_WIRELESS | JOYBUS_ID_GCN_NO_MOTOR);
+}
 
 /**
  * Set the reset callback for the controller.

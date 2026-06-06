@@ -119,7 +119,7 @@ void main() {
   joybus_enable(bus);
 
   // Initialize a GameCube controller target
-  joybus_gcn_controller_init(&controller, JOYBUS_GAMECUBE_CONTROLLER);
+  joybus_gcn_controller_init(&controller);
 
   // Register the target on the bus
   joybus_target_register(bus, JOYBUS_TARGET(&controller));

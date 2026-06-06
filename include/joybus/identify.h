@@ -43,12 +43,6 @@
 #define JOYBUS_ID_GCN_MOTOR_STATE_SHIFT   3
 #define JOYBUS_ID_GCN_ANALOG_MODE_SHIFT   0
 
-/// Device type for a standard GameCube controller
-#define JOYBUS_GAMECUBE_CONTROLLER        (JOYBUS_ID_GCN_DEVICE | JOYBUS_ID_GCN_STANDARD)
-
-/// Device type for a WaveBird receiver
-#define JOYBUS_WAVEBIRD_RECEIVER          (JOYBUS_ID_GCN_DEVICE | JOYBUS_ID_GCN_WIRELESS | JOYBUS_ID_GCN_NO_MOTOR)
-
 /**
  * Get the controller type from an "identify" buffer
  *

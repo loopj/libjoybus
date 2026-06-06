@@ -32,7 +32,7 @@ void app_init(void)
   joybus_enable(bus);
 
   // Initialize a GameCube controller target as a standard controller
-  joybus_gcn_controller_init(&gcn_controller, JOYBUS_GAMECUBE_CONTROLLER);
+  joybus_gcn_controller_init(&gcn_controller);
 
   // Register the target on the bus
   joybus_target_register(bus, JOYBUS_TARGET(&gcn_controller));

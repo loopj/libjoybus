@@ -28,7 +28,7 @@ void setUp(void)
   joybus_enable(&bus);
 
   // Register a standard GameCube controller target
-  joybus_gcn_controller_init(&controller, JOYBUS_GAMECUBE_CONTROLLER);
+  joybus_gcn_controller_init(&controller);
   joybus_target_register(&bus, JOYBUS_TARGET(&controller));
 
   // Reset response capture

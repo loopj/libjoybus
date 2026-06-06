@@ -1,14 +1,10 @@
 /**
  * @file commands.h
  *
- * @brief Joybus command codes and utilities
+ * @brief Joybus command codes and transfer lengths.
  */
+
 #pragma once
-
-#include <stdint.h>
-
-// Some commands (EEPROM read/write, RTC read/write) are only used by the internal
-// N64 joybus line, but we are including them here for completeness.
 
 // Joybus command codes
 #define JOYBUS_CMD_RESET                  0xFF
