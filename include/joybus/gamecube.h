@@ -30,7 +30,7 @@
 /**
  * GameCube controller input state.
  */
-struct joybus_gc_controller_input {
+struct joybus_gcn_controller_input {
   /// Button state
   uint16_t buttons;
 

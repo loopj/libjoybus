@@ -65,7 +65,7 @@ int joybus_gcn_fix_device(struct joybus *bus, uint16_t wireless_id, uint8_t *res
                          callback, user_data);
 }
 
-int joybus_gcn_unpack_input(struct joybus_gc_controller_input *dest, const uint8_t *src,
+int joybus_gcn_unpack_input(struct joybus_gcn_controller_input *dest, const uint8_t *src,
                             enum joybus_gcn_analog_mode analog_mode)
 {
   // Copy the button and stick data

@@ -16,8 +16,8 @@ static struct joybus *bus = JOYBUS(&rp2xxx_bus);
 
 // Buffers for Joybus responses
 static uint8_t joybus_response[JOYBUS_BLOCK_SIZE];
-static struct joybus_gc_controller_input input;
-static struct joybus_gc_controller_input origin;
+static struct joybus_gcn_controller_input input;
+static struct joybus_gcn_controller_input origin;
 
 // Buffer for building USB reports
 static uint8_t report_buf[CFG_TUD_HID_EP_BUFSIZE];
@@ -106,7 +106,7 @@ static inline int8_t get_trigger(uint8_t value, uint8_t origin)
 }
 
 // Map GameCube buttons to HID gamepad buttons
-static inline uint16_t get_buttons(const struct joybus_gc_controller_input *input)
+static inline uint16_t get_buttons(const struct joybus_gcn_controller_input *input)
 {
   uint16_t hid_buttons = 0;
 
@@ -123,7 +123,7 @@ static inline uint16_t get_buttons(const struct joybus_gc_controller_input *inpu
 }
 
 // Map GameCube D-pad to HID hat values
-static inline uint8_t get_hat(const struct joybus_gc_controller_input *input)
+static inline uint8_t get_hat(const struct joybus_gcn_controller_input *input)
 {
   bool up    = input->buttons & JOYBUS_GCN_BUTTON_UP;
   bool down  = input->buttons & JOYBUS_GCN_BUTTON_DOWN;

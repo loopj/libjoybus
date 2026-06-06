@@ -23,6 +23,6 @@ source:
   - path: src/host/common.c
   - path: src/host/gamecube.c
   - path: src/host/n64.c
-  - path: src/target/gc_controller.c
+  - path: src/target/gcn_controller.c
   - path: src/target/n64_controller.c
   - path: src/target/n64_rumble_pak.c

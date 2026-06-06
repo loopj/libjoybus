@@ -5,13 +5,13 @@
 #include <joybus/backend/loopback.h>
 #include <joybus/host/common.h>
 #include <joybus/host/gamecube.h>
-#include <joybus/target/gc_controller.h>
+#include <joybus/target/gcn_controller.h>
 
 #include "unity.h"
 
 // A loopback Joybus and a WaveBird controller target
 struct joybus bus;
-struct joybus_gc_controller controller;
+struct joybus_gcn_controller controller;
 
 // Spy callback to capture responses
 static uint8_t response[JOYBUS_BLOCK_SIZE];
@@ -28,7 +28,7 @@ void setUp(void)
   joybus_enable(&bus);
 
   // Register a WaveBird receiver controller target
-  joybus_gc_controller_init(&controller, JOYBUS_WAVEBIRD_RECEIVER);
+  joybus_gcn_controller_init(&controller, JOYBUS_WAVEBIRD_RECEIVER);
   joybus_target_register(&bus, JOYBUS_TARGET(&controller));
 }
 
@@ -52,8 +52,8 @@ static void test_wavebird_identify()
 static void test_wavebird_identify_after_set_wireless_id()
 {
   // Set a 10-bit wireless ID
-  joybus_gc_controller_set_wireless_id(&controller, 0x2B1);
-  TEST_ASSERT_EQUAL(0x2B1, joybus_gc_controller_get_wireless_id(&controller));
+  joybus_gcn_controller_set_wireless_id(&controller, 0x2B1);
+  TEST_ASSERT_EQUAL(0x2B1, joybus_gcn_controller_get_wireless_id(&controller));
 
   // Send an identify command
   joybus_identify(&bus, response, spy, NULL);
@@ -68,12 +68,12 @@ static void test_wavebird_identify_after_set_wireless_id()
 static void test_wavebird_identify_after_set_wireless_id_multiple()
 {
   // Set a 10-bit wireless ID
-  joybus_gc_controller_set_wireless_id(&controller, 0x2B1);
-  TEST_ASSERT_EQUAL(0x2B1, joybus_gc_controller_get_wireless_id(&controller));
+  joybus_gcn_controller_set_wireless_id(&controller, 0x2B1);
+  TEST_ASSERT_EQUAL(0x2B1, joybus_gcn_controller_get_wireless_id(&controller));
 
   // Set a different 10-bit wireless ID
-  joybus_gc_controller_set_wireless_id(&controller, 0x32F);
-  TEST_ASSERT_EQUAL(0x32F, joybus_gc_controller_get_wireless_id(&controller));
+  joybus_gcn_controller_set_wireless_id(&controller, 0x32F);
+  TEST_ASSERT_EQUAL(0x32F, joybus_gcn_controller_get_wireless_id(&controller));
 
   // Send an identify command
   joybus_identify(&bus, response, spy, NULL);
@@ -96,7 +96,7 @@ static void test_wavebird_identify_after_fix_device()
   TEST_ASSERT_EQUAL_HEX8_ARRAY(expected_identify_response, response, 3);
 
   // Set the wireless ID (e.g. after packet reception)
-  joybus_gc_controller_set_wireless_id(&controller, 0x2B1);
+  joybus_gcn_controller_set_wireless_id(&controller, 0x2B1);
 
   // Send an identify command
   joybus_identify(&bus, response, spy, NULL);
@@ -156,22 +156,22 @@ static void test_wavebird_fix_device_without_wireless_id()
 static void test_wavebird_set_wireless_id_when_fixed(void)
 {
   // Set a wireless ID
-  joybus_gc_controller_set_wireless_id(&controller, 0x2B1);
+  joybus_gcn_controller_set_wireless_id(&controller, 0x2B1);
 
   // Send a fix device command
   joybus_gcn_fix_device(&bus, 0x2B1, response, spy, NULL);
 
   // Try to set a different 10-bit wireless ID
-  joybus_gc_controller_set_wireless_id(&controller, 0x123);
+  joybus_gcn_controller_set_wireless_id(&controller, 0x123);
 
   // Check the wireless ID has not changed
-  TEST_ASSERT_EQUAL_HEX16(0x2B1, joybus_gc_controller_get_wireless_id(&controller));
+  TEST_ASSERT_EQUAL_HEX16(0x2B1, joybus_gcn_controller_get_wireless_id(&controller));
 }
 
 static void test_wavebird_set_origin(void)
 {
   // Set a 10-bit wireless ID
-  joybus_gc_controller_set_wireless_id(&controller, 0x2B1);
+  joybus_gcn_controller_set_wireless_id(&controller, 0x2B1);
 
   // Send an identify command
   joybus_identify(&bus, response, spy, NULL);
@@ -193,7 +193,7 @@ static void test_wavebird_set_origin(void)
   TEST_ASSERT_EQUAL_HEX8_ARRAY(expected_identify_response_2, response, 3);
 
   // Set the wireless origin
-  struct joybus_gc_controller_input origin = {
+  struct joybus_gcn_controller_input origin = {
     .stick_x       = 0x85,
     .stick_y       = 0x86,
     .substick_x    = 0x87,
@@ -201,7 +201,7 @@ static void test_wavebird_set_origin(void)
     .trigger_left  = 0x11,
     .trigger_right = 0x12,
   };
-  joybus_gc_controller_set_origin(&controller, &origin);
+  joybus_gcn_controller_set_origin(&controller, &origin);
 
   // Check the origin state is set correctly
   TEST_ASSERT_EQUAL_UINT8(0x85, controller.origin.stick_x);
@@ -231,8 +231,8 @@ static void test_wavebird_probe_response()
   TEST_ASSERT_EQUAL_HEX8_ARRAY(expected_probe_response, response, 8);
 
   // Set a 10-bit wireless ID
-  joybus_gc_controller_set_wireless_id(&controller, 0x2B1);
-  TEST_ASSERT_EQUAL(0x2B1, joybus_gc_controller_get_wireless_id(&controller));
+  joybus_gcn_controller_set_wireless_id(&controller, 0x2B1);
+  TEST_ASSERT_EQUAL(0x2B1, joybus_gcn_controller_get_wireless_id(&controller));
 
   // Send another probe command
   joybus_gcn_probe_device(&bus, response, spy, NULL);

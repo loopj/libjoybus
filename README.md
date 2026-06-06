@@ -66,7 +66,7 @@ controllers in your projects.
 struct joybus_rp2xxx rp2xxx_bus;
 struct joybus *bus = JOYBUS(&rp2xxx_bus);
 
-struct joybus_gc_controller_input input;
+struct joybus_gcn_controller_input input;
 uint8_t joybus_buffer[JOYBUS_BLOCK_SIZE];
 
 void poll_cb(struct joybus *bus, int result, void *user_data) {
@@ -107,11 +107,11 @@ I've provided built-in targets for N64 controllers and GameCube controllers so y
 
 ```c
 #include <joybus/joybus.h>
-#include <joybus/target/gc_controller.h>
+#include <joybus/target/gcn_controller.h>
 
 struct joybus_rp2xxx rp2xxx_bus;
 struct joybus *bus = JOYBUS(&rp2xxx_bus);
-struct joybus_gc_controller controller;
+struct joybus_gcn_controller controller;
 
 void main() {
   // Initialize the Joybus
@@ -119,7 +119,7 @@ void main() {
   joybus_enable(bus);
 
   // Initialize a GameCube controller target
-  joybus_gc_controller_init(&controller, JOYBUS_GAMECUBE_CONTROLLER);
+  joybus_gcn_controller_init(&controller, JOYBUS_GAMECUBE_CONTROLLER);
 
   // Register the target on the bus
   joybus_target_register(bus, JOYBUS_TARGET(&controller));

@@ -1,5 +1,5 @@
 /**
- * @defgroup joybus_target_gc_controller GameCube Controller Target
+ * @defgroup joybus_target_gcn_controller GameCube Controller Target
  * @ingroup joybus_target
  *
  * Joybus target implementation for standard GameCube controllers and WaveBird receivers.
@@ -15,17 +15,17 @@
 #include <joybus/gamecube.h>
 #include <joybus/target.h>
 
-struct joybus_gc_controller;
+struct joybus_gcn_controller;
 
 /// Macro to cast from a generic Joybus target to a GameCube controller target
-#define JOYBUS_GC_CONTROLLER(target) ((struct joybus_gc_controller *)(target))
+#define JOYBUS_GCN_CONTROLLER(target) ((struct joybus_gcn_controller *)(target))
 
 /**
  * Callback type for GameCube controller reset events.
  *
  * @param controller the controller that was reset
  */
-typedef void (*joybus_gc_controller_reset_cb_t)(struct joybus_gc_controller *controller);
+typedef void (*joybus_gcn_controller_reset_cb_t)(struct joybus_gcn_controller *controller);
 
 /**
  * Callback type for GameCube controller motor state change events.
@@ -33,12 +33,12 @@ typedef void (*joybus_gc_controller_reset_cb_t)(struct joybus_gc_controller *con
  * @param controller the controller whose motor state changed
  * @param state the new motor state
  */
-typedef void (*joybus_gc_controller_motor_cb_t)(struct joybus_gc_controller *controller, uint8_t state);
+typedef void (*joybus_gcn_controller_motor_cb_t)(struct joybus_gcn_controller *controller, uint8_t state);
 
 /**
  * GameCube controller Joybus target.
  */
-struct joybus_gc_controller {
+struct joybus_gcn_controller {
   /// Base target interface
   struct joybus_target base;
 
@@ -46,10 +46,10 @@ struct joybus_gc_controller {
   uint8_t id[3];
 
   /// Origin input state
-  struct joybus_gc_controller_input origin;
+  struct joybus_gcn_controller_input origin;
 
   /// Current input state
-  struct joybus_gc_controller_input input;
+  struct joybus_gcn_controller_input input;
 
   /// Packed input state buffer
   uint8_t packed_input[8];
@@ -58,10 +58,10 @@ struct joybus_gc_controller {
   bool input_valid;
 
   /// Callback for controller reset events
-  joybus_gc_controller_reset_cb_t on_reset;
+  joybus_gcn_controller_reset_cb_t on_reset;
 
   /// Callback for controller motor state change events
-  joybus_gc_controller_motor_cb_t on_motor_state_change;
+  joybus_gcn_controller_motor_cb_t on_motor_state_change;
 };
 
 /**
@@ -73,7 +73,7 @@ struct joybus_gc_controller {
  * @param controller the controller to initialize
  * @param type the device type flags
  */
-void joybus_gc_controller_init(struct joybus_gc_controller *controller, uint16_t type);
+void joybus_gcn_controller_init(struct joybus_gcn_controller *controller, uint16_t type);
 
 /**
  * Set the reset callback for the controller.
@@ -84,8 +84,8 @@ void joybus_gc_controller_init(struct joybus_gc_controller *controller, uint16_t
  * @param controller the controller to set the callback for
  * @param callback the callback function
  */
-void joybus_gc_controller_set_reset_callback(struct joybus_gc_controller *controller,
-                                             joybus_gc_controller_reset_cb_t callback);
+void joybus_gcn_controller_set_reset_callback(struct joybus_gcn_controller *controller,
+                                              joybus_gcn_controller_reset_cb_t callback);
 
 /**
  * Set the motor state change callback for the controller.
@@ -96,8 +96,8 @@ void joybus_gc_controller_set_reset_callback(struct joybus_gc_controller *contro
  * @param controller the controller to set the callback for
  * @param callback the callback function
  */
-void joybus_gc_controller_set_motor_callback(struct joybus_gc_controller *controller,
-                                             joybus_gc_controller_motor_cb_t callback);
+void joybus_gcn_controller_set_motor_callback(struct joybus_gcn_controller *controller,
+                                              joybus_gcn_controller_motor_cb_t callback);
 
 /**
  * Check if the controller is a WaveBird controller.
@@ -106,7 +106,7 @@ void joybus_gc_controller_set_motor_callback(struct joybus_gc_controller *contro
  *
  * @return true if the controller is a WaveBird controller
  */
-static inline bool joybus_gc_controller_is_wireless(struct joybus_gc_controller *controller)
+static inline bool joybus_gcn_controller_is_wireless(struct joybus_gcn_controller *controller)
 {
   return joybus_id_get_type(controller->id) & JOYBUS_ID_GCN_WIRELESS;
 }
@@ -122,7 +122,7 @@ static inline bool joybus_gc_controller_is_wireless(struct joybus_gc_controller 
  * @param controller the controller to set the wireless ID for
  * @param wireless_id the new 10-bit wireless ID
  */
-void joybus_gc_controller_set_wireless_id(struct joybus_gc_controller *controller, uint16_t wireless_id);
+void joybus_gcn_controller_set_wireless_id(struct joybus_gcn_controller *controller, uint16_t wireless_id);
 
 /**
  * Get the current wireless ID of the controller.
@@ -131,7 +131,7 @@ void joybus_gc_controller_set_wireless_id(struct joybus_gc_controller *controlle
  *
  * @return the current 10-bit wireless ID
  */
-static inline uint16_t joybus_gc_controller_get_wireless_id(struct joybus_gc_controller *controller)
+static inline uint16_t joybus_gcn_controller_get_wireless_id(struct joybus_gcn_controller *controller)
 {
   return (controller->id[1] & 0xC0) << 2 | controller->id[2];
 }
@@ -145,7 +145,7 @@ static inline uint16_t joybus_gc_controller_get_wireless_id(struct joybus_gc_con
  *
  * @return true if the wireless ID is fixed
  */
-static inline bool joybus_gc_controller_wireless_id_fixed(struct joybus_gc_controller *controller)
+static inline bool joybus_gcn_controller_wireless_id_fixed(struct joybus_gcn_controller *controller)
 {
   return joybus_id_get_type(controller->id) & JOYBUS_ID_GCN_WIRELESS_ID_FIXED;
 }
@@ -159,7 +159,7 @@ static inline bool joybus_gc_controller_wireless_id_fixed(struct joybus_gc_contr
  * @param controller the controller to set the input state for
  * @param valid true if the input state is valid
  */
-static inline void joybus_gc_controller_input_valid(struct joybus_gc_controller *controller, bool valid)
+static inline void joybus_gcn_controller_input_valid(struct joybus_gcn_controller *controller, bool valid)
 {
   controller->input_valid = valid;
 }
@@ -172,7 +172,7 @@ static inline void joybus_gc_controller_input_valid(struct joybus_gc_controller 
  * @param controller the controller to set the wireless origin for
  * @param new_origin pointer to the new origin data (6 bytes)
  */
-void joybus_gc_controller_set_origin(struct joybus_gc_controller *controller,
-                                     struct joybus_gc_controller_input *new_origin);
+void joybus_gcn_controller_set_origin(struct joybus_gcn_controller *controller,
+                                      struct joybus_gcn_controller_input *new_origin);
 
 /** @} */
