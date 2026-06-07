@@ -2,8 +2,8 @@ var searchData=
 [
   ['joybus_0',['joybus',['../structjoybus.html',1,'']]],
   ['joybus_5fapi_1',['joybus_api',['../structjoybus__api.html',1,'']]],
-  ['joybus_5fgc_5fcontroller_2',['joybus_gc_controller',['../structjoybus__gc__controller.html',1,'']]],
-  ['joybus_5fgc_5fcontroller_5finput_3',['joybus_gc_controller_input',['../structjoybus__gc__controller__input.html',1,'']]],
+  ['joybus_5fgcn_5fcontroller_2',['joybus_gcn_controller',['../structjoybus__gcn__controller.html',1,'']]],
+  ['joybus_5fgcn_5fcontroller_5finput_3',['joybus_gcn_controller_input',['../structjoybus__gcn__controller__input.html',1,'']]],
   ['joybus_5fgecko_4',['joybus_gecko',['../structjoybus__gecko.html',1,'']]],
   ['joybus_5fgecko_5fdata_5',['joybus_gecko_data',['../structjoybus__gecko__data.html',1,'']]],
   ['joybus_5fn64_5faccessory_6',['joybus_n64_accessory',['../structjoybus__n64__accessory.html',1,'']]],

@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['joybus_5fgc_5fcontroller_5fmotor_5fcb_5ft_0',['joybus_gc_controller_motor_cb_t',['../group__joybus__target__gc__controller.html#gad675b006f5f6a1190770252534ffd68a',1,'gc_controller.h']]],
-  ['joybus_5fgc_5fcontroller_5freset_5fcb_5ft_1',['joybus_gc_controller_reset_cb_t',['../group__joybus__target__gc__controller.html#gaaf97e81f342ca25576484c66839e9f24',1,'gc_controller.h']]],
+  ['joybus_5fgcn_5fcontroller_5fmotor_5fcb_5ft_0',['joybus_gcn_controller_motor_cb_t',['../group__joybus__target__gcn__controller.html#gafe598d49dd35eb48c04e9773b5db1b6d',1,'gcn_controller.h']]],
+  ['joybus_5fgcn_5fcontroller_5freset_5fcb_5ft_1',['joybus_gcn_controller_reset_cb_t',['../group__joybus__target__gcn__controller.html#ga241bbdb143619dd7211049a2f5d541d9',1,'gcn_controller.h']]],
   ['joybus_5fn64_5faccessory_5fdetect_5fcb_5ft_2',['joybus_n64_accessory_detect_cb_t',['../group__joybus__host.html#ga0c99b5404b7fbbc67ba19b225c3fdb2c',1,'n64.h']]],
   ['joybus_5fn64_5fcontroller_5freset_5fcb_5ft_3',['joybus_n64_controller_reset_cb_t',['../group__joybus__target__n64__controller.html#ga1c32462fcdf6291c430ffd87aa6b81ee',1,'n64_controller.h']]],
   ['joybus_5fn64_5frumble_5fpak_5fmotor_5fcb_5ft_4',['joybus_n64_rumble_pak_motor_cb_t',['../group__joybus__target__n64__rumble__pak.html#gadc2bbf52055b178e60776fdd9b2babbc',1,'n64_rumble_pak.h']]],

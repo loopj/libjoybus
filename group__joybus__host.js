@@ -16,7 +16,7 @@ var group__joybus__host =
     [ "joybus_gcn_read", "group__joybus__host.html#gad029cfec41a1462879eb047d7ee6e57d", null ],
     [ "joybus_gcn_read_long", "group__joybus__host.html#gaa0bf3e72078ede21d80af8e1244f3e38", null ],
     [ "joybus_gcn_read_origin", "group__joybus__host.html#ga7ebae7eb6565234b9419215191f747de", null ],
-    [ "joybus_gcn_unpack_input", "group__joybus__host.html#gae06d49245a8575ca2528d0e6ea1dd3ef", null ],
+    [ "joybus_gcn_unpack_input", "group__joybus__host.html#ga00f3c7060b50161ee7ac360a233c1d37", null ],
     [ "joybus_identify", "group__joybus__host.html#ga97a43162b8baf8334fc07aaf87ce0360", null ],
     [ "joybus_n64_accessory_detect", "group__joybus__host.html#gab82e436c793c21bad3d6485aec730887", null ],
     [ "joybus_n64_accessory_read", "group__joybus__host.html#gac23da3d20e51c21a336c86746c517d92", null ],

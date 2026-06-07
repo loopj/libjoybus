@@ -151,6 +151,9 @@ Macros</h2></td></tr>
 <tr class="memitem:ga96357e747d908aa6c354b507d9b0fdc4" id="r_ga96357e747d908aa6c354b507d9b0fdc4"><td class="memItemLeft" align="right" valign="top"><a id="ga96357e747d908aa6c354b507d9b0fdc4" name="ga96357e747d908aa6c354b507d9b0fdc4"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_BLOCK_SIZE</b>&#160;&#160;&#160;64</td></tr>
 <tr class="memdesc:ga96357e747d908aa6c354b507d9b0fdc4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum size of a Joybus transfer, in bytes. <br /></td></tr>
+<tr class="memitem:gaeba0b3392291f316c3279dfd07b383e2" id="r_gaeba0b3392291f316c3279dfd07b383e2"><td class="memItemLeft" align="right" valign="top"><a id="gaeba0b3392291f316c3279dfd07b383e2" name="gaeba0b3392291f316c3279dfd07b383e2"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_ACCESSORY_BLOCK_SIZE</b>&#160;&#160;&#160;32</td></tr>
+<tr class="memdesc:gaeba0b3392291f316c3279dfd07b383e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Size of a Joybus N64 accessory read/write block. <br /></td></tr>
 <tr class="memitem:gaf06db642865d9aae04c89330d3b9cc25" id="r_gaf06db642865d9aae04c89330d3b9cc25"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#gaf06db642865d9aae04c89330d3b9cc25">JOYBUS</a>(bus)</td></tr>
 <tr class="memdesc:gaf06db642865d9aae04c89330d3b9cc25"><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro to cast a backend-specific Joybus instance to a generic Joybus instance.  <br /></td></tr>
 </table><table class="memberdecls">
@@ -215,7 +218,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line">((<span class="keyword">struct </span><a class="code hl_struct" href="structjoybus.html">joybus</a> *)(bus))</div>
-<div class="ttc" id="astructjoybus_html"><div class="ttname"><a href="structjoybus.html">joybus</a></div><div class="ttdoc">A Joybus instance.</div><div class="ttdef"><b>Definition</b> bus.h:76</div></div>
+<div class="ttc" id="astructjoybus_html"><div class="ttname"><a href="structjoybus.html">joybus</a></div><div class="ttdoc">A Joybus instance.</div><div class="ttdef"><b>Definition</b> bus.h:79</div></div>
 </div><!-- fragment -->
 <p>Macro to cast a backend-specific Joybus instance to a generic Joybus instance. </p>
 
@@ -596,7 +599,7 @@ Functions</h2></td></tr>
     <tr><td class="paramname">read_buf</td><td>the buffer to store the response in </td></tr>
     <tr><td class="paramname">read_len</td><td>the number of bytes to read </td></tr>
     <tr><td class="paramname">callback</td><td>a callback function to call when the transfer is complete </td></tr>
-    <tr><td class="paramname">user_data</td><td>user data to pass to the callback</td></tr>
+    <tr><td class="paramname">user_data</td><td>user data to pass to the callback </td></tr>
   </table>
   </dd>
 </dl>
@@ -647,7 +650,7 @@ Functions</h2></td></tr>
     <tr><td class="paramname">write_len</td><td>the number of bytes to write </td></tr>
     <tr><td class="paramname">read_buf</td><td>the buffer to store the response in </td></tr>
     <tr><td class="paramname">read_len</td><td>the number of bytes to read </td></tr>
-    <tr><td class="paramname">timeout_ms</td><td>the timeout for the transfer, in milliseconds</td></tr>
+    <tr><td class="paramname">timeout_ms</td><td>the timeout for the transfer, in milliseconds </td></tr>
   </table>
   </dd>
 </dl>

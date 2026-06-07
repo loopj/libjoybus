@@ -3,6 +3,7 @@ var group__joybus =
     [ "joybus_api", "structjoybus__api.html", null ],
     [ "joybus", "structjoybus.html", null ],
     [ "JOYBUS", "group__joybus.html#gaf06db642865d9aae04c89330d3b9cc25", null ],
+    [ "JOYBUS_ACCESSORY_BLOCK_SIZE", "group__joybus.html#gaeba0b3392291f316c3279dfd07b383e2", null ],
     [ "JOYBUS_BLOCK_SIZE", "group__joybus.html#ga96357e747d908aa6c354b507d9b0fdc4", null ],
     [ "JOYBUS_BUS_IDLE_US", "group__joybus.html#ga8c9b9633b92365fb0bb147559ef3ea6e", null ],
     [ "JOYBUS_FREQ_GCN_CONSOLE", "group__joybus.html#gaadf50cd43928e2d19ae88ee6913287c2", null ],

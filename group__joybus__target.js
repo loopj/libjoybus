@@ -1,6 +1,6 @@
 var group__joybus__target =
 [
-    [ "GameCube Controller Target", "group__joybus__target__gc__controller.html", "group__joybus__target__gc__controller" ],
+    [ "GameCube Controller Target", "group__joybus__target__gcn__controller.html", "group__joybus__target__gcn__controller" ],
     [ "N64 Controller Target", "group__joybus__target__n64__controller.html", "group__joybus__target__n64__controller" ],
     [ "joybus_target_api", "structjoybus__target__api.html", [
       [ "byte_received", "structjoybus__target__api.html#a35bfc70b5f445a45680b229a12c43f26", null ]
