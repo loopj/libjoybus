@@ -1,17 +1,17 @@
 #include <string.h>
 
 #include <joybus/bus.h>
-#include <joybus/commands.h>
+#include <joybus/identify.h>
 #include <joybus/backend/loopback.h>
 #include <joybus/host/common.h>
-#include <joybus/host/gamecube.h>
-#include <joybus/target/gc_controller.h>
+#include <joybus/host/gcn.h>
+#include <joybus/target/gcn_controller.h>
 
 #include "unity.h"
 
 // A loopback Joybus and a WaveBird controller target`
 struct joybus bus;
-struct joybus_gc_controller controller;
+struct joybus_gcn_controller controller;
 
 // Spy callback to capture responses
 static uint8_t response[JOYBUS_BLOCK_SIZE];
@@ -28,7 +28,7 @@ void setUp(void)
   joybus_enable(&bus);
 
   // Register a standard GameCube controller target
-  joybus_gc_controller_init(&controller, JOYBUS_GAMECUBE_CONTROLLER);
+  joybus_gcn_controller_init(&controller);
   joybus_target_register(&bus, JOYBUS_TARGET(&controller));
 
   // Reset response capture
@@ -41,7 +41,7 @@ void tearDown(void)
 }
 
 // Test that the "identify" response is correct for a standard GameCube controller
-static void test_gc_controller_identify()
+static void test_gcn_controller_identify()
 {
   // Send an identify command
   joybus_identify(&bus, response, spy, NULL);
@@ -53,10 +53,10 @@ static void test_gc_controller_identify()
 }
 
 // Test that the "need origin" flag is cleared after a "read origin" command
-static void test_gc_controller_identify_after_read_origin()
+static void test_gcn_controller_identify_after_read_origin()
 {
   // Set an origin
-  struct joybus_gc_controller_input new_origin = {
+  struct joybus_gcn_controller_input new_origin = {
     .stick_x       = 0x81,
     .stick_y       = 0x82,
     .substick_x    = 0x83,
@@ -64,7 +64,7 @@ static void test_gc_controller_identify_after_read_origin()
     .trigger_left  = 0x11,
     .trigger_right = 0x12,
   };
-  joybus_gc_controller_set_origin(&controller, &new_origin);
+  joybus_gcn_controller_set_origin(&controller, &new_origin);
 
   // Send an identify command
   joybus_identify(&bus, response, spy, NULL);
@@ -87,7 +87,7 @@ static void test_gc_controller_identify_after_read_origin()
 }
 
 // Test that "analog mode" and "motor state" are saved after a "read" command
-static void test_gc_controller_identify_after_read()
+static void test_gcn_controller_identify_after_read()
 {
   // Send a read origin command
   joybus_gcn_read_origin(&bus, response, spy, NULL);
@@ -108,9 +108,9 @@ int main(int argc, char **argv)
 {
   UNITY_BEGIN();
 
-  RUN_TEST(test_gc_controller_identify);
-  RUN_TEST(test_gc_controller_identify_after_read_origin);
-  RUN_TEST(test_gc_controller_identify_after_read);
+  RUN_TEST(test_gcn_controller_identify);
+  RUN_TEST(test_gcn_controller_identify_after_read_origin);
+  RUN_TEST(test_gcn_controller_identify_after_read);
 
   return UNITY_END();
 }

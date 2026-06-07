@@ -11,7 +11,7 @@
 struct joybus_rp2xxx rp2xxx_bus;
 struct joybus *bus = JOYBUS(&rp2xxx_bus);
 
-static struct joybus_gc_controller gc_controller;
+static struct joybus_gcn_controller gcn_controller;
 
 int main()
 {
@@ -24,18 +24,18 @@ int main()
   joybus_enable(bus);
 
   // Initialize a GameCube controller target as a standard controller
-  joybus_gc_controller_init(&gc_controller, JOYBUS_GAMECUBE_CONTROLLER);
+  joybus_gcn_controller_init(&gcn_controller);
 
   // Register the target on the bus
-  joybus_target_register(bus, JOYBUS_TARGET(&gc_controller));
+  joybus_target_register(bus, JOYBUS_TARGET(&gcn_controller));
 
   while (1) {
     // Clear previous button state
-    gc_controller.input.buttons &= ~JOYBUS_GCN_BUTTON_MASK;
+    gcn_controller.input.buttons &= ~JOYBUS_GCN_BUTTON_MASK;
 
     // Simulate pressing the A button when the BUTTON_A_GPIO (active low) is pressed
     if (gpio_get(BUTTON_A_GPIO) == 0)
-      gc_controller.input.buttons |= JOYBUS_GCN_BUTTON_A;
+      gcn_controller.input.buttons |= JOYBUS_GCN_BUTTON_A;
 
     // Chill for a bit
     sleep_ms(10);

@@ -10,7 +10,7 @@
 #pragma once
 
 #include <joybus/bus.h>
-#include <joybus/n64.h>
+#include <joybus/common/n64_controller.h>
 #include <joybus/target.h>
 #include <joybus/target/n64_accessory.h>
 

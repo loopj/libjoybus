@@ -1,5 +1,7 @@
 /**
  * @file
+ *
+ * Common definitions for GameCube controllers.
  */
 
 #pragma once
@@ -30,7 +32,7 @@
 /**
  * GameCube controller input state.
  */
-struct joybus_gc_controller_input {
+struct joybus_gcn_controller_input {
   /// Button state
   uint16_t buttons;
 
@@ -61,6 +63,17 @@ struct joybus_gc_controller_input {
 
 /**
  * Analog modes for packing GameCube controller input state.
+ *
+ * The "read" command used by games expects 8-byte responses, this is presumably
+ * so it fits in a nice round multiple of 32-bit words. The full input state is
+ * 10 bytes long, so there are various ways to "pack" the input state into 8
+ * bytes. Depending on the analog mode, either one pair of analog inputs can be
+ * omitted, or two pairs of analog inputs can be truncated to 4 bits.
+ *
+ * All production games, with the exception of Luigi's Mansion, use analog mode 3.
+ * This mode omits the analog A/B inputs, and sends the substick X/Y and triggers
+ * at full precision. Analog A/B buttons were only present in pre-production
+ * GameCube controllers.
  */
 enum joybus_gcn_analog_mode {
   /// Substick X/Y full precision, triggers and analog A/B truncated to 4 bits

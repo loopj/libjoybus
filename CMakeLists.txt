@@ -14,9 +14,9 @@ target_sources(
   INTERFACE
     src/checksum.c
     src/host/common.c
-    src/host/gamecube.c
+    src/host/gcn.c
     src/host/n64.c
-    src/target/gc_controller.c
+    src/target/gcn_controller.c
     src/target/n64_controller.c
     src/target/n64_rumble_pak.c
 )

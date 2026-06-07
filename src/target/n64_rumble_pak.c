@@ -2,7 +2,7 @@
 #include <stdint.h>
 #include <string.h>
 
-#include <joybus/commands.h>
+#include <joybus/bus.h>
 #include <joybus/target/n64_rumble_pak.h>
 
 // Rumble pak probe region: reads return 0x80 x 32 as the rumble pak signature

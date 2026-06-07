@@ -19,7 +19,7 @@ struct joybus_gecko gecko_bus;
 struct joybus *bus = JOYBUS(&gecko_bus);
 
 // GameCube controller target instance
-static struct joybus_gc_controller gc_controller;
+static struct joybus_gcn_controller gcn_controller;
 
 void app_init(void)
 {
@@ -32,20 +32,20 @@ void app_init(void)
   joybus_enable(bus);
 
   // Initialize a GameCube controller target as a standard controller
-  joybus_gc_controller_init(&gc_controller, JOYBUS_GAMECUBE_CONTROLLER);
+  joybus_gcn_controller_init(&gcn_controller);
 
   // Register the target on the bus
-  joybus_target_register(bus, JOYBUS_TARGET(&gc_controller));
+  joybus_target_register(bus, JOYBUS_TARGET(&gcn_controller));
 }
 
 void app_process_action(void)
 {
   // Clear previous button state
-  gc_controller.input.buttons &= ~JOYBUS_GCN_BUTTON_MASK;
+  gcn_controller.input.buttons &= ~JOYBUS_GCN_BUTTON_MASK;
 
   // Simulate pressing the A button when the BUTTON_GPIO (active low) is pressed
   if (GPIO_PinInGet(BTN_PORT, BTN_PIN) == 0)
-    gc_controller.input.buttons |= JOYBUS_GCN_BUTTON_A;
+    gcn_controller.input.buttons |= JOYBUS_GCN_BUTTON_A;
 
   // Chill for a bit
   sl_udelay_wait(10000);

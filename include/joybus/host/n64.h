@@ -7,7 +7,7 @@
 #pragma once
 
 #include <joybus/bus.h>
-#include <joybus/n64.h>
+#include <joybus/common/n64_controller.h>
 
 /**
  * N64 controller accessory types.
@@ -50,7 +50,6 @@ typedef void (*joybus_n64_accessory_detect_cb_t)(int accessory_type, void *user_
  * @param response buffer to store the response in, must be at least JOYBUS_CMD_N64_READ_RX bytes
  * @param callback a callback function to call when the transfer is complete
  * @param user_data user data to pass to the callback function
- *
  * @return 0 on success, negative error code on failure
  */
 int joybus_n64_read(struct joybus *bus, uint8_t *response, joybus_transfer_cb_t callback, void *user_data);
@@ -66,7 +65,6 @@ int joybus_n64_read(struct joybus *bus, uint8_t *response, joybus_transfer_cb_t 
  * @param response buffer to store the response in, must be at least JOYBUS_CMD_N64_WRITE_MEM_RX bytes
  * @param callback a callback function to call when the transfer is complete
  * @param user_data user data to pass to the callback function
- *
  * @return 0 on success, negative error code on failure
  */
 int joybus_n64_accessory_write(struct joybus *bus, uint16_t addr, const uint8_t *data, uint8_t *response,
@@ -82,7 +80,6 @@ int joybus_n64_accessory_write(struct joybus *bus, uint16_t addr, const uint8_t 
  * @param response buffer to store the response in, must be at least JOYBUS_CMD_N64_ACCESSORY_READ_RX bytes
  * @param callback a callback function to call when the transfer is complete
  * @param user_data user data to pass to the callback function
- *
  * @return 0 on success, negative error code on failure
  */
 int joybus_n64_accessory_read(struct joybus *bus, uint16_t addr, uint8_t *response, joybus_transfer_cb_t callback,

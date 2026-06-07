@@ -46,6 +46,9 @@ struct joybus;
 /// Maximum size of a Joybus transfer, in bytes
 #define JOYBUS_BLOCK_SIZE               64
 
+/// Size of a Joybus N64 accessory read/write block
+#define JOYBUS_ACCESSORY_BLOCK_SIZE     32
+
 /**
  * Macro to cast a backend-specific Joybus instance to a generic Joybus instance.
  */
@@ -113,7 +116,6 @@ static inline int joybus_disable(struct joybus *bus)
  * @param read_len the number of bytes to read
  * @param callback a callback function to call when the transfer is complete
  * @param user_data user data to pass to the callback
- *
  * @return 0 on success, negative error code on failure
  */
 static inline int joybus_transfer(struct joybus *bus, const uint8_t *write_buf, uint8_t write_len, uint8_t *read_buf,
@@ -133,7 +135,6 @@ static inline int joybus_transfer(struct joybus *bus, const uint8_t *write_buf, 
  * @param read_buf the buffer to store the response in
  * @param read_len the number of bytes to read
  * @param timeout_ms the timeout for the transfer, in milliseconds
- *
  * @return positive number of bytes read on success, negative error code on failure
  */
 int joybus_transfer_sync(struct joybus *bus, const uint8_t *write_buf, uint8_t write_len, uint8_t *read_buf,
