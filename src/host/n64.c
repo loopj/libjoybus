@@ -318,14 +318,13 @@ void joybus_n64_accessory_detect(struct joybus *bus, const joybus_n64_accessory_
 
 void joybus_n64_motor_start(struct joybus *bus)
 {
-  static uint8_t write_buf[32];
+  uint8_t write_buf[32];
   memset(write_buf, 0x01, sizeof(write_buf));
   joybus_n64_accessory_write(bus, ACCESSORY_ADDR_RUMBLE_MOTOR, write_buf, write_buf, NULL, NULL);
 }
 
 void joybus_n64_motor_stop(struct joybus *bus)
 {
-  static uint8_t write_buf[32];
-  memset(write_buf, 0x00, sizeof(write_buf));
+  uint8_t write_buf[32] = {0x00};
   joybus_n64_accessory_write(bus, ACCESSORY_ADDR_RUMBLE_MOTOR, write_buf, write_buf, NULL, NULL);
 }

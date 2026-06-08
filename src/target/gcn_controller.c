@@ -70,9 +70,9 @@ static inline void set_need_origin(struct joybus_gcn_controller *controller, boo
   // Also update the device ID for non-wireless controllers
   if (!joybus_gcn_controller_is_wireless(controller)) {
     if (need_origin) {
-      joybus_id_set_status_flags(controller->id, JOYBUS_ID_GCN_NEED_ORIGIN);
+      joybus_id_set_status_flags(controller->id, JOYBUS_STATUS_GCN_NEED_ORIGIN);
     } else {
-      joybus_id_clear_status_flags(controller->id, JOYBUS_ID_GCN_NEED_ORIGIN);
+      joybus_id_clear_status_flags(controller->id, JOYBUS_STATUS_GCN_NEED_ORIGIN);
     }
   }
 }
@@ -147,12 +147,13 @@ static inline int handle_read(struct joybus_gcn_controller *controller, const ui
       controller->input.buttons |= JOYBUS_GCN_USE_ORIGIN;
 
       // Get the previous motor state
-      uint8_t last_motor_state =
-        (joybus_id_get_status(controller->id) & JOYBUS_ID_GCN_MOTOR_STATE_MASK) >> JOYBUS_ID_GCN_MOTOR_STATE_SHIFT;
+      uint8_t last_motor_state = (joybus_id_get_status(controller->id) & JOYBUS_STATUS_GCN_MOTOR_STATE_MASK) >>
+                                 JOYBUS_STATUS_GCN_MOTOR_STATE_SHIFT;
 
       // Save the analog mode and motor state
-      joybus_id_clear_status_flags(controller->id, JOYBUS_ID_GCN_MOTOR_STATE_MASK | JOYBUS_ID_GCN_ANALOG_MODE_MASK);
-      joybus_id_set_status_flags(controller->id, motor_state << JOYBUS_ID_GCN_MOTOR_STATE_SHIFT | analog_mode);
+      joybus_id_clear_status_flags(controller->id,
+                                   JOYBUS_STATUS_GCN_MOTOR_STATE_MASK | JOYBUS_STATUS_GCN_ANALOG_MODE_MASK);
+      joybus_id_set_status_flags(controller->id, motor_state << JOYBUS_STATUS_GCN_MOTOR_STATE_SHIFT | analog_mode);
 
       // If motor state has changed, call the motor state change callback
       if (last_motor_state != motor_state && controller->on_motor_state_change)
@@ -234,12 +235,13 @@ static inline int handle_read_long(struct joybus_gcn_controller *controller, con
       controller->input.buttons |= JOYBUS_GCN_USE_ORIGIN;
 
       // Get the previous motor state
-      uint8_t last_motor_state =
-        (joybus_id_get_status(controller->id) & JOYBUS_ID_GCN_MOTOR_STATE_MASK) >> JOYBUS_ID_GCN_MOTOR_STATE_SHIFT;
+      uint8_t last_motor_state = (joybus_id_get_status(controller->id) & JOYBUS_STATUS_GCN_MOTOR_STATE_MASK) >>
+                                 JOYBUS_STATUS_GCN_MOTOR_STATE_SHIFT;
 
       // Save the analog mode and motor state
-      joybus_id_clear_status_flags(controller->id, JOYBUS_ID_GCN_MOTOR_STATE_MASK | JOYBUS_ID_GCN_ANALOG_MODE_MASK);
-      joybus_id_set_status_flags(controller->id, motor_state << JOYBUS_ID_GCN_MOTOR_STATE_SHIFT | analog_mode);
+      joybus_id_clear_status_flags(controller->id,
+                                   JOYBUS_STATUS_GCN_MOTOR_STATE_MASK | JOYBUS_STATUS_GCN_ANALOG_MODE_MASK);
+      joybus_id_set_status_flags(controller->id, motor_state << JOYBUS_STATUS_GCN_MOTOR_STATE_SHIFT | analog_mode);
 
       // If motor state has changed, call the motor state change callback
       if (last_motor_state != motor_state && controller->on_motor_state_change)
@@ -269,7 +271,7 @@ static inline int handle_probe_device(struct joybus_gcn_controller *controller, 
 {
   if (bytes_read == 1) {
     // Don't respond to probe commands if we already received data from a controller
-    if (joybus_id_get_type(controller->id) & JOYBUS_ID_GCN_WIRELESS_RECEIVED)
+    if (joybus_id_get_type(controller->id) & JOYBUS_TYPE_GCN_WIRELESS_RECEIVED)
       return 0;
 
     // Respond with 8 bytes of zeroes
@@ -299,8 +301,8 @@ static inline int handle_fix_device(struct joybus_gcn_controller *controller, co
     joybus_id_set_wireless_id(controller->id, wireless_id);
 
     // Update other controller ID flags
-    joybus_id_set_type_flags(controller->id,
-                             JOYBUS_ID_GCN_STANDARD | JOYBUS_ID_GCN_WIRELESS_STATE | JOYBUS_ID_GCN_WIRELESS_ID_FIXED);
+    joybus_id_set_type_flags(controller->id, JOYBUS_TYPE_GCN_STANDARD | JOYBUS_TYPE_GCN_WIRELESS_STATE |
+                                               JOYBUS_TYPE_GCN_WIRELESS_ID_FIXED);
 
     // Respond with the new controller ID
     send_response(controller->id, JOYBUS_CMD_GCN_FIX_DEVICE_RX, user_data);
@@ -384,7 +386,7 @@ void joybus_gcn_controller_set_wireless_id(struct joybus_gcn_controller *control
   joybus_id_set_wireless_id(controller->id, wireless_id);
 
   // Update other controller ID flags
-  joybus_id_set_type_flags(controller->id, JOYBUS_ID_GCN_STANDARD | JOYBUS_ID_GCN_WIRELESS_RECEIVED);
+  joybus_id_set_type_flags(controller->id, JOYBUS_TYPE_GCN_STANDARD | JOYBUS_TYPE_GCN_WIRELESS_RECEIVED);
 }
 
 void joybus_gcn_controller_set_origin(struct joybus_gcn_controller *controller,
@@ -401,5 +403,5 @@ void joybus_gcn_controller_set_origin(struct joybus_gcn_controller *controller,
 
   // Set the "has wireless origin" flag in the device ID
   if (joybus_gcn_controller_is_wireless(controller))
-    joybus_id_set_type_flags(controller->id, JOYBUS_ID_GCN_WIRELESS_ORIGIN);
+    joybus_id_set_type_flags(controller->id, JOYBUS_TYPE_GCN_WIRELESS_ORIGIN);
 }

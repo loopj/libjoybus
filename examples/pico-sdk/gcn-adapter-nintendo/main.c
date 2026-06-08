@@ -73,15 +73,15 @@ static void joybus_identify_cb(struct joybus *bus, int result, void *user_data)
 
   // Check it's a GameCube controller
   uint16_t type = joybus_id_get_type(joybus_response[chan]);
-  if (!(type & JOYBUS_ID_GCN_DEVICE))
+  if (!(type & JOYBUS_TYPE_GCN_DEVICE))
     return;
 
   // Check we've received data if it's a wireless controller
-  if ((type & JOYBUS_ID_GCN_WIRELESS) && !(type & JOYBUS_ID_GCN_WIRELESS_RECEIVED))
+  if ((type & JOYBUS_TYPE_GCN_WIRELESS) && !(type & JOYBUS_TYPE_GCN_WIRELESS_RECEIVED))
     return;
 
   // Check it's a standard controller
-  if (!(type & JOYBUS_ID_GCN_STANDARD))
+  if (!(type & JOYBUS_TYPE_GCN_STANDARD))
     return;
 
   // Save controller type
@@ -154,7 +154,7 @@ static void send_state_report(void)
   uint8_t *chan_buf = report_buf + 1;
   for (uint8_t chan = 0; chan < GCCA_JOYBUS_CHANNELS; chan++, chan_buf += 9) {
     // Set the controller type
-    chan_buf[0] = controller_type[chan] & JOYBUS_ID_GCN_WIRELESS ? 0x22 : 0x10;
+    chan_buf[0] = controller_type[chan] & JOYBUS_TYPE_GCN_WIRELESS ? 0x22 : 0x10;
 
     // Set the rumble capability flag
     if (GCCA_RUMBLE_POWER_AVAILABLE)
