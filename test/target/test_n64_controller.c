@@ -263,7 +263,7 @@ static void test_n64_controller_accessory_read_no_accessory()
   // Send an accessory read with a valid address
   joybus_n64_accessory_read(&bus, 0x8000, response, spy, NULL);
 
-  // Expect 32 zero bytes followed by 0xFF (CRC8 of 32 zeroes is 0x00, XORed with 0xFF for "no pak")
+  // Expect 32 zero bytes followed by 0xFF
   uint8_t expected[JOYBUS_CMD_N64_ACCESSORY_READ_RX] = {0};
   expected[32]                                       = 0xFF;
   TEST_ASSERT_EQUAL(JOYBUS_CMD_N64_ACCESSORY_READ_RX, response_len);
@@ -281,8 +281,8 @@ static void test_n64_controller_accessory_write_no_accessory()
   memset(data, 0x80, sizeof(data));
   joybus_n64_accessory_write(&bus, 0x8000, data, response, spy, NULL);
 
-  // Expect the response to be crc8(data) ^ 0xFF (the "no pak" marker)
-  uint8_t expected = joybus_crc8(data, sizeof(data)) ^ 0xFF;
+  // Expect the response to be checksum ^ 0xFF (the "no pak" marker)
+  uint8_t expected = joybus_data_checksum(data, sizeof(data)) ^ 0xFF;
   TEST_ASSERT_EQUAL(JOYBUS_CMD_N64_ACCESSORY_WRITE_RX, response_len);
   TEST_ASSERT_EQUAL_HEX8(expected, response[0]);
 }
@@ -316,8 +316,8 @@ static void test_n64_controller_accessory_write_while_changed()
   memset(data, 0x80, sizeof(data));
   joybus_n64_accessory_write(&bus, 0x8000, data, response, spy, NULL);
 
-  // Expect the "no pak" response — crc8(data) ^ 0xFF
-  uint8_t expected = joybus_crc8(data, sizeof(data)) ^ 0xFF;
+  // Expect the "no pak" response — checksum ^ 0xFF
+  uint8_t expected = joybus_data_checksum(data, sizeof(data)) ^ 0xFF;
   TEST_ASSERT_EQUAL(JOYBUS_CMD_N64_ACCESSORY_WRITE_RX, response_len);
   TEST_ASSERT_EQUAL_HEX8(expected, response[0]);
 }
@@ -356,8 +356,8 @@ static void test_n64_controller_accessory_write_bad_checksum()
 
   joybus_transfer(&bus, bad_write_cmd, sizeof(bad_write_cmd), response, JOYBUS_CMD_N64_ACCESSORY_WRITE_RX, spy, NULL);
 
-  // Expect crc8(data) ^ 0xFF — the "no pak" marker
-  uint8_t expected = joybus_crc8(&bad_write_cmd[3], JOYBUS_ACCESSORY_BLOCK_SIZE) ^ 0xFF;
+  // Expect checksum ^ 0xFF — the "no pak" marker
+  uint8_t expected = joybus_data_checksum(&bad_write_cmd[3], JOYBUS_ACCESSORY_BLOCK_SIZE) ^ 0xFF;
   TEST_ASSERT_EQUAL(JOYBUS_CMD_N64_ACCESSORY_WRITE_RX, response_len);
   TEST_ASSERT_EQUAL_HEX8(expected, response[0]);
 }
