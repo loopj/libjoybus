@@ -11,6 +11,8 @@ var group__joybus =
     [ "JOYBUS_FREQ_GCN_GBA_CABLE", "group__joybus.html#ga4a178a6e794ac9819521433f3937eff1", null ],
     [ "JOYBUS_FREQ_N64_CONSOLE", "group__joybus.html#gab3efc8de2beb9990fae3b417ef5b956d", null ],
     [ "JOYBUS_FREQ_N64_CONTROLLER", "group__joybus.html#ga731f56516ae0e82eb2c653b1f8efa5ee", null ],
+    [ "JOYBUS_FREQ_N64_EXTJOY", "group__joybus.html#ga3c4cd1af2021e00cb27645543a2c1204", null ],
+    [ "JOYBUS_FREQ_N64_VRU", "group__joybus.html#gae62b144505464bde78d08a03813c26b2", null ],
     [ "JOYBUS_FREQ_WAVEBIRD_RECEIVER", "group__joybus.html#ga929f8c1526ed6185f2a7a637bb358aa1", null ],
     [ "JOYBUS_FREQ_WII_CONSOLE", "group__joybus.html#ga64e876071c5e4190a1af1542f758db91", null ],
     [ "JOYBUS_INTER_TRANSFER_DELAY_US", "group__joybus.html#gac5ab3e6873e93e3f6c2ba0759f227912", null ],
@@ -20,7 +22,8 @@ var group__joybus =
       [ "JOYBUS_ERR_DISABLED", "group__joybus.html#gga47435eba4c98726f93fdae3c8bb9fd76a6496af2c91935e2e37a48a43f14dda21", null ],
       [ "JOYBUS_ERR_BUSY", "group__joybus.html#gga47435eba4c98726f93fdae3c8bb9fd76a861b6a4876c1569f6117a3f4d7601a3d", null ],
       [ "JOYBUS_ERR_TIMEOUT", "group__joybus.html#gga47435eba4c98726f93fdae3c8bb9fd76a2130afe5fb23ff6f7f2ee49df1441e14", null ],
-      [ "JOYBUS_ERR_NOT_SUPPORTED", "group__joybus.html#gga47435eba4c98726f93fdae3c8bb9fd76a274cd46970af05945e6218f49e40efe0", null ]
+      [ "JOYBUS_ERR_NOT_SUPPORTED", "group__joybus.html#gga47435eba4c98726f93fdae3c8bb9fd76a274cd46970af05945e6218f49e40efe0", null ],
+      [ "JOYBUS_ERR_CHECKSUM", "group__joybus.html#gga47435eba4c98726f93fdae3c8bb9fd76adc97e17cb4f7168b0f71926a6d357aac", null ]
     ] ],
     [ "joybus_address_checksum", "group__joybus.html#ga395ca3d9f9844388c1b7372a0ae8bedf", null ],
     [ "joybus_address_checksum_valid", "group__joybus.html#ga03671e51a2e7cdfc222fbe0c39fa1109", null ],

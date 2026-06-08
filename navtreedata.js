@@ -61,7 +61,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"structjoybus__target.html"
+"identify_8h.html#ac599ad62024ecb56dcb162224f8624f5"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';

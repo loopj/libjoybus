@@ -121,9 +121,15 @@ Macros</h2></td></tr>
 <tr class="memitem:gab3efc8de2beb9990fae3b417ef5b956d" id="r_gab3efc8de2beb9990fae3b417ef5b956d"><td class="memItemLeft" align="right" valign="top"><a id="gab3efc8de2beb9990fae3b417ef5b956d" name="gab3efc8de2beb9990fae3b417ef5b956d"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_FREQ_N64_CONSOLE</b>&#160;&#160;&#160;244141</td></tr>
 <tr class="memdesc:gab3efc8de2beb9990fae3b417ef5b956d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Joybus frequency of an N64 console (NUS-001). <br /></td></tr>
+<tr class="memitem:ga3c4cd1af2021e00cb27645543a2c1204" id="r_ga3c4cd1af2021e00cb27645543a2c1204"><td class="memItemLeft" align="right" valign="top"><a id="ga3c4cd1af2021e00cb27645543a2c1204" name="ga3c4cd1af2021e00cb27645543a2c1204"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_FREQ_N64_EXTJOY</b>&#160;&#160;&#160;<a class="el" href="#gab3efc8de2beb9990fae3b417ef5b956d">JOYBUS_FREQ_N64_CONSOLE</a></td></tr>
+<tr class="memdesc:ga3c4cd1af2021e00cb27645543a2c1204"><td class="mdescLeft">&#160;</td><td class="mdescRight">Joybus frequency of an external joybus device (EEPROM/RTC on an N64 cartridge). <br /></td></tr>
 <tr class="memitem:ga731f56516ae0e82eb2c653b1f8efa5ee" id="r_ga731f56516ae0e82eb2c653b1f8efa5ee"><td class="memItemLeft" align="right" valign="top"><a id="ga731f56516ae0e82eb2c653b1f8efa5ee" name="ga731f56516ae0e82eb2c653b1f8efa5ee"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_FREQ_N64_CONTROLLER</b>&#160;&#160;&#160;250000</td></tr>
 <tr class="memdesc:ga731f56516ae0e82eb2c653b1f8efa5ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Joybus frequency of an N64 controller (NUS-005). <br /></td></tr>
+<tr class="memitem:gae62b144505464bde78d08a03813c26b2" id="r_gae62b144505464bde78d08a03813c26b2"><td class="memItemLeft" align="right" valign="top"><a id="gae62b144505464bde78d08a03813c26b2" name="gae62b144505464bde78d08a03813c26b2"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_FREQ_N64_VRU</b>&#160;&#160;&#160;250000</td></tr>
+<tr class="memdesc:gae62b144505464bde78d08a03813c26b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Joybus frequency of an N64 VRU (NUS-020). <br /></td></tr>
 <tr class="memitem:gaadf50cd43928e2d19ae88ee6913287c2" id="r_gaadf50cd43928e2d19ae88ee6913287c2"><td class="memItemLeft" align="right" valign="top"><a id="gaadf50cd43928e2d19ae88ee6913287c2" name="gaadf50cd43928e2d19ae88ee6913287c2"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_FREQ_GCN_CONSOLE</b>&#160;&#160;&#160;202500</td></tr>
 <tr class="memdesc:gaadf50cd43928e2d19ae88ee6913287c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Joybus frequency of a GameCube console (DOL-001 / DOL-101). <br /></td></tr>
@@ -172,6 +178,8 @@ Enumerations</h2></td></tr>
 &#160;&#160;<a class="el" href="#gga47435eba4c98726f93fdae3c8bb9fd76a2130afe5fb23ff6f7f2ee49df1441e14">JOYBUS_ERR_TIMEOUT</a>
 , <br />
 &#160;&#160;<a class="el" href="#gga47435eba4c98726f93fdae3c8bb9fd76a274cd46970af05945e6218f49e40efe0">JOYBUS_ERR_NOT_SUPPORTED</a>
+, <br />
+&#160;&#160;<a class="el" href="#gga47435eba4c98726f93fdae3c8bb9fd76adc97e17cb4f7168b0f71926a6d357aac">JOYBUS_ERR_CHECKSUM</a>
 <br />
  }</td></tr>
 <tr class="memdesc:ga47435eba4c98726f93fdae3c8bb9fd76"><td class="mdescLeft">&#160;</td><td class="mdescRight">Joybus error codes.  <a href="#ga47435eba4c98726f93fdae3c8bb9fd76">More...</a><br /></td></tr>
@@ -218,7 +226,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line">((<span class="keyword">struct </span><a class="code hl_struct" href="structjoybus.html">joybus</a> *)(bus))</div>
-<div class="ttc" id="astructjoybus_html"><div class="ttname"><a href="structjoybus.html">joybus</a></div><div class="ttdoc">A Joybus instance.</div><div class="ttdef"><b>Definition</b> bus.h:79</div></div>
+<div class="ttc" id="astructjoybus_html"><div class="ttname"><a href="structjoybus.html">joybus</a></div><div class="ttdoc">A Joybus instance.</div><div class="ttdef"><b>Definition</b> bus.h:85</div></div>
 </div><!-- fragment -->
 <p>Macro to cast a backend-specific Joybus instance to a generic Joybus instance. </p>
 
@@ -271,6 +279,8 @@ Functions</h2></td></tr>
 <tr><td class="fieldname"><a id="gga47435eba4c98726f93fdae3c8bb9fd76a2130afe5fb23ff6f7f2ee49df1441e14" name="gga47435eba4c98726f93fdae3c8bb9fd76a2130afe5fb23ff6f7f2ee49df1441e14"></a>JOYBUS_ERR_TIMEOUT&#160;</td><td class="fielddoc"><p>Transfer timed out. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="gga47435eba4c98726f93fdae3c8bb9fd76a274cd46970af05945e6218f49e40efe0" name="gga47435eba4c98726f93fdae3c8bb9fd76a274cd46970af05945e6218f49e40efe0"></a>JOYBUS_ERR_NOT_SUPPORTED&#160;</td><td class="fielddoc"><p>Command not supported by Joybus target. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="gga47435eba4c98726f93fdae3c8bb9fd76adc97e17cb4f7168b0f71926a6d357aac" name="gga47435eba4c98726f93fdae3c8bb9fd76adc97e17cb4f7168b0f71926a6d357aac"></a>JOYBUS_ERR_CHECKSUM&#160;</td><td class="fielddoc"><p>Checksum error. </p>
 </td></tr>
 </table>
 

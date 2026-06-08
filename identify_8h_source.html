@@ -109,110 +109,161 @@ $(function(){initNavTree('identify_8h_source.html','',''); });
 <a href="identify_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span></div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#pragma once</span></div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;stdint.h&gt;</span></div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="comment">// N64 identify type values</span></div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno"><a class="line" href="identify_8h.html#a5b0e06e006f67ed4941df53147edad62">   11</a></span><span class="preprocessor">#define JOYBUS_ID_N64_VRU                 0x0001  </span></div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno"><a class="line" href="identify_8h.html#a74e73bc0e62fd623ee5ffa7af38163b7">   12</a></span><span class="preprocessor">#define JOYBUS_ID_N64_KEYBOARD            0x0002  </span></div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno"><a class="line" href="identify_8h.html#a5617be08ae54fcf0e20a23d5f6ff3473">   13</a></span><span class="preprocessor">#define JOYBUS_ID_N64_GBA_LINK            0x0004  </span></div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno"><a class="line" href="identify_8h.html#a0ae4bc2a61597299a375964fbd6c71ce">   14</a></span><span class="preprocessor">#define JOYBUS_ID_N64_MOUSE               0x0200  </span></div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno"><a class="line" href="identify_8h.html#a1c23d39042a7ed4ae2c67df5601970dc">   15</a></span><span class="preprocessor">#define JOYBUS_ID_N64_CONTROLLER          0x0500  </span></div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="comment">// N64 identify status values (standard controllers)</span></div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno"><a class="line" href="identify_8h.html#ac426fc36cfaa38ea21a3f31c152e9440">   18</a></span><span class="preprocessor">#define JOYBUS_ID_N64_ACCESSORY_PRESENT   0x01    </span></div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno"><a class="line" href="identify_8h.html#a4a634a6465272ea529931aaec2c2f98d">   19</a></span><span class="preprocessor">#define JOYBUS_ID_N64_ACCESSORY_ABSENT    0x02    </span></div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno"><a class="line" href="identify_8h.html#a71ebacc7fdf9f01f94d4cbc98b59dff0">   20</a></span><span class="preprocessor">#define JOYBUS_ID_N64_ACCESSORY_CHANGED   0x03    </span></div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno"><a class="line" href="identify_8h.html#a80a960b270462d4efe7e7af62f26a779">   21</a></span><span class="preprocessor">#define JOYBUS_ID_N64_CHECKSUM_ERROR      0x04    </span></div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="comment">// N64 identify status values (VRU)</span></div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno"><a class="line" href="identify_8h.html#aa720707fa151d7a9f82f7091f48b7a09">   24</a></span><span class="preprocessor">#define JOYBUS_ID_N64_VRU_UNINITIALIZED   0x00    </span></div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno"><a class="line" href="identify_8h.html#a0b4b23776c85ce38ec764b8ef43e6385">   25</a></span><span class="preprocessor">#define JOYBUS_ID_N64_VRU_INITIALIZED     0x01    </span></div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="comment">// GCN identify type flags</span></div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="identify_8h.html#a1d4fe58c752608ea0885049f34e326c4">   28</a></span><span class="preprocessor">#define JOYBUS_ID_GCN_WIRELESS_ID_FIXED   0x0010  </span></div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="identify_8h.html#a98f0ab902f501aad8531bac3471b1ec0">   29</a></span><span class="preprocessor">#define JOYBUS_ID_GCN_WIRELESS_ORIGIN     0x0020  </span></div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="identify_8h.html#a901be9cad28a0569c4410b36ad310efd">   30</a></span><span class="preprocessor">#define JOYBUS_ID_GCN_STANDARD            0x0100  </span></div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="identify_8h.html#a5f5ea3ea95d18974a887d9922f5b50b6">   31</a></span><span class="preprocessor">#define JOYBUS_ID_GCN_WIRELESS_STATE      0x0200  </span></div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a class="line" href="identify_8h.html#a97d4b67ad41a6cb0b2faeb3dd022abb9">   32</a></span><span class="preprocessor">#define JOYBUS_ID_GCN_DEVICE              0x0800  </span></div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="identify_8h.html#a5514350e44af5ec289ab96399bfc8ad5">   33</a></span><span class="preprocessor">#define JOYBUS_ID_GCN_NO_MOTOR            0x2000  </span></div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="identify_8h.html#a80c5889faacb992caee8c15edff4e752">   34</a></span><span class="preprocessor">#define JOYBUS_ID_GCN_WIRELESS_RECEIVED   0x4000  </span></div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="identify_8h.html#afd9fb82d1357a991f35493d5069a9644">   35</a></span><span class="preprocessor">#define JOYBUS_ID_GCN_WIRELESS            0x8000  </span></div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="comment">// GCN identify status flags (non-wireless controllers)</span></div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno"><a class="line" href="identify_8h.html#a209e0e540f3a932983406923d82d95d7">   38</a></span><span class="preprocessor">#define JOYBUS_ID_GCN_ANALOG_MODE_MASK    0x07    </span></div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno"><a class="line" href="identify_8h.html#a29fda09d531847f6a92116e5099f4db5">   39</a></span><span class="preprocessor">#define JOYBUS_ID_GCN_MOTOR_STATE_MASK    0x18    </span></div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno"><a class="line" href="identify_8h.html#a999fc22b98fab66e8cbcf2414d6584fd">   40</a></span><span class="preprocessor">#define JOYBUS_ID_GCN_NEED_ORIGIN         0x20    </span></div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno"><a class="line" href="identify_8h.html#a72a9ab30f82e09e4ce4347b7087db476">   41</a></span><span class="preprocessor">#define JOYBUS_ID_GCN_ERROR_LATCHED       0x40    </span></div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno"><a class="line" href="identify_8h.html#a46cd9be9713bdff21524276b36ae1332">   42</a></span><span class="preprocessor">#define JOYBUS_ID_GCN_ERROR               0x80    </span></div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="preprocessor">#define JOYBUS_ID_GCN_MOTOR_STATE_SHIFT   3</span></div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="preprocessor">#define JOYBUS_ID_GCN_ANALOG_MODE_SHIFT   0</span></div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span></div>
-<div class="foldopen" id="foldopen00052" data-start="{" data-end="}">
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno"><a class="line" href="identify_8h.html#a748a2eb84d485a4e0e84c6e299485e35">   52</a></span><span class="keyword">static</span> <span class="keyword">inline</span> uint16_t <a class="code hl_function" href="identify_8h.html#a748a2eb84d485a4e0e84c6e299485e35">joybus_id_get_type</a>(<span class="keyword">const</span> uint8_t *<span class="keywordtype">id</span>)</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>{</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  <span class="keywordflow">return</span> (uint16_t)((<span class="keywordtype">id</span>[0] &lt;&lt; 8) | <span class="keywordtype">id</span>[1]);</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>}</div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;stdbool.h&gt;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &lt;stdint.h&gt;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="comment">/*</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="comment"> * Joybus device type flags.</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment"> * The first two bytes of the identify buffer contain &quot;type&quot; flags. The</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment"> * joybus_id_get_type function combines them in big-endian/wire order so we</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="comment"> * can use them as a single 16-bit bitfield.</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="comment"> */</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="comment">// Non-GameCube device types</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno"><a class="line" href="identify_8h.html#ad0ec9c6c9fe9b7e36efe011a2d09a558">   20</a></span><span class="preprocessor">#define JOYBUS_TYPE_N64_MASK                  0x071f  </span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno"><a class="line" href="identify_8h.html#a897d25b1bef8c70714a1f21bcdc47778">   21</a></span><span class="preprocessor">#define JOYBUS_TYPE_N64_VRU                   0x0001  </span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno"><a class="line" href="identify_8h.html#ac599ad62024ecb56dcb162224f8624f5">   22</a></span><span class="preprocessor">#define JOYBUS_TYPE_N64_KEYBOARD              0x0002  </span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno"><a class="line" href="identify_8h.html#a755a36fa9d1bbb5245a116b53f4aff70">   23</a></span><span class="preprocessor">#define JOYBUS_TYPE_GBA_CABLE                 0x0004  </span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno"><a class="line" href="identify_8h.html#a7febc2701e4b1d00a374b6d5c0e32938">   24</a></span><span class="preprocessor">#define JOYBUS_TYPE_N64_RTC                   0x0010  </span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno"><a class="line" href="identify_8h.html#a2933e5618033c04c771b919d3b681fef">   25</a></span><span class="preprocessor">#define JOYBUS_TYPE_N64_EEPROM_16K            0x0040  </span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno"><a class="line" href="identify_8h.html#ac6195917e15c2fb4a0f21da348c5c767">   26</a></span><span class="preprocessor">#define JOYBUS_TYPE_N64_EEPROM                0x0080  </span></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="identify_8h.html#ac722993a39c47ee0178e8e2ddfabaebf">   27</a></span><span class="preprocessor">#define JOYBUS_TYPE_N64_ABSOLUTE              0x0100  </span></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="identify_8h.html#a10fc8d11dc1d73c07580f95a124e5189">   28</a></span><span class="preprocessor">#define JOYBUS_TYPE_N64_RELATIVE              0x0200  </span></div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="identify_8h.html#a9871fda683dde97d86637cc3eccf75b5">   29</a></span><span class="preprocessor">#define JOYBUS_TYPE_N64_JOYPORT               0x0400  </span></div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="comment">// GameCube device types</span></div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a class="line" href="identify_8h.html#a78be0017587d28068964baf6d9c63707">   32</a></span><span class="preprocessor">#define JOYBUS_TYPE_GCN_MASK                  0x1800  </span></div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="identify_8h.html#afe915efda4d96ec8fe127ce8d07a164c">   33</a></span><span class="preprocessor">#define JOYBUS_TYPE_GCN_WIRELESS_ID_FIXED     0x0010  </span></div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="identify_8h.html#a12c7453ef870c9dfbe2175d536cd3eff">   34</a></span><span class="preprocessor">#define JOYBUS_TYPE_GCN_KEYBOARD              0x0020  </span></div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="identify_8h.html#a422f6671c92d8ab7a530c8668e751a9a">   35</a></span><span class="preprocessor">#define JOYBUS_TYPE_GCN_WIRELESS_ORIGIN       0x0020  </span></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno"><a class="line" href="identify_8h.html#a3d2c43f9dacc747a6c019eb1bbe83a7b">   36</a></span><span class="preprocessor">#define JOYBUS_TYPE_GCN_WIRELESS_ID_MASK      0x00C0  </span></div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno"><a class="line" href="identify_8h.html#a9019062697269e59a53730cf5b4f0368">   37</a></span><span class="preprocessor">#define JOYBUS_TYPE_GCN_STANDARD              0x0100  </span></div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno"><a class="line" href="identify_8h.html#a24336737aa8b89674e928df5070abaf2">   38</a></span><span class="preprocessor">#define JOYBUS_TYPE_GCN_WIRELESS_STATE        0x0200  </span></div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno"><a class="line" href="identify_8h.html#a5011bd07627e77237ad79f40c5ad36c9">   39</a></span><span class="preprocessor">#define JOYBUS_TYPE_GCN_DEVICE                0x0800  </span></div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno"><a class="line" href="identify_8h.html#aab51b01a178e2710ace1f7a2c638a32b">   40</a></span><span class="preprocessor">#define JOYBUS_TYPE_GCN_NO_MOTOR              0x2000  </span></div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno"><a class="line" href="identify_8h.html#ae7dce3fe70f72d6df180a8b756913ce1">   41</a></span><span class="preprocessor">#define JOYBUS_TYPE_GCN_WIRELESS_RECEIVED     0x4000  </span></div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno"><a class="line" href="identify_8h.html#abcb0c5fc31b75441ec0028127c15e157">   42</a></span><span class="preprocessor">#define JOYBUS_TYPE_GCN_WIRELESS              0x8000  </span></div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="comment">/*</span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="comment"> * Joybus device status flags.</span></div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="comment"> * The last byte of the identify response contains status flags for the</span></div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="comment"> * controller.</span></div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="comment"> */</span></div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="comment">// Status flags for N64 controllers with a Joyport</span></div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno"><a class="line" href="identify_8h.html#a62db60e4e8291f2763d04806d64c6cd6">   52</a></span><span class="preprocessor">#define JOYBUS_STATUS_N64_ACCESSORY_PRESENT   0x01    </span></div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno"><a class="line" href="identify_8h.html#a35e93c859da21a2b3b51e64879efad06">   53</a></span><span class="preprocessor">#define JOYBUS_STATUS_N64_ACCESSORY_PULLED    0x02    </span></div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno"><a class="line" href="identify_8h.html#a16970e43472f9ffe41e4f56c73ec13ea">   54</a></span><span class="preprocessor">#define JOYBUS_STATUS_N64_ADDR_CHECKSUM_ERROR 0x04    </span></div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="comment">// Status flags for N64 Voice Recognition Unit</span></div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno"><a class="line" href="identify_8h.html#afa23791bdcc1d110a8e3557422198bfa">   57</a></span><span class="preprocessor">#define JOYBUS_STATUS_N64_VRU_INITIALIZED     0x01    </span></div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><span class="comment">// Status flags for non-wireless GameCube controllers</span></div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno"><a class="line" href="identify_8h.html#a47cd08053213855222f620404c94cd8c">   60</a></span><span class="preprocessor">#define JOYBUS_STATUS_GCN_ANALOG_MODE_MASK    0x07    </span></div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno"><a class="line" href="identify_8h.html#ad85a4321f1dda28129c480c114f7a512">   61</a></span><span class="preprocessor">#define JOYBUS_STATUS_GCN_MOTOR_STATE_MASK    0x18    </span></div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno"><a class="line" href="identify_8h.html#ad16a101ead9b57d38e493cb64b18df3c">   62</a></span><span class="preprocessor">#define JOYBUS_STATUS_GCN_NEED_ORIGIN         0x20    </span></div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno"><a class="line" href="identify_8h.html#a3259dd50637e5a0b9f293141e04ea59a">   63</a></span><span class="preprocessor">#define JOYBUS_STATUS_GCN_ERROR_LATCHED       0x40    </span></div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno"><a class="line" href="identify_8h.html#a535e17f47115981ea915ce9a78bbb6e6">   64</a></span><span class="preprocessor">#define JOYBUS_STATUS_GCN_ERROR               0x80    </span></div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span><span class="preprocessor">#define JOYBUS_STATUS_GCN_MOTOR_STATE_SHIFT   3</span></div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span><span class="preprocessor">#define JOYBUS_STATUS_GCN_ANALOG_MODE_SHIFT   0</span></div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><span class="comment">// Status flags for wireless GameCube controllers</span></div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno"><a class="line" href="identify_8h.html#a747a65de2006eee58e345cf6cb0b7d3a">   69</a></span><span class="preprocessor">#define JOYBUS_STATUS_GCN_WIRELESS_ID_MASK    0xFF    </span></div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span><span class="comment">/*</span></div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span><span class="comment"> * Complete type flags a device reports at power on.</span></div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span><span class="comment"> * Most controllers keep the type field constant, but since wireless GameCube</span></div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span><span class="comment"> * controllers use the status field to hold the wireless ID, they add flags</span></div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span><span class="comment"> * to the type field at runtime instead to indicate their state.</span></div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span><span class="comment"> */</span></div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span></div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno"><a class="line" href="identify_8h.html#a2763d960f1226a656f33122d950f71ee">   80</a></span><span class="preprocessor">#define JOYBUS_DEVICE_N64_CONTROLLER  (JOYBUS_TYPE_N64_ABSOLUTE | JOYBUS_TYPE_N64_JOYPORT)</span></div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span></div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno"><a class="line" href="identify_8h.html#af6bb9835e94b27e0571de3c6e958b94d">   83</a></span><span class="preprocessor">#define JOYBUS_DEVICE_N64_MOUSE       (JOYBUS_TYPE_N64_RELATIVE)</span></div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span></div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno"><a class="line" href="identify_8h.html#a9ef414d77d3204c9cf4f3b897d51bc0c">   86</a></span><span class="preprocessor">#define JOYBUS_DEVICE_GCN_CONTROLLER  (JOYBUS_TYPE_GCN_DEVICE | JOYBUS_TYPE_GCN_STANDARD)</span></div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span></div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno"><a class="line" href="identify_8h.html#a2271b6d31f067bd80991cf5b3c8b737f">   89</a></span><span class="preprocessor">#define JOYBUS_DEVICE_GCN_WAVEBIRD    (JOYBUS_TYPE_GCN_DEVICE | JOYBUS_TYPE_GCN_WIRELESS | JOYBUS_TYPE_GCN_NO_MOTOR)</span></div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span></div>
+<div class="foldopen" id="foldopen00097" data-start="{" data-end="}">
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno"><a class="line" href="identify_8h.html#a748a2eb84d485a4e0e84c6e299485e35">   97</a></span><span class="keyword">static</span> <span class="keyword">inline</span> uint16_t <a class="code hl_function" href="identify_8h.html#a748a2eb84d485a4e0e84c6e299485e35">joybus_id_get_type</a>(<span class="keyword">const</span> uint8_t *<span class="keywordtype">id</span>)</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>{</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>  <span class="keywordflow">return</span> (uint16_t)((<span class="keywordtype">id</span>[0] &lt;&lt; 8) | <span class="keywordtype">id</span>[1]);</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>}</div>
 </div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span></div>
-<div class="foldopen" id="foldopen00063" data-start="{" data-end="}">
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno"><a class="line" href="identify_8h.html#a0758fbae219d64850c90e75aa4a51c91">   63</a></span><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="identify_8h.html#a0758fbae219d64850c90e75aa4a51c91">joybus_id_clear_type_flags</a>(uint8_t *<span class="keywordtype">id</span>, uint16_t flags)</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>{</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  <span class="keywordtype">id</span>[0] &amp;= ~(flags &gt;&gt; 8);</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  <span class="keywordtype">id</span>[1] &amp;= ~(flags &amp; 0xFF);</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>}</div>
-</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span></div>
-<div class="foldopen" id="foldopen00075" data-start="{" data-end="}">
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno"><a class="line" href="identify_8h.html#a008065c35965a36496e61479f61cbe77">   75</a></span><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="identify_8h.html#a008065c35965a36496e61479f61cbe77">joybus_id_set_type_flags</a>(uint8_t *<span class="keywordtype">id</span>, uint16_t flags)</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>{</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>  <span class="keywordtype">id</span>[0] |= (flags &gt;&gt; 8);</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>  <span class="keywordtype">id</span>[1] |= (flags &amp; 0xFF);</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>}</div>
-</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span></div>
-<div class="foldopen" id="foldopen00087" data-start="{" data-end="}">
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno"><a class="line" href="identify_8h.html#a4f109aaebefe6897050a3f61541e1c9d">   87</a></span><span class="keyword">static</span> <span class="keyword">inline</span> uint8_t <a class="code hl_function" href="identify_8h.html#a4f109aaebefe6897050a3f61541e1c9d">joybus_id_get_status</a>(<span class="keyword">const</span> uint8_t *<span class="keywordtype">id</span>)</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>{</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>  <span class="keywordflow">return</span> <span class="keywordtype">id</span>[2];</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>}</div>
-</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span></div>
-<div class="foldopen" id="foldopen00098" data-start="{" data-end="}">
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno"><a class="line" href="identify_8h.html#adc1b9b491daf9c001a5e05a96d2c657c">   98</a></span><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="identify_8h.html#adc1b9b491daf9c001a5e05a96d2c657c">joybus_id_clear_status_flags</a>(uint8_t *<span class="keywordtype">id</span>, uint8_t flags)</div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>{</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>  <span class="keywordtype">id</span>[2] &amp;= ~flags;</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>}</div>
-</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span></div>
-<div class="foldopen" id="foldopen00109" data-start="{" data-end="}">
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno"><a class="line" href="identify_8h.html#aa3d86275211a89a511373e29ae7cd90f">  109</a></span><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="identify_8h.html#aa3d86275211a89a511373e29ae7cd90f">joybus_id_set_status_flags</a>(uint8_t *<span class="keywordtype">id</span>, uint8_t flags)</div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>{</div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>  <span class="keywordtype">id</span>[2] |= flags;</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span></div>
+<div class="foldopen" id="foldopen00108" data-start="{" data-end="}">
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno"><a class="line" href="identify_8h.html#a0758fbae219d64850c90e75aa4a51c91">  108</a></span><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="identify_8h.html#a0758fbae219d64850c90e75aa4a51c91">joybus_id_clear_type_flags</a>(uint8_t *<span class="keywordtype">id</span>, uint16_t flags)</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>{</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>  <span class="keywordtype">id</span>[0] &amp;= ~(flags &gt;&gt; 8);</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>  <span class="keywordtype">id</span>[1] &amp;= ~(flags &amp; 0xFF);</div>
 <div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>}</div>
 </div>
 <div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span></div>
 <div class="foldopen" id="foldopen00120" data-start="{" data-end="}">
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno"><a class="line" href="identify_8h.html#a0a3ecbaa982f98cbd8623c7ad8b52a03">  120</a></span><span class="keyword">static</span> <span class="keyword">inline</span> uint8_t <a class="code hl_function" href="identify_8h.html#a0a3ecbaa982f98cbd8623c7ad8b52a03">joybus_id_get_wireless_id</a>(<span class="keyword">const</span> uint8_t *<span class="keywordtype">id</span>)</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno"><a class="line" href="identify_8h.html#a008065c35965a36496e61479f61cbe77">  120</a></span><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="identify_8h.html#a008065c35965a36496e61479f61cbe77">joybus_id_set_type_flags</a>(uint8_t *<span class="keywordtype">id</span>, uint16_t flags)</div>
 <div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>{</div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>  <span class="keywordflow">return</span> (uint16_t)((<span class="keywordtype">id</span>[1] &amp; 0xC0) &lt;&lt; 2 | <span class="keywordtype">id</span>[2]);</div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>}</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>  <span class="keywordtype">id</span>[0] |= (flags &gt;&gt; 8);</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>  <span class="keywordtype">id</span>[1] |= (flags &amp; 0xFF);</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>}</div>
 </div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span></div>
-<div class="foldopen" id="foldopen00131" data-start="{" data-end="}">
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno"><a class="line" href="identify_8h.html#adbb6abead619a5b6450e8a4592dd6def">  131</a></span><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="identify_8h.html#adbb6abead619a5b6450e8a4592dd6def">joybus_id_set_wireless_id</a>(uint8_t *<span class="keywordtype">id</span>, uint16_t wireless_id)</div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>{</div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>  <span class="keywordtype">id</span>[1] = (<span class="keywordtype">id</span>[1] &amp; ~0xC0) | ((wireless_id &gt;&gt; 2) &amp; 0xC0);</div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>  <span class="keywordtype">id</span>[2] = wireless_id &amp; 0xFF;</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span></div>
+<div class="foldopen" id="foldopen00132" data-start="{" data-end="}">
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno"><a class="line" href="identify_8h.html#a4f109aaebefe6897050a3f61541e1c9d">  132</a></span><span class="keyword">static</span> <span class="keyword">inline</span> uint8_t <a class="code hl_function" href="identify_8h.html#a4f109aaebefe6897050a3f61541e1c9d">joybus_id_get_status</a>(<span class="keyword">const</span> uint8_t *<span class="keywordtype">id</span>)</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>{</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>  <span class="keywordflow">return</span> <span class="keywordtype">id</span>[2];</div>
 <div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>}</div>
 </div>
-<div class="ttc" id="aidentify_8h_html_a008065c35965a36496e61479f61cbe77"><div class="ttname"><a href="identify_8h.html#a008065c35965a36496e61479f61cbe77">joybus_id_set_type_flags</a></div><div class="ttdeci">static void joybus_id_set_type_flags(uint8_t *id, uint16_t flags)</div><div class="ttdoc">Set type flags in an &quot;identify&quot; buffer.</div><div class="ttdef"><b>Definition</b> identify.h:75</div></div>
-<div class="ttc" id="aidentify_8h_html_a0758fbae219d64850c90e75aa4a51c91"><div class="ttname"><a href="identify_8h.html#a0758fbae219d64850c90e75aa4a51c91">joybus_id_clear_type_flags</a></div><div class="ttdeci">static void joybus_id_clear_type_flags(uint8_t *id, uint16_t flags)</div><div class="ttdoc">Clear type flags in an &quot;identify&quot; buffer.</div><div class="ttdef"><b>Definition</b> identify.h:63</div></div>
-<div class="ttc" id="aidentify_8h_html_a0a3ecbaa982f98cbd8623c7ad8b52a03"><div class="ttname"><a href="identify_8h.html#a0a3ecbaa982f98cbd8623c7ad8b52a03">joybus_id_get_wireless_id</a></div><div class="ttdeci">static uint8_t joybus_id_get_wireless_id(const uint8_t *id)</div><div class="ttdoc">Get the 10-bit wireless ID from an &quot;identify&quot; buffer.</div><div class="ttdef"><b>Definition</b> identify.h:120</div></div>
-<div class="ttc" id="aidentify_8h_html_a4f109aaebefe6897050a3f61541e1c9d"><div class="ttname"><a href="identify_8h.html#a4f109aaebefe6897050a3f61541e1c9d">joybus_id_get_status</a></div><div class="ttdeci">static uint8_t joybus_id_get_status(const uint8_t *id)</div><div class="ttdoc">Get the status byte from an &quot;identify&quot; buffer.</div><div class="ttdef"><b>Definition</b> identify.h:87</div></div>
-<div class="ttc" id="aidentify_8h_html_a748a2eb84d485a4e0e84c6e299485e35"><div class="ttname"><a href="identify_8h.html#a748a2eb84d485a4e0e84c6e299485e35">joybus_id_get_type</a></div><div class="ttdeci">static uint16_t joybus_id_get_type(const uint8_t *id)</div><div class="ttdoc">Get the controller type from an &quot;identify&quot; buffer.</div><div class="ttdef"><b>Definition</b> identify.h:52</div></div>
-<div class="ttc" id="aidentify_8h_html_aa3d86275211a89a511373e29ae7cd90f"><div class="ttname"><a href="identify_8h.html#aa3d86275211a89a511373e29ae7cd90f">joybus_id_set_status_flags</a></div><div class="ttdeci">static void joybus_id_set_status_flags(uint8_t *id, uint8_t flags)</div><div class="ttdoc">Set status flags in an &quot;identify&quot; buffer.</div><div class="ttdef"><b>Definition</b> identify.h:109</div></div>
-<div class="ttc" id="aidentify_8h_html_adbb6abead619a5b6450e8a4592dd6def"><div class="ttname"><a href="identify_8h.html#adbb6abead619a5b6450e8a4592dd6def">joybus_id_set_wireless_id</a></div><div class="ttdeci">static void joybus_id_set_wireless_id(uint8_t *id, uint16_t wireless_id)</div><div class="ttdoc">Set the 10-bit wireless ID in an &quot;identify&quot; buffer.</div><div class="ttdef"><b>Definition</b> identify.h:131</div></div>
-<div class="ttc" id="aidentify_8h_html_adc1b9b491daf9c001a5e05a96d2c657c"><div class="ttname"><a href="identify_8h.html#adc1b9b491daf9c001a5e05a96d2c657c">joybus_id_clear_status_flags</a></div><div class="ttdeci">static void joybus_id_clear_status_flags(uint8_t *id, uint8_t flags)</div><div class="ttdoc">Clear status flags in an &quot;identify&quot; buffer.</div><div class="ttdef"><b>Definition</b> identify.h:98</div></div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span></div>
+<div class="foldopen" id="foldopen00143" data-start="{" data-end="}">
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno"><a class="line" href="identify_8h.html#adc1b9b491daf9c001a5e05a96d2c657c">  143</a></span><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="identify_8h.html#adc1b9b491daf9c001a5e05a96d2c657c">joybus_id_clear_status_flags</a>(uint8_t *<span class="keywordtype">id</span>, uint8_t flags)</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>{</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>  <span class="keywordtype">id</span>[2] &amp;= ~flags;</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>}</div>
+</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span></div>
+<div class="foldopen" id="foldopen00154" data-start="{" data-end="}">
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno"><a class="line" href="identify_8h.html#aa3d86275211a89a511373e29ae7cd90f">  154</a></span><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="identify_8h.html#aa3d86275211a89a511373e29ae7cd90f">joybus_id_set_status_flags</a>(uint8_t *<span class="keywordtype">id</span>, uint8_t flags)</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>{</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>  <span class="keywordtype">id</span>[2] |= flags;</div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>}</div>
+</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span></div>
+<div class="foldopen" id="foldopen00165" data-start="{" data-end="}">
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno"><a class="line" href="identify_8h.html#a0a3ecbaa982f98cbd8623c7ad8b52a03">  165</a></span><span class="keyword">static</span> <span class="keyword">inline</span> uint8_t <a class="code hl_function" href="identify_8h.html#a0a3ecbaa982f98cbd8623c7ad8b52a03">joybus_id_get_wireless_id</a>(<span class="keyword">const</span> uint8_t *<span class="keywordtype">id</span>)</div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>{</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>  <span class="keywordflow">return</span> (uint16_t)((<span class="keywordtype">id</span>[1] &amp; 0xC0) &lt;&lt; 2 | <span class="keywordtype">id</span>[2]);</div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>}</div>
+</div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span></div>
+<div class="foldopen" id="foldopen00176" data-start="{" data-end="}">
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno"><a class="line" href="identify_8h.html#adbb6abead619a5b6450e8a4592dd6def">  176</a></span><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="identify_8h.html#adbb6abead619a5b6450e8a4592dd6def">joybus_id_set_wireless_id</a>(uint8_t *<span class="keywordtype">id</span>, uint16_t wireless_id)</div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>{</div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>  <span class="keywordtype">id</span>[1] = (<span class="keywordtype">id</span>[1] &amp; ~0xC0) | ((wireless_id &gt;&gt; 2) &amp; 0xC0);</div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>  <span class="keywordtype">id</span>[2] = wireless_id &amp; 0xFF;</div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>}</div>
+</div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span></div>
+<div class="foldopen" id="foldopen00188" data-start="{" data-end="}">
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno"><a class="line" href="identify_8h.html#a8d3f6c9e21dc4449c7cb5f8e117ed2ed">  188</a></span><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="identify_8h.html#a8d3f6c9e21dc4449c7cb5f8e117ed2ed">joybus_id_n64_accessory_changed</a>(uint8_t *<span class="keywordtype">id</span>)</div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>{</div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>  <span class="keywordflow">return</span> (<span class="keywordtype">id</span>[2] &amp; <a class="code hl_define" href="identify_8h.html#a62db60e4e8291f2763d04806d64c6cd6">JOYBUS_STATUS_N64_ACCESSORY_PRESENT</a>) &amp;&amp; (<span class="keywordtype">id</span>[2] &amp; <a class="code hl_define" href="identify_8h.html#a35e93c859da21a2b3b51e64879efad06">JOYBUS_STATUS_N64_ACCESSORY_PULLED</a>);</div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>}</div>
+</div>
+<div class="ttc" id="aidentify_8h_html_a008065c35965a36496e61479f61cbe77"><div class="ttname"><a href="identify_8h.html#a008065c35965a36496e61479f61cbe77">joybus_id_set_type_flags</a></div><div class="ttdeci">static void joybus_id_set_type_flags(uint8_t *id, uint16_t flags)</div><div class="ttdoc">Set type flags in an &quot;identify&quot; buffer.</div><div class="ttdef"><b>Definition</b> identify.h:120</div></div>
+<div class="ttc" id="aidentify_8h_html_a0758fbae219d64850c90e75aa4a51c91"><div class="ttname"><a href="identify_8h.html#a0758fbae219d64850c90e75aa4a51c91">joybus_id_clear_type_flags</a></div><div class="ttdeci">static void joybus_id_clear_type_flags(uint8_t *id, uint16_t flags)</div><div class="ttdoc">Clear type flags in an &quot;identify&quot; buffer.</div><div class="ttdef"><b>Definition</b> identify.h:108</div></div>
+<div class="ttc" id="aidentify_8h_html_a0a3ecbaa982f98cbd8623c7ad8b52a03"><div class="ttname"><a href="identify_8h.html#a0a3ecbaa982f98cbd8623c7ad8b52a03">joybus_id_get_wireless_id</a></div><div class="ttdeci">static uint8_t joybus_id_get_wireless_id(const uint8_t *id)</div><div class="ttdoc">Get the 10-bit wireless ID from an &quot;identify&quot; buffer.</div><div class="ttdef"><b>Definition</b> identify.h:165</div></div>
+<div class="ttc" id="aidentify_8h_html_a35e93c859da21a2b3b51e64879efad06"><div class="ttname"><a href="identify_8h.html#a35e93c859da21a2b3b51e64879efad06">JOYBUS_STATUS_N64_ACCESSORY_PULLED</a></div><div class="ttdeci">#define JOYBUS_STATUS_N64_ACCESSORY_PULLED</div><div class="ttdoc">Accessory removal/change detected.</div><div class="ttdef"><b>Definition</b> identify.h:53</div></div>
+<div class="ttc" id="aidentify_8h_html_a4f109aaebefe6897050a3f61541e1c9d"><div class="ttname"><a href="identify_8h.html#a4f109aaebefe6897050a3f61541e1c9d">joybus_id_get_status</a></div><div class="ttdeci">static uint8_t joybus_id_get_status(const uint8_t *id)</div><div class="ttdoc">Get the status byte from an &quot;identify&quot; buffer.</div><div class="ttdef"><b>Definition</b> identify.h:132</div></div>
+<div class="ttc" id="aidentify_8h_html_a62db60e4e8291f2763d04806d64c6cd6"><div class="ttname"><a href="identify_8h.html#a62db60e4e8291f2763d04806d64c6cd6">JOYBUS_STATUS_N64_ACCESSORY_PRESENT</a></div><div class="ttdeci">#define JOYBUS_STATUS_N64_ACCESSORY_PRESENT</div><div class="ttdoc">Accessory present.</div><div class="ttdef"><b>Definition</b> identify.h:52</div></div>
+<div class="ttc" id="aidentify_8h_html_a748a2eb84d485a4e0e84c6e299485e35"><div class="ttname"><a href="identify_8h.html#a748a2eb84d485a4e0e84c6e299485e35">joybus_id_get_type</a></div><div class="ttdeci">static uint16_t joybus_id_get_type(const uint8_t *id)</div><div class="ttdoc">Get the controller type from an &quot;identify&quot; buffer.</div><div class="ttdef"><b>Definition</b> identify.h:97</div></div>
+<div class="ttc" id="aidentify_8h_html_a8d3f6c9e21dc4449c7cb5f8e117ed2ed"><div class="ttname"><a href="identify_8h.html#a8d3f6c9e21dc4449c7cb5f8e117ed2ed">joybus_id_n64_accessory_changed</a></div><div class="ttdeci">static bool joybus_id_n64_accessory_changed(uint8_t *id)</div><div class="ttdoc">Check if the accessory changed flag is set in an &quot;identify&quot; buffer.</div><div class="ttdef"><b>Definition</b> identify.h:188</div></div>
+<div class="ttc" id="aidentify_8h_html_aa3d86275211a89a511373e29ae7cd90f"><div class="ttname"><a href="identify_8h.html#aa3d86275211a89a511373e29ae7cd90f">joybus_id_set_status_flags</a></div><div class="ttdeci">static void joybus_id_set_status_flags(uint8_t *id, uint8_t flags)</div><div class="ttdoc">Set status flags in an &quot;identify&quot; buffer.</div><div class="ttdef"><b>Definition</b> identify.h:154</div></div>
+<div class="ttc" id="aidentify_8h_html_adbb6abead619a5b6450e8a4592dd6def"><div class="ttname"><a href="identify_8h.html#adbb6abead619a5b6450e8a4592dd6def">joybus_id_set_wireless_id</a></div><div class="ttdeci">static void joybus_id_set_wireless_id(uint8_t *id, uint16_t wireless_id)</div><div class="ttdoc">Set the 10-bit wireless ID in an &quot;identify&quot; buffer.</div><div class="ttdef"><b>Definition</b> identify.h:176</div></div>
+<div class="ttc" id="aidentify_8h_html_adc1b9b491daf9c001a5e05a96d2c657c"><div class="ttname"><a href="identify_8h.html#adc1b9b491daf9c001a5e05a96d2c657c">joybus_id_clear_status_flags</a></div><div class="ttdeci">static void joybus_id_clear_status_flags(uint8_t *id, uint8_t flags)</div><div class="ttdoc">Clear status flags in an &quot;identify&quot; buffer.</div><div class="ttdef"><b>Definition</b> identify.h:143</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 </div><!-- container -->

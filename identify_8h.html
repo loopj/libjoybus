@@ -107,90 +107,124 @@ $(function(){initNavTree('identify_8h.html','',''); });
 </div><!--header-->
 <div class="contents">
 
-<p>Joybus "identify" type/status values and utilities.  
+<p>Joybus device identification values and utilities.  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &lt;stdint.h&gt;</code><br />
+<div class="textblock"><code>#include &lt;stdbool.h&gt;</code><br />
+<code>#include &lt;stdint.h&gt;</code><br />
 </div>
 <p><a href="identify_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-define-members" class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:a5b0e06e006f67ed4941df53147edad62" id="r_a5b0e06e006f67ed4941df53147edad62"><td class="memItemLeft" align="right" valign="top"><a id="a5b0e06e006f67ed4941df53147edad62" name="a5b0e06e006f67ed4941df53147edad62"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_ID_N64_VRU</b>&#160;&#160;&#160;0x0001</td></tr>
-<tr class="memdesc:a5b0e06e006f67ed4941df53147edad62"><td class="mdescLeft">&#160;</td><td class="mdescRight">Voice Recognition Unit (NUS-020) <br /></td></tr>
-<tr class="memitem:a74e73bc0e62fd623ee5ffa7af38163b7" id="r_a74e73bc0e62fd623ee5ffa7af38163b7"><td class="memItemLeft" align="right" valign="top"><a id="a74e73bc0e62fd623ee5ffa7af38163b7" name="a74e73bc0e62fd623ee5ffa7af38163b7"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_ID_N64_KEYBOARD</b>&#160;&#160;&#160;0x0002</td></tr>
-<tr class="memdesc:a74e73bc0e62fd623ee5ffa7af38163b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Randnet Keyboard (RND-001) <br /></td></tr>
-<tr class="memitem:a5617be08ae54fcf0e20a23d5f6ff3473" id="r_a5617be08ae54fcf0e20a23d5f6ff3473"><td class="memItemLeft" align="right" valign="top"><a id="a5617be08ae54fcf0e20a23d5f6ff3473" name="a5617be08ae54fcf0e20a23d5f6ff3473"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_ID_N64_GBA_LINK</b>&#160;&#160;&#160;0x0004</td></tr>
-<tr class="memdesc:a5617be08ae54fcf0e20a23d5f6ff3473"><td class="mdescLeft">&#160;</td><td class="mdescRight">GBA Link Cable (DOL-011) <br /></td></tr>
-<tr class="memitem:a0ae4bc2a61597299a375964fbd6c71ce" id="r_a0ae4bc2a61597299a375964fbd6c71ce"><td class="memItemLeft" align="right" valign="top"><a id="a0ae4bc2a61597299a375964fbd6c71ce" name="a0ae4bc2a61597299a375964fbd6c71ce"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_ID_N64_MOUSE</b>&#160;&#160;&#160;0x0200</td></tr>
-<tr class="memdesc:a0ae4bc2a61597299a375964fbd6c71ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">N64 Mouse (NUS-017) <br /></td></tr>
-<tr class="memitem:a1c23d39042a7ed4ae2c67df5601970dc" id="r_a1c23d39042a7ed4ae2c67df5601970dc"><td class="memItemLeft" align="right" valign="top"><a id="a1c23d39042a7ed4ae2c67df5601970dc" name="a1c23d39042a7ed4ae2c67df5601970dc"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_ID_N64_CONTROLLER</b>&#160;&#160;&#160;0x0500</td></tr>
-<tr class="memdesc:a1c23d39042a7ed4ae2c67df5601970dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Standard N64 Controller (NUS-005) <br /></td></tr>
-<tr class="memitem:ac426fc36cfaa38ea21a3f31c152e9440" id="r_ac426fc36cfaa38ea21a3f31c152e9440"><td class="memItemLeft" align="right" valign="top"><a id="ac426fc36cfaa38ea21a3f31c152e9440" name="ac426fc36cfaa38ea21a3f31c152e9440"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_ID_N64_ACCESSORY_PRESENT</b>&#160;&#160;&#160;0x01</td></tr>
-<tr class="memdesc:ac426fc36cfaa38ea21a3f31c152e9440"><td class="mdescLeft">&#160;</td><td class="mdescRight">Accessory present. <br /></td></tr>
-<tr class="memitem:a4a634a6465272ea529931aaec2c2f98d" id="r_a4a634a6465272ea529931aaec2c2f98d"><td class="memItemLeft" align="right" valign="top"><a id="a4a634a6465272ea529931aaec2c2f98d" name="a4a634a6465272ea529931aaec2c2f98d"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_ID_N64_ACCESSORY_ABSENT</b>&#160;&#160;&#160;0x02</td></tr>
-<tr class="memdesc:a4a634a6465272ea529931aaec2c2f98d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Accessory absent. <br /></td></tr>
-<tr class="memitem:a71ebacc7fdf9f01f94d4cbc98b59dff0" id="r_a71ebacc7fdf9f01f94d4cbc98b59dff0"><td class="memItemLeft" align="right" valign="top"><a id="a71ebacc7fdf9f01f94d4cbc98b59dff0" name="a71ebacc7fdf9f01f94d4cbc98b59dff0"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_ID_N64_ACCESSORY_CHANGED</b>&#160;&#160;&#160;0x03</td></tr>
-<tr class="memdesc:a71ebacc7fdf9f01f94d4cbc98b59dff0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Accessory changed. <br /></td></tr>
-<tr class="memitem:a80a960b270462d4efe7e7af62f26a779" id="r_a80a960b270462d4efe7e7af62f26a779"><td class="memItemLeft" align="right" valign="top"><a id="a80a960b270462d4efe7e7af62f26a779" name="a80a960b270462d4efe7e7af62f26a779"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_ID_N64_CHECKSUM_ERROR</b>&#160;&#160;&#160;0x04</td></tr>
-<tr class="memdesc:a80a960b270462d4efe7e7af62f26a779"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transfer checksum error. <br /></td></tr>
-<tr class="memitem:aa720707fa151d7a9f82f7091f48b7a09" id="r_aa720707fa151d7a9f82f7091f48b7a09"><td class="memItemLeft" align="right" valign="top"><a id="aa720707fa151d7a9f82f7091f48b7a09" name="aa720707fa151d7a9f82f7091f48b7a09"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_ID_N64_VRU_UNINITIALIZED</b>&#160;&#160;&#160;0x00</td></tr>
-<tr class="memdesc:aa720707fa151d7a9f82f7091f48b7a09"><td class="mdescLeft">&#160;</td><td class="mdescRight">VRU is uninitialized. <br /></td></tr>
-<tr class="memitem:a0b4b23776c85ce38ec764b8ef43e6385" id="r_a0b4b23776c85ce38ec764b8ef43e6385"><td class="memItemLeft" align="right" valign="top"><a id="a0b4b23776c85ce38ec764b8ef43e6385" name="a0b4b23776c85ce38ec764b8ef43e6385"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_ID_N64_VRU_INITIALIZED</b>&#160;&#160;&#160;0x01</td></tr>
-<tr class="memdesc:a0b4b23776c85ce38ec764b8ef43e6385"><td class="mdescLeft">&#160;</td><td class="mdescRight">VRU is initialized. <br /></td></tr>
-<tr class="memitem:a1d4fe58c752608ea0885049f34e326c4" id="r_a1d4fe58c752608ea0885049f34e326c4"><td class="memItemLeft" align="right" valign="top"><a id="a1d4fe58c752608ea0885049f34e326c4" name="a1d4fe58c752608ea0885049f34e326c4"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_ID_GCN_WIRELESS_ID_FIXED</b>&#160;&#160;&#160;0x0010</td></tr>
-<tr class="memdesc:a1d4fe58c752608ea0885049f34e326c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wireless ID has been fixed. <br /></td></tr>
-<tr class="memitem:a98f0ab902f501aad8531bac3471b1ec0" id="r_a98f0ab902f501aad8531bac3471b1ec0"><td class="memItemLeft" align="right" valign="top"><a id="a98f0ab902f501aad8531bac3471b1ec0" name="a98f0ab902f501aad8531bac3471b1ec0"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_ID_GCN_WIRELESS_ORIGIN</b>&#160;&#160;&#160;0x0020</td></tr>
-<tr class="memdesc:a98f0ab902f501aad8531bac3471b1ec0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wireless origin available. <br /></td></tr>
-<tr class="memitem:a901be9cad28a0569c4410b36ad310efd" id="r_a901be9cad28a0569c4410b36ad310efd"><td class="memItemLeft" align="right" valign="top"><a id="a901be9cad28a0569c4410b36ad310efd" name="a901be9cad28a0569c4410b36ad310efd"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_ID_GCN_STANDARD</b>&#160;&#160;&#160;0x0100</td></tr>
-<tr class="memdesc:a901be9cad28a0569c4410b36ad310efd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Standard GameCube controller. <br /></td></tr>
-<tr class="memitem:a5f5ea3ea95d18974a887d9922f5b50b6" id="r_a5f5ea3ea95d18974a887d9922f5b50b6"><td class="memItemLeft" align="right" valign="top"><a id="a5f5ea3ea95d18974a887d9922f5b50b6" name="a5f5ea3ea95d18974a887d9922f5b50b6"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_ID_GCN_WIRELESS_STATE</b>&#160;&#160;&#160;0x0200</td></tr>
-<tr class="memdesc:a5f5ea3ea95d18974a887d9922f5b50b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wireless state available. <br /></td></tr>
-<tr class="memitem:a97d4b67ad41a6cb0b2faeb3dd022abb9" id="r_a97d4b67ad41a6cb0b2faeb3dd022abb9"><td class="memItemLeft" align="right" valign="top"><a id="a97d4b67ad41a6cb0b2faeb3dd022abb9" name="a97d4b67ad41a6cb0b2faeb3dd022abb9"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_ID_GCN_DEVICE</b>&#160;&#160;&#160;0x0800</td></tr>
-<tr class="memdesc:a97d4b67ad41a6cb0b2faeb3dd022abb9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Device is a GameCube device. <br /></td></tr>
-<tr class="memitem:a5514350e44af5ec289ab96399bfc8ad5" id="r_a5514350e44af5ec289ab96399bfc8ad5"><td class="memItemLeft" align="right" valign="top"><a id="a5514350e44af5ec289ab96399bfc8ad5" name="a5514350e44af5ec289ab96399bfc8ad5"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_ID_GCN_NO_MOTOR</b>&#160;&#160;&#160;0x2000</td></tr>
-<tr class="memdesc:a5514350e44af5ec289ab96399bfc8ad5"><td class="mdescLeft">&#160;</td><td class="mdescRight">No rumble motor present. <br /></td></tr>
-<tr class="memitem:a80c5889faacb992caee8c15edff4e752" id="r_a80c5889faacb992caee8c15edff4e752"><td class="memItemLeft" align="right" valign="top"><a id="a80c5889faacb992caee8c15edff4e752" name="a80c5889faacb992caee8c15edff4e752"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_ID_GCN_WIRELESS_RECEIVED</b>&#160;&#160;&#160;0x4000</td></tr>
-<tr class="memdesc:a80c5889faacb992caee8c15edff4e752"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wireless receiver has received a packet. <br /></td></tr>
-<tr class="memitem:afd9fb82d1357a991f35493d5069a9644" id="r_afd9fb82d1357a991f35493d5069a9644"><td class="memItemLeft" align="right" valign="top"><a id="afd9fb82d1357a991f35493d5069a9644" name="afd9fb82d1357a991f35493d5069a9644"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_ID_GCN_WIRELESS</b>&#160;&#160;&#160;0x8000</td></tr>
-<tr class="memdesc:afd9fb82d1357a991f35493d5069a9644"><td class="mdescLeft">&#160;</td><td class="mdescRight">Controller is wireless. <br /></td></tr>
-<tr class="memitem:a209e0e540f3a932983406923d82d95d7" id="r_a209e0e540f3a932983406923d82d95d7"><td class="memItemLeft" align="right" valign="top"><a id="a209e0e540f3a932983406923d82d95d7" name="a209e0e540f3a932983406923d82d95d7"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_ID_GCN_ANALOG_MODE_MASK</b>&#160;&#160;&#160;0x07</td></tr>
-<tr class="memdesc:a209e0e540f3a932983406923d82d95d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bits 2–0: Last analog mode. <br /></td></tr>
-<tr class="memitem:a29fda09d531847f6a92116e5099f4db5" id="r_a29fda09d531847f6a92116e5099f4db5"><td class="memItemLeft" align="right" valign="top"><a id="a29fda09d531847f6a92116e5099f4db5" name="a29fda09d531847f6a92116e5099f4db5"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_ID_GCN_MOTOR_STATE_MASK</b>&#160;&#160;&#160;0x18</td></tr>
-<tr class="memdesc:a29fda09d531847f6a92116e5099f4db5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bits 4–3: Last motor state. <br /></td></tr>
-<tr class="memitem:a999fc22b98fab66e8cbcf2414d6584fd" id="r_a999fc22b98fab66e8cbcf2414d6584fd"><td class="memItemLeft" align="right" valign="top"><a id="a999fc22b98fab66e8cbcf2414d6584fd" name="a999fc22b98fab66e8cbcf2414d6584fd"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_ID_GCN_NEED_ORIGIN</b>&#160;&#160;&#160;0x20</td></tr>
-<tr class="memdesc:a999fc22b98fab66e8cbcf2414d6584fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">New origin data available (host should read origin) <br /></td></tr>
-<tr class="memitem:a72a9ab30f82e09e4ce4347b7087db476" id="r_a72a9ab30f82e09e4ce4347b7087db476"><td class="memItemLeft" align="right" valign="top"><a id="a72a9ab30f82e09e4ce4347b7087db476" name="a72a9ab30f82e09e4ce4347b7087db476"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_ID_GCN_ERROR_LATCHED</b>&#160;&#160;&#160;0x40</td></tr>
-<tr class="memdesc:a72a9ab30f82e09e4ce4347b7087db476"><td class="mdescLeft">&#160;</td><td class="mdescRight">Latched error. <br /></td></tr>
-<tr class="memitem:a46cd9be9713bdff21524276b36ae1332" id="r_a46cd9be9713bdff21524276b36ae1332"><td class="memItemLeft" align="right" valign="top"><a id="a46cd9be9713bdff21524276b36ae1332" name="a46cd9be9713bdff21524276b36ae1332"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_ID_GCN_ERROR</b>&#160;&#160;&#160;0x80</td></tr>
-<tr class="memdesc:a46cd9be9713bdff21524276b36ae1332"><td class="mdescLeft">&#160;</td><td class="mdescRight">Last error. <br /></td></tr>
-<tr class="memitem:a769a24452156e10ebb54dc1b67c05122" id="r_a769a24452156e10ebb54dc1b67c05122"><td class="memItemLeft" align="right" valign="top"><a id="a769a24452156e10ebb54dc1b67c05122" name="a769a24452156e10ebb54dc1b67c05122"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_ID_GCN_MOTOR_STATE_SHIFT</b>&#160;&#160;&#160;3</td></tr>
-<tr class="memitem:a56ee9efed5aef9b5089dee9e7da97f18" id="r_a56ee9efed5aef9b5089dee9e7da97f18"><td class="memItemLeft" align="right" valign="top"><a id="a56ee9efed5aef9b5089dee9e7da97f18" name="a56ee9efed5aef9b5089dee9e7da97f18"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_ID_GCN_ANALOG_MODE_SHIFT</b>&#160;&#160;&#160;0</td></tr>
+<tr class="memitem:ad0ec9c6c9fe9b7e36efe011a2d09a558" id="r_ad0ec9c6c9fe9b7e36efe011a2d09a558"><td class="memItemLeft" align="right" valign="top"><a id="ad0ec9c6c9fe9b7e36efe011a2d09a558" name="ad0ec9c6c9fe9b7e36efe011a2d09a558"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_TYPE_N64_MASK</b>&#160;&#160;&#160;0x071f</td></tr>
+<tr class="memdesc:ad0ec9c6c9fe9b7e36efe011a2d09a558"><td class="mdescLeft">&#160;</td><td class="mdescRight">N64 device type mask. <br /></td></tr>
+<tr class="memitem:a897d25b1bef8c70714a1f21bcdc47778" id="r_a897d25b1bef8c70714a1f21bcdc47778"><td class="memItemLeft" align="right" valign="top"><a id="a897d25b1bef8c70714a1f21bcdc47778" name="a897d25b1bef8c70714a1f21bcdc47778"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_TYPE_N64_VRU</b>&#160;&#160;&#160;0x0001</td></tr>
+<tr class="memdesc:a897d25b1bef8c70714a1f21bcdc47778"><td class="mdescLeft">&#160;</td><td class="mdescRight">N64 Voice Recognition Unit (NUS-020) <br /></td></tr>
+<tr class="memitem:ac599ad62024ecb56dcb162224f8624f5" id="r_ac599ad62024ecb56dcb162224f8624f5"><td class="memItemLeft" align="right" valign="top"><a id="ac599ad62024ecb56dcb162224f8624f5" name="ac599ad62024ecb56dcb162224f8624f5"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_TYPE_N64_KEYBOARD</b>&#160;&#160;&#160;0x0002</td></tr>
+<tr class="memdesc:ac599ad62024ecb56dcb162224f8624f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">N64 Randnet Keyboard (RND-001) <br /></td></tr>
+<tr class="memitem:a755a36fa9d1bbb5245a116b53f4aff70" id="r_a755a36fa9d1bbb5245a116b53f4aff70"><td class="memItemLeft" align="right" valign="top"><a id="a755a36fa9d1bbb5245a116b53f4aff70" name="a755a36fa9d1bbb5245a116b53f4aff70"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_TYPE_GBA_CABLE</b>&#160;&#160;&#160;0x0004</td></tr>
+<tr class="memdesc:a755a36fa9d1bbb5245a116b53f4aff70"><td class="mdescLeft">&#160;</td><td class="mdescRight">GBA connected via GameCube Game Boy Advance cable (DOL-011) <br /></td></tr>
+<tr class="memitem:a7febc2701e4b1d00a374b6d5c0e32938" id="r_a7febc2701e4b1d00a374b6d5c0e32938"><td class="memItemLeft" align="right" valign="top"><a id="a7febc2701e4b1d00a374b6d5c0e32938" name="a7febc2701e4b1d00a374b6d5c0e32938"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_TYPE_N64_RTC</b>&#160;&#160;&#160;0x0010</td></tr>
+<tr class="memdesc:a7febc2701e4b1d00a374b6d5c0e32938"><td class="mdescLeft">&#160;</td><td class="mdescRight">N64 cartridge RTC is present. <br /></td></tr>
+<tr class="memitem:a2933e5618033c04c771b919d3b681fef" id="r_a2933e5618033c04c771b919d3b681fef"><td class="memItemLeft" align="right" valign="top"><a id="a2933e5618033c04c771b919d3b681fef" name="a2933e5618033c04c771b919d3b681fef"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_TYPE_N64_EEPROM_16K</b>&#160;&#160;&#160;0x0040</td></tr>
+<tr class="memdesc:a2933e5618033c04c771b919d3b681fef"><td class="mdescLeft">&#160;</td><td class="mdescRight">N64 cartridge EEPROM is 16KB (otherwise 4KB) <br /></td></tr>
+<tr class="memitem:ac6195917e15c2fb4a0f21da348c5c767" id="r_ac6195917e15c2fb4a0f21da348c5c767"><td class="memItemLeft" align="right" valign="top"><a id="ac6195917e15c2fb4a0f21da348c5c767" name="ac6195917e15c2fb4a0f21da348c5c767"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_TYPE_N64_EEPROM</b>&#160;&#160;&#160;0x0080</td></tr>
+<tr class="memdesc:ac6195917e15c2fb4a0f21da348c5c767"><td class="mdescLeft">&#160;</td><td class="mdescRight">N64 cartridge EEPROM is present. <br /></td></tr>
+<tr class="memitem:ac722993a39c47ee0178e8e2ddfabaebf" id="r_ac722993a39c47ee0178e8e2ddfabaebf"><td class="memItemLeft" align="right" valign="top"><a id="ac722993a39c47ee0178e8e2ddfabaebf" name="ac722993a39c47ee0178e8e2ddfabaebf"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_TYPE_N64_ABSOLUTE</b>&#160;&#160;&#160;0x0100</td></tr>
+<tr class="memdesc:ac722993a39c47ee0178e8e2ddfabaebf"><td class="mdescLeft">&#160;</td><td class="mdescRight">N64 device reports absolute position. <br /></td></tr>
+<tr class="memitem:a10fc8d11dc1d73c07580f95a124e5189" id="r_a10fc8d11dc1d73c07580f95a124e5189"><td class="memItemLeft" align="right" valign="top"><a id="a10fc8d11dc1d73c07580f95a124e5189" name="a10fc8d11dc1d73c07580f95a124e5189"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_TYPE_N64_RELATIVE</b>&#160;&#160;&#160;0x0200</td></tr>
+<tr class="memdesc:a10fc8d11dc1d73c07580f95a124e5189"><td class="mdescLeft">&#160;</td><td class="mdescRight">N64 device reports relative position. <br /></td></tr>
+<tr class="memitem:a9871fda683dde97d86637cc3eccf75b5" id="r_a9871fda683dde97d86637cc3eccf75b5"><td class="memItemLeft" align="right" valign="top"><a id="a9871fda683dde97d86637cc3eccf75b5" name="a9871fda683dde97d86637cc3eccf75b5"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_TYPE_N64_JOYPORT</b>&#160;&#160;&#160;0x0400</td></tr>
+<tr class="memdesc:a9871fda683dde97d86637cc3eccf75b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">N64 device has a Joyport (accessory port) <br /></td></tr>
+<tr class="memitem:a78be0017587d28068964baf6d9c63707" id="r_a78be0017587d28068964baf6d9c63707"><td class="memItemLeft" align="right" valign="top"><a id="a78be0017587d28068964baf6d9c63707" name="a78be0017587d28068964baf6d9c63707"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_TYPE_GCN_MASK</b>&#160;&#160;&#160;0x1800</td></tr>
+<tr class="memdesc:a78be0017587d28068964baf6d9c63707"><td class="mdescLeft">&#160;</td><td class="mdescRight">GameCube device type mask. <br /></td></tr>
+<tr class="memitem:afe915efda4d96ec8fe127ce8d07a164c" id="r_afe915efda4d96ec8fe127ce8d07a164c"><td class="memItemLeft" align="right" valign="top"><a id="afe915efda4d96ec8fe127ce8d07a164c" name="afe915efda4d96ec8fe127ce8d07a164c"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_TYPE_GCN_WIRELESS_ID_FIXED</b>&#160;&#160;&#160;0x0010</td></tr>
+<tr class="memdesc:afe915efda4d96ec8fe127ce8d07a164c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wireless ID has been fixed. <br /></td></tr>
+<tr class="memitem:a12c7453ef870c9dfbe2175d536cd3eff" id="r_a12c7453ef870c9dfbe2175d536cd3eff"><td class="memItemLeft" align="right" valign="top"><a id="a12c7453ef870c9dfbe2175d536cd3eff" name="a12c7453ef870c9dfbe2175d536cd3eff"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_TYPE_GCN_KEYBOARD</b>&#160;&#160;&#160;0x0020</td></tr>
+<tr class="memdesc:a12c7453ef870c9dfbe2175d536cd3eff"><td class="mdescLeft">&#160;</td><td class="mdescRight">GameCube ASCII keyboard. <br /></td></tr>
+<tr class="memitem:a422f6671c92d8ab7a530c8668e751a9a" id="r_a422f6671c92d8ab7a530c8668e751a9a"><td class="memItemLeft" align="right" valign="top"><a id="a422f6671c92d8ab7a530c8668e751a9a" name="a422f6671c92d8ab7a530c8668e751a9a"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_TYPE_GCN_WIRELESS_ORIGIN</b>&#160;&#160;&#160;0x0020</td></tr>
+<tr class="memdesc:a422f6671c92d8ab7a530c8668e751a9a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wireless origin available. <br /></td></tr>
+<tr class="memitem:a3d2c43f9dacc747a6c019eb1bbe83a7b" id="r_a3d2c43f9dacc747a6c019eb1bbe83a7b"><td class="memItemLeft" align="right" valign="top"><a id="a3d2c43f9dacc747a6c019eb1bbe83a7b" name="a3d2c43f9dacc747a6c019eb1bbe83a7b"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_TYPE_GCN_WIRELESS_ID_MASK</b>&#160;&#160;&#160;0x00C0</td></tr>
+<tr class="memdesc:a3d2c43f9dacc747a6c019eb1bbe83a7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Top 2 bits of wireless ID. <br /></td></tr>
+<tr class="memitem:a9019062697269e59a53730cf5b4f0368" id="r_a9019062697269e59a53730cf5b4f0368"><td class="memItemLeft" align="right" valign="top"><a id="a9019062697269e59a53730cf5b4f0368" name="a9019062697269e59a53730cf5b4f0368"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_TYPE_GCN_STANDARD</b>&#160;&#160;&#160;0x0100</td></tr>
+<tr class="memdesc:a9019062697269e59a53730cf5b4f0368"><td class="mdescLeft">&#160;</td><td class="mdescRight">Standard GameCube controller. <br /></td></tr>
+<tr class="memitem:a24336737aa8b89674e928df5070abaf2" id="r_a24336737aa8b89674e928df5070abaf2"><td class="memItemLeft" align="right" valign="top"><a id="a24336737aa8b89674e928df5070abaf2" name="a24336737aa8b89674e928df5070abaf2"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_TYPE_GCN_WIRELESS_STATE</b>&#160;&#160;&#160;0x0200</td></tr>
+<tr class="memdesc:a24336737aa8b89674e928df5070abaf2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wireless state available. <br /></td></tr>
+<tr class="memitem:a5011bd07627e77237ad79f40c5ad36c9" id="r_a5011bd07627e77237ad79f40c5ad36c9"><td class="memItemLeft" align="right" valign="top"><a id="a5011bd07627e77237ad79f40c5ad36c9" name="a5011bd07627e77237ad79f40c5ad36c9"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_TYPE_GCN_DEVICE</b>&#160;&#160;&#160;0x0800</td></tr>
+<tr class="memdesc:a5011bd07627e77237ad79f40c5ad36c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Device is a GameCube device. <br /></td></tr>
+<tr class="memitem:aab51b01a178e2710ace1f7a2c638a32b" id="r_aab51b01a178e2710ace1f7a2c638a32b"><td class="memItemLeft" align="right" valign="top"><a id="aab51b01a178e2710ace1f7a2c638a32b" name="aab51b01a178e2710ace1f7a2c638a32b"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_TYPE_GCN_NO_MOTOR</b>&#160;&#160;&#160;0x2000</td></tr>
+<tr class="memdesc:aab51b01a178e2710ace1f7a2c638a32b"><td class="mdescLeft">&#160;</td><td class="mdescRight">No rumble motor present. <br /></td></tr>
+<tr class="memitem:ae7dce3fe70f72d6df180a8b756913ce1" id="r_ae7dce3fe70f72d6df180a8b756913ce1"><td class="memItemLeft" align="right" valign="top"><a id="ae7dce3fe70f72d6df180a8b756913ce1" name="ae7dce3fe70f72d6df180a8b756913ce1"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_TYPE_GCN_WIRELESS_RECEIVED</b>&#160;&#160;&#160;0x4000</td></tr>
+<tr class="memdesc:ae7dce3fe70f72d6df180a8b756913ce1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wireless receiver has received a packet. <br /></td></tr>
+<tr class="memitem:abcb0c5fc31b75441ec0028127c15e157" id="r_abcb0c5fc31b75441ec0028127c15e157"><td class="memItemLeft" align="right" valign="top"><a id="abcb0c5fc31b75441ec0028127c15e157" name="abcb0c5fc31b75441ec0028127c15e157"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_TYPE_GCN_WIRELESS</b>&#160;&#160;&#160;0x8000</td></tr>
+<tr class="memdesc:abcb0c5fc31b75441ec0028127c15e157"><td class="mdescLeft">&#160;</td><td class="mdescRight">Controller is wireless. <br /></td></tr>
+<tr class="memitem:a62db60e4e8291f2763d04806d64c6cd6" id="r_a62db60e4e8291f2763d04806d64c6cd6"><td class="memItemLeft" align="right" valign="top"><a id="a62db60e4e8291f2763d04806d64c6cd6" name="a62db60e4e8291f2763d04806d64c6cd6"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_STATUS_N64_ACCESSORY_PRESENT</b>&#160;&#160;&#160;0x01</td></tr>
+<tr class="memdesc:a62db60e4e8291f2763d04806d64c6cd6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Accessory present. <br /></td></tr>
+<tr class="memitem:a35e93c859da21a2b3b51e64879efad06" id="r_a35e93c859da21a2b3b51e64879efad06"><td class="memItemLeft" align="right" valign="top"><a id="a35e93c859da21a2b3b51e64879efad06" name="a35e93c859da21a2b3b51e64879efad06"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_STATUS_N64_ACCESSORY_PULLED</b>&#160;&#160;&#160;0x02</td></tr>
+<tr class="memdesc:a35e93c859da21a2b3b51e64879efad06"><td class="mdescLeft">&#160;</td><td class="mdescRight">Accessory removal/change detected. <br /></td></tr>
+<tr class="memitem:a16970e43472f9ffe41e4f56c73ec13ea" id="r_a16970e43472f9ffe41e4f56c73ec13ea"><td class="memItemLeft" align="right" valign="top"><a id="a16970e43472f9ffe41e4f56c73ec13ea" name="a16970e43472f9ffe41e4f56c73ec13ea"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_STATUS_N64_ADDR_CHECKSUM_ERROR</b>&#160;&#160;&#160;0x04</td></tr>
+<tr class="memdesc:a16970e43472f9ffe41e4f56c73ec13ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Address checksum error. <br /></td></tr>
+<tr class="memitem:afa23791bdcc1d110a8e3557422198bfa" id="r_afa23791bdcc1d110a8e3557422198bfa"><td class="memItemLeft" align="right" valign="top"><a id="afa23791bdcc1d110a8e3557422198bfa" name="afa23791bdcc1d110a8e3557422198bfa"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_STATUS_N64_VRU_INITIALIZED</b>&#160;&#160;&#160;0x01</td></tr>
+<tr class="memdesc:afa23791bdcc1d110a8e3557422198bfa"><td class="mdescLeft">&#160;</td><td class="mdescRight">VRU is initialized. <br /></td></tr>
+<tr class="memitem:a47cd08053213855222f620404c94cd8c" id="r_a47cd08053213855222f620404c94cd8c"><td class="memItemLeft" align="right" valign="top"><a id="a47cd08053213855222f620404c94cd8c" name="a47cd08053213855222f620404c94cd8c"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_STATUS_GCN_ANALOG_MODE_MASK</b>&#160;&#160;&#160;0x07</td></tr>
+<tr class="memdesc:a47cd08053213855222f620404c94cd8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bits 2–0: Last analog mode. <br /></td></tr>
+<tr class="memitem:ad85a4321f1dda28129c480c114f7a512" id="r_ad85a4321f1dda28129c480c114f7a512"><td class="memItemLeft" align="right" valign="top"><a id="ad85a4321f1dda28129c480c114f7a512" name="ad85a4321f1dda28129c480c114f7a512"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_STATUS_GCN_MOTOR_STATE_MASK</b>&#160;&#160;&#160;0x18</td></tr>
+<tr class="memdesc:ad85a4321f1dda28129c480c114f7a512"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bits 4–3: Last motor state. <br /></td></tr>
+<tr class="memitem:ad16a101ead9b57d38e493cb64b18df3c" id="r_ad16a101ead9b57d38e493cb64b18df3c"><td class="memItemLeft" align="right" valign="top"><a id="ad16a101ead9b57d38e493cb64b18df3c" name="ad16a101ead9b57d38e493cb64b18df3c"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_STATUS_GCN_NEED_ORIGIN</b>&#160;&#160;&#160;0x20</td></tr>
+<tr class="memdesc:ad16a101ead9b57d38e493cb64b18df3c"><td class="mdescLeft">&#160;</td><td class="mdescRight">New origin data available (host should read origin) <br /></td></tr>
+<tr class="memitem:a3259dd50637e5a0b9f293141e04ea59a" id="r_a3259dd50637e5a0b9f293141e04ea59a"><td class="memItemLeft" align="right" valign="top"><a id="a3259dd50637e5a0b9f293141e04ea59a" name="a3259dd50637e5a0b9f293141e04ea59a"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_STATUS_GCN_ERROR_LATCHED</b>&#160;&#160;&#160;0x40</td></tr>
+<tr class="memdesc:a3259dd50637e5a0b9f293141e04ea59a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Latched error. <br /></td></tr>
+<tr class="memitem:a535e17f47115981ea915ce9a78bbb6e6" id="r_a535e17f47115981ea915ce9a78bbb6e6"><td class="memItemLeft" align="right" valign="top"><a id="a535e17f47115981ea915ce9a78bbb6e6" name="a535e17f47115981ea915ce9a78bbb6e6"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_STATUS_GCN_ERROR</b>&#160;&#160;&#160;0x80</td></tr>
+<tr class="memdesc:a535e17f47115981ea915ce9a78bbb6e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Last error. <br /></td></tr>
+<tr class="memitem:ab509858ecf1a640ade2d511c25dad95d" id="r_ab509858ecf1a640ade2d511c25dad95d"><td class="memItemLeft" align="right" valign="top"><a id="ab509858ecf1a640ade2d511c25dad95d" name="ab509858ecf1a640ade2d511c25dad95d"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_STATUS_GCN_MOTOR_STATE_SHIFT</b>&#160;&#160;&#160;3</td></tr>
+<tr class="memitem:a6eaad449e9a23b8fc54e927acc4a6a85" id="r_a6eaad449e9a23b8fc54e927acc4a6a85"><td class="memItemLeft" align="right" valign="top"><a id="a6eaad449e9a23b8fc54e927acc4a6a85" name="a6eaad449e9a23b8fc54e927acc4a6a85"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_STATUS_GCN_ANALOG_MODE_SHIFT</b>&#160;&#160;&#160;0</td></tr>
+<tr class="memitem:a747a65de2006eee58e345cf6cb0b7d3a" id="r_a747a65de2006eee58e345cf6cb0b7d3a"><td class="memItemLeft" align="right" valign="top"><a id="a747a65de2006eee58e345cf6cb0b7d3a" name="a747a65de2006eee58e345cf6cb0b7d3a"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_STATUS_GCN_WIRELESS_ID_MASK</b>&#160;&#160;&#160;0xFF</td></tr>
+<tr class="memdesc:a747a65de2006eee58e345cf6cb0b7d3a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lower 8 bits of wireless ID. <br /></td></tr>
+<tr class="memitem:a2763d960f1226a656f33122d950f71ee" id="r_a2763d960f1226a656f33122d950f71ee"><td class="memItemLeft" align="right" valign="top"><a id="a2763d960f1226a656f33122d950f71ee" name="a2763d960f1226a656f33122d950f71ee"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_DEVICE_N64_CONTROLLER</b>&#160;&#160;&#160;(<a class="el" href="#ac722993a39c47ee0178e8e2ddfabaebf">JOYBUS_TYPE_N64_ABSOLUTE</a> | <a class="el" href="#a9871fda683dde97d86637cc3eccf75b5">JOYBUS_TYPE_N64_JOYPORT</a>)</td></tr>
+<tr class="memdesc:a2763d960f1226a656f33122d950f71ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">N64 Controller (NUS-005) <br /></td></tr>
+<tr class="memitem:af6bb9835e94b27e0571de3c6e958b94d" id="r_af6bb9835e94b27e0571de3c6e958b94d"><td class="memItemLeft" align="right" valign="top"><a id="af6bb9835e94b27e0571de3c6e958b94d" name="af6bb9835e94b27e0571de3c6e958b94d"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_DEVICE_N64_MOUSE</b>&#160;&#160;&#160;(<a class="el" href="#a10fc8d11dc1d73c07580f95a124e5189">JOYBUS_TYPE_N64_RELATIVE</a>)</td></tr>
+<tr class="memdesc:af6bb9835e94b27e0571de3c6e958b94d"><td class="mdescLeft">&#160;</td><td class="mdescRight">N64 Mouse (NUS-017) <br /></td></tr>
+<tr class="memitem:a9ef414d77d3204c9cf4f3b897d51bc0c" id="r_a9ef414d77d3204c9cf4f3b897d51bc0c"><td class="memItemLeft" align="right" valign="top"><a id="a9ef414d77d3204c9cf4f3b897d51bc0c" name="a9ef414d77d3204c9cf4f3b897d51bc0c"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_DEVICE_GCN_CONTROLLER</b>&#160;&#160;&#160;(<a class="el" href="#a5011bd07627e77237ad79f40c5ad36c9">JOYBUS_TYPE_GCN_DEVICE</a> | <a class="el" href="#a9019062697269e59a53730cf5b4f0368">JOYBUS_TYPE_GCN_STANDARD</a>)</td></tr>
+<tr class="memdesc:a9ef414d77d3204c9cf4f3b897d51bc0c"><td class="mdescLeft">&#160;</td><td class="mdescRight">GameCube controller (DOL-003) <br /></td></tr>
+<tr class="memitem:a2271b6d31f067bd80991cf5b3c8b737f" id="r_a2271b6d31f067bd80991cf5b3c8b737f"><td class="memItemLeft" align="right" valign="top"><a id="a2271b6d31f067bd80991cf5b3c8b737f" name="a2271b6d31f067bd80991cf5b3c8b737f"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_DEVICE_GCN_WAVEBIRD</b>&#160;&#160;&#160;(<a class="el" href="#a5011bd07627e77237ad79f40c5ad36c9">JOYBUS_TYPE_GCN_DEVICE</a> | <a class="el" href="#abcb0c5fc31b75441ec0028127c15e157">JOYBUS_TYPE_GCN_WIRELESS</a> | <a class="el" href="#aab51b01a178e2710ace1f7a2c638a32b">JOYBUS_TYPE_GCN_NO_MOTOR</a>)</td></tr>
+<tr class="memdesc:a2271b6d31f067bd80991cf5b3c8b737f"><td class="mdescLeft">&#160;</td><td class="mdescRight">WaveBird receiver (DOL-005) <br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
@@ -210,9 +244,11 @@ Functions</h2></td></tr>
 <tr class="memdesc:a0a3ecbaa982f98cbd8623c7ad8b52a03"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the 10-bit wireless ID from an "identify" buffer.  <br /></td></tr>
 <tr class="memitem:adbb6abead619a5b6450e8a4592dd6def" id="r_adbb6abead619a5b6450e8a4592dd6def"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adbb6abead619a5b6450e8a4592dd6def">joybus_id_set_wireless_id</a> (uint8_t *id, uint16_t wireless_id)</td></tr>
 <tr class="memdesc:adbb6abead619a5b6450e8a4592dd6def"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the 10-bit wireless ID in an "identify" buffer.  <br /></td></tr>
+<tr class="memitem:a8d3f6c9e21dc4449c7cb5f8e117ed2ed" id="r_a8d3f6c9e21dc4449c7cb5f8e117ed2ed"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8d3f6c9e21dc4449c7cb5f8e117ed2ed">joybus_id_n64_accessory_changed</a> (uint8_t *id)</td></tr>
+<tr class="memdesc:a8d3f6c9e21dc4449c7cb5f8e117ed2ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the accessory changed flag is set in an "identify" buffer.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Joybus "identify" type/status values and utilities. </p>
+<div class="textblock"><p>Joybus device identification values and utilities. </p>
 </div><a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Function Documentation</h2>
 <a id="adc1b9b491daf9c001a5e05a96d2c657c" name="adc1b9b491daf9c001a5e05a96d2c657c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#adc1b9b491daf9c001a5e05a96d2c657c">&#9670;&#160;</a></span>joybus_id_clear_status_flags()</h2>
@@ -389,6 +425,40 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the wireless ID (bits 9–2 of bytes 1 and 2 of ID field) </dd></dl>
+
+</div>
+</div>
+<a id="a8d3f6c9e21dc4449c7cb5f8e117ed2ed" name="a8d3f6c9e21dc4449c7cb5f8e117ed2ed"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8d3f6c9e21dc4449c7cb5f8e117ed2ed">&#9670;&#160;</a></span>joybus_id_n64_accessory_changed()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool joybus_id_n64_accessory_changed </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t *</td>          <td class="paramname"><span class="paramname"><em>id</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel static">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Check if the accessory changed flag is set in an "identify" buffer. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">id</td><td>pointer to the 3-byte ID field from an "identify" buffer </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if accessory changed flag is set, false otherwise </dd></dl>
 
 </div>
 </div>

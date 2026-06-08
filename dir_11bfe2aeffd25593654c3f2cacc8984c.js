@@ -6,7 +6,7 @@ var dir_11bfe2aeffd25593654c3f2cacc8984c =
     [ "target", "dir_b38d5ee79e2e612bee26fb1046f5856e.html", "dir_b38d5ee79e2e612bee26fb1046f5856e" ],
     [ "bus.h", "bus_8h_source.html", null ],
     [ "checksum.h", "checksum_8h_source.html", null ],
-    [ "commands.h", "commands_8h.html", null ],
+    [ "commands.h", "commands_8h.html", "commands_8h" ],
     [ "errors.h", "errors_8h_source.html", null ],
     [ "identify.h", "identify_8h.html", "identify_8h" ],
     [ "joybus.h", "joybus_8h_source.html", null ],
