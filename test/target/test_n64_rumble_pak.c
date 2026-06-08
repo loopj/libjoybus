@@ -85,7 +85,7 @@ static void test_n64_rumble_pak_probe_read_returns_signature()
 
   uint8_t expected[JOYBUS_CMD_N64_ACCESSORY_READ_RX];
   memset(expected, 0x80, JOYBUS_ACCESSORY_BLOCK_SIZE);
-  expected[JOYBUS_ACCESSORY_BLOCK_SIZE] = joybus_crc8(expected, JOYBUS_ACCESSORY_BLOCK_SIZE);
+  expected[JOYBUS_ACCESSORY_BLOCK_SIZE] = joybus_data_checksum(expected, JOYBUS_ACCESSORY_BLOCK_SIZE);
 
   TEST_ASSERT_EQUAL(JOYBUS_CMD_N64_ACCESSORY_READ_RX, response_len);
   TEST_ASSERT_EQUAL_HEX8_ARRAY(expected, response, JOYBUS_CMD_N64_ACCESSORY_READ_RX);
@@ -102,7 +102,7 @@ static void test_n64_rumble_pak_detection_sequence()
 
   uint8_t expected[JOYBUS_CMD_N64_ACCESSORY_READ_RX];
   memset(expected, 0x80, JOYBUS_ACCESSORY_BLOCK_SIZE);
-  expected[JOYBUS_ACCESSORY_BLOCK_SIZE] = joybus_crc8(expected, JOYBUS_ACCESSORY_BLOCK_SIZE);
+  expected[JOYBUS_ACCESSORY_BLOCK_SIZE] = joybus_data_checksum(expected, JOYBUS_ACCESSORY_BLOCK_SIZE);
 
   TEST_ASSERT_EQUAL(JOYBUS_CMD_N64_ACCESSORY_READ_RX, response_len);
   TEST_ASSERT_EQUAL_HEX8_ARRAY(expected, response, JOYBUS_CMD_N64_ACCESSORY_READ_RX);
@@ -187,7 +187,7 @@ static void test_n64_rumble_pak_read_outside_probe_region_returns_zeros()
   joybus_n64_accessory_read(&bus, 0x0000, response, spy, NULL);
 
   uint8_t expected[JOYBUS_CMD_N64_ACCESSORY_READ_RX] = {0};
-  expected[JOYBUS_ACCESSORY_BLOCK_SIZE]              = joybus_crc8(expected, JOYBUS_ACCESSORY_BLOCK_SIZE);
+  expected[JOYBUS_ACCESSORY_BLOCK_SIZE]              = joybus_data_checksum(expected, JOYBUS_ACCESSORY_BLOCK_SIZE);
 
   TEST_ASSERT_EQUAL(JOYBUS_CMD_N64_ACCESSORY_READ_RX, response_len);
   TEST_ASSERT_EQUAL_HEX8_ARRAY(expected, response, JOYBUS_CMD_N64_ACCESSORY_READ_RX);

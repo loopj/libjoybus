@@ -93,7 +93,7 @@ static int handle_accessory_read(struct joybus_n64_controller *controller, const
   uint16_t addr = ((uint16_t)command[1] << 8) | command[2];
 
   // Validate the address checksum
-  bool checksum_valid = joybus_address_checksum_valid(addr);
+  bool checksum_valid = joybus_address_checksum(addr >> 5) == (addr & 0x1F);
 
   // Set or clear the checksum error flag in the controller ID
   if (checksum_valid) {
@@ -109,8 +109,8 @@ static int handle_accessory_read(struct joybus_n64_controller *controller, const
     struct joybus_n64_accessory *acc = controller->accessory;
     acc->api->read_block(acc, block_addr, controller->response);
 
-    // Calculate and append the CRC8
-    controller->response[JOYBUS_ACCESSORY_BLOCK_SIZE] = joybus_crc8(controller->response, JOYBUS_ACCESSORY_BLOCK_SIZE);
+    // Calculate and append the data checksum
+    controller->response[JOYBUS_ACCESSORY_BLOCK_SIZE] = joybus_data_checksum(controller->response, JOYBUS_ACCESSORY_BLOCK_SIZE);
 
     // Send the response
     send_response(controller->response, JOYBUS_CMD_N64_ACCESSORY_READ_RX, user_data);
@@ -142,7 +142,7 @@ static int handle_accessory_write(struct joybus_n64_controller *controller, cons
     uint16_t addr = ((uint16_t)command[1] << 8) | command[2];
 
     // Set or clear the checksum error flag
-    if (joybus_address_checksum_valid(addr)) {
+    if (joybus_address_checksum(addr >> 5) == (addr & 0x1F)) {
       joybus_id_clear_status_flags(controller->id, JOYBUS_STATUS_N64_ADDR_CHECKSUM_ERROR);
     } else {
       joybus_id_set_status_flags(controller->id, JOYBUS_STATUS_N64_ADDR_CHECKSUM_ERROR);
@@ -154,8 +154,8 @@ static int handle_accessory_write(struct joybus_n64_controller *controller, cons
     return JOYBUS_CMD_N64_ACCESSORY_WRITE_TX - bytes_read;
   }
 
-  // Subsequent bytes are payload, accumulate the CRC
-  controller->crc = joybus_crc8_update(controller->crc, command[bytes_read - 1]);
+  // Subsequent bytes are payload, accumulate the checksum
+  controller->crc = joybus_data_checksum_update(controller->crc, command[bytes_read - 1]);
 
   // Full payload received, respond with the CRC
   if (bytes_read == JOYBUS_CMD_N64_ACCESSORY_WRITE_TX) {
