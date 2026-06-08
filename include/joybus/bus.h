@@ -16,8 +16,14 @@ struct joybus;
 /// Joybus frequency of an N64 console (NUS-001).
 #define JOYBUS_FREQ_N64_CONSOLE         244141 // PIF-NUS @ 15.625MHz / 64
 
+/// Joybus frequency of an external joybus device (EEPROM/RTC on an N64 cartridge).
+#define JOYBUS_FREQ_N64_EXTJOY          JOYBUS_FREQ_N64_CONSOLE // SECCLK @ 1.953125MHz / 8
+
 /// Joybus frequency of an N64 controller (NUS-005).
 #define JOYBUS_FREQ_N64_CONTROLLER      250000 // CNT-NUS @ 2MHz / 8
+
+/// Joybus frequency of an N64 VRU (NUS-020).
+#define JOYBUS_FREQ_N64_VRU             250000 // VCI-NUS @ 4MHz / 16
 
 /// Joybus frequency of a GameCube console (DOL-001 / DOL-101).
 #define JOYBUS_FREQ_GCN_CONSOLE         202500 // Flipper @ 162MHz / 800

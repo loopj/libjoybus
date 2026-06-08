@@ -30,15 +30,15 @@ void joybus_identify_cb(struct joybus *bus, int result, void *user_data)
 
   // Check it's a GameCube controller
   uint16_t type = joybus_id_get_type(joybus_response);
-  if (!(type & JOYBUS_ID_GCN_DEVICE))
+  if (!(type & JOYBUS_TYPE_GCN_DEVICE))
     return;
 
   // Check we've received data if it's a wireless controller
-  if ((type & JOYBUS_ID_GCN_WIRELESS) && !(type & JOYBUS_ID_GCN_WIRELESS_RECEIVED))
+  if ((type & JOYBUS_TYPE_GCN_WIRELESS) && !(type & JOYBUS_TYPE_GCN_WIRELESS_RECEIVED))
     return;
 
   // Check it's a standard controller
-  if (!(type & JOYBUS_ID_GCN_STANDARD))
+  if (!(type & JOYBUS_TYPE_GCN_STANDARD))
     return;
 
   // Move to polling for input

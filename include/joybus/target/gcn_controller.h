@@ -68,7 +68,7 @@ struct joybus_gcn_controller {
  * Initialize a GameCube controller target with a specific controller type.
  *
  * @param controller the controller to initialize
- * @param type the controller type, a combination of JOYBUS_ID_GCN_* flags
+ * @param type the controller type flags
  */
 void joybus_gcn_controller_init_with_type(struct joybus_gcn_controller *controller, uint16_t type);
 
@@ -79,7 +79,7 @@ void joybus_gcn_controller_init_with_type(struct joybus_gcn_controller *controll
  */
 static inline void joybus_gcn_controller_init(struct joybus_gcn_controller *controller)
 {
-  joybus_gcn_controller_init_with_type(controller, JOYBUS_ID_GCN_DEVICE | JOYBUS_ID_GCN_STANDARD);
+  joybus_gcn_controller_init_with_type(controller, JOYBUS_DEVICE_GCN_CONTROLLER);
 }
 
 /**
@@ -89,8 +89,7 @@ static inline void joybus_gcn_controller_init(struct joybus_gcn_controller *cont
  */
 static inline void joybus_gcn_controller_init_wavebird(struct joybus_gcn_controller *controller)
 {
-  joybus_gcn_controller_init_with_type(controller,
-                                       JOYBUS_ID_GCN_DEVICE | JOYBUS_ID_GCN_WIRELESS | JOYBUS_ID_GCN_NO_MOTOR);
+  joybus_gcn_controller_init_with_type(controller, JOYBUS_DEVICE_GCN_WAVEBIRD);
 }
 
 /**
@@ -125,7 +124,7 @@ void joybus_gcn_controller_set_motor_callback(struct joybus_gcn_controller *cont
  */
 static inline bool joybus_gcn_controller_is_wireless(struct joybus_gcn_controller *controller)
 {
-  return joybus_id_get_type(controller->id) & JOYBUS_ID_GCN_WIRELESS;
+  return joybus_id_get_type(controller->id) & JOYBUS_TYPE_GCN_WIRELESS;
 }
 
 /**
@@ -162,7 +161,7 @@ static inline uint16_t joybus_gcn_controller_get_wireless_id(struct joybus_gcn_c
  */
 static inline bool joybus_gcn_controller_wireless_id_fixed(struct joybus_gcn_controller *controller)
 {
-  return joybus_id_get_type(controller->id) & JOYBUS_ID_GCN_WIRELESS_ID_FIXED;
+  return joybus_id_get_type(controller->id) & JOYBUS_TYPE_GCN_WIRELESS_ID_FIXED;
 }
 
 /**

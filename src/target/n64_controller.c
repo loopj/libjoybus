@@ -11,8 +11,7 @@
 // An accessory is "ready" when it is present and accessory changed flag has been cleared
 static inline bool accessory_ready(struct joybus_n64_controller *controller)
 {
-  uint8_t status = joybus_id_get_status(controller->id);
-  return controller->accessory && (status & JOYBUS_ID_N64_ACCESSORY_CHANGED) != JOYBUS_ID_N64_ACCESSORY_CHANGED;
+  return controller->accessory && !joybus_id_n64_accessory_changed(controller->id);
 }
 
 /**
@@ -52,12 +51,11 @@ static int handle_identify(struct joybus_n64_controller *controller, const uint8
   send_response(controller->response, JOYBUS_CMD_IDENTIFY_RX, user_data);
 
   // After reporting "accessory changed", transition to "accessory present"
-  uint8_t status = joybus_id_get_status(controller->id);
-  if ((status & JOYBUS_ID_N64_ACCESSORY_CHANGED) == JOYBUS_ID_N64_ACCESSORY_CHANGED)
-    joybus_id_clear_status_flags(controller->id, JOYBUS_ID_N64_ACCESSORY_ABSENT);
+  if (joybus_id_n64_accessory_changed(controller->id))
+    joybus_id_clear_status_flags(controller->id, JOYBUS_STATUS_N64_ACCESSORY_PULLED);
 
   // Clear any latched checksum error — reported once, then cleared
-  joybus_id_clear_status_flags(controller->id, JOYBUS_ID_N64_CHECKSUM_ERROR);
+  joybus_id_clear_status_flags(controller->id, JOYBUS_STATUS_N64_ADDR_CHECKSUM_ERROR);
 
   return 0;
 }
@@ -99,9 +97,9 @@ static int handle_accessory_read(struct joybus_n64_controller *controller, const
 
   // Set or clear the checksum error flag in the controller ID
   if (checksum_valid) {
-    joybus_id_clear_status_flags(controller->id, JOYBUS_ID_N64_CHECKSUM_ERROR);
+    joybus_id_clear_status_flags(controller->id, JOYBUS_STATUS_N64_ADDR_CHECKSUM_ERROR);
   } else {
-    joybus_id_set_status_flags(controller->id, JOYBUS_ID_N64_CHECKSUM_ERROR);
+    joybus_id_set_status_flags(controller->id, JOYBUS_STATUS_N64_ADDR_CHECKSUM_ERROR);
   }
 
   // Prepare and send the response
@@ -145,9 +143,9 @@ static int handle_accessory_write(struct joybus_n64_controller *controller, cons
 
     // Set or clear the checksum error flag
     if (joybus_address_checksum_valid(addr)) {
-      joybus_id_clear_status_flags(controller->id, JOYBUS_ID_N64_CHECKSUM_ERROR);
+      joybus_id_clear_status_flags(controller->id, JOYBUS_STATUS_N64_ADDR_CHECKSUM_ERROR);
     } else {
-      joybus_id_set_status_flags(controller->id, JOYBUS_ID_N64_CHECKSUM_ERROR);
+      joybus_id_set_status_flags(controller->id, JOYBUS_STATUS_N64_ADDR_CHECKSUM_ERROR);
     }
 
     // Reset the running CRC for the payload bytes
@@ -161,7 +159,7 @@ static int handle_accessory_write(struct joybus_n64_controller *controller, cons
 
   // Full payload received, respond with the CRC
   if (bytes_read == JOYBUS_CMD_N64_ACCESSORY_WRITE_TX) {
-    bool checksum_valid = (joybus_id_get_status(controller->id) & JOYBUS_ID_N64_CHECKSUM_ERROR) == 0;
+    bool checksum_valid = (joybus_id_get_status(controller->id) & JOYBUS_STATUS_N64_ADDR_CHECKSUM_ERROR) == 0;
     bool ready          = accessory_ready(controller) && checksum_valid;
 
     // Mark the CRC as "no accessory" if we're not ready to commit the write
@@ -218,8 +216,8 @@ void joybus_n64_controller_init(struct joybus_n64_controller *controller)
   target->api                  = &n64_controller_api;
 
   // Initialize the controller ID
-  joybus_id_set_type_flags(controller->id, JOYBUS_ID_N64_CONTROLLER);
-  joybus_id_set_status_flags(controller->id, JOYBUS_ID_N64_ACCESSORY_ABSENT);
+  joybus_id_set_type_flags(controller->id, JOYBUS_DEVICE_N64_CONTROLLER);
+  joybus_id_set_status_flags(controller->id, JOYBUS_STATUS_N64_ACCESSORY_PULLED);
 }
 
 void joybus_n64_controller_set_reset_callback(struct joybus_n64_controller *controller,
@@ -234,11 +232,13 @@ void joybus_n64_controller_attach_accessory(struct joybus_n64_controller *contro
   // Set the accessory pointer on the controller
   controller->accessory = accessory;
 
-  joybus_id_clear_status_flags(controller->id, JOYBUS_ID_N64_ACCESSORY_CHANGED);
+  joybus_id_clear_status_flags(controller->id,
+                               JOYBUS_STATUS_N64_ACCESSORY_PRESENT | JOYBUS_STATUS_N64_ACCESSORY_PULLED);
   if (joybus_target_is_registered(JOYBUS_TARGET(controller))) {
-    joybus_id_set_status_flags(controller->id, JOYBUS_ID_N64_ACCESSORY_CHANGED);
+    joybus_id_set_status_flags(controller->id,
+                               JOYBUS_STATUS_N64_ACCESSORY_PRESENT | JOYBUS_STATUS_N64_ACCESSORY_PULLED);
   } else {
-    joybus_id_set_status_flags(controller->id, JOYBUS_ID_N64_ACCESSORY_PRESENT);
+    joybus_id_set_status_flags(controller->id, JOYBUS_STATUS_N64_ACCESSORY_PRESENT);
   }
 }
 
@@ -248,6 +248,6 @@ void joybus_n64_controller_detach_accessory(struct joybus_n64_controller *contro
   controller->accessory = NULL;
 
   // Mark the accessory as absent
-  joybus_id_clear_status_flags(controller->id, JOYBUS_ID_N64_ACCESSORY_CHANGED);
-  joybus_id_set_status_flags(controller->id, JOYBUS_ID_N64_ACCESSORY_ABSENT);
+  joybus_id_clear_status_flags(controller->id, JOYBUS_STATUS_N64_ACCESSORY_PRESENT);
+  joybus_id_set_status_flags(controller->id, JOYBUS_STATUS_N64_ACCESSORY_PULLED);
 }

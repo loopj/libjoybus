@@ -34,7 +34,7 @@ static void joybus_identify_cb(struct joybus *bus, int result, void *user_data)
 
   // Check it's a N64 controller
   uint16_t type = joybus_id_get_type(joybus_response);
-  if (!(type & JOYBUS_ID_N64_CONTROLLER))
+  if (!(type & JOYBUS_DEVICE_N64_CONTROLLER))
     return;
 
   // Move to polling for input
