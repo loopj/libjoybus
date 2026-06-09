@@ -26,9 +26,8 @@ var group__joybus =
       [ "JOYBUS_ERR_CHECKSUM", "group__joybus.html#gga47435eba4c98726f93fdae3c8bb9fd76adc97e17cb4f7168b0f71926a6d357aac", null ]
     ] ],
     [ "joybus_address_checksum", "group__joybus.html#ga395ca3d9f9844388c1b7372a0ae8bedf", null ],
-    [ "joybus_address_checksum_valid", "group__joybus.html#ga03671e51a2e7cdfc222fbe0c39fa1109", null ],
-    [ "joybus_crc8", "group__joybus.html#ga8b7e68726e152ecf2c8e067a50cdc87c", null ],
-    [ "joybus_crc8_update", "group__joybus.html#gaeda8424d5d03778bc6272d81c4b7aba6", null ],
+    [ "joybus_data_checksum", "group__joybus.html#gad4e8d62b15102d8e6c580fb3730eb2b5", null ],
+    [ "joybus_data_checksum_update", "group__joybus.html#gaf0fb19213a219d0ec14fd0103f9b733e", null ],
     [ "joybus_disable", "group__joybus.html#gaabcba7cb477ed6aff47bc7db467f348b", null ],
     [ "joybus_enable", "group__joybus.html#ga10316dbaf35990b5c627b2d2f6330248", null ],
     [ "joybus_target_register", "group__joybus.html#gadb1ce9137d553ae521755b77238fc45c", null ],

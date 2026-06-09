@@ -198,18 +198,16 @@ Functions</h2></td></tr>
 <tr class="memdesc:gadb1ce9137d553ae521755b77238fc45c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable Joybus "target" mode, and register a target to handle commands.  <br /></td></tr>
 <tr class="memitem:gaa31869a974628cc7428404e0affc68b2" id="r_gaa31869a974628cc7428404e0affc68b2"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#gaa31869a974628cc7428404e0affc68b2">joybus_target_unregister</a> (struct <a class="el" href="structjoybus.html">joybus</a> *bus, struct <a class="el" href="structjoybus__target.html">joybus_target</a> *target)</td></tr>
 <tr class="memdesc:gaa31869a974628cc7428404e0affc68b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unregister a Joybus target.  <br /></td></tr>
-<tr class="memitem:gaeda8424d5d03778bc6272d81c4b7aba6" id="r_gaeda8424d5d03778bc6272d81c4b7aba6"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#gaeda8424d5d03778bc6272d81c4b7aba6">joybus_crc8_update</a> (uint8_t crc, uint8_t byte)</td></tr>
-<tr class="memdesc:gaeda8424d5d03778bc6272d81c4b7aba6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fold one byte into a running CRC-8 (polynomial 0x85).  <br /></td></tr>
-<tr class="memitem:ga8b7e68726e152ecf2c8e067a50cdc87c" id="r_ga8b7e68726e152ecf2c8e067a50cdc87c"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga8b7e68726e152ecf2c8e067a50cdc87c">joybus_crc8</a> (const uint8_t *data, size_t size)</td></tr>
-<tr class="memdesc:ga8b7e68726e152ecf2c8e067a50cdc87c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the CRC-8 (polynomial 0x85) over a complete buffer.  <br /></td></tr>
+<tr class="memitem:gaf0fb19213a219d0ec14fd0103f9b733e" id="r_gaf0fb19213a219d0ec14fd0103f9b733e"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#gaf0fb19213a219d0ec14fd0103f9b733e">joybus_data_checksum_update</a> (uint8_t crc, uint8_t byte)</td></tr>
+<tr class="memdesc:gaf0fb19213a219d0ec14fd0103f9b733e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fold one byte into a running Joybus data checksum.  <br /></td></tr>
+<tr class="memitem:gad4e8d62b15102d8e6c580fb3730eb2b5" id="r_gad4e8d62b15102d8e6c580fb3730eb2b5"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#gad4e8d62b15102d8e6c580fb3730eb2b5">joybus_data_checksum</a> (const uint8_t *data, size_t size)</td></tr>
+<tr class="memdesc:gad4e8d62b15102d8e6c580fb3730eb2b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the CRC-8 checksum of a Joybus data buffer.  <br /></td></tr>
 <tr class="memitem:ga395ca3d9f9844388c1b7372a0ae8bedf" id="r_ga395ca3d9f9844388c1b7372a0ae8bedf"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga395ca3d9f9844388c1b7372a0ae8bedf">joybus_address_checksum</a> (uint16_t addr)</td></tr>
-<tr class="memdesc:ga395ca3d9f9844388c1b7372a0ae8bedf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the 5-bit address checksum for N64 data transfer commands.  <br /></td></tr>
-<tr class="memitem:ga03671e51a2e7cdfc222fbe0c39fa1109" id="r_ga03671e51a2e7cdfc222fbe0c39fa1109"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga03671e51a2e7cdfc222fbe0c39fa1109">joybus_address_checksum_valid</a> (uint16_t addr)</td></tr>
-<tr class="memdesc:ga03671e51a2e7cdfc222fbe0c39fa1109"><td class="mdescLeft">&#160;</td><td class="mdescRight">Validate the 5-bit address checksum for an N64 data transfer command.  <br /></td></tr>
+<tr class="memdesc:ga395ca3d9f9844388c1b7372a0ae8bedf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the CRC-5 address checksum for data transfer commands.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <p>Joybus library core functionality. </p>
-<p>Checksum routines used by various joybus commands. </p>
+<p>Checksum routines used by various Joybus data transfer commands. </p>
 <a name="doc-define-members" id="doc-define-members"></a><h2 id="header-doc-define-members" class="groupheader">Macro Definition Documentation</h2>
 <a id="gaf06db642865d9aae04c89330d3b9cc25" name="gaf06db642865d9aae04c89330d3b9cc25"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#gaf06db642865d9aae04c89330d3b9cc25">&#9670;&#160;</a></span>JOYBUS</h2>
@@ -302,52 +300,25 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Compute the 5-bit address checksum for N64 data transfer commands. </p>
-<p>The address is a 16-bit value whose top 11 bits are the 32-byte-aligned address and whose low 5 bits carry the checksum.</p>
+<p>Compute the CRC-5 address checksum for data transfer commands. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">addr</td><td>16-bit address (low 5 bits ignored) </td></tr>
+    <tr><td class="paramname">addr</td><td>an 11 bit address to checksum </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>5-bit checksum in the low bits of the returned byte </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>CRC-5 checksum of the address </dd></dl>
 
 </div>
 </div>
-<a id="ga03671e51a2e7cdfc222fbe0c39fa1109" name="ga03671e51a2e7cdfc222fbe0c39fa1109"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga03671e51a2e7cdfc222fbe0c39fa1109">&#9670;&#160;</a></span>joybus_address_checksum_valid()</h2>
+<a id="gad4e8d62b15102d8e6c580fb3730eb2b5" name="gad4e8d62b15102d8e6c580fb3730eb2b5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gad4e8d62b15102d8e6c580fb3730eb2b5">&#9670;&#160;</a></span>joybus_data_checksum()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool joybus_address_checksum_valid </td>
-          <td>(</td>
-          <td class="paramtype">uint16_t</td>          <td class="paramname"><span class="paramname"><em>addr</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Validate the 5-bit address checksum for an N64 data transfer command. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">addr</td><td>16-bit address with checksum in the low 5 bits </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>true if the checksum is valid, false if not </dd></dl>
-
-</div>
-</div>
-<a id="ga8b7e68726e152ecf2c8e067a50cdc87c" name="ga8b7e68726e152ecf2c8e067a50cdc87c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga8b7e68726e152ecf2c8e067a50cdc87c">&#9670;&#160;</a></span>joybus_crc8()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint8_t joybus_crc8 </td>
+          <td class="memname">uint8_t joybus_data_checksum </td>
           <td>(</td>
           <td class="paramtype">const uint8_t *</td>          <td class="paramname"><span class="paramname"><em>data</em></span>, </td>
         </tr>
@@ -359,26 +330,26 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Compute the CRC-8 (polynomial 0x85) over a complete buffer. </p>
+<p>Compute the CRC-8 checksum of a Joybus data buffer. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">data</td><td>Buffer to checksum </td></tr>
-    <tr><td class="paramname">size</td><td>Number of bytes in <span class="tt">data</span> </td></tr>
+    <tr><td class="paramname">data</td><td>buffer to checksum </td></tr>
+    <tr><td class="paramname">size</td><td>number of bytes in <span class="tt">data</span> </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>CRC-8 of the buffer </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>the CRC-8 checksum of the buffer </dd></dl>
 
 </div>
 </div>
-<a id="gaeda8424d5d03778bc6272d81c4b7aba6" name="gaeda8424d5d03778bc6272d81c4b7aba6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaeda8424d5d03778bc6272d81c4b7aba6">&#9670;&#160;</a></span>joybus_crc8_update()</h2>
+<a id="gaf0fb19213a219d0ec14fd0103f9b733e" name="gaf0fb19213a219d0ec14fd0103f9b733e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaf0fb19213a219d0ec14fd0103f9b733e">&#9670;&#160;</a></span>joybus_data_checksum_update()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">uint8_t joybus_crc8_update </td>
+          <td class="memname">uint8_t joybus_data_checksum_update </td>
           <td>(</td>
           <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>crc</em></span>, </td>
         </tr>
@@ -390,16 +361,16 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Fold one byte into a running CRC-8 (polynomial 0x85). </p>
-<p>Seed <span class="tt">crc</span> with 0 on the first call and pass the result back in on subsequent calls to compute the CRC-8 over a stream of bytes.</p>
+<p>Fold one byte into a running Joybus data checksum. </p>
+<p>Seed <span class="tt">crc</span> with 0 on the first call and pass the result back in on subsequent calls to compute the checksum over a stream of bytes.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">crc</td><td>Running CRC value, or 0 to start a fresh checksum </td></tr>
-    <tr><td class="paramname">byte</td><td>Next byte to fold in </td></tr>
+    <tr><td class="paramname">crc</td><td>running checksum value, or 0 to start a fresh checksum </td></tr>
+    <tr><td class="paramname">byte</td><td>next byte to fold in </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Updated running CRC after folding in <span class="tt">byte</span> </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>updated running checksum after folding in <span class="tt">byte</span> </dd></dl>
 
 </div>
 </div>
