@@ -77,6 +77,41 @@
 #define JOYBUS_CMD_N64_RTC_WRITE_RX       1    ///< N64 RTC write response length
 
 /**
+ * N64 VRU read36 command
+ */
+#define JOYBUS_CMD_N64_VRU_READ36         0x09
+#define JOYBUS_CMD_N64_VRU_READ36_TX      3    ///< N64 VRU read36 command length
+#define JOYBUS_CMD_N64_VRU_READ36_RX      37   ///< N64 VRU read36 response length
+
+/**
+ * N64 VRU write20 command
+ */
+#define JOYBUS_CMD_N64_VRU_WRITE20        0x0A
+#define JOYBUS_CMD_N64_VRU_WRITE20_TX     23   ///< N64 VRU write20 command length
+#define JOYBUS_CMD_N64_VRU_WRITE20_RX     1    ///< N64 VRU write20 response length
+
+/**
+ * N64 VRU read2 command
+ */
+#define JOYBUS_CMD_N64_VRU_READ2          0x0B
+#define JOYBUS_CMD_N64_VRU_READ2_TX       3    ///< N64 VRU read2 command length
+#define JOYBUS_CMD_N64_VRU_READ2_RX       3    ///< N64 VRU read2 response length
+
+/**
+ * N64 VRU write4 command
+ */
+#define JOYBUS_CMD_N64_VRU_WRITE4         0x0C
+#define JOYBUS_CMD_N64_VRU_WRITE4_TX      7    ///< N64 VRU write4 command length
+#define JOYBUS_CMD_N64_VRU_WRITE4_RX      1    ///< N64 VRU write4 response length
+
+/**
+ * N64 VRU swrite command
+ */
+#define JOYBUS_CMD_N64_VRU_SWRITE         0x0D
+#define JOYBUS_CMD_N64_VRU_SWRITE_TX      3    ///< N64 VRU swrite command length
+#define JOYBUS_CMD_N64_VRU_SWRITE_RX      1    ///< N64 VRU swrite response length
+
+/**
  * N64 keyboard read command
  */
 #define JOYBUS_CMD_N64_KEYBOARD_READ      0x13
