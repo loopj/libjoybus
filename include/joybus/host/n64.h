@@ -55,22 +55,6 @@ typedef void (*joybus_n64_accessory_detect_cb_t)(int accessory_type, void *user_
 int joybus_n64_read(struct joybus *bus, uint8_t *response, joybus_transfer_cb_t callback, void *user_data);
 
 /**
- * Write data to a N64 controller's accessory port.
- *
- * Address checksum is automatically calculated.
- *
- * @param bus the Joybus to use
- * @param addr the address to write to, must be 32-byte aligned
- * @param data the data to write
- * @param response buffer to store the response in, must be at least JOYBUS_CMD_N64_WRITE_MEM_RX bytes
- * @param callback a callback function to call when the transfer is complete
- * @param user_data user data to pass to the callback function
- * @return 0 on success, negative error code on failure
- */
-int joybus_n64_accessory_write(struct joybus *bus, uint16_t addr, const uint8_t *data, uint8_t *response,
-                               joybus_transfer_cb_t callback, void *user_data);
-
-/**
  * Read data from a N64 controller's accessory port.
  *
  * Address checksum is automatically calculated.
@@ -84,6 +68,48 @@ int joybus_n64_accessory_write(struct joybus *bus, uint16_t addr, const uint8_t 
  */
 int joybus_n64_accessory_read(struct joybus *bus, uint16_t addr, uint8_t *response, joybus_transfer_cb_t callback,
                               void *user_data);
+
+/**
+ * Write data to a N64 controller's accessory port.
+ *
+ * Address checksum is automatically calculated.
+ *
+ * @param bus the Joybus to use
+ * @param addr the address to write to, must be 32-byte aligned
+ * @param data the 32-byte data to write
+ * @param response buffer to store the response in, must be at least JOYBUS_CMD_N64_WRITE_MEM_RX bytes
+ * @param callback a callback function to call when the transfer is complete
+ * @param user_data user data to pass to the callback function
+ * @return 0 on success, negative error code on failure
+ */
+int joybus_n64_accessory_write(struct joybus *bus, uint16_t addr, const uint8_t *data, uint8_t *response,
+                               joybus_transfer_cb_t callback, void *user_data);
+
+/**
+ * Read an 8-byte block from a N64 cartridge EEPROM.
+ *
+ * @param bus the Joybus to use
+ * @param addr the block address to read from, (0-63 for 4k EEPROMs / 0-255 for 16k EEPROMs)
+ * @param response buffer to store the response in, must be at least JOYBUS_CMD_N64_EEPROM_READ_RX bytes
+ * @param callback a callback function to call when the transfer is complete
+ * @param user_data user data to pass to the callback function
+ * @return 0 on success, negative error code on failure
+ */
+int joybus_n64_eeprom_read(struct joybus *bus, uint8_t addr, uint8_t *response, joybus_transfer_cb_t callback,
+                           void *user_data);
+
+/**
+ * Write an 8-byte block to a N64 cartridge EEPROM.
+ *
+ * @param bus the Joybus to use
+ * @param addr the block address to write to, (0-63 for 4k EEPROMs / 0-255 for 16k EEPROMs)
+ * @param data the 8-byte data to write
+ * @param callback a callback function to call when the transfer is complete
+ * @param user_data user data to pass to the callback function
+ * @return 0 on success, negative error code on failure
+ */
+int joybus_n64_eeprom_write(struct joybus *bus, uint8_t addr, const uint8_t *data, joybus_transfer_cb_t callback,
+                            void *user_data);
 
 /**
  * Helper function to detect the accessory connected to a N64 controller.

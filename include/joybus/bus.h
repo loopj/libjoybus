@@ -55,6 +55,9 @@ struct joybus;
 /// Size of a Joybus N64 accessory read/write block
 #define JOYBUS_ACCESSORY_BLOCK_SIZE     32
 
+/// Size of a Joybus N64 EEPROM read/write block
+#define JOYBUS_N64_EEPROM_BLOCK_SIZE    8
+
 /**
  * Macro to cast a backend-specific Joybus instance to a generic Joybus instance.
  */

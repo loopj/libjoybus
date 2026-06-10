@@ -6,8 +6,8 @@
 
 #include <string.h>
 
-#include <joybus/commands.h>
 #include <joybus/checksum.h>
+#include <joybus/commands.h>
 #include <joybus/host/n64.h>
 
 #define ACCESSORY_ADDR_LABEL              0x0000
@@ -59,6 +59,22 @@ int joybus_n64_read(struct joybus *bus, uint8_t *response, joybus_transfer_cb_t 
                          user_data);
 }
 
+int joybus_n64_accessory_read(struct joybus *bus, uint16_t addr, uint8_t *response, joybus_transfer_cb_t callback,
+                              void *user_data)
+{
+  // Generate address with checksum
+  uint16_t with_checksum = (addr & 0xFFE0) | joybus_address_checksum(addr >> 5);
+
+  // Build command
+  bus->command_buffer[0] = JOYBUS_CMD_N64_ACCESSORY_READ;
+  bus->command_buffer[1] = (uint8_t)(with_checksum >> 8);
+  bus->command_buffer[2] = (uint8_t)(with_checksum & 0xFF);
+
+  // Send command
+  return joybus_transfer(bus, bus->command_buffer, JOYBUS_CMD_N64_ACCESSORY_READ_TX, response,
+                         JOYBUS_CMD_N64_ACCESSORY_READ_RX, callback, user_data);
+}
+
 int joybus_n64_accessory_write(struct joybus *bus, uint16_t addr, const uint8_t *data, uint8_t *response,
                                joybus_transfer_cb_t callback, void *user_data)
 {
@@ -78,20 +94,29 @@ int joybus_n64_accessory_write(struct joybus *bus, uint16_t addr, const uint8_t 
                          JOYBUS_CMD_N64_ACCESSORY_WRITE_RX, callback, user_data);
 }
 
-int joybus_n64_accessory_read(struct joybus *bus, uint16_t addr, uint8_t *response, joybus_transfer_cb_t callback,
-                              void *user_data)
+int joybus_n64_eeprom_read(struct joybus *bus, uint8_t addr, uint8_t *response, joybus_transfer_cb_t callback,
+                           void *user_data)
 {
-  // Generate address with checksum
-  uint16_t with_checksum = (addr & 0xFFE0) | joybus_address_checksum(addr >> 5);
-
   // Build command
-  bus->command_buffer[0] = JOYBUS_CMD_N64_ACCESSORY_READ;
-  bus->command_buffer[1] = (uint8_t)(with_checksum >> 8);
-  bus->command_buffer[2] = (uint8_t)(with_checksum & 0xFF);
+  bus->command_buffer[0] = JOYBUS_CMD_N64_EEPROM_READ;
+  bus->command_buffer[1] = addr;
 
   // Send command
-  return joybus_transfer(bus, bus->command_buffer, JOYBUS_CMD_N64_ACCESSORY_READ_TX, response,
-                         JOYBUS_CMD_N64_ACCESSORY_READ_RX, callback, user_data);
+  return joybus_transfer(bus, bus->command_buffer, JOYBUS_CMD_N64_EEPROM_READ_TX, response,
+                         JOYBUS_CMD_N64_EEPROM_READ_RX, callback, user_data);
+}
+
+int joybus_n64_eeprom_write(struct joybus *bus, uint8_t addr, const uint8_t *data, joybus_transfer_cb_t callback,
+                            void *user_data)
+{
+  // Build command
+  bus->command_buffer[0] = JOYBUS_CMD_N64_EEPROM_WRITE;
+  bus->command_buffer[1] = addr;
+  memcpy(bus->command_buffer + 2, data, 8);
+
+  // Send command
+  return joybus_transfer(bus, bus->command_buffer, JOYBUS_CMD_N64_EEPROM_WRITE_TX, NULL,
+                         0, callback, user_data);
 }
 
 // Check (and respond) to failures during accessory detection write operations
