@@ -193,7 +193,7 @@ static void test_wavebird_set_origin(void)
   TEST_ASSERT_EQUAL_HEX8_ARRAY(expected_identify_response_2, response, 3);
 
   // Set the wireless origin
-  struct joybus_gcn_controller_input origin = {
+  struct joybus_gcn_controller_state origin = {
     .stick_x       = 0x85,
     .stick_y       = 0x86,
     .substick_x    = 0x87,

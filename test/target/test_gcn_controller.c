@@ -56,7 +56,7 @@ static void test_gcn_controller_identify()
 static void test_gcn_controller_identify_after_read_origin()
 {
   // Set an origin
-  struct joybus_gcn_controller_input new_origin = {
+  struct joybus_gcn_controller_state new_origin = {
     .stick_x       = 0x81,
     .stick_y       = 0x82,
     .substick_x    = 0x83,

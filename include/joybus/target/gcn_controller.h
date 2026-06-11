@@ -46,10 +46,10 @@ struct joybus_gcn_controller {
   uint8_t id[3];
 
   /// Origin input state
-  struct joybus_gcn_controller_input origin;
+  struct joybus_gcn_controller_state origin;
 
   /// Current input state
-  struct joybus_gcn_controller_input input;
+  struct joybus_gcn_controller_state input;
 
   /// Packed input state buffer
   uint8_t packed_input[8];
@@ -187,6 +187,6 @@ static inline void joybus_gcn_controller_input_valid(struct joybus_gcn_controlle
  * @param new_origin pointer to the new origin data (6 bytes)
  */
 void joybus_gcn_controller_set_origin(struct joybus_gcn_controller *controller,
-                                      struct joybus_gcn_controller_input *new_origin);
+                                      struct joybus_gcn_controller_state *new_origin);
 
 /** @} */

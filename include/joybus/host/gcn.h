@@ -94,11 +94,11 @@ int joybus_gcn_fix_device(struct joybus *bus, uint16_t wireless_id, uint8_t *res
  * 8 bytes according to the analog mode. See enum joybus_gcn_analog_mode for more
  * details.
  *
- * @param dest pointer to a joybus_gcn_controller_input struct to store the unpacked data
+ * @param dest pointer to a joybus_gcn_controller_state struct to store the unpacked data
  * @param src pointer to the response buffer from a "read" command
  * @param analog_mode the analog mode used when reading (one of JOYBUS_GCN_ANALOG_MODE_*)
  */
-int joybus_gcn_unpack_input(struct joybus_gcn_controller_input *dest, const uint8_t *src,
+int joybus_gcn_unpack_input(struct joybus_gcn_controller_state *dest, const uint8_t *src,
                             enum joybus_gcn_analog_mode analog_mode);
 
 /** @} */

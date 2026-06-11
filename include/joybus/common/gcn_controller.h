@@ -30,9 +30,9 @@
 #define JOYBUS_GCN_BUTTON_MASK    0x7F1F
 
 /**
- * GameCube controller input state.
+ * GameCube controller input/origin state.
  */
-struct joybus_gcn_controller_input {
+struct joybus_gcn_controller_state {
   /// Button state
   uint16_t buttons;
 

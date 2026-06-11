@@ -34,8 +34,8 @@ static bool polling_enabled = false;
 // Controller state
 static enum poll_mode poll_mode[GCCA_JOYBUS_CHANNELS];
 static uint16_t controller_type[GCCA_JOYBUS_CHANNELS];
-static struct joybus_gcn_controller_input inputs[GCCA_JOYBUS_CHANNELS];
-static struct joybus_gcn_controller_input origins[GCCA_JOYBUS_CHANNELS];
+static struct joybus_gcn_controller_state inputs[GCCA_JOYBUS_CHANNELS];
+static struct joybus_gcn_controller_state origins[GCCA_JOYBUS_CHANNELS];
 static bool has_input_data[GCCA_JOYBUS_CHANNELS];
 static uint8_t motor_state[GCCA_JOYBUS_CHANNELS];
 

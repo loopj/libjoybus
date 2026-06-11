@@ -9,7 +9,7 @@
  * Pack a "full" input state into a "short" 8-byte input state, depending on the
  * analog mode. See enum joybus_gcn_analog_mode for more details.
  */
-static inline uint8_t *pack_input_state(uint8_t *dest, const struct joybus_gcn_controller_input *src,
+static inline uint8_t *pack_input_state(uint8_t *dest, const struct joybus_gcn_controller_state *src,
                                         enum joybus_gcn_analog_mode analog_mode)
 {
   // Copy the button and stick data
@@ -127,7 +127,7 @@ static inline int handle_read(struct joybus_gcn_controller *controller, const ui
   // We can respond after the first two bytes
   if (bytes_read == 2) {
     // If the input state is valid, use that for the response, otherwise use the origin
-    struct joybus_gcn_controller_input *input = controller->input_valid ? &controller->input : &controller->origin;
+    struct joybus_gcn_controller_state *input = controller->input_valid ? &controller->input : &controller->origin;
 
     // Respond with the appropriate input state
     // Most games use analog mode 3, which is just the first 8 bytes of the full input state
@@ -220,7 +220,7 @@ static inline int handle_read_long(struct joybus_gcn_controller *controller, con
   // We can respond after the second byte is read
   if (bytes_read == 2) {
     // If the input state is valid, use that for the response, otherwise use the origin
-    struct joybus_gcn_controller_input *input = controller->input_valid ? &controller->input : &controller->origin;
+    struct joybus_gcn_controller_state *input = controller->input_valid ? &controller->input : &controller->origin;
 
     // Respond with the appropriate input state
     send_response((uint8_t *)input, JOYBUS_CMD_GCN_READ_LONG_RX, user_data);
@@ -390,7 +390,7 @@ void joybus_gcn_controller_set_wireless_id(struct joybus_gcn_controller *control
 }
 
 void joybus_gcn_controller_set_origin(struct joybus_gcn_controller *controller,
-                                      struct joybus_gcn_controller_input *new_origin)
+                                      struct joybus_gcn_controller_state *new_origin)
 {
   // Check if the analog values in the new origin differ from the current origin
   if (memcmp(&controller->origin.stick_x, &new_origin->stick_x, 6) != 0) {
