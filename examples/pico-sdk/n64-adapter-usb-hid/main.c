@@ -16,7 +16,7 @@ static struct joybus *bus = JOYBUS(&rp2xxx_bus);
 
 // Buffers for Joybus responses
 static uint8_t joybus_response[JOYBUS_BLOCK_SIZE];
-static struct joybus_n64_controller_input input;
+static struct joybus_n64_controller_state input;
 
 // Buffer for building USB reports
 static uint8_t report_buf[CFG_TUD_HID_EP_BUFSIZE];
@@ -54,7 +54,7 @@ static void joybus_read_cb(struct joybus *bus, int result, void *user_data)
 }
 
 // Map N64 buttons to HID gamepad buttons
-static inline uint16_t get_buttons(const struct joybus_n64_controller_input *input)
+static inline uint16_t get_buttons(const struct joybus_n64_controller_state *input)
 {
   uint16_t hid_buttons = 0;
 
@@ -76,7 +76,7 @@ static inline uint16_t get_buttons(const struct joybus_n64_controller_input *inp
 }
 
 // Map N64 D-pad to HID hat values
-static inline uint8_t get_hat(const struct joybus_n64_controller_input *input)
+static inline uint8_t get_hat(const struct joybus_n64_controller_state *input)
 {
   bool up    = input->buttons & JOYBUS_N64_BUTTON_UP;
   bool down  = input->buttons & JOYBUS_N64_BUTTON_DOWN;

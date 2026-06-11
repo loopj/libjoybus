@@ -37,7 +37,7 @@ struct joybus_n64_controller {
   uint8_t id[3];
 
   /// Current input state
-  struct joybus_n64_controller_input input;
+  struct joybus_n64_controller_state input;
 
   /// Callback for controller reset events
   joybus_n64_controller_reset_cb_t on_reset;

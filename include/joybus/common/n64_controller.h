@@ -31,7 +31,7 @@
 /**
  * N64 controller input state.
  */
-struct joybus_n64_controller_input {
+struct joybus_n64_controller_state {
   /// Button state
   uint16_t buttons;
 
