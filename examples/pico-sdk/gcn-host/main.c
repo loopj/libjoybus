@@ -15,7 +15,9 @@
 struct joybus_rp2xxx rp2xxx_bus;
 struct joybus *bus = JOYBUS(&rp2xxx_bus);
 
-// Buffer for Joybus responses
+// Buffers for Joybus responses
+struct joybus_id joybus_id;
+struct joybus_gcn_controller_state controller_state;
 uint8_t joybus_response[JOYBUS_BLOCK_SIZE] = {0};
 
 // Polling mode
@@ -29,7 +31,7 @@ void joybus_identify_cb(struct joybus *bus, int result, void *user_data)
     return;
 
   // Check it's a GameCube controller
-  uint16_t type = joybus_id_get_type(joybus_response);
+  uint16_t type = joybus_id_get_type(&joybus_id);
   if (!(type & JOYBUS_TYPE_GCN_DEVICE))
     return;
 
@@ -53,11 +55,8 @@ void joybus_read_cb(struct joybus *bus, int result, void *user_data)
     return;
   }
 
-  // Extract button states
-  uint16_t buttons = ((joybus_response[1] << 8) | joybus_response[0]) & JOYBUS_GCN_BUTTON_MASK;
-
   // Light the LED while the A button is held
-  gpio_put(LED_GPIO, buttons & JOYBUS_GCN_BUTTON_A);
+  gpio_put(LED_GPIO, controller_state.buttons & JOYBUS_GCN_BUTTON_A);
 }
 
 // Poll the Joybus at regular intervals
@@ -67,11 +66,11 @@ static bool poll_task(struct repeating_timer *timer)
   switch (poll_mode) {
     case POLL_MODE_IDENTIFY:
       gpio_put(LED_GPIO, 0);
-      joybus_identify(bus, joybus_response, joybus_identify_cb, NULL);
+      joybus_identify_async(bus, &joybus_id, joybus_identify_cb, NULL);
       break;
 
     case POLL_MODE_READ:
-      joybus_gcn_read(bus, JOYBUS_GCN_ANALOG_MODE_3, JOYBUS_GCN_MOTOR_STOP, joybus_response, joybus_read_cb, NULL);
+      joybus_gcn_read_async(bus, JOYBUS_GCN_ANALOG_MODE_3, JOYBUS_GCN_MOTOR_STOP, &controller_state, joybus_read_cb, NULL);
       break;
   }
 

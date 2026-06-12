@@ -18,24 +18,23 @@ static inline bool addr_in_range(uint16_t addr, uint16_t base, uint16_t end)
   return addr >= base && addr < end;
 }
 
-static void rumble_pak_read_block(struct joybus_n64_accessory *accessory, uint16_t addr,
-                                  uint8_t buf[JOYBUS_ACCESSORY_BLOCK_SIZE])
+static void rumble_pak_read_block(struct joybus_target_n64_pak *base, uint16_t addr, uint8_t buf[JOYBUS_PAK_BLOCK_SIZE])
 {
-  (void)accessory;
+  (void)base;
 
   // The probe region returns the rumble pak signature (0x80 x 32),
   // everything else returns zeros.
   if (addr_in_range(addr, RUMBLE_PAK_PROBE_BASE, RUMBLE_PAK_PROBE_END)) {
-    memset(buf, 0x80, JOYBUS_ACCESSORY_BLOCK_SIZE);
+    memset(buf, 0x80, JOYBUS_PAK_BLOCK_SIZE);
   } else {
-    memset(buf, 0x00, JOYBUS_ACCESSORY_BLOCK_SIZE);
+    memset(buf, 0x00, JOYBUS_PAK_BLOCK_SIZE);
   }
 }
 
-static void rumble_pak_write_block(struct joybus_n64_accessory *accessory, uint16_t addr,
-                                   const uint8_t buf[JOYBUS_ACCESSORY_BLOCK_SIZE])
+static void rumble_pak_write_block(struct joybus_target_n64_pak *base, uint16_t addr,
+                                   const uint8_t buf[JOYBUS_PAK_BLOCK_SIZE])
 {
-  struct joybus_n64_rumble_pak *pak = JOYBUS_N64_RUMBLE_PAK(accessory);
+  struct joybus_target_n64_rumble_pak *pak = JOYBUS_TARGET_N64_RUMBLE_PAK(base);
 
   // Writes outside the motor control region are ignored
   if (!addr_in_range(addr, RUMBLE_PAK_MOTOR_BASE, RUMBLE_PAK_MOTOR_END)) {
@@ -54,19 +53,19 @@ static void rumble_pak_write_block(struct joybus_n64_accessory *accessory, uint1
   }
 }
 
-static const struct joybus_n64_accessory_api rumble_pak_api = {
+static const struct joybus_target_n64_pak_api rumble_pak_api = {
   .read_block  = rumble_pak_read_block,
   .write_block = rumble_pak_write_block,
 };
 
-void joybus_n64_rumble_pak_init(struct joybus_n64_rumble_pak *pak)
+void joybus_target_n64_rumble_pak_init(struct joybus_target_n64_rumble_pak *pak)
 {
   memset(pak, 0, sizeof(*pak));
   pak->base.api = &rumble_pak_api;
 }
 
-void joybus_n64_rumble_pak_set_motor_callback(struct joybus_n64_rumble_pak *pak,
-                                              joybus_n64_rumble_pak_motor_cb_t callback)
+void joybus_target_n64_rumble_pak_set_motor_cb(struct joybus_target_n64_rumble_pak *pak,
+                                               joybus_target_n64_rumble_pak_motor_cb_t callback)
 {
   pak->on_motor_change = callback;
 }

@@ -12,41 +12,36 @@
 static inline uint8_t *pack_input_state(uint8_t *dest, const struct joybus_gcn_controller_state *src,
                                         enum joybus_gcn_analog_mode analog_mode)
 {
-  // Copy the button and stick data
+  // Copy button and stick data
   memcpy(dest, src, 4);
 
   // Pack the remaining analog input data
   switch (analog_mode) {
     default:
-      // Substick X/Y full precision, triggers and analog A/B truncated to 4 bits
       dest[4] = src->substick_x;
       dest[5] = src->substick_y;
       dest[6] = (src->trigger_left & 0xF0) | (src->trigger_right >> 4);
       dest[7] = (src->analog_a & 0xF0) | (src->analog_b >> 4);
       break;
     case JOYBUS_GCN_ANALOG_MODE_1:
-      // Triggers full precision, substick X/Y and analog A/B truncated to 4 bits
       dest[4] = (src->substick_x & 0xF0) | (src->substick_y >> 4);
       dest[5] = src->trigger_left;
       dest[6] = src->trigger_right;
       dest[7] = (src->analog_a & 0xF0) | (src->analog_b >> 4);
       break;
     case JOYBUS_GCN_ANALOG_MODE_2:
-      // Analog A/B full precision, substick X/Y and triggers truncated to 4 bits
       dest[4] = (src->substick_x & 0xF0) | (src->substick_y >> 4);
       dest[5] = (src->trigger_left & 0xF0) | (src->trigger_right >> 4);
       dest[6] = src->analog_a;
       dest[7] = src->analog_b;
       break;
     case JOYBUS_GCN_ANALOG_MODE_3:
-      // Substick X/Y and triggers full precision, analog A/B omitted
       dest[4] = src->substick_x;
       dest[5] = src->substick_y;
       dest[6] = src->trigger_left;
       dest[7] = src->trigger_right;
       break;
     case JOYBUS_GCN_ANALOG_MODE_4:
-      // Substick X/Y and analog A/B full precision, triggers omitted
       dest[4] = src->substick_x;
       dest[5] = src->substick_y;
       dest[6] = src->analog_a;
@@ -58,7 +53,7 @@ static inline uint8_t *pack_input_state(uint8_t *dest, const struct joybus_gcn_c
 }
 
 // Set or clear the "need origin" flag in the input state and device ID
-static inline void set_need_origin(struct joybus_gcn_controller *controller, bool need_origin)
+static inline void set_need_origin(struct joybus_target_gcn_controller *controller, bool need_origin)
 {
   // Always set the need_origin flag in the input state
   if (need_origin) {
@@ -68,11 +63,11 @@ static inline void set_need_origin(struct joybus_gcn_controller *controller, boo
   }
 
   // Also update the device ID for non-wireless controllers
-  if (!joybus_gcn_controller_is_wireless(controller)) {
+  if (!joybus_target_gcn_controller_is_wireless(controller)) {
     if (need_origin) {
-      joybus_id_set_status_flags(controller->id, JOYBUS_STATUS_GCN_NEED_ORIGIN);
+      joybus_id_set_status_flags(&controller->id, JOYBUS_STATUS_GCN_NEED_ORIGIN);
     } else {
-      joybus_id_clear_status_flags(controller->id, JOYBUS_STATUS_GCN_NEED_ORIGIN);
+      joybus_id_clear_status_flags(&controller->id, JOYBUS_STATUS_GCN_NEED_ORIGIN);
     }
   }
 }
@@ -83,11 +78,11 @@ static inline void set_need_origin(struct joybus_gcn_controller *controller, boo
  * Command:         {0xFF}
  * Response:        A 3-byte controller ID
  */
-static inline int handle_reset(struct joybus_gcn_controller *controller, const uint8_t *command, uint8_t bytes_read,
-                               joybus_target_response_cb_t send_response, void *user_data)
+static inline int handle_reset(struct joybus_target_gcn_controller *controller, const uint8_t *command,
+                               uint8_t bytes_read, joybus_target_response_cb_t send_response, void *user_data)
 {
   // Respond with the controller ID
-  send_response(controller->id, JOYBUS_CMD_RESET_RX, user_data);
+  send_response((const uint8_t *)&controller->id, JOYBUS_CMD_RESET_RX, user_data);
 
   // Call the reset callback if it exists
   if (controller->on_reset)
@@ -106,11 +101,11 @@ static inline int handle_reset(struct joybus_gcn_controller *controller, const u
  * Command:         {0x00}
  * Response:        A 3-byte controller ID
  */
-static inline int handle_identify(struct joybus_gcn_controller *controller, const uint8_t *command, uint8_t bytes_read,
-                                  joybus_target_response_cb_t send_response, void *user_data)
+static inline int handle_identify(struct joybus_target_gcn_controller *controller, const uint8_t *command,
+                                  uint8_t bytes_read, joybus_target_response_cb_t send_response, void *user_data)
 {
   // Respond with the controller ID
-  send_response(controller->id, JOYBUS_CMD_IDENTIFY_RX, user_data);
+  send_response((const uint8_t *)&controller->id, JOYBUS_CMD_IDENTIFY_RX, user_data);
 
   return 0;
 }
@@ -121,8 +116,8 @@ static inline int handle_identify(struct joybus_gcn_controller *controller, cons
  * Command:         {0x40, analog_mode, motor_state}
  * Response:        An 8-byte packed input state, see `pack_input_state` for details
  */
-static inline int handle_read(struct joybus_gcn_controller *controller, const uint8_t *command, uint8_t bytes_read,
-                              joybus_target_response_cb_t send_response, void *user_data)
+static inline int handle_read(struct joybus_target_gcn_controller *controller, const uint8_t *command,
+                              uint8_t bytes_read, joybus_target_response_cb_t send_response, void *user_data)
 {
   // We can respond after the first two bytes
   if (bytes_read == 2) {
@@ -142,18 +137,18 @@ static inline int handle_read(struct joybus_gcn_controller *controller, const ui
     // Save origin flags and state
     enum joybus_gcn_analog_mode analog_mode = command[1];
     enum joybus_gcn_motor_state motor_state = command[2];
-    if (!joybus_gcn_controller_is_wireless(controller)) {
+    if (!joybus_target_gcn_controller_is_wireless(controller)) {
       // Update the origin flags
       controller->input.buttons |= JOYBUS_GCN_USE_ORIGIN;
 
       // Get the previous motor state
-      uint8_t last_motor_state = (joybus_id_get_status(controller->id) & JOYBUS_STATUS_GCN_MOTOR_STATE_MASK) >>
+      uint8_t last_motor_state = (joybus_id_get_status(&controller->id) & JOYBUS_STATUS_GCN_MOTOR_STATE_MASK) >>
                                  JOYBUS_STATUS_GCN_MOTOR_STATE_SHIFT;
 
       // Save the analog mode and motor state
-      joybus_id_clear_status_flags(controller->id,
+      joybus_id_clear_status_flags(&controller->id,
                                    JOYBUS_STATUS_GCN_MOTOR_STATE_MASK | JOYBUS_STATUS_GCN_ANALOG_MODE_MASK);
-      joybus_id_set_status_flags(controller->id, motor_state << JOYBUS_STATUS_GCN_MOTOR_STATE_SHIFT | analog_mode);
+      joybus_id_set_status_flags(&controller->id, motor_state << JOYBUS_STATUS_GCN_MOTOR_STATE_SHIFT | analog_mode);
 
       // If motor state has changed, call the motor state change callback
       if (last_motor_state != motor_state && controller->on_motor_state_change)
@@ -170,7 +165,7 @@ static inline int handle_read(struct joybus_gcn_controller *controller, const ui
  * Command:         {0x41}
  * Response:        A 10-byte input state representing the current origin.
  */
-static inline int handle_read_origin(struct joybus_gcn_controller *controller, const uint8_t *command,
+static inline int handle_read_origin(struct joybus_target_gcn_controller *controller, const uint8_t *command,
                                      uint8_t bytes_read, joybus_target_response_cb_t send_response, void *user_data)
 {
   // Respond with the controller origin
@@ -188,8 +183,8 @@ static inline int handle_read_origin(struct joybus_gcn_controller *controller, c
  * Command:         {0x42, 0x00, 0x00}
  * Response:        A 10-byte input state representing the current origin.
  */
-static inline int handle_calibrate(struct joybus_gcn_controller *controller, const uint8_t *command, uint8_t bytes_read,
-                                   joybus_target_response_cb_t send_response, void *user_data)
+static inline int handle_calibrate(struct joybus_target_gcn_controller *controller, const uint8_t *command,
+                                   uint8_t bytes_read, joybus_target_response_cb_t send_response, void *user_data)
 {
   // We can respond after the first byte
   if (bytes_read == 1) {
@@ -214,8 +209,8 @@ static inline int handle_calibrate(struct joybus_gcn_controller *controller, con
  *
  * NOTE: This command is not used by any games, but is included for completeness.
  */
-static inline int handle_read_long(struct joybus_gcn_controller *controller, const uint8_t *command, uint8_t bytes_read,
-                                   joybus_target_response_cb_t send_response, void *user_data)
+static inline int handle_read_long(struct joybus_target_gcn_controller *controller, const uint8_t *command,
+                                   uint8_t bytes_read, joybus_target_response_cb_t send_response, void *user_data)
 {
   // We can respond after the second byte is read
   if (bytes_read == 2) {
@@ -230,18 +225,18 @@ static inline int handle_read_long(struct joybus_gcn_controller *controller, con
     enum joybus_gcn_motor_state motor_state = command[2] & 0x03;
 
     // Save origin flags and state
-    if (!joybus_gcn_controller_is_wireless(controller)) {
+    if (!joybus_target_gcn_controller_is_wireless(controller)) {
       // Update the origin flags
       controller->input.buttons |= JOYBUS_GCN_USE_ORIGIN;
 
       // Get the previous motor state
-      uint8_t last_motor_state = (joybus_id_get_status(controller->id) & JOYBUS_STATUS_GCN_MOTOR_STATE_MASK) >>
+      uint8_t last_motor_state = (joybus_id_get_status(&controller->id) & JOYBUS_STATUS_GCN_MOTOR_STATE_MASK) >>
                                  JOYBUS_STATUS_GCN_MOTOR_STATE_SHIFT;
 
       // Save the analog mode and motor state
-      joybus_id_clear_status_flags(controller->id,
+      joybus_id_clear_status_flags(&controller->id,
                                    JOYBUS_STATUS_GCN_MOTOR_STATE_MASK | JOYBUS_STATUS_GCN_ANALOG_MODE_MASK);
-      joybus_id_set_status_flags(controller->id, motor_state << JOYBUS_STATUS_GCN_MOTOR_STATE_SHIFT | analog_mode);
+      joybus_id_set_status_flags(&controller->id, motor_state << JOYBUS_STATUS_GCN_MOTOR_STATE_SHIFT | analog_mode);
 
       // If motor state has changed, call the motor state change callback
       if (last_motor_state != motor_state && controller->on_motor_state_change)
@@ -266,12 +261,12 @@ static inline int handle_read_long(struct joybus_gcn_controller *controller, con
  * Command:         {0x4D, 0x??, 0x??} - 2nd and 3rd bytes seem to differ every time
  * Response:        8 bytes of zeroes.
  */
-static inline int handle_probe_device(struct joybus_gcn_controller *controller, const uint8_t *command,
+static inline int handle_probe_device(struct joybus_target_gcn_controller *controller, const uint8_t *command,
                                       uint8_t bytes_read, joybus_target_response_cb_t send_response, void *user_data)
 {
   if (bytes_read == 1) {
     // Don't respond to probe commands if we already received data from a controller
-    if (joybus_id_get_type(controller->id) & JOYBUS_TYPE_GCN_WIRELESS_RECEIVED)
+    if (joybus_id_get_type(&controller->id) & JOYBUS_TYPE_GCN_WIRELESS_RECEIVED)
       return 0;
 
     // Respond with 8 bytes of zeroes
@@ -290,7 +285,7 @@ static inline int handle_probe_device(struct joybus_gcn_controller *controller, 
  * Command:         {0x4E, wireless_id_h | 0x10, wireless_id_l}
  * Response:        A 3-byte controller ID
  */
-static inline int handle_fix_device(struct joybus_gcn_controller *controller, const uint8_t *command,
+static inline int handle_fix_device(struct joybus_target_gcn_controller *controller, const uint8_t *command,
                                     uint8_t bytes_read, joybus_target_response_cb_t send_response, void *user_data)
 {
   if (bytes_read == JOYBUS_CMD_GCN_FIX_DEVICE_TX) {
@@ -298,14 +293,14 @@ static inline int handle_fix_device(struct joybus_gcn_controller *controller, co
     uint16_t wireless_id = ((command[1] & 0xC0) << 2) | command[2];
 
     // Save the wireless ID
-    joybus_id_set_wireless_id(controller->id, wireless_id);
+    joybus_id_set_wireless_id(&controller->id, wireless_id);
 
     // Update other controller ID flags
-    joybus_id_set_type_flags(controller->id, JOYBUS_TYPE_GCN_STANDARD | JOYBUS_TYPE_GCN_WIRELESS_STATE |
-                                               JOYBUS_TYPE_GCN_WIRELESS_ID_FIXED);
+    joybus_id_set_type_flags(&controller->id, JOYBUS_TYPE_GCN_STANDARD | JOYBUS_TYPE_GCN_WIRELESS_STATE |
+                                                JOYBUS_TYPE_GCN_WIRELESS_ID_FIXED);
 
     // Respond with the new controller ID
-    send_response(controller->id, JOYBUS_CMD_GCN_FIX_DEVICE_RX, user_data);
+    send_response((const uint8_t *)&controller->id, JOYBUS_CMD_GCN_FIX_DEVICE_RX, user_data);
   }
 
   return JOYBUS_CMD_GCN_FIX_DEVICE_TX - bytes_read;
@@ -314,7 +309,7 @@ static inline int handle_fix_device(struct joybus_gcn_controller *controller, co
 static int gcn_controller_byte_received(struct joybus_target *target, const uint8_t *command, uint8_t bytes_read,
                                         joybus_target_response_cb_t send_response, void *user_data)
 {
-  struct joybus_gcn_controller *controller = JOYBUS_GCN_CONTROLLER(target);
+  struct joybus_target_gcn_controller *controller = JOYBUS_TARGET_GCN_CONTROLLER(target);
   switch (command[0]) {
     case JOYBUS_CMD_RESET:
       return handle_reset(controller, command, bytes_read, send_response, user_data);
@@ -341,15 +336,17 @@ static const struct joybus_target_api gcn_controller_api = {
   .byte_received = gcn_controller_byte_received,
 };
 
-void joybus_gcn_controller_init_with_type(struct joybus_gcn_controller *controller, uint16_t type)
+void joybus_target_gcn_controller_init_with_type(struct joybus_target_gcn_controller *controller, uint16_t type)
 {
   // Set the target callbacks
   struct joybus_target *target = JOYBUS_TARGET(controller);
   target->api                  = &gcn_controller_api;
 
   // Set the initial controller ID
-  memset(controller->id, 0, sizeof(controller->id));
-  joybus_id_set_type_flags(controller->id, type);
+  controller->id.type[0] = 0;
+  controller->id.type[1] = 0;
+  controller->id.status  = 0;
+  joybus_id_set_type_flags(&controller->id, type);
 
   // Set the initial origin
   memset(&controller->origin, 0, sizeof(controller->origin));
@@ -365,32 +362,32 @@ void joybus_gcn_controller_init_with_type(struct joybus_gcn_controller *controll
   controller->input_valid = true;
 }
 
-void joybus_gcn_controller_set_reset_callback(struct joybus_gcn_controller *controller,
-                                              joybus_gcn_controller_reset_cb_t callback)
+void joybus_target_gcn_controller_set_reset_cb(struct joybus_target_gcn_controller *controller,
+                                               joybus_target_gcn_controller_reset_cb_t callback)
 {
   controller->on_reset = callback;
 }
 
-void joybus_gcn_controller_set_motor_callback(struct joybus_gcn_controller *controller,
-                                              joybus_gcn_controller_motor_cb_t callback)
+void joybus_target_gcn_controller_set_motor_cb(struct joybus_target_gcn_controller *controller,
+                                               joybus_target_gcn_controller_motor_cb_t callback)
 {
   controller->on_motor_state_change = callback;
 }
 
-void joybus_gcn_controller_set_wireless_id(struct joybus_gcn_controller *controller, uint16_t wireless_id)
+void joybus_target_gcn_controller_set_wireless_id(struct joybus_target_gcn_controller *controller, uint16_t wireless_id)
 {
-  if (joybus_gcn_controller_wireless_id_fixed(controller))
+  if (joybus_target_gcn_controller_wireless_id_fixed(controller))
     return;
 
   // Set the wireless ID
-  joybus_id_set_wireless_id(controller->id, wireless_id);
+  joybus_id_set_wireless_id(&controller->id, wireless_id);
 
   // Update other controller ID flags
-  joybus_id_set_type_flags(controller->id, JOYBUS_TYPE_GCN_STANDARD | JOYBUS_TYPE_GCN_WIRELESS_RECEIVED);
+  joybus_id_set_type_flags(&controller->id, JOYBUS_TYPE_GCN_STANDARD | JOYBUS_TYPE_GCN_WIRELESS_RECEIVED);
 }
 
-void joybus_gcn_controller_set_origin(struct joybus_gcn_controller *controller,
-                                      struct joybus_gcn_controller_state *new_origin)
+void joybus_target_gcn_controller_set_origin(struct joybus_target_gcn_controller *controller,
+                                             struct joybus_gcn_controller_state *new_origin)
 {
   // Check if the analog values in the new origin differ from the current origin
   if (memcmp(&controller->origin.stick_x, &new_origin->stick_x, 6) != 0) {
@@ -402,6 +399,6 @@ void joybus_gcn_controller_set_origin(struct joybus_gcn_controller *controller,
   }
 
   // Set the "has wireless origin" flag in the device ID
-  if (joybus_gcn_controller_is_wireless(controller))
-    joybus_id_set_type_flags(controller->id, JOYBUS_TYPE_GCN_WIRELESS_ORIGIN);
+  if (joybus_target_gcn_controller_is_wireless(controller))
+    joybus_id_set_type_flags(&controller->id, JOYBUS_TYPE_GCN_WIRELESS_ORIGIN);
 }

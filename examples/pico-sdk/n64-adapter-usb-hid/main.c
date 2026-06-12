@@ -5,6 +5,8 @@
 #include "pico/stdlib.h"
 
 #include <joybus/joybus.h>
+#include "joybus/common/n64_controller.h"
+#include "joybus/host/common.h"
 #include <joybus/backend/rp2xxx.h>
 
 #define JOYBUS_GPIO                 0
@@ -15,7 +17,7 @@ static struct joybus_rp2xxx rp2xxx_bus;
 static struct joybus *bus = JOYBUS(&rp2xxx_bus);
 
 // Buffers for Joybus responses
-static uint8_t joybus_response[JOYBUS_BLOCK_SIZE];
+static struct joybus_id id;
 static struct joybus_n64_controller_state input;
 
 // Buffer for building USB reports
@@ -33,7 +35,7 @@ static void joybus_identify_cb(struct joybus *bus, int result, void *user_data)
     return;
 
   // Check it's a N64 controller
-  uint16_t type = joybus_id_get_type(joybus_response);
+  uint16_t type = joybus_id_get_type(&id);
   if (!(type & JOYBUS_DEVICE_N64_CONTROLLER))
     return;
 
@@ -44,13 +46,9 @@ static void joybus_identify_cb(struct joybus *bus, int result, void *user_data)
 // Joybus N64 read callback
 static void joybus_read_cb(struct joybus *bus, int result, void *user_data)
 {
-  // Switch back to identify mode on any Joybus error
-  if (result < 0) {
+  // Return to identify mode on any Joybus error
+  if (result < 0)
     poll_mode = POLL_MODE_IDENTIFY;
-    return;
-  }
-
-  memcpy(&input, joybus_response, sizeof(input));
 }
 
 // Map N64 buttons to HID gamepad buttons
@@ -109,11 +107,11 @@ static bool poll_task(struct repeating_timer *timer)
   // Poll Joybus for data
   switch (poll_mode) {
     case POLL_MODE_IDENTIFY:
-      joybus_identify(bus, joybus_response, joybus_identify_cb, NULL);
+      joybus_identify_async(bus, &id, joybus_identify_cb, NULL);
       break;
 
     case POLL_MODE_READ:
-      joybus_n64_read(bus, joybus_response, joybus_read_cb, NULL);
+      joybus_n64_read_async(bus, &input, joybus_read_cb, NULL);
       break;
   }
 

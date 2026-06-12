@@ -19,7 +19,7 @@ struct joybus_gecko gecko_bus;
 struct joybus *bus = JOYBUS(&gecko_bus);
 
 // GameCube controller target instance
-static struct joybus_gcn_controller gcn_controller;
+static struct joybus_target_gcn_controller gcn_controller;
 
 void app_init(void)
 {
@@ -32,7 +32,7 @@ void app_init(void)
   joybus_enable(bus);
 
   // Initialize a GameCube controller target as a standard controller
-  joybus_gcn_controller_init(&gcn_controller);
+  joybus_target_gcn_controller_init(&gcn_controller);
 
   // Register the target on the bus
   joybus_target_register(bus, JOYBUS_TARGET(&gcn_controller));

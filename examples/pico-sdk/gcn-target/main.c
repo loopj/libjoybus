@@ -11,7 +11,7 @@
 struct joybus_rp2xxx rp2xxx_bus;
 struct joybus *bus = JOYBUS(&rp2xxx_bus);
 
-static struct joybus_gcn_controller gcn_controller;
+static struct joybus_target_gcn_controller gcn_controller;
 
 int main()
 {
@@ -24,7 +24,7 @@ int main()
   joybus_enable(bus);
 
   // Initialize a GameCube controller target as a standard controller
-  joybus_gcn_controller_init(&gcn_controller);
+  joybus_target_gcn_controller_init(&gcn_controller);
 
   // Register the target on the bus
   joybus_target_register(bus, JOYBUS_TARGET(&gcn_controller));
