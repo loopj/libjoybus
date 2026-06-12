@@ -1,6 +1,7 @@
 #include <string.h>
 
 #include <joybus/bus.h>
+#include <joybus/errors.h>
 #include <joybus/target.h>
 #include <joybus/backend/loopback.h>
 
@@ -41,17 +42,20 @@ static int joybus_loopback_transfer(struct joybus *bus, const uint8_t *write_buf
       // No more bytes expected
       break;
     } else if (rc < 0) {
-      // Error handling command, or command not supported
-      if (callback)
-        callback(bus, 0, user_data);
-
-      return rc;
+      // Target failed to handle the command, so no response will be provided
+      break;
     }
   }
 
-  // Call the transfer complete callback
-  if (callback)
-    callback(bus, response_length, user_data);
+  // Call the transfer complete callback, simulating a non-responding device if
+  // the target provided fewer response bytes than expected
+  if (callback) {
+    if (response_length < read_len) {
+      callback(bus, -JOYBUS_ERR_TIMEOUT, user_data);
+    } else {
+      callback(bus, response_length, user_data);
+    }
+  }
 
   return 0;
 }
