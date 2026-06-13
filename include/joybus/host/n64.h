@@ -34,7 +34,9 @@ int joybus_n64_read_async(struct joybus *bus, struct joybus_n64_controller_state
 /**
  * Write a block of data to the pak attached to an N64 controller, asynchronously.
  *
- * This is the low-level block primitive used by pak drivers (Rumble Pak, etc.)
+ * This writes a raw block to the pak. Most callers should use a higher-level pak
+ * function (such as the Rumble Pak helpers) instead. Use this directly only when
+ * implementing one.
  *
  * @param bus the Joybus instance to use
  * @param addr the address to write to, must be 32-byte aligned
@@ -51,7 +53,9 @@ int joybus_n64_pak_write_async(struct joybus *bus, uint16_t addr, const uint8_t 
 /**
  * Read a block of data from the pak attached to an N64 controller, asynchronously.
  *
- * This is the low-level block primitive used by pak drivers (Rumble Pak, etc.)
+ * This reads a raw block from the pak. Most callers should use a higher-level
+ * pak function (such as the Rumble Pak helpers) instead. Use this directly only
+ * when implementing one.
  *
  * @param bus the Joybus to use
  * @param addr the address to read from, must be 32-byte aligned

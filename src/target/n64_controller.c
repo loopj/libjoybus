@@ -7,11 +7,32 @@
 #include <joybus/identify.h>
 #include <joybus/target/n64_controller.h>
 
+// Holding L+R+Start resets the controller origin
+#define N64_RECALIBRATE_COMBO (JOYBUS_N64_BUTTON_L | JOYBUS_N64_BUTTON_R | JOYBUS_N64_BUTTON_START)
+
 // Helper to check if an pak is currently read for pak read/write commands
 // An pak is "ready" when it is present and pak changed flag has been cleared
 static inline bool pak_ready(struct joybus_target_n64_controller *controller)
 {
   return controller->pak && !joybus_id_n64_pak_changed(&controller->id);
+}
+
+// Sample the current input as the origin
+static void n64_controller_recalibrate(struct joybus_target_n64_controller *controller)
+{
+  controller->origin = controller->input;
+}
+
+// Apply the origin to a raw stick value, clamping to INT8_MIN/MAX on overflow
+static int8_t n64_controller_apply_origin(int8_t value, int8_t origin)
+{
+  int delta = value - origin;
+  if (delta > INT8_MAX) {
+    delta = INT8_MAX;
+  } else if (delta < INT8_MIN) {
+    delta = INT8_MIN;
+  }
+  return (int8_t)delta;
 }
 
 /**
@@ -25,6 +46,9 @@ static int handle_reset(struct joybus_target_n64_controller *controller, const u
 {
   // Respond with the controller ID
   send_response((uint8_t *)&controller->id, JOYBUS_CMD_RESET_RX, user_data);
+
+  // Re-sample the stick origin to the current position
+  n64_controller_recalibrate(controller);
 
   // Call the reset callback if it exists
   if (controller->on_reset)
@@ -67,8 +91,26 @@ static int handle_identify(struct joybus_target_n64_controller *controller, cons
 static int handle_read(struct joybus_target_n64_controller *controller, const uint8_t *command, uint8_t bytes_read,
                        joybus_target_response_cb_t send_response, void *user_data)
 {
-  // Respond with the controller input state
-  send_response((uint8_t *)&controller->input, JOYBUS_CMD_N64_READ_RX, user_data);
+  // Build the reported state from the current input
+  struct joybus_n64_controller_state state = controller->input;
+
+  // Check for recalibrate combo
+  if ((controller->input.buttons & N64_RECALIBRATE_COMBO) == N64_RECALIBRATE_COMBO) {
+    // Recalibrate the origin from the current input
+    n64_controller_recalibrate(controller);
+
+    // Suppress START and set RST
+    state.buttons &= ~(uint16_t)JOYBUS_N64_BUTTON_START;
+    state.buttons |= JOYBUS_N64_RST;
+  }
+
+  // Report the stick as a signed displacement from the origin
+  state.stick_x = n64_controller_apply_origin(controller->input.stick_x, controller->origin.stick_x);
+  state.stick_y = n64_controller_apply_origin(controller->input.stick_y, controller->origin.stick_y);
+
+  // Respond with the reported state
+  memcpy(controller->response, &state, JOYBUS_CMD_N64_READ_RX);
+  send_response(controller->response, JOYBUS_CMD_N64_READ_RX, user_data);
 
   return 0;
 }
@@ -246,4 +288,9 @@ void joybus_target_n64_controller_detach_pak(struct joybus_target_n64_controller
   // Mark the pak as absent
   joybus_id_clear_status_flags(&controller->id, JOYBUS_STATUS_N64_PAK_PRESENT);
   joybus_id_set_status_flags(&controller->id, JOYBUS_STATUS_N64_PAK_PULLED);
+}
+
+void joybus_target_n64_controller_calibrate(struct joybus_target_n64_controller *controller)
+{
+  n64_controller_recalibrate(controller);
 }

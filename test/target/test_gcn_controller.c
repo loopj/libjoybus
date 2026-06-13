@@ -30,11 +30,7 @@ static void on_motor(struct joybus_target_gcn_controller *c, uint8_t state)
   motor_last_state = state;
 }
 
-/*
- * Fill the input state with field-unique, nibble-unique values so that a
- * packing mistake (swapped fields, wrong nibble, wrong shift) produces a
- * visible difference in the response bytes.
- */
+// Fill the input state with field-unique, nibble-unique values
 static void set_distinct_input(void)
 {
   controller.input.buttons       = JOYBUS_GCN_BUTTON_A | JOYBUS_GCN_BUTTON_Z;

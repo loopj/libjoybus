@@ -245,7 +245,7 @@ static void test_read_returns_input_state(void)
 {
   controller.input.buttons = JOYBUS_N64_BUTTON_A | JOYBUS_N64_BUTTON_C_UP;
   controller.input.stick_x = 0x12;
-  controller.input.stick_y = 0xEE;
+  controller.input.stick_y = -18; // 0xEE on the wire
 
   uint8_t command[] = {JOYBUS_CMD_N64_READ};
   send_command(command, sizeof(command));
@@ -256,6 +256,101 @@ static void test_read_returns_input_state(void)
 
   uint8_t expected[] = {0x80, 0x08, 0x12, 0xEE};
   TEST_ASSERT_EQUAL_HEX8_ARRAY(expected, response.data, sizeof(expected));
+}
+
+// ---------------------------------------------------------------------------
+// Stick origin and recalibration
+// ---------------------------------------------------------------------------
+
+// Test that reset re-samples the stick origin to the current physical position
+static void test_reset_resamples_stick_origin(void)
+{
+  uint8_t read[]  = {JOYBUS_CMD_N64_READ};
+  uint8_t reset[] = {JOYBUS_CMD_RESET};
+
+  // Stick deflected right; with the default centered origin it reads through
+  controller.input.stick_x = 50;
+  send_command(read, sizeof(read));
+  TEST_ASSERT_EQUAL_HEX8(50, response.data[2]);
+
+  // Reset re-samples the neutral to wherever the stick currently is
+  send_command(reset, sizeof(reset));
+
+  // The same physical position now reads as centered
+  send_command(read, sizeof(read));
+  TEST_ASSERT_EQUAL_HEX8(0, response.data[2]);
+}
+
+// Test that calibrate snapshots the current stick position as the origin, so the app can choose when the power-on
+// neutral is sampled
+static void test_calibrate_snapshots_origin(void)
+{
+  uint8_t read[] = {JOYBUS_CMD_N64_READ};
+
+  // Stick deflected; calibrate adopts it as the neutral
+  controller.input.stick_x = 50;
+  joybus_target_n64_controller_calibrate(&controller);
+
+  // The same physical position now reads as centered
+  send_command(read, sizeof(read));
+  TEST_ASSERT_EQUAL_HEX8(0, response.data[2]);
+
+  // Moving past the new origin reads as a positive delta
+  controller.input.stick_x = 80;
+  send_command(read, sizeof(read));
+  TEST_ASSERT_EQUAL_HEX8(30, response.data[2]);
+}
+
+// Test that, after a reset moves the origin, reads report the signed delta from it
+static void test_read_reports_delta_from_resampled_origin(void)
+{
+  uint8_t read[]  = {JOYBUS_CMD_N64_READ};
+  uint8_t reset[] = {JOYBUS_CMD_RESET};
+
+  // Re-sample the origin with the stick held at +50
+  controller.input.stick_x = 50;
+  send_command(reset, sizeof(reset));
+
+  // Past the new origin reads as a positive delta
+  controller.input.stick_x = 80;
+  send_command(read, sizeof(read));
+  TEST_ASSERT_EQUAL_HEX8(30, response.data[2]);
+
+  // Back at the old center reads as a negative delta (mirror of the offset)
+  controller.input.stick_x = 0;
+  send_command(read, sizeof(read));
+  TEST_ASSERT_EQUAL_HEX8(0xCE, response.data[2]); // 0 - 50 = -50
+}
+
+// Test that holding L+R+Start raises the RST flag and suppresses the Start button
+static void test_combo_raises_rst_and_suppresses_start(void)
+{
+  controller.input.buttons = JOYBUS_N64_BUTTON_L | JOYBUS_N64_BUTTON_R | JOYBUS_N64_BUTTON_START;
+
+  uint8_t read[] = {JOYBUS_CMD_N64_READ};
+  send_command(read, sizeof(read));
+
+  // RST (byte 1 bit 7) is raised, Start (byte 0 bit 4) is suppressed, L+R pass through
+  uint8_t expected[] = {0x00, 0xB0, 0x00, 0x00};
+  TEST_ASSERT_EQUAL_HEX8_ARRAY(expected, response.data, sizeof(expected));
+}
+
+// Test that the L+R+Start combo re-samples the origin, like a reset
+static void test_combo_resamples_origin(void)
+{
+  uint8_t read[] = {JOYBUS_CMD_N64_READ};
+
+  // Hold the combo with the stick deflected: it re-zeros to the held position
+  controller.input.stick_x = 50;
+  controller.input.buttons = JOYBUS_N64_BUTTON_L | JOYBUS_N64_BUTTON_R | JOYBUS_N64_BUTTON_START;
+  send_command(read, sizeof(read));
+  TEST_ASSERT_EQUAL_HEX8(0, response.data[2]);
+
+  // Release the combo; the moved origin persists, so center reads negative
+  controller.input.buttons = 0;
+  controller.input.stick_x = 0;
+  send_command(read, sizeof(read));
+  TEST_ASSERT_EQUAL_HEX8(0xCE, response.data[2]); // 0 - 50 = -50
 }
 
 // ---------------------------------------------------------------------------
@@ -515,6 +610,13 @@ int main(void)
 
   // Read
   RUN_TEST(test_read_returns_input_state);
+
+  // Stick origin and recalibration
+  RUN_TEST(test_calibrate_snapshots_origin);
+  RUN_TEST(test_reset_resamples_stick_origin);
+  RUN_TEST(test_read_reports_delta_from_resampled_origin);
+  RUN_TEST(test_combo_raises_rst_and_suppresses_start);
+  RUN_TEST(test_combo_resamples_origin);
 
   // Pak read
   RUN_TEST(test_pak_read_returns_pak_data);

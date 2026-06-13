@@ -43,9 +43,9 @@ struct joybus_n64_controller_state {
   /// Button state
   uint16_t buttons;
 
-  /// Stick x-axis position
-  uint8_t stick_x;
+  /// Stick x-axis position, nominally -80..80
+  int8_t stick_x;
 
-  /// Stick y-axis position
-  uint8_t stick_y;
+  /// Stick y-axis position, nominally -80..80
+  int8_t stick_y;
 } __attribute__((packed));

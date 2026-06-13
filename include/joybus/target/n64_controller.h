@@ -37,6 +37,9 @@ struct joybus_target_n64_controller {
   /// Controller ID
   struct joybus_id id;
 
+  /// Origin input state
+  struct joybus_n64_controller_state origin;
+
   /// Current input state
   struct joybus_n64_controller_state input;
 
@@ -87,4 +90,11 @@ void joybus_target_n64_controller_attach_pak(struct joybus_target_n64_controller
  * @param controller the controller to detach the pak from
  */
 void joybus_target_n64_controller_detach_pak(struct joybus_target_n64_controller *controller);
+
+/**
+ * Sample the current stick position as the controller's neutral origin.
+ *
+ * @param controller the controller to calibrate
+ */
+void joybus_target_n64_controller_calibrate(struct joybus_target_n64_controller *controller);
 /** @} */
