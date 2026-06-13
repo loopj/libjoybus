@@ -34,6 +34,9 @@ struct joybus_target_n64_rumble_pak {
   /// Base pak interface
   struct joybus_target_n64_pak base;
 
+  /// Rumble pak enabled
+  bool enabled;
+
   /// Current motor state
   bool active;
 

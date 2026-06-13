@@ -22,7 +22,9 @@ add_libjoybus_test(test_checksum test_checksum.c)
 
 # GameCube controller target tests
 add_libjoybus_test(test_gcn_controller target/test_gcn_controller.c)
-add_libjoybus_test(test_gcn_controller_wavebird target/test_gcn_controller_wavebird.c)
 
 # N64 controller target tests
 add_libjoybus_test(test_n64_controller target/test_n64_controller.c)
+
+# N64 rumble pak tests
+add_libjoybus_test(test_n64_rumble_pak target/test_n64_rumble_pak.c)

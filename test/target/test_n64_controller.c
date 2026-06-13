@@ -1,388 +1,540 @@
-#include <stddef.h>
 #include <string.h>
 
 #include <joybus/bus.h>
 #include <joybus/checksum.h>
 #include <joybus/commands.h>
-#include <joybus/backend/loopback.h>
-#include <joybus/host/common.h>
-#include <joybus/host/n64.h>
+#include <joybus/errors.h>
+#include <joybus/identify.h>
+#include <joybus/target.h>
+#include <joybus/common/n64_controller.h>
 #include <joybus/target/n64_controller.h>
+#include <joybus/target/n64_pak.h>
 
 #include "unity.h"
 
-// Dummy pak backend
-static void dummy_read_block(struct joybus_target_n64_pak *acc, uint16_t addr, uint8_t buf[JOYBUS_PAK_BLOCK_SIZE])
+#include "harness.h"
+
+// The controller target under test
+static struct joybus_target_n64_controller controller;
+
+// Spy for the reset callback
+static int reset_count;
+static void on_reset(struct joybus_target_n64_controller *c)
 {
-  // Return 32 zero bytes for all reads
-  memset(buf, 0, JOYBUS_PAK_BLOCK_SIZE);
+  reset_count++;
 }
 
-static void dummy_write_block(struct joybus_target_n64_pak *acc, uint16_t addr,
-                              const uint8_t buf[JOYBUS_PAK_BLOCK_SIZE])
+// Fake pak that records reads and writes
+static int read_block_count;
+static uint16_t read_block_addr;
+static int write_block_count;
+static uint16_t write_block_addr;
+static int write_block_seq;
+static uint8_t write_block_data[JOYBUS_PAK_BLOCK_SIZE];
+
+static void fake_read_block(struct joybus_target_n64_pak *pak, uint16_t addr, uint8_t buf[JOYBUS_PAK_BLOCK_SIZE])
 {
-  // No-op
+  read_block_count++;
+  read_block_addr = addr;
+
+  // Fill the block with a recognizable pattern
+  for (uint8_t i = 0; i < JOYBUS_PAK_BLOCK_SIZE; i++) {
+    buf[i] = i;
+  }
 }
 
-static const struct joybus_target_n64_pak_api dummy_pak_api = {
-  .read_block  = dummy_read_block,
-  .write_block = dummy_write_block,
+static void fake_write_block(struct joybus_target_n64_pak *pak, uint16_t addr, const uint8_t buf[JOYBUS_PAK_BLOCK_SIZE])
+{
+  write_block_count++;
+  write_block_addr = addr;
+  write_block_seq  = ++event_seq;
+  memcpy(write_block_data, buf, JOYBUS_PAK_BLOCK_SIZE);
+}
+
+static const struct joybus_target_n64_pak_api fake_pak_api = {
+  .read_block  = fake_read_block,
+  .write_block = fake_write_block,
 };
 
-// A loopback Joybus and an N64 controller target
-struct joybus bus;
-struct joybus_target_n64_controller controller;
-struct joybus_target_n64_pak pak;
+static struct joybus_target_n64_pak pak;
 
-// Spy callback to capture responses
-static uint8_t response[JOYBUS_BLOCK_SIZE];
-static int response_len;
-static void spy(struct joybus *bus, int result, void *user_data)
+// Build an aligned block address with its checksum in the low 5 bits
+static uint16_t valid_pak_addr(uint16_t block_addr)
 {
-  response_len = result;
+  return block_addr | joybus_address_checksum(block_addr >> 5);
 }
 
-// Track reset callback invocations
-static int reset_callback_count;
-static void on_reset(struct joybus_target_n64_controller *controller)
+// Build a full pak write command for the given wire address and payload
+static void build_pak_write(uint8_t command[JOYBUS_CMD_N64_PAK_WRITE_TX], uint16_t addr,
+                            const uint8_t payload[JOYBUS_PAK_BLOCK_SIZE])
 {
-  reset_callback_count++;
+  command[0] = JOYBUS_CMD_N64_PAK_WRITE;
+  command[1] = addr >> 8;
+  command[2] = addr & 0xFF;
+  memcpy(&command[3], payload, JOYBUS_PAK_BLOCK_SIZE);
+}
+
+// A payload of distinct bytes for write tests
+static void fill_payload(uint8_t payload[JOYBUS_PAK_BLOCK_SIZE])
+{
+  for (uint8_t i = 0; i < JOYBUS_PAK_BLOCK_SIZE; i++) {
+    payload[i] = 0x10 + i;
+  }
 }
 
 void setUp(void)
 {
-  // Initialize the loopback bus
-  joybus_loopback_init(&bus);
-  joybus_enable(&bus);
-
-  // Initialize a standard N64 controller target — tests call joybus_target_register
-  // to simulate "power on" at the moment of their choosing
+  // init zeroes the whole struct itself, including the registered flag
   joybus_target_n64_controller_init(&controller);
 
-  // Wire up the dummy pak backend
-  pak.api = &dummy_pak_api;
+  // Set up the fake pak, detached until a test attaches it
+  pak.api = &fake_pak_api;
 
-  // Reset response capture
-  response_len = -1;
-  memset(response, 0, sizeof(response));
+  // Point the harness at the controller and clear recorded responses
+  harness_reset(JOYBUS_TARGET(&controller));
 
-  // Reset reset-callback tracking
-  reset_callback_count = 0;
+  // Reset the callback and pak spies
+  reset_count       = 0;
+  read_block_count  = 0;
+  read_block_addr   = 0;
+  write_block_count = 0;
+  write_block_addr  = 0;
+  write_block_seq   = 0;
+  memset(write_block_data, 0, sizeof(write_block_data));
 }
 
 void tearDown(void)
 {
 }
 
-// Test that reset returns the controller ID and invokes the reset callback
-static void test_n64_controller_reset()
+// ---------------------------------------------------------------------------
+// State API (no command bytes involved)
+// ---------------------------------------------------------------------------
+
+// Test the initial state set up by init
+static void test_init_defaults(void)
 {
-  struct joybus_id id;
+  uint8_t expected_id[] = {0x05, 0x00, 0x02};
+  TEST_ASSERT_EQUAL_HEX8_ARRAY(expected_id, &controller.id, sizeof(expected_id));
 
-  // Register the reset callback before "power on"
-  joybus_target_n64_controller_set_reset_cb(&controller, on_reset);
-
-  // Power on (no pak)
-  joybus_target_register(&bus, JOYBUS_TARGET(&controller));
-
-  // Send a reset command
-  joybus_reset(&bus, &id);
-
-  // Expect the response to be the controller ID
-  uint8_t expected[] = {0x05, 0x00, 0x02};
-  TEST_ASSERT_EQUAL_HEX8_ARRAY(expected, &id, sizeof(id));
-
-  // Expect the reset callback to have fired exactly once
-  TEST_ASSERT_EQUAL(1, reset_callback_count);
+  TEST_ASSERT_EQUAL_HEX16(0x0000, controller.input.buttons);
+  TEST_ASSERT_EQUAL_HEX8(0x00, controller.input.stick_x);
+  TEST_ASSERT_EQUAL_HEX8(0x00, controller.input.stick_y);
+  TEST_ASSERT_NULL(controller.pak);
 }
 
-// Test that the "identify" response is correct for a standard N64 controller with no pak
-static void test_n64_controller_identify()
+// Test that attaching a pak before registration reports it as present, with no change flag
+static void test_attach_pak_before_registration(void)
 {
-  struct joybus_id id;
-
-  // Power on (no pak)
-  joybus_target_register(&bus, JOYBUS_TARGET(&controller));
-
-  // Send an identify command
-  joybus_identify(&bus, &id);
-
-  // Test device identify response is as expected
-  uint8_t expected[] = {0x05, 0x00, 0x02};
-  TEST_ASSERT_EQUAL_HEX8_ARRAY(expected, &id, sizeof(id));
-}
-
-// Test that the identify response reflects pak state when hotplugging an pak
-static void test_n64_controller_pak_hotplug()
-{
-  struct joybus_id id;
-
-  // Power on (no pak)
-  joybus_target_register(&bus, JOYBUS_TARGET(&controller));
-
-  // Send an identify command with no pak attached
-  joybus_identify(&bus, &id);
-
-  // Test identify reports pak absent
-  uint8_t expected_absent[] = {0x05, 0x00, 0x02};
-  TEST_ASSERT_EQUAL_HEX8_ARRAY(expected_absent, &id, sizeof(id));
-
-  // Attach an pak
   joybus_target_n64_controller_attach_pak(&controller, &pak);
 
-  // Send another identify command
-  joybus_identify(&bus, &id);
-
-  // Test identify reports pak changed
-  uint8_t expected_changed[] = {0x05, 0x00, 0x03};
-  TEST_ASSERT_EQUAL_HEX8_ARRAY(expected_changed, &id, sizeof(id));
-
-  // Send another identify command
-  joybus_identify(&bus, &id);
-
-  // Test identify reports pak present on subsequent calls
-  uint8_t expected_present[] = {0x05, 0x00, 0x01};
-  TEST_ASSERT_EQUAL_HEX8_ARRAY(expected_present, &id, sizeof(id));
+  TEST_ASSERT_EQUAL_HEX8(JOYBUS_STATUS_N64_PAK_PRESENT, joybus_id_get_status(&controller.id));
 }
 
-// Test that the identify response reflects pak state when unplugging an pak
-static void test_n64_controller_pak_unplug()
+// Test that attaching a pak while registered reports it as changed (present and pulled together)
+static void test_attach_pak_while_registered(void)
 {
-  struct joybus_id id;
+  // Simulate "powered on" without involving a bus
+  controller.base.registered = true;
 
-  // Attach an pak and then power on
   joybus_target_n64_controller_attach_pak(&controller, &pak);
-  joybus_target_register(&bus, JOYBUS_TARGET(&controller));
 
-  // Send an identify command
-  joybus_identify(&bus, &id);
+  TEST_ASSERT_EQUAL_HEX8(JOYBUS_STATUS_N64_PAK_PRESENT | JOYBUS_STATUS_N64_PAK_PULLED,
+                         joybus_id_get_status(&controller.id));
+}
 
-  // Test identify reports pak present
-  uint8_t expected_present[] = {0x05, 0x00, 0x01};
-  TEST_ASSERT_EQUAL_HEX8_ARRAY(expected_present, &id, sizeof(id));
-
-  // Detach the pak
+// Test that detaching a pak reports it as pulled
+static void test_detach_pak(void)
+{
+  joybus_target_n64_controller_attach_pak(&controller, &pak);
   joybus_target_n64_controller_detach_pak(&controller);
 
-  // Send another identify command
-  joybus_identify(&bus, &id);
-
-  // Test identify reports pak absent
-  uint8_t expected_absent[] = {0x05, 0x00, 0x02};
-  TEST_ASSERT_EQUAL_HEX8_ARRAY(expected_absent, &id, sizeof(id));
-
-  // Send another identify command
-  joybus_identify(&bus, &id);
-
-  // Test identify continues to report pak absent
-  TEST_ASSERT_EQUAL_HEX8_ARRAY(expected_absent, &id, sizeof(id));
+  TEST_ASSERT_NULL(controller.pak);
+  TEST_ASSERT_EQUAL_HEX8(JOYBUS_STATUS_N64_PAK_PULLED, joybus_id_get_status(&controller.id));
 }
 
-// Test that the identify response reports "pak changed" when an pak is attached before the first identify
-static void test_n64_controller_pak_hotplug_no_initial_identify()
-{
-  struct joybus_id id;
+// ---------------------------------------------------------------------------
+// Identify (0x00)
+// ---------------------------------------------------------------------------
 
-  // Power on (no pak), then hotplug before any identify is sent
-  joybus_target_register(&bus, JOYBUS_TARGET(&controller));
+// Test that identify responds at the first byte with the controller ID
+static void test_identify(void)
+{
+  uint8_t command[] = {JOYBUS_CMD_IDENTIFY};
+  send_command(command, sizeof(command));
+
+  TEST_ASSERT_EQUAL(1, response.count);
+  TEST_ASSERT_EQUAL(1, response.at_byte);
+  TEST_ASSERT_EQUAL(JOYBUS_CMD_IDENTIFY_RX, response.len);
+
+  uint8_t expected[] = {0x05, 0x00, 0x02};
+  TEST_ASSERT_EQUAL_HEX8_ARRAY(expected, response.data, sizeof(expected));
+}
+
+// Test that identify reports "pak changed" exactly once, then "pak present"
+static void test_identify_acks_pak_changed(void)
+{
+  controller.base.registered = true;
   joybus_target_n64_controller_attach_pak(&controller, &pak);
 
-  // Send an identify command
-  joybus_identify(&bus, &id);
+  uint8_t command[] = {JOYBUS_CMD_IDENTIFY};
 
-  // Test identify reports pak changed
-  uint8_t expected_changed[] = {0x05, 0x00, 0x03};
-  TEST_ASSERT_EQUAL_HEX8_ARRAY(expected_changed, &id, sizeof(id));
+  // The first identify reports the change
+  send_command(command, sizeof(command));
+  TEST_ASSERT_EQUAL_HEX8(JOYBUS_STATUS_N64_PAK_PRESENT | JOYBUS_STATUS_N64_PAK_PULLED, response.data[2]);
 
-  // Send another identify command
-  joybus_identify(&bus, &id);
-
-  // Test identify reports pak present on subsequent calls
-  uint8_t expected_present[] = {0x05, 0x00, 0x01};
-  TEST_ASSERT_EQUAL_HEX8_ARRAY(expected_present, &id, sizeof(id));
+  // Subsequent identifies report the pak as present
+  send_command(command, sizeof(command));
+  TEST_ASSERT_EQUAL_HEX8(JOYBUS_STATUS_N64_PAK_PRESENT, response.data[2]);
 }
 
-// Test that the checksum error flag is set after a bad-checksum pak read, and cleared by a subsequent identify
-static void test_n64_controller_bad_checksum_cleared_by_identify()
+// Test that a latched checksum error is reported by one identify and cleared by the next
+static void test_identify_clears_checksum_error(void)
 {
-  struct joybus_id id;
-
-  // Power on with pak attached, then bring up communication via identify
   joybus_target_n64_controller_attach_pak(&controller, &pak);
-  joybus_target_register(&bus, JOYBUS_TARGET(&controller));
-  joybus_identify(&bus, &id);
 
-  // Send a raw pak read with a bad address checksum
-  uint8_t bad_read_cmd[] = {JOYBUS_CMD_N64_PAK_READ, 0x80, 0x00};
-  joybus_transfer(&bus, bad_read_cmd, sizeof(bad_read_cmd), response, JOYBUS_CMD_N64_PAK_READ_RX, spy, NULL);
+  // A pak read with a bad address checksum latches the error flag
+  uint8_t bad_read[] = {JOYBUS_CMD_N64_PAK_READ, 0x80, 0x00};
+  send_command(bad_read, sizeof(bad_read));
 
-  // Send an identify command
-  joybus_identify(&bus, &id);
+  uint8_t command[] = {JOYBUS_CMD_IDENTIFY};
+  send_command(command, sizeof(command));
+  TEST_ASSERT_EQUAL_HEX8(JOYBUS_STATUS_N64_PAK_PRESENT | JOYBUS_STATUS_N64_ADDR_CHECKSUM_ERROR, response.data[2]);
 
-  // Test identify reports pak present with checksum error flag set
-  uint8_t expected_error[] = {0x05, 0x00, 0x05};
-  TEST_ASSERT_EQUAL_HEX8_ARRAY(expected_error, &id, sizeof(id));
-
-  // Send another identify command
-  joybus_identify(&bus, &id);
-
-  // Test identify reports pak present with checksum error flag cleared
-  uint8_t expected_present[] = {0x05, 0x00, 0x01};
-  TEST_ASSERT_EQUAL_HEX8_ARRAY(expected_present, &id, sizeof(id));
+  send_command(command, sizeof(command));
+  TEST_ASSERT_EQUAL_HEX8(JOYBUS_STATUS_N64_PAK_PRESENT, response.data[2]);
 }
 
-// Test that the checksum error flag is cleared by a subsequent successful pak read
-static void test_n64_controller_bad_checksum_cleared_by_successful_read()
-{
-  struct joybus_id id;
+// ---------------------------------------------------------------------------
+// Reset (0xFF)
+// ---------------------------------------------------------------------------
 
-  // Power on with pak attached, then bring up communication via identify
+// Test that reset responds with the ID and fires the reset callback once
+static void test_reset(void)
+{
+  joybus_target_n64_controller_set_reset_cb(&controller, on_reset);
+
+  uint8_t command[] = {JOYBUS_CMD_RESET};
+  send_command(command, sizeof(command));
+
+  TEST_ASSERT_EQUAL(1, response.count);
+  TEST_ASSERT_EQUAL(1, response.at_byte);
+  TEST_ASSERT_EQUAL(JOYBUS_CMD_RESET_RX, response.len);
+
+  uint8_t expected[] = {0x05, 0x00, 0x02};
+  TEST_ASSERT_EQUAL_HEX8_ARRAY(expected, response.data, sizeof(expected));
+  TEST_ASSERT_EQUAL(1, reset_count);
+}
+
+// Test that reset is safe when no callback is registered
+static void test_reset_without_callback(void)
+{
+  uint8_t command[] = {JOYBUS_CMD_RESET};
+  send_command(command, sizeof(command));
+
+  TEST_ASSERT_EQUAL(1, response.count);
+  TEST_ASSERT_EQUAL(JOYBUS_CMD_RESET_RX, response.len);
+}
+
+// ---------------------------------------------------------------------------
+// Read (0x01)
+// ---------------------------------------------------------------------------
+
+// Test that read responds at the first byte with the current input state
+static void test_read_returns_input_state(void)
+{
+  controller.input.buttons = JOYBUS_N64_BUTTON_A | JOYBUS_N64_BUTTON_C_UP;
+  controller.input.stick_x = 0x12;
+  controller.input.stick_y = 0xEE;
+
+  uint8_t command[] = {JOYBUS_CMD_N64_READ};
+  send_command(command, sizeof(command));
+
+  TEST_ASSERT_EQUAL(1, response.count);
+  TEST_ASSERT_EQUAL(1, response.at_byte);
+  TEST_ASSERT_EQUAL(JOYBUS_CMD_N64_READ_RX, response.len);
+
+  uint8_t expected[] = {0x80, 0x08, 0x12, 0xEE};
+  TEST_ASSERT_EQUAL_HEX8_ARRAY(expected, response.data, sizeof(expected));
+}
+
+// ---------------------------------------------------------------------------
+// Pak read (0x02)
+// ---------------------------------------------------------------------------
+
+// Test that a valid pak read responds at the third byte with the pak's data
+// and its CRC, passing the block-aligned address to the pak
+static void test_pak_read_returns_pak_data(void)
+{
   joybus_target_n64_controller_attach_pak(&controller, &pak);
-  joybus_target_register(&bus, JOYBUS_TARGET(&controller));
-  joybus_identify(&bus, &id);
 
-  // Send a raw pak read with a bad address checksum
-  uint8_t bad_read_cmd[] = {JOYBUS_CMD_N64_PAK_READ, 0x80, 0x00};
-  joybus_transfer(&bus, bad_read_cmd, sizeof(bad_read_cmd), response, JOYBUS_CMD_N64_PAK_READ_RX, spy, NULL);
+  uint16_t addr     = valid_pak_addr(0x8000);
+  uint8_t command[] = {JOYBUS_CMD_N64_PAK_READ, addr >> 8, addr & 0xFF};
+  send_command(command, sizeof(command));
 
-  // Send an pak read with a valid address checksum
-  joybus_n64_pak_read_async(&bus, 0x8000, response, spy, NULL);
+  TEST_ASSERT_EQUAL(1, response.count);
+  TEST_ASSERT_EQUAL(3, response.at_byte);
+  TEST_ASSERT_EQUAL(JOYBUS_CMD_N64_PAK_READ_RX, response.len);
 
-  // Send an identify command
-  joybus_identify(&bus, &id);
+  // The fake pak was asked for one block at the aligned address
+  TEST_ASSERT_EQUAL(1, read_block_count);
+  TEST_ASSERT_EQUAL_HEX16(0x8000, read_block_addr);
 
-  // Test identify reports pak present with no checksum error flag set
-  uint8_t expected_present[] = {0x05, 0x00, 0x01};
-  TEST_ASSERT_EQUAL_HEX8_ARRAY(expected_present, &id, 3);
+  // The response is the pak's pattern followed by its data checksum
+  uint8_t expected[JOYBUS_CMD_N64_PAK_READ_RX];
+  for (uint8_t i = 0; i < JOYBUS_PAK_BLOCK_SIZE; i++) {
+    expected[i] = i;
+  }
+  expected[JOYBUS_PAK_BLOCK_SIZE] = joybus_data_checksum(expected, JOYBUS_PAK_BLOCK_SIZE);
+  TEST_ASSERT_EQUAL_HEX8_ARRAY(expected, response.data, sizeof(expected));
 }
 
-// Test that pak_read with no pak attached returns 32 zeroes and the "pak absent" CRC
-static void test_n64_controller_pak_read_no_pak()
+// Test that a pak read with no pak attached returns zeroes with the "no pak" CRC
+static void test_pak_read_no_pak(void)
 {
-  struct joybus_id id;
+  uint16_t addr     = valid_pak_addr(0x8000);
+  uint8_t command[] = {JOYBUS_CMD_N64_PAK_READ, addr >> 8, addr & 0xFF};
+  send_command(command, sizeof(command));
 
-  // Power on (no pak)
-  joybus_target_register(&bus, JOYBUS_TARGET(&controller));
-
-  // Send an pak read with a valid address
-  joybus_n64_pak_read_async(&bus, 0x8000, response, spy, NULL);
-
-  // Expect 32 zero bytes followed by 0xFF
   uint8_t expected[JOYBUS_CMD_N64_PAK_READ_RX] = {0};
-  expected[32]                                 = 0xFF;
-  TEST_ASSERT_EQUAL(JOYBUS_CMD_N64_PAK_READ_RX, response_len);
-  TEST_ASSERT_EQUAL_HEX8_ARRAY(expected, response, JOYBUS_CMD_N64_PAK_READ_RX);
+  expected[JOYBUS_PAK_BLOCK_SIZE]              = 0xFF;
+  TEST_ASSERT_EQUAL(JOYBUS_CMD_N64_PAK_READ_RX, response.len);
+  TEST_ASSERT_EQUAL_HEX8_ARRAY(expected, response.data, sizeof(expected));
 }
 
-// Test that pak_write with no pak attached is accepted and returns the "pak absent" CRC
-static void test_n64_controller_pak_write_no_pak()
+// Test that a pak read is refused while the pak change has not been acknowledged by an identify
+static void test_pak_read_refused_while_pak_changed(void)
 {
-  // Power on (no pak)
-  joybus_target_register(&bus, JOYBUS_TARGET(&controller));
-
-  // Send an pak write with a valid address and 32 bytes of 0x80
-  uint8_t data[JOYBUS_PAK_BLOCK_SIZE];
-  memset(data, 0x80, sizeof(data));
-  joybus_n64_pak_write_async(&bus, 0x8000, data, response, spy, NULL);
-
-  // Expect the response to be checksum ^ 0xFF (the "no pak" marker)
-  uint8_t expected = joybus_data_checksum(data, sizeof(data)) ^ 0xFF;
-  TEST_ASSERT_EQUAL(JOYBUS_CMD_N64_PAK_WRITE_RX, response_len);
-  TEST_ASSERT_EQUAL_HEX8(expected, response[0]);
-}
-
-// Test that pak_read on a non-acked hotplugged pak behaves as if no pak is present
-static void test_n64_controller_pak_read_while_changed()
-{
-  // Power on (no pak), then hotplug — status is now CHANGED, identify not yet called
-  joybus_target_register(&bus, JOYBUS_TARGET(&controller));
+  controller.base.registered = true;
   joybus_target_n64_controller_attach_pak(&controller, &pak);
 
-  // Send an pak read with a valid address
-  joybus_n64_pak_read_async(&bus, 0x8000, response, spy, NULL);
+  uint16_t addr     = valid_pak_addr(0x8000);
+  uint8_t command[] = {JOYBUS_CMD_N64_PAK_READ, addr >> 8, addr & 0xFF};
+  send_command(command, sizeof(command));
 
-  // Expect the "no pak" response — 32 zero bytes followed by 0xFF
+  // The pak is never consulted; the "no pak" response is returned
+  TEST_ASSERT_EQUAL(0, read_block_count);
   uint8_t expected[JOYBUS_CMD_N64_PAK_READ_RX] = {0};
-  expected[32]                                 = 0xFF;
-  TEST_ASSERT_EQUAL(JOYBUS_CMD_N64_PAK_READ_RX, response_len);
-  TEST_ASSERT_EQUAL_HEX8_ARRAY(expected, response, JOYBUS_CMD_N64_PAK_READ_RX);
+  expected[JOYBUS_PAK_BLOCK_SIZE]              = 0xFF;
+  TEST_ASSERT_EQUAL_HEX8_ARRAY(expected, response.data, sizeof(expected));
 }
 
-// Test that pak_write on a non-acked hotplugged pak behaves as if no pak is present
-static void test_n64_controller_pak_write_while_changed()
+// Test that a pak read with a bad address checksum is refused and latches the checksum error flag
+static void test_pak_read_bad_checksum(void)
 {
-  // Power on (no pak), then hotplug — status is now CHANGED, identify not yet called
-  joybus_target_register(&bus, JOYBUS_TARGET(&controller));
   joybus_target_n64_controller_attach_pak(&controller, &pak);
 
-  // Send an pak write with a valid address and 32 bytes of 0x80
-  uint8_t data[JOYBUS_PAK_BLOCK_SIZE];
-  memset(data, 0x80, sizeof(data));
-  joybus_n64_pak_write_async(&bus, 0x8000, data, response, spy, NULL);
+  // 0x8000 has its checksum bits zeroed, which is not the checksum of 0x400
+  uint8_t bad_read[] = {JOYBUS_CMD_N64_PAK_READ, 0x80, 0x00};
+  send_command(bad_read, sizeof(bad_read));
 
-  // Expect the "no pak" response — checksum ^ 0xFF
-  uint8_t expected = joybus_data_checksum(data, sizeof(data)) ^ 0xFF;
-  TEST_ASSERT_EQUAL(JOYBUS_CMD_N64_PAK_WRITE_RX, response_len);
-  TEST_ASSERT_EQUAL_HEX8(expected, response[0]);
-}
+  TEST_ASSERT_EQUAL(0, read_block_count);
+  TEST_ASSERT_TRUE(joybus_id_get_status(&controller.id) & JOYBUS_STATUS_N64_ADDR_CHECKSUM_ERROR);
 
-// Test that a bad-checksum read with the pak present returns the "no pak" response
-static void test_n64_controller_pak_read_bad_checksum()
-{
-  // Power on with pak attached (status = PRESENT, not CHANGED)
-  joybus_target_n64_controller_attach_pak(&controller, &pak);
-  joybus_target_register(&bus, JOYBUS_TARGET(&controller));
-
-  // Send a raw pak read with a bad address checksum
-  uint8_t bad_read_cmd[] = {JOYBUS_CMD_N64_PAK_READ, 0x80, 0x00};
-  joybus_transfer(&bus, bad_read_cmd, sizeof(bad_read_cmd), response, JOYBUS_CMD_N64_PAK_READ_RX, spy, NULL);
-
-  // Expect 32 zero bytes followed by 0xFF — the "no pak" CRC
   uint8_t expected[JOYBUS_CMD_N64_PAK_READ_RX] = {0};
-  expected[32]                                 = 0xFF;
-  TEST_ASSERT_EQUAL(JOYBUS_CMD_N64_PAK_READ_RX, response_len);
-  TEST_ASSERT_EQUAL_HEX8_ARRAY(expected, response, JOYBUS_CMD_N64_PAK_READ_RX);
+  expected[JOYBUS_PAK_BLOCK_SIZE]              = 0xFF;
+  TEST_ASSERT_EQUAL_HEX8_ARRAY(expected, response.data, sizeof(expected));
 }
 
-// Test that a bad-checksum write with the pak present returns the "no pak" response
-static void test_n64_controller_pak_write_bad_checksum()
+// Test that a subsequent valid pak read clears the checksum error flag
+static void test_pak_read_valid_clears_checksum_error(void)
 {
-  // Power on with pak attached (status = PRESENT, not CHANGED)
   joybus_target_n64_controller_attach_pak(&controller, &pak);
-  joybus_target_register(&bus, JOYBUS_TARGET(&controller));
 
-  // Build a raw pak write with a bad address checksum (low 5 bits zero, doesn't match)
-  uint8_t bad_write_cmd[JOYBUS_CMD_N64_PAK_WRITE_TX];
-  bad_write_cmd[0] = JOYBUS_CMD_N64_PAK_WRITE;
-  bad_write_cmd[1] = 0x80;
-  bad_write_cmd[2] = 0x00;
-  memset(&bad_write_cmd[3], 0x80, JOYBUS_PAK_BLOCK_SIZE);
+  uint8_t bad_read[] = {JOYBUS_CMD_N64_PAK_READ, 0x80, 0x00};
+  send_command(bad_read, sizeof(bad_read));
+  TEST_ASSERT_TRUE(joybus_id_get_status(&controller.id) & JOYBUS_STATUS_N64_ADDR_CHECKSUM_ERROR);
 
-  joybus_transfer(&bus, bad_write_cmd, sizeof(bad_write_cmd), response, JOYBUS_CMD_N64_PAK_WRITE_RX, spy, NULL);
-
-  // Expect checksum ^ 0xFF — the "no pak" marker
-  uint8_t expected = joybus_data_checksum(&bad_write_cmd[3], JOYBUS_PAK_BLOCK_SIZE) ^ 0xFF;
-  TEST_ASSERT_EQUAL(JOYBUS_CMD_N64_PAK_WRITE_RX, response_len);
-  TEST_ASSERT_EQUAL_HEX8(expected, response[0]);
+  uint16_t addr       = valid_pak_addr(0x8000);
+  uint8_t good_read[] = {JOYBUS_CMD_N64_PAK_READ, addr >> 8, addr & 0xFF};
+  send_command(good_read, sizeof(good_read));
+  TEST_ASSERT_FALSE(joybus_id_get_status(&controller.id) & JOYBUS_STATUS_N64_ADDR_CHECKSUM_ERROR);
 }
 
-int main(int argc, char **argv)
+// ---------------------------------------------------------------------------
+// Pak write (0x03)
+// ---------------------------------------------------------------------------
+
+// Test that a valid pak write responds at the final byte with the payload CRC, and hands the payload to the pak only
+// after the response is sent
+static void test_pak_write_commits_to_pak(void)
+{
+  joybus_target_n64_controller_attach_pak(&controller, &pak);
+
+  uint8_t payload[JOYBUS_PAK_BLOCK_SIZE];
+  fill_payload(payload);
+
+  uint8_t command[JOYBUS_CMD_N64_PAK_WRITE_TX];
+  build_pak_write(command, valid_pak_addr(0x8000), payload);
+  send_command(command, sizeof(command));
+
+  TEST_ASSERT_EQUAL(1, response.count);
+  TEST_ASSERT_EQUAL(JOYBUS_CMD_N64_PAK_WRITE_TX, response.at_byte);
+  TEST_ASSERT_EQUAL(JOYBUS_CMD_N64_PAK_WRITE_RX, response.len);
+  TEST_ASSERT_EQUAL_HEX8(joybus_data_checksum(payload, sizeof(payload)), response.data[0]);
+
+  // The payload reached the pak at the aligned address, after the response
+  TEST_ASSERT_EQUAL(1, write_block_count);
+  TEST_ASSERT_EQUAL_HEX16(0x8000, write_block_addr);
+  TEST_ASSERT_EQUAL_HEX8_ARRAY(payload, write_block_data, sizeof(payload));
+  TEST_ASSERT_TRUE(response.seq < write_block_seq);
+}
+
+// Test that a pak write with no pak attached responds with the inverted "no pak" CRC and never reaches a pak
+static void test_pak_write_no_pak(void)
+{
+  uint8_t payload[JOYBUS_PAK_BLOCK_SIZE];
+  fill_payload(payload);
+
+  uint8_t command[JOYBUS_CMD_N64_PAK_WRITE_TX];
+  build_pak_write(command, valid_pak_addr(0x8000), payload);
+  send_command(command, sizeof(command));
+
+  TEST_ASSERT_EQUAL(JOYBUS_CMD_N64_PAK_WRITE_RX, response.len);
+  TEST_ASSERT_EQUAL_HEX8(joybus_data_checksum(payload, sizeof(payload)) ^ 0xFF, response.data[0]);
+  TEST_ASSERT_EQUAL(0, write_block_count);
+}
+
+// Test that a pak write is refused while the pak change has not been acknowledged by an identify
+static void test_pak_write_refused_while_pak_changed(void)
+{
+  controller.base.registered = true;
+  joybus_target_n64_controller_attach_pak(&controller, &pak);
+
+  uint8_t payload[JOYBUS_PAK_BLOCK_SIZE];
+  fill_payload(payload);
+
+  uint8_t command[JOYBUS_CMD_N64_PAK_WRITE_TX];
+  build_pak_write(command, valid_pak_addr(0x8000), payload);
+  send_command(command, sizeof(command));
+
+  TEST_ASSERT_EQUAL_HEX8(joybus_data_checksum(payload, sizeof(payload)) ^ 0xFF, response.data[0]);
+  TEST_ASSERT_EQUAL(0, write_block_count);
+}
+
+// Test that a pak write with a bad address checksum is refused and latches the checksum error flag
+static void test_pak_write_bad_checksum(void)
+{
+  joybus_target_n64_controller_attach_pak(&controller, &pak);
+
+  uint8_t payload[JOYBUS_PAK_BLOCK_SIZE];
+  fill_payload(payload);
+
+  // 0x8000 has its checksum bits zeroed, which is not the checksum of 0x400
+  uint8_t command[JOYBUS_CMD_N64_PAK_WRITE_TX];
+  build_pak_write(command, 0x8000, payload);
+  send_command(command, sizeof(command));
+
+  TEST_ASSERT_EQUAL_HEX8(joybus_data_checksum(payload, sizeof(payload)) ^ 0xFF, response.data[0]);
+  TEST_ASSERT_EQUAL(0, write_block_count);
+  TEST_ASSERT_TRUE(joybus_id_get_status(&controller.id) & JOYBUS_STATUS_N64_ADDR_CHECKSUM_ERROR);
+}
+
+// ---------------------------------------------------------------------------
+// Unsupported commands
+// ---------------------------------------------------------------------------
+
+// Test that an unknown command byte is rejected without a response
+static void test_unknown_command_not_supported(void)
+{
+  uint8_t command[] = {0x99};
+  int result        = send_command(command, sizeof(command));
+
+  TEST_ASSERT_EQUAL(-JOYBUS_ERR_NOT_SUPPORTED, result);
+  TEST_ASSERT_EQUAL(0, response.count);
+}
+
+// ---------------------------------------------------------------------------
+// Cross-command sequences
+// ---------------------------------------------------------------------------
+
+// Test the full pak lifecycle as the host sees it (absent -> changed -> present -> pulled)
+static void test_pak_lifecycle(void)
+{
+  controller.base.registered = true;
+  uint8_t identify[]         = {JOYBUS_CMD_IDENTIFY};
+
+  // No pak after power-on
+  send_command(identify, sizeof(identify));
+  TEST_ASSERT_EQUAL_HEX8(JOYBUS_STATUS_N64_PAK_PULLED, response.data[2]);
+
+  // Hotplug: changed once, then present
+  joybus_target_n64_controller_attach_pak(&controller, &pak);
+  send_command(identify, sizeof(identify));
+  TEST_ASSERT_EQUAL_HEX8(JOYBUS_STATUS_N64_PAK_PRESENT | JOYBUS_STATUS_N64_PAK_PULLED, response.data[2]);
+  send_command(identify, sizeof(identify));
+  TEST_ASSERT_EQUAL_HEX8(JOYBUS_STATUS_N64_PAK_PRESENT, response.data[2]);
+
+  // Unplug: pulled, and it stays that way
+  joybus_target_n64_controller_detach_pak(&controller);
+  send_command(identify, sizeof(identify));
+  TEST_ASSERT_EQUAL_HEX8(JOYBUS_STATUS_N64_PAK_PULLED, response.data[2]);
+  send_command(identify, sizeof(identify));
+  TEST_ASSERT_EQUAL_HEX8(JOYBUS_STATUS_N64_PAK_PULLED, response.data[2]);
+}
+
+// Test that pak reads start working after an identify acknowledges the hotplugged pak
+static void test_pak_read_works_after_changed_acked(void)
+{
+  controller.base.registered = true;
+  joybus_target_n64_controller_attach_pak(&controller, &pak);
+
+  uint16_t addr      = valid_pak_addr(0x8000);
+  uint8_t pak_read[] = {JOYBUS_CMD_N64_PAK_READ, addr >> 8, addr & 0xFF};
+  uint8_t identify[] = {JOYBUS_CMD_IDENTIFY};
+
+  // Refused before the change is acknowledged
+  send_command(pak_read, sizeof(pak_read));
+  TEST_ASSERT_EQUAL(0, read_block_count);
+
+  // Acknowledge via identify, then the read is honored
+  send_command(identify, sizeof(identify));
+  send_command(pak_read, sizeof(pak_read));
+  TEST_ASSERT_EQUAL(1, read_block_count);
+  TEST_ASSERT_EQUAL_HEX16(0x8000, read_block_addr);
+}
+
+int main(void)
 {
   UNITY_BEGIN();
 
-  RUN_TEST(test_n64_controller_reset);
-  RUN_TEST(test_n64_controller_identify);
-  RUN_TEST(test_n64_controller_pak_hotplug);
-  RUN_TEST(test_n64_controller_pak_unplug);
-  RUN_TEST(test_n64_controller_pak_hotplug_no_initial_identify);
-  RUN_TEST(test_n64_controller_bad_checksum_cleared_by_identify);
-  RUN_TEST(test_n64_controller_bad_checksum_cleared_by_successful_read);
-  RUN_TEST(test_n64_controller_pak_read_no_pak);
-  RUN_TEST(test_n64_controller_pak_write_no_pak);
-  RUN_TEST(test_n64_controller_pak_read_while_changed);
-  RUN_TEST(test_n64_controller_pak_write_while_changed);
-  RUN_TEST(test_n64_controller_pak_read_bad_checksum);
-  RUN_TEST(test_n64_controller_pak_write_bad_checksum);
+  // State API
+  RUN_TEST(test_init_defaults);
+  RUN_TEST(test_attach_pak_before_registration);
+  RUN_TEST(test_attach_pak_while_registered);
+  RUN_TEST(test_detach_pak);
+
+  // Identify
+  RUN_TEST(test_identify);
+  RUN_TEST(test_identify_acks_pak_changed);
+  RUN_TEST(test_identify_clears_checksum_error);
+
+  // Reset
+  RUN_TEST(test_reset);
+  RUN_TEST(test_reset_without_callback);
+
+  // Read
+  RUN_TEST(test_read_returns_input_state);
+
+  // Pak read
+  RUN_TEST(test_pak_read_returns_pak_data);
+  RUN_TEST(test_pak_read_no_pak);
+  RUN_TEST(test_pak_read_refused_while_pak_changed);
+  RUN_TEST(test_pak_read_bad_checksum);
+  RUN_TEST(test_pak_read_valid_clears_checksum_error);
+
+  // Pak write
+  RUN_TEST(test_pak_write_commits_to_pak);
+  RUN_TEST(test_pak_write_no_pak);
+  RUN_TEST(test_pak_write_refused_while_pak_changed);
+  RUN_TEST(test_pak_write_bad_checksum);
+
+  // Unsupported commands
+  RUN_TEST(test_unknown_command_not_supported);
+
+  // Cross-command sequences
+  RUN_TEST(test_pak_lifecycle);
+  RUN_TEST(test_pak_read_works_after_changed_acked);
 
   return UNITY_END();
 }

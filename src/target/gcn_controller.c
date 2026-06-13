@@ -267,7 +267,7 @@ static inline int handle_probe_device(struct joybus_target_gcn_controller *contr
   if (bytes_read == 1) {
     // Don't respond to probe commands if we already received data from a controller
     if (joybus_id_get_type(&controller->id) & JOYBUS_TYPE_GCN_WIRELESS_RECEIVED)
-      return 0;
+      return -JOYBUS_ERR_NOT_SUPPORTED;
 
     // Respond with 8 bytes of zeroes
     static const uint8_t zeroes[8] = {0};
@@ -338,18 +338,17 @@ static const struct joybus_target_api gcn_controller_api = {
 
 void joybus_target_gcn_controller_init_with_type(struct joybus_target_gcn_controller *controller, uint16_t type)
 {
+  // Start from a clean state
+  memset(controller, 0, sizeof(*controller));
+
   // Set the target callbacks
   struct joybus_target *target = JOYBUS_TARGET(controller);
   target->api                  = &gcn_controller_api;
 
   // Set the initial controller ID
-  controller->id.type[0] = 0;
-  controller->id.type[1] = 0;
-  controller->id.status  = 0;
   joybus_id_set_type_flags(&controller->id, type);
 
-  // Set the initial origin
-  memset(&controller->origin, 0, sizeof(controller->origin));
+  // Set the initial origin, stick centered, substick centered
   controller->origin.stick_x    = 0x80;
   controller->origin.stick_y    = 0x80;
   controller->origin.substick_x = 0x80;
