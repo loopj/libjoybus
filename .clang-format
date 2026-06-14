@@ -28,10 +28,10 @@ IncludeCategories:
   - Regex: '^[<"][^/]+/[^/]+[>"]$'
     Priority: 2
 
-  # 3) TWO OR MORE slashes, e.g. <joybus/backend/loopback.h>
+  # 3) TWO OR MORE slashes, e.g. <joybus/backend/gecko.h>
   - Regex: '^[<"].*/.*/.*[>"]$'
     Priority: 3
 
   # 4) Fallback (anything else)
-  - Regex: '.*'
+  - Regex: ".*"
     Priority: 100

@@ -20,7 +20,7 @@ jobs:
           sudo apt-get install -y cmake build-essential
 
       - name: Build test suite
-        run: cmake -Bbuild -DJOYBUS_BACKEND_LOOPBACK=1 && cmake --build build
+        run: cmake -Bbuild && cmake --build build
 
       - name: Run tests
         run: ctest --test-dir build --output-on-failure
