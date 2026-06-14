@@ -34,8 +34,9 @@ static bool polling_enabled = false;
 // Controller state
 static enum poll_mode poll_mode[GCCA_JOYBUS_CHANNELS];
 static uint16_t controller_type[GCCA_JOYBUS_CHANNELS];
-static struct joybus_gcn_controller_input inputs[GCCA_JOYBUS_CHANNELS];
-static struct joybus_gcn_controller_input origins[GCCA_JOYBUS_CHANNELS];
+static struct joybus_id ids[GCCA_JOYBUS_CHANNELS];
+static struct joybus_gcn_controller_state inputs[GCCA_JOYBUS_CHANNELS];
+static struct joybus_gcn_controller_state origins[GCCA_JOYBUS_CHANNELS];
 static bool has_input_data[GCCA_JOYBUS_CHANNELS];
 static uint8_t motor_state[GCCA_JOYBUS_CHANNELS];
 
@@ -72,7 +73,7 @@ static void joybus_identify_cb(struct joybus *bus, int result, void *user_data)
   int chan = (int)(intptr_t)user_data;
 
   // Check it's a GameCube controller
-  uint16_t type = joybus_id_get_type(joybus_response[chan]);
+  uint16_t type = joybus_id_get_type(&ids[chan]);
   if (!(type & JOYBUS_TYPE_GCN_DEVICE))
     return;
 
@@ -84,11 +85,8 @@ static void joybus_identify_cb(struct joybus *bus, int result, void *user_data)
   if (!(type & JOYBUS_TYPE_GCN_STANDARD))
     return;
 
-  // Save controller type
-  controller_type[chan] = type;
-
   // Read the origin
-  joybus_gcn_read_origin(bus, joybus_response[chan], joybus_read_origin_cb, (void *)(intptr_t)chan);
+  joybus_gcn_read_origin_async(bus, &origins[chan], joybus_read_origin_cb, (void *)(intptr_t)chan);
 
   // Move to read mode
   poll_mode[chan] = POLL_MODE_READ;
@@ -106,15 +104,12 @@ static void joybus_read_cb(struct joybus *bus, int result, void *user_data)
     return;
   }
 
-  // Unpack the input state
-  joybus_gcn_unpack_input(&inputs[chan], joybus_response[chan], JOYBUS_GCN_ANALOG_MODE_3);
-
   // We have valid input data
   has_input_data[chan] = true;
 
   // If the "need origin" flag is set, fetch the origin state again
   if (inputs[chan].buttons & JOYBUS_GCN_NEED_ORIGIN)
-    joybus_gcn_read_origin(bus, joybus_response[chan], joybus_read_origin_cb, (void *)(intptr_t)chan);
+    joybus_gcn_read_origin_async(bus, &origins[chan], joybus_read_origin_cb, (void *)(intptr_t)chan);
 }
 
 // Clamp an axis value based on the origin and expected resting position
@@ -274,12 +269,12 @@ static bool poll_task(struct repeating_timer *timer)
   for (int i = 0; i < GCCA_JOYBUS_CHANNELS; i++) {
     switch (poll_mode[i]) {
       case POLL_MODE_IDENTIFY:
-        joybus_identify(JOYBUS(&rp2xxx_bus[i]), joybus_response[i], joybus_identify_cb, (void *)(intptr_t)i);
+        joybus_identify_async(JOYBUS(&rp2xxx_bus[i]), &ids[i], joybus_identify_cb, (void *)(intptr_t)i);
         break;
 
       case POLL_MODE_READ:
-        joybus_gcn_read(JOYBUS(&rp2xxx_bus[i]), JOYBUS_GCN_ANALOG_MODE_3, motor_state[i], joybus_response[i],
-                        joybus_read_cb, (void *)(intptr_t)i);
+        joybus_gcn_read_async(JOYBUS(&rp2xxx_bus[i]), JOYBUS_GCN_ANALOG_MODE_3, motor_state[i], &inputs[i],
+                              joybus_read_cb, (void *)(intptr_t)i);
         break;
     }
   }

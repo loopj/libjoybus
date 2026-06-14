@@ -20,8 +20,9 @@
 struct joybus_gecko gecko_bus;
 struct joybus *bus = JOYBUS(&gecko_bus);
 
-// Buffer for Joybus responses
-static uint8_t joybus_response[JOYBUS_BLOCK_SIZE] = {0};
+// Joybus state
+static struct joybus_id id;
+static struct joybus_gcn_controller_state input;
 
 // Polling mode
 enum { POLL_MODE_IDENTIFY, POLL_MODE_READ };
@@ -37,7 +38,7 @@ void joybus_identify_cb(struct joybus *bus, int result, void *user_data)
     return;
 
   // Check it's a GameCube controller
-  uint16_t type = joybus_id_get_type(joybus_response);
+  uint16_t type = joybus_id_get_type(&id);
   if (!(type & JOYBUS_TYPE_GCN_DEVICE))
     return;
 
@@ -61,11 +62,8 @@ void joybus_read_cb(struct joybus *bus, int result, void *user_data)
     return;
   }
 
-  // Extract button states
-  uint16_t buttons = ((joybus_response[1] << 8) | joybus_response[0]) & JOYBUS_GCN_BUTTON_MASK;
-
   // Light the LED while the A button is held
-  if (buttons & JOYBUS_GCN_BUTTON_A) {
+  if (input.buttons & JOYBUS_GCN_BUTTON_A) {
     GPIO_PinOutSet(LED_PORT, LED_PIN);
   } else {
     GPIO_PinOutClear(LED_PORT, LED_PIN);
@@ -77,11 +75,11 @@ static void poll_task(sl_sleeptimer_timer_handle_t *handle, void *data)
 {
   switch (poll_mode) {
     case POLL_MODE_IDENTIFY:
-      joybus_identify(bus, joybus_response, joybus_identify_cb, NULL);
+      joybus_identify_async(bus, &id, joybus_identify_cb, NULL);
       break;
 
     case POLL_MODE_READ:
-      joybus_gcn_read(bus, JOYBUS_GCN_ANALOG_MODE_3, JOYBUS_GCN_MOTOR_STOP, joybus_response, joybus_read_cb, NULL);
+      joybus_gcn_read_async(bus, JOYBUS_GCN_ANALOG_MODE_3, JOYBUS_GCN_MOTOR_STOP, &input, joybus_read_cb, NULL);
       break;
   }
 }

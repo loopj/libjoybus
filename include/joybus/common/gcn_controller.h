@@ -10,6 +10,10 @@
 
 /**
  * GameCube controller button bitmask flags.
+ *
+ * These test the `buttons` field of ::joybus_gcn_controller_state. Bits 0-7
+ * correspond to the first button byte of the wire input state, bits 8-15 to
+ * the second.
  */
 #define JOYBUS_GCN_BUTTON_A       (1 << 0)
 #define JOYBUS_GCN_BUTTON_B       (1 << 1)
@@ -30,9 +34,13 @@
 #define JOYBUS_GCN_BUTTON_MASK    0x7F1F
 
 /**
- * GameCube controller input state.
+ * GameCube controller input/origin state.
+ *
+ * Matches the wire format of the input state byte-for-byte on a
+ * little-endian CPU (wire byte 0 is the low byte of `buttons`), so it can
+ * be sent and received without repacking.
  */
-struct joybus_gcn_controller_input {
+struct joybus_gcn_controller_state {
   /// Button state
   uint16_t buttons;
 

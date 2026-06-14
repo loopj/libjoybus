@@ -66,7 +66,7 @@ controllers in your projects.
 struct joybus_rp2xxx rp2xxx_bus;
 struct joybus *bus = JOYBUS(&rp2xxx_bus);
 
-struct joybus_gcn_controller_input input;
+struct joybus_gcn_controller_state input;
 uint8_t joybus_buffer[JOYBUS_BLOCK_SIZE];
 
 void poll_cb(struct joybus *bus, int result, void *user_data) {

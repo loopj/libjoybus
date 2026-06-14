@@ -26,7 +26,7 @@
 #define JOYBUS_TYPE_N64_EEPROM                0x0080  ///< N64 cartridge EEPROM is present
 #define JOYBUS_TYPE_N64_ABSOLUTE              0x0100  ///< N64 device reports absolute position
 #define JOYBUS_TYPE_N64_RELATIVE              0x0200  ///< N64 device reports relative position
-#define JOYBUS_TYPE_N64_JOYPORT               0x0400  ///< N64 device has a Joyport (accessory port)
+#define JOYBUS_TYPE_N64_JOYPORT               0x0400  ///< N64 device has a Joyport (pak port)
 
 // GameCube device types
 #define JOYBUS_TYPE_GCN_MASK                  0x1800  ///< GameCube device type mask
@@ -49,8 +49,8 @@
  */
 
 // Status flags for N64 controllers with a Joyport
-#define JOYBUS_STATUS_N64_ACCESSORY_PRESENT   0x01    ///< Accessory present
-#define JOYBUS_STATUS_N64_ACCESSORY_PULLED    0x02    ///< Accessory removal/change detected
+#define JOYBUS_STATUS_N64_PAK_PRESENT   0x01    ///< Pak present
+#define JOYBUS_STATUS_N64_PAK_PULLED    0x02    ///< Pak removal/change detected
 #define JOYBUS_STATUS_N64_ADDR_CHECKSUM_ERROR 0x04    ///< Address checksum error
 
 // Status flags for N64 Voice Recognition Unit
@@ -89,14 +89,25 @@
 #define JOYBUS_DEVICE_GCN_WAVEBIRD    (JOYBUS_TYPE_GCN_DEVICE | JOYBUS_TYPE_GCN_WIRELESS | JOYBUS_TYPE_GCN_NO_MOTOR)
 
 /**
+ * Represents the 3-byte ID field from an "identify" buffer
+ */
+struct joybus_id {
+  /// Type flags (first two bytes of ID field, big-endian)
+  uint8_t type[2];
+
+  /// Status flags (last byte of ID field)
+  uint8_t status;
+};
+
+/**
  * Get the controller type from an "identify" buffer
  *
  * @param id pointer to a 3-byte "identify" buffer
  * @return the controller type value (first two bytes of ID field)
  */
-static inline uint16_t joybus_id_get_type(const uint8_t *id)
+static inline uint16_t joybus_id_get_type(const struct joybus_id *id)
 {
-  return (uint16_t)((id[0] << 8) | id[1]);
+  return (uint16_t)((id->type[0] << 8) | id->type[1]);
 }
 
 /**
@@ -105,10 +116,10 @@ static inline uint16_t joybus_id_get_type(const uint8_t *id)
  * @param id pointer to a 3-byte "identify" buffer
  * @param flags type flags to clear
  */
-static inline void joybus_id_clear_type_flags(uint8_t *id, uint16_t flags)
+static inline void joybus_id_clear_type_flags(struct joybus_id *id, uint16_t flags)
 {
-  id[0] &= ~(flags >> 8);
-  id[1] &= ~(flags & 0xFF);
+  id->type[0] &= ~(flags >> 8);
+  id->type[1] &= ~(flags & 0xFF);
 }
 
 /**
@@ -117,10 +128,10 @@ static inline void joybus_id_clear_type_flags(uint8_t *id, uint16_t flags)
  * @param id pointer to the 3-byte ID field from an "identify" buffer
  * @param flags type flags to set
  */
-static inline void joybus_id_set_type_flags(uint8_t *id, uint16_t flags)
+static inline void joybus_id_set_type_flags(struct joybus_id *id, uint16_t flags)
 {
-  id[0] |= (flags >> 8);
-  id[1] |= (flags & 0xFF);
+  id->type[0] |= (flags >> 8);
+  id->type[1] |= (flags & 0xFF);
 }
 
 /**
@@ -129,9 +140,9 @@ static inline void joybus_id_set_type_flags(uint8_t *id, uint16_t flags)
  * @param id pointer to the 3-byte ID field from an "identify" buffer
  * @return the status byte (third byte of ID field)
  */
-static inline uint8_t joybus_id_get_status(const uint8_t *id)
+static inline uint8_t joybus_id_get_status(const struct joybus_id *id)
 {
-  return id[2];
+  return id->status;
 }
 
 /**
@@ -140,9 +151,9 @@ static inline uint8_t joybus_id_get_status(const uint8_t *id)
  * @param id pointer to the 3-byte ID field from an "identify" buffer
  * @param flags status flags to clear
  */
-static inline void joybus_id_clear_status_flags(uint8_t *id, uint8_t flags)
+static inline void joybus_id_clear_status_flags(struct joybus_id *id, uint8_t flags)
 {
-  id[2] &= ~flags;
+  id->status &= ~flags;
 }
 
 /**
@@ -151,9 +162,9 @@ static inline void joybus_id_clear_status_flags(uint8_t *id, uint8_t flags)
  * @param id pointer to the 3-byte ID field from an "identify" buffer
  * @param flags status flags to set
  */
-static inline void joybus_id_set_status_flags(uint8_t *id, uint8_t flags)
+static inline void joybus_id_set_status_flags(struct joybus_id *id, uint8_t flags)
 {
-  id[2] |= flags;
+  id->status |= flags;
 }
 
 /**
@@ -162,9 +173,9 @@ static inline void joybus_id_set_status_flags(uint8_t *id, uint8_t flags)
  * @param id pointer to the 3-byte ID field from an "identify" buffer
  * @return the wireless ID (bits 9–2 of bytes 1 and 2 of ID field)
  */
-static inline uint8_t joybus_id_get_wireless_id(const uint8_t *id)
+static inline uint16_t joybus_id_get_wireless_id(const struct joybus_id *id)
 {
-  return (uint16_t)((id[1] & 0xC0) << 2 | id[2]);
+  return (uint16_t)((id->type[1] & 0xC0) << 2 | id->status);
 }
 
 /**
@@ -173,19 +184,19 @@ static inline uint8_t joybus_id_get_wireless_id(const uint8_t *id)
  * @param id pointer to the 3-byte ID field from an "identify" buffer
  * @param wireless_id the wireless ID to set (10 bits)
  */
-static inline void joybus_id_set_wireless_id(uint8_t *id, uint16_t wireless_id)
+static inline void joybus_id_set_wireless_id(struct joybus_id *id, uint16_t wireless_id)
 {
-  id[1] = (id[1] & ~0xC0) | ((wireless_id >> 2) & 0xC0);
-  id[2] = wireless_id & 0xFF;
+  id->type[1] = (id->type[1] & ~0xC0) | ((wireless_id >> 2) & 0xC0);
+  id->status  = wireless_id & 0xFF;
 }
 
 /**
- * Check if the accessory changed flag is set in an "identify" buffer
+ * Check if the pak changed flag is set in an "identify" buffer
  *
  * @param id pointer to the 3-byte ID field from an "identify" buffer
- * @return true if accessory changed flag is set, false otherwise
+ * @return true if pak changed flag is set, false otherwise
  */
-static inline bool joybus_id_n64_accessory_changed(uint8_t *id)
+static inline bool joybus_id_n64_pak_changed(const struct joybus_id *id)
 {
-  return (id[2] & JOYBUS_STATUS_N64_ACCESSORY_PRESENT) && (id[2] & JOYBUS_STATUS_N64_ACCESSORY_PULLED);
+  return (id->status & JOYBUS_STATUS_N64_PAK_PRESENT) && (id->status & JOYBUS_STATUS_N64_PAK_PULLED);
 }

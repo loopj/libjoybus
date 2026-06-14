@@ -52,8 +52,8 @@ struct joybus;
 /// Maximum size of a Joybus transfer, in bytes
 #define JOYBUS_BLOCK_SIZE               64
 
-/// Size of a Joybus N64 accessory read/write block
-#define JOYBUS_ACCESSORY_BLOCK_SIZE     32
+/// Size of a Joybus N64 pak read/write block
+#define JOYBUS_PAK_BLOCK_SIZE           32
 
 /**
  * Macro to cast a backend-specific Joybus instance to a generic Joybus instance.
@@ -79,6 +79,13 @@ struct joybus_api {
   int (*target_unregister)(struct joybus *bus, struct joybus_target *target);
 };
 
+struct joybus_host_op {
+  joybus_transfer_cb_t callback;
+  void *user_data;
+  uint8_t *response;
+  uint8_t arg;
+};
+
 /**
  * A Joybus instance.
  */
@@ -87,6 +94,8 @@ struct joybus {
 
   struct joybus_target *target;
   uint8_t command_buffer[JOYBUS_BLOCK_SIZE];
+  uint8_t response_buffer[JOYBUS_BLOCK_SIZE];
+  struct joybus_host_op host_op;
 };
 
 /**

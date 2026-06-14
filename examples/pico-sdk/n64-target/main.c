@@ -30,7 +30,7 @@
 // Joybus and target instances
 static struct joybus_rp2xxx rp2xxx_bus;
 static struct joybus *bus = JOYBUS(&rp2xxx_bus);
-static struct joybus_n64_controller n64_controller;
+static struct joybus_target_n64_controller n64_controller;
 
 // Mapping of button GPIOs to their corresponding bits in the N64 controller input state
 const uint button_map[][2] = {
@@ -58,7 +58,7 @@ int main()
   joybus_enable(bus);
 
   // Initialize a N64 controller target as a standard controller
-  joybus_n64_controller_init(&n64_controller);
+  joybus_target_n64_controller_init(&n64_controller);
 
   // Register the target on the bus
   joybus_target_register(bus, JOYBUS_TARGET(&n64_controller));
