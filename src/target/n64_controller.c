@@ -199,7 +199,7 @@ static int handle_pak_write(struct joybus_target_n64_controller *controller, con
 
   // Full payload received, respond with the CRC
   if (bytes_read == JOYBUS_CMD_N64_PAK_WRITE_TX) {
-    bool checksum_valid = (joybus_id_get_status(&controller->id) & JOYBUS_STATUS_N64_ADDR_CHECKSUM_ERROR) == 0;
+    bool checksum_valid = (controller->id.status & JOYBUS_STATUS_N64_ADDR_CHECKSUM_ERROR) == 0;
     bool ready          = pak_ready(controller) && checksum_valid;
 
     // Mark the CRC as "no pak" if we're not ready to commit the write

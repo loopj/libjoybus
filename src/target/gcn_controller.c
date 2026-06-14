@@ -142,7 +142,7 @@ static inline int handle_read(struct joybus_target_gcn_controller *controller, c
       controller->input.buttons |= JOYBUS_GCN_USE_ORIGIN;
 
       // Get the previous motor state
-      uint8_t last_motor_state = (joybus_id_get_status(&controller->id) & JOYBUS_STATUS_GCN_MOTOR_STATE_MASK) >>
+      uint8_t last_motor_state = (controller->id.status & JOYBUS_STATUS_GCN_MOTOR_STATE_MASK) >>
                                  JOYBUS_STATUS_GCN_MOTOR_STATE_SHIFT;
 
       // Save the analog mode and motor state
@@ -230,7 +230,7 @@ static inline int handle_read_long(struct joybus_target_gcn_controller *controll
       controller->input.buttons |= JOYBUS_GCN_USE_ORIGIN;
 
       // Get the previous motor state
-      uint8_t last_motor_state = (joybus_id_get_status(&controller->id) & JOYBUS_STATUS_GCN_MOTOR_STATE_MASK) >>
+      uint8_t last_motor_state = (controller->id.status & JOYBUS_STATUS_GCN_MOTOR_STATE_MASK) >>
                                  JOYBUS_STATUS_GCN_MOTOR_STATE_SHIFT;
 
       // Save the analog mode and motor state
@@ -266,7 +266,7 @@ static inline int handle_probe_device(struct joybus_target_gcn_controller *contr
 {
   if (bytes_read == 1) {
     // Don't respond to probe commands if we already received data from a controller
-    if (joybus_id_get_type(&controller->id) & JOYBUS_TYPE_GCN_WIRELESS_RECEIVED)
+    if (controller->id.type & JOYBUS_TYPE_GCN_WIRELESS_RECEIVED)
       return -JOYBUS_ERR_NOT_SUPPORTED;
 
     // Respond with 8 bytes of zeroes

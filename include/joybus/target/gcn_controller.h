@@ -124,7 +124,7 @@ void joybus_target_gcn_controller_set_motor_cb(struct joybus_target_gcn_controll
  */
 static inline bool joybus_target_gcn_controller_is_wireless(struct joybus_target_gcn_controller *controller)
 {
-  return joybus_id_get_type(&controller->id) & JOYBUS_TYPE_GCN_WIRELESS;
+  return controller->id.type & JOYBUS_TYPE_GCN_WIRELESS;
 }
 
 /**
@@ -162,7 +162,7 @@ static inline uint16_t joybus_target_gcn_controller_get_wireless_id(struct joybu
  */
 static inline bool joybus_target_gcn_controller_wireless_id_fixed(struct joybus_target_gcn_controller *controller)
 {
-  return joybus_id_get_type(&controller->id) & JOYBUS_TYPE_GCN_WIRELESS_ID_FIXED;
+  return controller->id.type & JOYBUS_TYPE_GCN_WIRELESS_ID_FIXED;
 }
 
 /**

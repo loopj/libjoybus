@@ -113,7 +113,7 @@ static void test_set_origin_changed_sets_need_origin(void)
 
   // Need-origin is raised in both the input buttons and the ID status
   TEST_ASSERT_TRUE(controller.input.buttons & JOYBUS_GCN_NEED_ORIGIN);
-  TEST_ASSERT_TRUE(joybus_id_get_status(&controller.id) & JOYBUS_STATUS_GCN_NEED_ORIGIN);
+  TEST_ASSERT_TRUE(controller.id.status & JOYBUS_STATUS_GCN_NEED_ORIGIN);
 }
 
 // Test that an unchanged origin does not raise need-origin
@@ -131,7 +131,7 @@ static void test_set_origin_unchanged_does_not_set_need_origin(void)
   joybus_target_gcn_controller_set_origin(&controller, &same_origin);
 
   TEST_ASSERT_FALSE(controller.input.buttons & JOYBUS_GCN_NEED_ORIGIN);
-  TEST_ASSERT_FALSE(joybus_id_get_status(&controller.id) & JOYBUS_STATUS_GCN_NEED_ORIGIN);
+  TEST_ASSERT_FALSE(controller.id.status & JOYBUS_STATUS_GCN_NEED_ORIGIN);
 }
 
 // ---------------------------------------------------------------------------
@@ -270,7 +270,7 @@ static void test_read_latches_flags(void)
 
   TEST_ASSERT_TRUE(controller.input.buttons & JOYBUS_GCN_USE_ORIGIN);
 
-  uint8_t status = joybus_id_get_status(&controller.id);
+  uint8_t status = controller.id.status;
   TEST_ASSERT_EQUAL_HEX8(JOYBUS_GCN_ANALOG_MODE_2, status & JOYBUS_STATUS_GCN_ANALOG_MODE_MASK);
   TEST_ASSERT_EQUAL_HEX8(JOYBUS_GCN_MOTOR_RUMBLE,
                          (status & JOYBUS_STATUS_GCN_MOTOR_STATE_MASK) >> JOYBUS_STATUS_GCN_MOTOR_STATE_SHIFT);
@@ -329,7 +329,7 @@ static void test_read_origin(void)
 
   // Need-origin is cleared from both the input buttons and the ID status
   TEST_ASSERT_FALSE(controller.input.buttons & JOYBUS_GCN_NEED_ORIGIN);
-  TEST_ASSERT_FALSE(joybus_id_get_status(&controller.id) & JOYBUS_STATUS_GCN_NEED_ORIGIN);
+  TEST_ASSERT_FALSE(controller.id.status & JOYBUS_STATUS_GCN_NEED_ORIGIN);
 }
 
 // ---------------------------------------------------------------------------
@@ -366,13 +366,13 @@ static void test_calibrate_clears_need_origin(void)
     .trigger_right = 0x12,
   };
   joybus_target_gcn_controller_set_origin(&controller, &new_origin);
-  TEST_ASSERT_TRUE(joybus_id_get_status(&controller.id) & JOYBUS_STATUS_GCN_NEED_ORIGIN);
+  TEST_ASSERT_TRUE(controller.id.status & JOYBUS_STATUS_GCN_NEED_ORIGIN);
 
   uint8_t command[] = {JOYBUS_CMD_GCN_CALIBRATE, 0x00, 0x00};
   send_command(command, sizeof(command));
 
   TEST_ASSERT_FALSE(controller.input.buttons & JOYBUS_GCN_NEED_ORIGIN);
-  TEST_ASSERT_FALSE(joybus_id_get_status(&controller.id) & JOYBUS_STATUS_GCN_NEED_ORIGIN);
+  TEST_ASSERT_FALSE(controller.id.status & JOYBUS_STATUS_GCN_NEED_ORIGIN);
 }
 
 // ---------------------------------------------------------------------------
@@ -401,7 +401,7 @@ static void test_read_long_masks_mode_and_motor(void)
   uint8_t command[] = {JOYBUS_CMD_GCN_READ_LONG, 0xFF, 0xFF};
   send_command(command, sizeof(command));
 
-  uint8_t status = joybus_id_get_status(&controller.id);
+  uint8_t status = controller.id.status;
   TEST_ASSERT_EQUAL_HEX8(0x07, status & JOYBUS_STATUS_GCN_ANALOG_MODE_MASK);
   TEST_ASSERT_EQUAL_HEX8(0x03, (status & JOYBUS_STATUS_GCN_MOTOR_STATE_MASK) >> JOYBUS_STATUS_GCN_MOTOR_STATE_SHIFT);
 }

@@ -128,7 +128,7 @@ static void test_attach_pak_before_registration(void)
 {
   joybus_target_n64_controller_attach_pak(&controller, &pak);
 
-  TEST_ASSERT_EQUAL_HEX8(JOYBUS_STATUS_N64_PAK_PRESENT, joybus_id_get_status(&controller.id));
+  TEST_ASSERT_EQUAL_HEX8(JOYBUS_STATUS_N64_PAK_PRESENT, controller.id.status);
 }
 
 // Test that attaching a pak while registered reports it as changed (present and pulled together)
@@ -140,7 +140,7 @@ static void test_attach_pak_while_registered(void)
   joybus_target_n64_controller_attach_pak(&controller, &pak);
 
   TEST_ASSERT_EQUAL_HEX8(JOYBUS_STATUS_N64_PAK_PRESENT | JOYBUS_STATUS_N64_PAK_PULLED,
-                         joybus_id_get_status(&controller.id));
+                         controller.id.status);
 }
 
 // Test that detaching a pak reports it as pulled
@@ -150,7 +150,7 @@ static void test_detach_pak(void)
   joybus_target_n64_controller_detach_pak(&controller);
 
   TEST_ASSERT_NULL(controller.pak);
-  TEST_ASSERT_EQUAL_HEX8(JOYBUS_STATUS_N64_PAK_PULLED, joybus_id_get_status(&controller.id));
+  TEST_ASSERT_EQUAL_HEX8(JOYBUS_STATUS_N64_PAK_PULLED, controller.id.status);
 }
 
 // ---------------------------------------------------------------------------
@@ -424,7 +424,7 @@ static void test_pak_read_bad_checksum(void)
   send_command(bad_read, sizeof(bad_read));
 
   TEST_ASSERT_EQUAL(0, read_block_count);
-  TEST_ASSERT_TRUE(joybus_id_get_status(&controller.id) & JOYBUS_STATUS_N64_ADDR_CHECKSUM_ERROR);
+  TEST_ASSERT_TRUE(controller.id.status & JOYBUS_STATUS_N64_ADDR_CHECKSUM_ERROR);
 
   uint8_t expected[JOYBUS_CMD_N64_PAK_READ_RX] = {0};
   expected[JOYBUS_PAK_BLOCK_SIZE]              = 0xFF;
@@ -438,12 +438,12 @@ static void test_pak_read_valid_clears_checksum_error(void)
 
   uint8_t bad_read[] = {JOYBUS_CMD_N64_PAK_READ, 0x80, 0x00};
   send_command(bad_read, sizeof(bad_read));
-  TEST_ASSERT_TRUE(joybus_id_get_status(&controller.id) & JOYBUS_STATUS_N64_ADDR_CHECKSUM_ERROR);
+  TEST_ASSERT_TRUE(controller.id.status & JOYBUS_STATUS_N64_ADDR_CHECKSUM_ERROR);
 
   uint16_t addr       = valid_pak_addr(0x8000);
   uint8_t good_read[] = {JOYBUS_CMD_N64_PAK_READ, addr >> 8, addr & 0xFF};
   send_command(good_read, sizeof(good_read));
-  TEST_ASSERT_FALSE(joybus_id_get_status(&controller.id) & JOYBUS_STATUS_N64_ADDR_CHECKSUM_ERROR);
+  TEST_ASSERT_FALSE(controller.id.status & JOYBUS_STATUS_N64_ADDR_CHECKSUM_ERROR);
 }
 
 // ---------------------------------------------------------------------------
@@ -522,7 +522,7 @@ static void test_pak_write_bad_checksum(void)
 
   TEST_ASSERT_EQUAL_HEX8(joybus_data_checksum(payload, sizeof(payload)) ^ 0xFF, response.data[0]);
   TEST_ASSERT_EQUAL(0, write_block_count);
-  TEST_ASSERT_TRUE(joybus_id_get_status(&controller.id) & JOYBUS_STATUS_N64_ADDR_CHECKSUM_ERROR);
+  TEST_ASSERT_TRUE(controller.id.status & JOYBUS_STATUS_N64_ADDR_CHECKSUM_ERROR);
 }
 
 // ---------------------------------------------------------------------------

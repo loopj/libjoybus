@@ -38,7 +38,7 @@ void joybus_identify_cb(struct joybus *bus, int result, void *user_data)
     return;
 
   // Check it's a GameCube controller
-  uint16_t type = joybus_id_get_type(&id);
+  uint16_t type = id.type;
   if (!(type & JOYBUS_TYPE_GCN_DEVICE))
     return;
 
