@@ -46,8 +46,7 @@ static void set_distinct_input(void)
 
 void setUp(void)
 {
-  // Recreate the controller from scratch; init establishes a complete known
-  // state, including clearing any callbacks a previous test registered
+  // Recreate the controller from scratch
   joybus_target_gcn_controller_init(&controller);
 
   // Point the harness at the controller and clear recorded responses
@@ -207,13 +206,9 @@ static void test_read_responds_at_second_byte(void)
   TEST_ASSERT_EQUAL(JOYBUS_CMD_GCN_READ_RX, response.len);
 }
 
-// Test the 8-byte input packing for every analog mode, including an out-of-range mode, against hand-computed golden
-// bytes
+// Test the 8-byte input packing for every analog mode
 static void test_read_pack_matrix(void)
 {
-  // All expected values are derived from the distinct input state:
-  // buttons {0x01, 0x10}, stick 0x12/0x34, substick 0x56/0x78,
-  // triggers 0x9A/0xBC, analog A/B 0xDE/0xF1
   static const struct {
     uint8_t mode;
     uint8_t expected[JOYBUS_CMD_GCN_READ_RX];
@@ -233,8 +228,7 @@ static void test_read_pack_matrix(void)
   };
 
   for (size_t i = 0; i < sizeof(cases) / sizeof(cases[0]); i++) {
-    // Each case runs against a freshly initialized controller, since a
-    // completed read latches state that would bleed into the next case
+    // Run each case against a freshly initialized controller
     setUp();
     set_distinct_input();
 
@@ -336,7 +330,7 @@ static void test_read_origin(void)
 // Calibrate (0x42)
 // ---------------------------------------------------------------------------
 
-// Test that calibrate adopts the current input as the new origin and responds with it at the first byte
+// Test that calibrate adopts the current input as the new origin and responds with it
 static void test_calibrate_copies_input_to_origin(void)
 {
   set_distinct_input();
@@ -395,7 +389,7 @@ static void test_read_long_returns_full_state(void)
   TEST_ASSERT_EQUAL_HEX8_ARRAY(expected, response.data, sizeof(expected));
 }
 
-// Test that read long masks the analog mode to 3 bits and the motor state to 2 bits before latching them
+// Test that "read long" masks the analog mode and motor state before latching them
 static void test_read_long_masks_mode_and_motor(void)
 {
   uint8_t command[] = {JOYBUS_CMD_GCN_READ_LONG, 0xFF, 0xFF};
@@ -441,7 +435,7 @@ static void test_probe_device_unsupported_after_wireless_received(void)
 // Fix device (0x4E)
 // ---------------------------------------------------------------------------
 
-// Test that fix device responds only at the third byte, extracts the 10-bit wireless ID, and updates the ID flags
+// Test that fix device responds at the third byte, extracts the 10-bit wireless ID, and updates the ID flags
 static void test_fix_device(void)
 {
   // Fix device is a WaveBird receiver command, so test against one

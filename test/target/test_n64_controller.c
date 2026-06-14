@@ -281,8 +281,7 @@ static void test_reset_resamples_stick_origin(void)
   TEST_ASSERT_EQUAL_HEX8(0, response.data[2]);
 }
 
-// Test that calibrate snapshots the current stick position as the origin, so the app can choose when the power-on
-// neutral is sampled
+// Test that calibrate snapshots the current stick position as the origin
 static void test_calibrate_snapshots_origin(void)
 {
   uint8_t read[] = {JOYBUS_CMD_N64_READ};
