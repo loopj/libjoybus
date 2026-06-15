@@ -14,6 +14,7 @@ target_sources(
     src/host/common.c
     src/host/gcn.c
     src/host/n64.c
+    src/host/n64_rumble_pak.c
     src/target/gcn_controller.c
     src/target/n64_controller.c
     src/target/n64_rumble_pak.c

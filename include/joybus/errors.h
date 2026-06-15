@@ -23,6 +23,9 @@ enum joybus_error {
 
   /// Checksum error
   JOYBUS_ERR_CHECKSUM,
+
+  /// Expected device not detected
+  JOYBUS_ERR_NO_DEVICE,
 };
 
 /** @} */
