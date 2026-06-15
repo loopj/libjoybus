@@ -58,16 +58,16 @@ static int unpack_input_state(struct joybus_gcn_controller_state *dest, const ui
   return 0;
 }
 
-static void gcn_read_cb(struct joybus *bus, int result, void *user_data)
+static void gcn_read_cb(struct joybus *bus, int status, void *user_data)
 {
   // Unpack the response
-  if (result >= 0)
+  if (status >= 0)
     unpack_input_state((struct joybus_gcn_controller_state *)bus->host_op.response, bus->response_buffer,
                        bus->host_op.arg);
 
   // Fire the user callback if one is set
   if (bus->host_op.callback)
-    bus->host_op.callback(bus, result, bus->host_op.user_data);
+    bus->host_op.callback(bus, status, bus->host_op.user_data);
 }
 
 int joybus_gcn_read(struct joybus *bus, enum joybus_gcn_analog_mode analog_mode,

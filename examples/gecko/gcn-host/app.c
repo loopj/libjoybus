@@ -31,10 +31,10 @@ static uint8_t poll_mode = POLL_MODE_IDENTIFY;
 // Sleeptimer handle for polling
 static sl_sleeptimer_timer_handle_t poll_timer;
 
-void joybus_identify_cb(struct joybus *bus, int result, void *user_data)
+void joybus_identify_cb(struct joybus *bus, int status, void *user_data)
 {
   // Stay in identify mode on any Joybus error
-  if (result < 0)
+  if (status < 0)
     return;
 
   // Check it's a GameCube controller
@@ -54,10 +54,10 @@ void joybus_identify_cb(struct joybus *bus, int result, void *user_data)
   poll_mode = POLL_MODE_READ;
 }
 
-void joybus_read_cb(struct joybus *bus, int result, void *user_data)
+void joybus_read_cb(struct joybus *bus, int status, void *user_data)
 {
   // Switch back to identify mode on any Joybus error
-  if (result < 0) {
+  if (status < 0) {
     poll_mode = POLL_MODE_IDENTIFY;
     return;
   }

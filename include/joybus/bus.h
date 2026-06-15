@@ -64,10 +64,10 @@ struct joybus;
  * Function type for transfer completion callbacks.
  *
  * @param bus the Joybus associated with the transfer
- * @param result positive number of bytes read on success, negative error code on failure
+ * @param status positive number of bytes read on success, negative error code on failure
  * @param user_data user data passed to the callback
  */
-typedef void (*joybus_transfer_cb)(struct joybus *bus, int result, void *user_data);
+typedef void (*joybus_transfer_cb)(struct joybus *bus, int status, void *user_data);
 
 // API for a Joybus backend - internal use only
 struct joybus_api {
@@ -182,25 +182,25 @@ static inline int joybus_target_register(struct joybus *bus, struct joybus_targe
 static inline int joybus_target_unregister(struct joybus *bus, struct joybus_target *target)
 {
   // Backend-specific unregistration
-  int result = bus->api->target_unregister(bus, target);
+  int status = bus->api->target_unregister(bus, target);
 
   // Common teardown
   bus->target        = NULL;
   target->registered = false;
 
-  return result;
+  return status;
 }
 
 // Context for a blocking Joybus operation
 struct joybus_sync_ctx {
   volatile bool done;
-  volatile int result;
+  volatile int status;
 };
 
-// Transfer completion callback that records the result into a joybus_sync_ctx.
-void joybus_sync_cb(struct joybus *bus, int result, void *user_data);
+// Transfer completion callback that records the status into a joybus_sync_ctx.
+void joybus_sync_cb(struct joybus *bus, int status, void *user_data);
 
 // Busy-wait on a joybus_sync_ctx until the operation completes
-int joybus_sync(int start_result, struct joybus_sync_ctx *ctx);
+int joybus_sync(int start_status, struct joybus_sync_ctx *ctx);
 
 /** @} */

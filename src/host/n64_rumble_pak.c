@@ -25,13 +25,13 @@ enum {
   PROBE_READ_SIGNATURE,
 };
 
-static void probe_cb(struct joybus *bus, int result, void *user_data);
+static void probe_cb(struct joybus *bus, int status, void *user_data);
 
-// Fire the saved user callback with a result
-static void probe_finish(struct joybus *bus, int result)
+// Fire the saved user callback with a status
+static void probe_finish(struct joybus *bus, int status)
 {
   if (bus->host_op.callback)
-    bus->host_op.callback(bus, result, bus->host_op.user_data);
+    bus->host_op.callback(bus, status, bus->host_op.user_data);
 }
 
 // Write a uniform block to the probe register and continue the chain
@@ -50,11 +50,11 @@ static int probe_read(struct joybus *bus)
 }
 
 // Advance the probe one step each time a transfer completes
-static void probe_cb(struct joybus *bus, int result, void *user_data)
+static void probe_cb(struct joybus *bus, int status, void *user_data)
 {
   // Bail out of the chain on any transfer error
-  if (result < 0) {
-    probe_finish(bus, result);
+  if (status < 0) {
+    probe_finish(bus, status);
     return;
   }
 
@@ -62,7 +62,7 @@ static void probe_cb(struct joybus *bus, int result, void *user_data)
     case PROBE_WROTE_ANTI_SIGNATURE:
       // Non-signature written, read it back
       bus->host_op.arg = PROBE_READ_ANTI_SIGNATURE;
-      result           = probe_read(bus);
+      status           = probe_read(bus);
       break;
 
     case PROBE_READ_ANTI_SIGNATURE:
@@ -72,38 +72,38 @@ static void probe_cb(struct joybus *bus, int result, void *user_data)
         return;
       }
       bus->host_op.arg = PROBE_WROTE_SIGNATURE;
-      result           = probe_write(bus, RUMBLE_PAK_SIGNATURE);
+      status           = probe_write(bus, RUMBLE_PAK_SIGNATURE);
       break;
 
     case PROBE_WROTE_SIGNATURE:
       // Signature written, read it back
       bus->host_op.arg = PROBE_READ_SIGNATURE;
-      result           = probe_read(bus);
+      status           = probe_read(bus);
       break;
 
     case PROBE_READ_SIGNATURE:
       // A rumble pak reads the signature back once enabled
       if (bus->response_buffer[RUMBLE_PAK_PROBE_BYTE] != RUMBLE_PAK_SIGNATURE)
-        result = -JOYBUS_ERR_NO_DEVICE;
+        status = -JOYBUS_ERR_NO_DEVICE;
 
-      probe_finish(bus, result >= 0 ? 0 : result);
+      probe_finish(bus, status >= 0 ? 0 : status);
       return;
   }
 
   // A transfer that failed to start ends the chain
-  if (result < 0)
-    probe_finish(bus, result);
+  if (status < 0)
+    probe_finish(bus, status);
 }
 
-static void motor_write_cb(struct joybus *bus, int result, void *user_data)
+static void motor_write_cb(struct joybus *bus, int status, void *user_data)
 {
   // Check for CRC errors
-  if (result >= 0 && bus->host_op.arg != bus->response_buffer[0])
-    result = -JOYBUS_ERR_CHECKSUM;
+  if (status >= 0 && bus->host_op.arg != bus->response_buffer[0])
+    status = -JOYBUS_ERR_CHECKSUM;
 
   // Fire the user callback
   if (bus->host_op.callback)
-    bus->host_op.callback(bus, result, bus->host_op.user_data);
+    bus->host_op.callback(bus, status, bus->host_op.user_data);
 }
 
 static int motor_write(struct joybus *bus, uint8_t value, joybus_transfer_cb callback, void *user_data) {
