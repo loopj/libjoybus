@@ -43,6 +43,7 @@ jobs:
           - gcn-host
           - gcn-target
           - n64-adapter-usb-hid
+          - n64-host
           - n64-target
 
     steps:
