@@ -41,7 +41,7 @@ struct joybus;
 #define JOYBUS_FREQ_GCN_GBA_CABLE       262144 // CPU-AGB @ 16.777216MHz / 64
 
 /// Minimum delay between Joybus transfers, in microseconds
-#define JOYBUS_INTER_TRANSFER_DELAY_US  20
+#define JOYBUS_INTER_TRANSFER_DELAY_US  80
 
 /// Timeout for waiting for a reply from a target, in microseconds
 #define JOYBUS_REPLY_TIMEOUT_US         100
