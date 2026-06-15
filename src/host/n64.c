@@ -12,12 +12,8 @@
 
 int joybus_n64_read(struct joybus *bus, struct joybus_n64_controller_state *response)
 {
-  // Build the command
-  bus->command_buffer[0] = JOYBUS_CMD_N64_READ;
-
-  // Transfer the command and read the response directly into the response buffer
-  return joybus_transfer_sync(bus, bus->command_buffer, JOYBUS_CMD_N64_READ_TX, (uint8_t *)response,
-                              JOYBUS_CMD_N64_READ_RX);
+  struct joybus_sync_ctx ctx = {0};
+  return joybus_sync(joybus_n64_read_async(bus, response, joybus_sync_cb, &ctx), &ctx);
 }
 
 int joybus_n64_read_async(struct joybus *bus, struct joybus_n64_controller_state *response,
@@ -29,6 +25,13 @@ int joybus_n64_read_async(struct joybus *bus, struct joybus_n64_controller_state
   // Transfer the command and read the response directly into the response buffer
   return joybus_transfer(bus, bus->command_buffer, JOYBUS_CMD_N64_READ_TX, (uint8_t *)response, JOYBUS_CMD_N64_READ_RX,
                          callback, user_data);
+}
+
+int joybus_n64_pak_write(struct joybus *bus, uint16_t addr, const void *data,
+                         uint8_t response[JOYBUS_CMD_N64_PAK_WRITE_RX])
+{
+  struct joybus_sync_ctx ctx = {0};
+  return joybus_sync(joybus_n64_pak_write_async(bus, addr, data, response, joybus_sync_cb, &ctx), &ctx);
 }
 
 int joybus_n64_pak_write_async(struct joybus *bus, uint16_t addr, const uint8_t *data, uint8_t *response,
@@ -48,6 +51,12 @@ int joybus_n64_pak_write_async(struct joybus *bus, uint16_t addr, const uint8_t 
   // Send command
   return joybus_transfer(bus, bus->command_buffer, JOYBUS_CMD_N64_PAK_WRITE_TX, response, JOYBUS_CMD_N64_PAK_WRITE_RX,
                          callback, user_data);
+}
+
+int joybus_n64_pak_read(struct joybus *bus, uint16_t addr, uint8_t response[JOYBUS_CMD_N64_PAK_READ_RX])
+{
+  struct joybus_sync_ctx ctx = {0};
+  return joybus_sync(joybus_n64_pak_read_async(bus, addr, response, joybus_sync_cb, &ctx), &ctx);
 }
 
 int joybus_n64_pak_read_async(struct joybus *bus, uint16_t addr, uint8_t *response, joybus_transfer_cb_t callback,

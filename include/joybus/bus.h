@@ -191,4 +191,16 @@ static inline int joybus_target_unregister(struct joybus *bus, struct joybus_tar
   return result;
 }
 
+// Context for a blocking Joybus operation
+struct joybus_sync_ctx {
+  volatile bool done;
+  volatile int result;
+};
+
+// Transfer completion callback that records the result into a joybus_sync_ctx.
+void joybus_sync_cb(struct joybus *bus, int result, void *user_data);
+
+// Busy-wait on a joybus_sync_ctx until the operation completes
+int joybus_sync(int start_result, struct joybus_sync_ctx *ctx);
+
 /** @} */

@@ -12,7 +12,13 @@
 /*
  * Joybus device type flags.
  *
- * The first two bytes of the identify response hold the device "type" flags.
+ * The first two bytes of the identify response contain the device type flags.
+ *
+ * The following flags map to the little-endian representation of the first two
+ * bytes of the identify response. We're using a little-endian representation,
+ * since modern microcontrollers are pretty much all little-endian by default.
+ * This helps us avoid byte swapping when parsing the identify response, we can
+ * cast the bytes to a joybus_id struct and use these masks as-is.
  */
 
 // Non-GameCube device types
