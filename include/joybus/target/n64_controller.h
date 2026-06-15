@@ -25,7 +25,7 @@ struct joybus_target_n64_controller;
  *
  * @param controller the controller that was reset
  */
-typedef void (*joybus_target_n64_controller_reset_cb_t)(struct joybus_target_n64_controller *controller);
+typedef void (*joybus_target_n64_controller_reset_cb)(struct joybus_target_n64_controller *controller);
 
 /**
  * N64 controller Joybus target.
@@ -44,7 +44,7 @@ struct joybus_target_n64_controller {
   struct joybus_n64_controller_state input;
 
   /// Callback for controller reset events
-  joybus_target_n64_controller_reset_cb_t on_reset;
+  joybus_target_n64_controller_reset_cb on_reset;
 
   /// Currently attached pak (if any)
   struct joybus_target_n64_pak *pak;
@@ -73,7 +73,7 @@ void joybus_target_n64_controller_init(struct joybus_target_n64_controller *cont
  * @param callback the callback function
  */
 void joybus_target_n64_controller_set_reset_cb(struct joybus_target_n64_controller *controller,
-                                               joybus_target_n64_controller_reset_cb_t callback);
+                                               joybus_target_n64_controller_reset_cb callback);
 
 /**
  * Attach an pak to the controller.

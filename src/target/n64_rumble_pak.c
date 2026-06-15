@@ -69,7 +69,7 @@ void joybus_target_n64_rumble_pak_init(struct joybus_target_n64_rumble_pak *rumb
 }
 
 void joybus_target_n64_rumble_pak_set_motor_cb(struct joybus_target_n64_rumble_pak *rumble_pak,
-                                               joybus_target_n64_rumble_pak_motor_cb_t callback)
+                                               joybus_target_n64_rumble_pak_motor_cb callback)
 {
   rumble_pak->on_motor_change = callback;
 }

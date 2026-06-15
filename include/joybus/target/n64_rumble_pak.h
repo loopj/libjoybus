@@ -25,7 +25,7 @@ struct joybus_target_n64_rumble_pak;
  * @param pak    the rumble pak whose motor state changed
  * @param active true if the motor should be on, false if off
  */
-typedef void (*joybus_target_n64_rumble_pak_motor_cb_t)(struct joybus_target_n64_rumble_pak *pak, bool active);
+typedef void (*joybus_target_n64_rumble_pak_motor_cb)(struct joybus_target_n64_rumble_pak *pak, bool active);
 
 /**
  * N64 Rumble Pak pak.
@@ -41,7 +41,7 @@ struct joybus_target_n64_rumble_pak {
   bool active;
 
   /// Callback for motor state change events
-  joybus_target_n64_rumble_pak_motor_cb_t on_motor_change;
+  joybus_target_n64_rumble_pak_motor_cb on_motor_change;
 };
 
 /**
@@ -61,5 +61,5 @@ void joybus_target_n64_rumble_pak_init(struct joybus_target_n64_rumble_pak *pak)
  * @param callback the callback function
  */
 void joybus_target_n64_rumble_pak_set_motor_cb(struct joybus_target_n64_rumble_pak *pak,
-                                               joybus_target_n64_rumble_pak_motor_cb_t callback);
+                                               joybus_target_n64_rumble_pak_motor_cb callback);
 /** @} */

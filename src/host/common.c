@@ -7,7 +7,7 @@ int joybus_identify(struct joybus *bus, struct joybus_id *response)
   return joybus_sync(joybus_identify_async(bus, response, joybus_sync_cb, &ctx), &ctx);
 }
 
-int joybus_identify_async(struct joybus *bus, struct joybus_id *response, joybus_transfer_cb_t callback,
+int joybus_identify_async(struct joybus *bus, struct joybus_id *response, joybus_transfer_cb callback,
                           void *user_data)
 {
   bus->command_buffer[0] = JOYBUS_CMD_IDENTIFY;
@@ -22,7 +22,7 @@ int joybus_reset(struct joybus *bus, struct joybus_id *response)
   return joybus_sync(joybus_reset_async(bus, response, joybus_sync_cb, &ctx), &ctx);
 }
 
-int joybus_reset_async(struct joybus *bus, struct joybus_id *response, joybus_transfer_cb_t callback, void *user_data)
+int joybus_reset_async(struct joybus *bus, struct joybus_id *response, joybus_transfer_cb callback, void *user_data)
 {
   bus->command_buffer[0] = JOYBUS_CMD_RESET;
 

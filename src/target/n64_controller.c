@@ -42,7 +42,7 @@ static int8_t n64_controller_apply_origin(int8_t value, int8_t origin)
  * Response:        A 3-byte controller ID
  */
 static int handle_reset(struct joybus_target_n64_controller *controller, const uint8_t *command, uint8_t bytes_read,
-                        joybus_target_response_cb_t send_response, void *user_data)
+                        joybus_target_response_cb send_response, void *user_data)
 {
   // Respond with the controller ID
   send_response((uint8_t *)&controller->id, JOYBUS_CMD_RESET_RX, user_data);
@@ -64,7 +64,7 @@ static int handle_reset(struct joybus_target_n64_controller *controller, const u
  * Response:        A 3-byte controller ID
  */
 static int handle_identify(struct joybus_target_n64_controller *controller, const uint8_t *command, uint8_t bytes_read,
-                           joybus_target_response_cb_t send_response, void *user_data)
+                           joybus_target_response_cb send_response, void *user_data)
 {
   // Snapshot the controller ID into the response buffer so id can be mutated below
   memcpy(controller->response, &controller->id, sizeof(controller->id));
@@ -89,7 +89,7 @@ static int handle_identify(struct joybus_target_n64_controller *controller, cons
  * Response:        An 4-byte input state.
  */
 static int handle_read(struct joybus_target_n64_controller *controller, const uint8_t *command, uint8_t bytes_read,
-                       joybus_target_response_cb_t send_response, void *user_data)
+                       joybus_target_response_cb send_response, void *user_data)
 {
   // Build the reported state from the current input
   struct joybus_n64_controller_state state = controller->input;
@@ -123,7 +123,7 @@ static int handle_read(struct joybus_target_n64_controller *controller, const ui
  *
  */
 static int handle_pak_read(struct joybus_target_n64_controller *controller, const uint8_t *command, uint8_t bytes_read,
-                           joybus_target_response_cb_t send_response, void *user_data)
+                           joybus_target_response_cb send_response, void *user_data)
 {
   // Wait until the full command is received before responding
   if (bytes_read < JOYBUS_CMD_N64_PAK_READ_TX)
@@ -174,7 +174,7 @@ static int handle_pak_read(struct joybus_target_n64_controller *controller, cons
  *
  */
 static int handle_pak_write(struct joybus_target_n64_controller *controller, const uint8_t *command, uint8_t bytes_read,
-                            joybus_target_response_cb_t send_response, void *user_data)
+                            joybus_target_response_cb send_response, void *user_data)
 {
   // First 3 bytes are command and address
   if (bytes_read == 3) {
@@ -223,7 +223,7 @@ static int handle_pak_write(struct joybus_target_n64_controller *controller, con
 }
 
 static int n64_controller_byte_received(struct joybus_target *target, const uint8_t *command, uint8_t bytes_read,
-                                        joybus_target_response_cb_t send_response, void *user_data)
+                                        joybus_target_response_cb send_response, void *user_data)
 {
   struct joybus_target_n64_controller *controller = JOYBUS_TARGET_N64_CONTROLLER(target);
   switch (command[0]) {
@@ -261,7 +261,7 @@ void joybus_target_n64_controller_init(struct joybus_target_n64_controller *cont
 }
 
 void joybus_target_n64_controller_set_reset_cb(struct joybus_target_n64_controller *controller,
-                                               joybus_target_n64_controller_reset_cb_t callback)
+                                               joybus_target_n64_controller_reset_cb callback)
 {
   controller->on_reset = callback;
 }

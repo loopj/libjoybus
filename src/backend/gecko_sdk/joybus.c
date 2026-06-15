@@ -688,7 +688,7 @@ static int joybus_gecko_disable(struct joybus *bus)
 }
 
 static int joybus_gecko_transfer(struct joybus *bus, const uint8_t *write_buf, uint8_t write_len, uint8_t *read_buf,
-                                 uint8_t read_len, joybus_transfer_cb_t callback, void *user_data)
+                                 uint8_t read_len, joybus_transfer_cb callback, void *user_data)
 {
   struct joybus_gecko_data *data = &JOYBUS_GECKO(bus)->data;
 

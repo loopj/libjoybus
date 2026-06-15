@@ -56,7 +56,7 @@ struct joybus_gecko_data {
   sl_sleeptimer_timer_handle_t rx_timeout_timer;
 
   // Transfer state
-  joybus_transfer_cb_t done_callback;
+  joybus_transfer_cb done_callback;
   void *done_user_data;
 
   // RX timings

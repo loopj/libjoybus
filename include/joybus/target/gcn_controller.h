@@ -25,7 +25,7 @@ struct joybus_target_gcn_controller;
  *
  * @param controller the controller that was reset
  */
-typedef void (*joybus_target_gcn_controller_reset_cb_t)(struct joybus_target_gcn_controller *controller);
+typedef void (*joybus_target_gcn_controller_reset_cb)(struct joybus_target_gcn_controller *controller);
 
 /**
  * Callback type for GameCube controller motor state change events.
@@ -33,7 +33,7 @@ typedef void (*joybus_target_gcn_controller_reset_cb_t)(struct joybus_target_gcn
  * @param controller the controller whose motor state changed
  * @param state the new motor state
  */
-typedef void (*joybus_target_gcn_controller_motor_cb_t)(struct joybus_target_gcn_controller *controller, uint8_t state);
+typedef void (*joybus_target_gcn_controller_motor_cb)(struct joybus_target_gcn_controller *controller, uint8_t state);
 
 /**
  * GameCube controller Joybus target.
@@ -58,10 +58,10 @@ struct joybus_target_gcn_controller {
   bool input_valid;
 
   /// Callback for controller reset events
-  joybus_target_gcn_controller_reset_cb_t on_reset;
+  joybus_target_gcn_controller_reset_cb on_reset;
 
   /// Callback for controller motor state change events
-  joybus_target_gcn_controller_motor_cb_t on_motor_state_change;
+  joybus_target_gcn_controller_motor_cb on_motor_state_change;
 };
 
 /**
@@ -102,7 +102,7 @@ static inline void joybus_target_gcn_controller_init_wavebird(struct joybus_targ
  * @param callback the callback function
  */
 void joybus_target_gcn_controller_set_reset_cb(struct joybus_target_gcn_controller *controller,
-                                               joybus_target_gcn_controller_reset_cb_t callback);
+                                               joybus_target_gcn_controller_reset_cb callback);
 
 /**
  * Set the motor state change callback for the controller.
@@ -114,7 +114,7 @@ void joybus_target_gcn_controller_set_reset_cb(struct joybus_target_gcn_controll
  * @param callback the callback function
  */
 void joybus_target_gcn_controller_set_motor_cb(struct joybus_target_gcn_controller *controller,
-                                               joybus_target_gcn_controller_motor_cb_t callback);
+                                               joybus_target_gcn_controller_motor_cb callback);
 
 /**
  * Check if the controller is a WaveBird controller.

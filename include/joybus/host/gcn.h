@@ -36,7 +36,7 @@ int joybus_gcn_read(struct joybus *bus, enum joybus_gcn_analog_mode analog_mode,
  */
 int joybus_gcn_read_async(struct joybus *bus, enum joybus_gcn_analog_mode analog_mode,
                           enum joybus_gcn_motor_state motor_state, struct joybus_gcn_controller_state *response,
-                          joybus_transfer_cb_t callback, void *user_data);
+                          joybus_transfer_cb callback, void *user_data);
 
 /**
  * Read the origin (neutral) state of a GameCube controller.
@@ -57,7 +57,7 @@ int joybus_gcn_read_origin(struct joybus *bus, struct joybus_gcn_controller_stat
  * @return 0 on success, negative error code on failure
  */
 int joybus_gcn_read_origin_async(struct joybus *bus, struct joybus_gcn_controller_state *response,
-                                 joybus_transfer_cb_t callback, void *user_data);
+                                 joybus_transfer_cb callback, void *user_data);
 
 /**
  * Calibrate a GameCube controller, setting its current input state as the origin.
@@ -78,7 +78,7 @@ int joybus_gcn_calibrate(struct joybus *bus, struct joybus_gcn_controller_state 
  * @return 0 on success, negative error code on failure
  */
 int joybus_gcn_calibrate_async(struct joybus *bus, struct joybus_gcn_controller_state *response,
-                               joybus_transfer_cb_t callback, void *user_data);
+                               joybus_transfer_cb callback, void *user_data);
 
 /**
  * Read the current input state of a GameCube controller, with full precision.
@@ -102,7 +102,7 @@ int joybus_gcn_read_long(struct joybus *bus, enum joybus_gcn_motor_state motor_s
  * @return 0 on success, negative error code on failure
  */
 int joybus_gcn_read_long_async(struct joybus *bus, enum joybus_gcn_motor_state motor_state,
-                               struct joybus_gcn_controller_state *response, joybus_transfer_cb_t callback,
+                               struct joybus_gcn_controller_state *response, joybus_transfer_cb callback,
                                void *user_data);
 
 /**
@@ -123,7 +123,7 @@ int joybus_gcn_probe_device(struct joybus *bus, uint8_t response[JOYBUS_CMD_GCN_
  * @param user_data user data to pass to the callback function
  */
 int joybus_gcn_probe_device_async(struct joybus *bus, uint8_t response[JOYBUS_CMD_GCN_PROBE_DEVICE_RX],
-                                  joybus_transfer_cb_t callback, void *user_data);
+                                  joybus_transfer_cb callback, void *user_data);
 
 /**
  * Send a "fix device" command to a WaveBird controller.
@@ -151,6 +151,6 @@ int joybus_gcn_fix_device(struct joybus *bus, uint16_t wireless_id, struct joybu
  * @return 0 on success, negative error code on failure
  */
 int joybus_gcn_fix_device_async(struct joybus *bus, uint16_t wireless_id, struct joybus_id *response,
-                                joybus_transfer_cb_t callback, void *user_data);
+                                joybus_transfer_cb callback, void *user_data);
 
 /** @} */

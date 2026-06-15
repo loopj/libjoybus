@@ -49,7 +49,7 @@ struct joybus_rp2xxx_data {
   alarm_id_t rx_timeout_alarm;
 
   // Transfer state
-  joybus_transfer_cb_t done_callback;
+  joybus_transfer_cb done_callback;
   void *done_user_data;
   absolute_time_t last_transfer_time;
   alarm_id_t transfer_start_alarm;

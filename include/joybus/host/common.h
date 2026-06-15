@@ -30,7 +30,7 @@ int joybus_identify(struct joybus *bus, struct joybus_id *response);
  * @param user_data user data to pass to the callback function
  * @return 0 on success, negative error code on failure
  */
-int joybus_identify_async(struct joybus *bus, struct joybus_id *response, joybus_transfer_cb_t callback,
+int joybus_identify_async(struct joybus *bus, struct joybus_id *response, joybus_transfer_cb callback,
                           void *user_data);
 
 /**
@@ -51,6 +51,6 @@ int joybus_reset(struct joybus *bus, struct joybus_id *response);
  * @param user_data user data to pass to the callback function
  * @return 0 on success, negative error code on failure
  */
-int joybus_reset_async(struct joybus *bus, struct joybus_id *response, joybus_transfer_cb_t callback, void *user_data);
+int joybus_reset_async(struct joybus *bus, struct joybus_id *response, joybus_transfer_cb callback, void *user_data);
 
 /** @} */

@@ -79,7 +79,7 @@ int joybus_gcn_read(struct joybus *bus, enum joybus_gcn_analog_mode analog_mode,
 
 int joybus_gcn_read_async(struct joybus *bus, enum joybus_gcn_analog_mode analog_mode,
                           enum joybus_gcn_motor_state motor_state, struct joybus_gcn_controller_state *response,
-                          joybus_transfer_cb_t callback, void *user_data)
+                          joybus_transfer_cb callback, void *user_data)
 {
   // Build the command
   bus->command_buffer[0] = JOYBUS_CMD_GCN_READ;
@@ -104,7 +104,7 @@ int joybus_gcn_read_origin(struct joybus *bus, struct joybus_gcn_controller_stat
 }
 
 int joybus_gcn_read_origin_async(struct joybus *bus, struct joybus_gcn_controller_state *response,
-                                 joybus_transfer_cb_t callback, void *user_data)
+                                 joybus_transfer_cb callback, void *user_data)
 {
   // Build the command
   bus->command_buffer[0] = JOYBUS_CMD_GCN_READ_ORIGIN;
@@ -121,7 +121,7 @@ int joybus_gcn_calibrate(struct joybus *bus, struct joybus_gcn_controller_state 
 }
 
 int joybus_gcn_calibrate_async(struct joybus *bus, struct joybus_gcn_controller_state *response,
-                               joybus_transfer_cb_t callback, void *user_data)
+                               joybus_transfer_cb callback, void *user_data)
 {
   // Build the command
   bus->command_buffer[0] = JOYBUS_CMD_GCN_CALIBRATE;
@@ -141,7 +141,7 @@ int joybus_gcn_read_long(struct joybus *bus, enum joybus_gcn_motor_state motor_s
 }
 
 int joybus_gcn_read_long_async(struct joybus *bus, enum joybus_gcn_motor_state motor_state,
-                               struct joybus_gcn_controller_state *response, joybus_transfer_cb_t callback,
+                               struct joybus_gcn_controller_state *response, joybus_transfer_cb callback,
                                void *user_data)
 {
   // Build the command
@@ -161,7 +161,7 @@ int joybus_gcn_probe_device(struct joybus *bus, uint8_t response[JOYBUS_CMD_GCN_
 }
 
 int joybus_gcn_probe_device_async(struct joybus *bus, uint8_t response[JOYBUS_CMD_GCN_PROBE_DEVICE_RX],
-                                  joybus_transfer_cb_t callback, void *user_data)
+                                  joybus_transfer_cb callback, void *user_data)
 {
   // Build the command
   // TODO: Mirror the behavior of real systems for the args
@@ -181,7 +181,7 @@ int joybus_gcn_fix_device(struct joybus *bus, uint16_t wireless_id, struct joybu
 }
 
 int joybus_gcn_fix_device_async(struct joybus *bus, uint16_t wireless_id, struct joybus_id *response,
-                                joybus_transfer_cb_t callback, void *user_data)
+                                joybus_transfer_cb callback, void *user_data)
 {
   // Build the command
   bus->command_buffer[0] = JOYBUS_CMD_GCN_FIX_DEVICE;

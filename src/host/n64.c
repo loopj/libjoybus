@@ -17,7 +17,7 @@ int joybus_n64_read(struct joybus *bus, struct joybus_n64_controller_state *resp
 }
 
 int joybus_n64_read_async(struct joybus *bus, struct joybus_n64_controller_state *response,
-                          joybus_transfer_cb_t callback, void *user_data)
+                          joybus_transfer_cb callback, void *user_data)
 {
   // Build the command
   bus->command_buffer[0] = JOYBUS_CMD_N64_READ;
@@ -35,7 +35,7 @@ int joybus_n64_pak_write(struct joybus *bus, uint16_t addr, const void *data,
 }
 
 int joybus_n64_pak_write_async(struct joybus *bus, uint16_t addr, const uint8_t *data, uint8_t *response,
-                               joybus_transfer_cb_t callback, void *user_data)
+                               joybus_transfer_cb callback, void *user_data)
 {
   // Generate address with checksum
   uint16_t with_checksum = (addr & 0xFFE0) | joybus_address_checksum(addr >> 5);
@@ -59,7 +59,7 @@ int joybus_n64_pak_read(struct joybus *bus, uint16_t addr, uint8_t response[JOYB
   return joybus_sync(joybus_n64_pak_read_async(bus, addr, response, joybus_sync_cb, &ctx), &ctx);
 }
 
-int joybus_n64_pak_read_async(struct joybus *bus, uint16_t addr, uint8_t *response, joybus_transfer_cb_t callback,
+int joybus_n64_pak_read_async(struct joybus *bus, uint16_t addr, uint8_t *response, joybus_transfer_cb callback,
                               void *user_data)
 {
   // Generate address with checksum

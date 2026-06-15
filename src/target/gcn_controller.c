@@ -79,7 +79,7 @@ static inline void set_need_origin(struct joybus_target_gcn_controller *controll
  * Response:        A 3-byte controller ID
  */
 static inline int handle_reset(struct joybus_target_gcn_controller *controller, const uint8_t *command,
-                               uint8_t bytes_read, joybus_target_response_cb_t send_response, void *user_data)
+                               uint8_t bytes_read, joybus_target_response_cb send_response, void *user_data)
 {
   // Respond with the controller ID
   send_response((const uint8_t *)&controller->id, JOYBUS_CMD_RESET_RX, user_data);
@@ -102,7 +102,7 @@ static inline int handle_reset(struct joybus_target_gcn_controller *controller, 
  * Response:        A 3-byte controller ID
  */
 static inline int handle_identify(struct joybus_target_gcn_controller *controller, const uint8_t *command,
-                                  uint8_t bytes_read, joybus_target_response_cb_t send_response, void *user_data)
+                                  uint8_t bytes_read, joybus_target_response_cb send_response, void *user_data)
 {
   // Respond with the controller ID
   send_response((const uint8_t *)&controller->id, JOYBUS_CMD_IDENTIFY_RX, user_data);
@@ -117,7 +117,7 @@ static inline int handle_identify(struct joybus_target_gcn_controller *controlle
  * Response:        An 8-byte packed input state, see `pack_input_state` for details
  */
 static inline int handle_read(struct joybus_target_gcn_controller *controller, const uint8_t *command,
-                              uint8_t bytes_read, joybus_target_response_cb_t send_response, void *user_data)
+                              uint8_t bytes_read, joybus_target_response_cb send_response, void *user_data)
 {
   // We can respond after the first two bytes
   if (bytes_read == 2) {
@@ -166,7 +166,7 @@ static inline int handle_read(struct joybus_target_gcn_controller *controller, c
  * Response:        A 10-byte input state representing the current origin.
  */
 static inline int handle_read_origin(struct joybus_target_gcn_controller *controller, const uint8_t *command,
-                                     uint8_t bytes_read, joybus_target_response_cb_t send_response, void *user_data)
+                                     uint8_t bytes_read, joybus_target_response_cb send_response, void *user_data)
 {
   // Respond with the controller origin
   send_response((uint8_t *)&controller->origin, JOYBUS_CMD_GCN_READ_ORIGIN_RX, user_data);
@@ -184,7 +184,7 @@ static inline int handle_read_origin(struct joybus_target_gcn_controller *contro
  * Response:        A 10-byte input state representing the current origin.
  */
 static inline int handle_calibrate(struct joybus_target_gcn_controller *controller, const uint8_t *command,
-                                   uint8_t bytes_read, joybus_target_response_cb_t send_response, void *user_data)
+                                   uint8_t bytes_read, joybus_target_response_cb send_response, void *user_data)
 {
   // We can respond after the first byte
   if (bytes_read == 1) {
@@ -210,7 +210,7 @@ static inline int handle_calibrate(struct joybus_target_gcn_controller *controll
  * NOTE: This command is not used by any games, but is included for completeness.
  */
 static inline int handle_read_long(struct joybus_target_gcn_controller *controller, const uint8_t *command,
-                                   uint8_t bytes_read, joybus_target_response_cb_t send_response, void *user_data)
+                                   uint8_t bytes_read, joybus_target_response_cb send_response, void *user_data)
 {
   // We can respond after the second byte is read
   if (bytes_read == 2) {
@@ -262,7 +262,7 @@ static inline int handle_read_long(struct joybus_target_gcn_controller *controll
  * Response:        8 bytes of zeroes.
  */
 static inline int handle_probe_device(struct joybus_target_gcn_controller *controller, const uint8_t *command,
-                                      uint8_t bytes_read, joybus_target_response_cb_t send_response, void *user_data)
+                                      uint8_t bytes_read, joybus_target_response_cb send_response, void *user_data)
 {
   if (bytes_read == 1) {
     // Don't respond to probe commands if we already received data from a controller
@@ -286,7 +286,7 @@ static inline int handle_probe_device(struct joybus_target_gcn_controller *contr
  * Response:        A 3-byte controller ID
  */
 static inline int handle_fix_device(struct joybus_target_gcn_controller *controller, const uint8_t *command,
-                                    uint8_t bytes_read, joybus_target_response_cb_t send_response, void *user_data)
+                                    uint8_t bytes_read, joybus_target_response_cb send_response, void *user_data)
 {
   if (bytes_read == JOYBUS_CMD_GCN_FIX_DEVICE_TX) {
     // Extract the wireless ID from the command
@@ -307,7 +307,7 @@ static inline int handle_fix_device(struct joybus_target_gcn_controller *control
 }
 
 static int gcn_controller_byte_received(struct joybus_target *target, const uint8_t *command, uint8_t bytes_read,
-                                        joybus_target_response_cb_t send_response, void *user_data)
+                                        joybus_target_response_cb send_response, void *user_data)
 {
   struct joybus_target_gcn_controller *controller = JOYBUS_TARGET_GCN_CONTROLLER(target);
   switch (command[0]) {
@@ -362,13 +362,13 @@ void joybus_target_gcn_controller_init_with_type(struct joybus_target_gcn_contro
 }
 
 void joybus_target_gcn_controller_set_reset_cb(struct joybus_target_gcn_controller *controller,
-                                               joybus_target_gcn_controller_reset_cb_t callback)
+                                               joybus_target_gcn_controller_reset_cb callback)
 {
   controller->on_reset = callback;
 }
 
 void joybus_target_gcn_controller_set_motor_cb(struct joybus_target_gcn_controller *controller,
-                                               joybus_target_gcn_controller_motor_cb_t callback)
+                                               joybus_target_gcn_controller_motor_cb callback)
 {
   controller->on_motor_state_change = callback;
 }

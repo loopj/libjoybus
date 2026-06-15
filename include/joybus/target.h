@@ -28,7 +28,7 @@
  * ```c
  * // Command handler for the target
  * static int my_target_byte_received(struct joybus_target *target, const uint8_t *command, uint8_t byte_idx,
- *                                    joybus_target_response_cb_t response_ready, void *user_data) {
+ *                                    joybus_target_response_cb response_ready, void *user_data) {
  *   switch (command[0]) {
  *     case 0x00:
  *       uint8_t response[] = {0x05, 0x00, 0x01};
@@ -84,7 +84,7 @@ struct joybus_target;
  * @param len the length of the response data
  * @param user_data user data passed to the command handler
  */
-typedef void (*joybus_target_response_cb_t)(const uint8_t *response, uint8_t len, void *user_data);
+typedef void (*joybus_target_response_cb)(const uint8_t *response, uint8_t len, void *user_data);
 
 /**
  * API for implementing a Joybus target.
@@ -101,7 +101,7 @@ struct joybus_target_api {
    * @return positive number of bytes still expected, 0 if no more bytes expected, negative error code on failure
    */
   int (*byte_received)(struct joybus_target *target, const uint8_t *command, uint8_t byte_idx,
-                       joybus_target_response_cb_t send_response, void *user_data);
+                       joybus_target_response_cb send_response, void *user_data);
 };
 
 /**
@@ -126,7 +126,7 @@ struct joybus_target {
  * @return positive number of bytes still expected, 0 if no more bytes expected, negative error code on failure
  */
 static inline int joybus_target_byte_received(struct joybus_target *target, const uint8_t *command, uint8_t byte_idx,
-                                              joybus_target_response_cb_t send_response, void *user_data)
+                                              joybus_target_response_cb send_response, void *user_data)
 {
   return target->api->byte_received(target, command, byte_idx, send_response, user_data);
 }

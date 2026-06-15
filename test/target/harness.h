@@ -25,7 +25,7 @@ static struct {
 // Command byte currently being delivered, 1-based
 static uint8_t current_byte;
 
-// joybus_target_response_cb_t that records the target's response
+// joybus_target_response_cb that records the target's response
 static void record_response(const uint8_t *data, uint8_t len, void *user_data)
 {
   TEST_ASSERT_LESS_OR_EQUAL_MESSAGE(sizeof(response.data), len, "response larger than JOYBUS_BLOCK_SIZE");

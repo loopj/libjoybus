@@ -67,20 +67,20 @@ struct joybus;
  * @param result positive number of bytes read on success, negative error code on failure
  * @param user_data user data passed to the callback
  */
-typedef void (*joybus_transfer_cb_t)(struct joybus *bus, int result, void *user_data);
+typedef void (*joybus_transfer_cb)(struct joybus *bus, int result, void *user_data);
 
 // API for a Joybus backend - internal use only
 struct joybus_api {
   int (*enable)(struct joybus *bus);
   int (*disable)(struct joybus *bus);
   int (*transfer)(struct joybus *bus, const uint8_t *write_buf, uint8_t write_len, uint8_t *read_buf, uint8_t read_len,
-                  joybus_transfer_cb_t callback, void *user_data);
+                  joybus_transfer_cb callback, void *user_data);
   int (*target_register)(struct joybus *bus, struct joybus_target *target);
   int (*target_unregister)(struct joybus *bus, struct joybus_target *target);
 };
 
 struct joybus_host_op {
-  joybus_transfer_cb_t callback;
+  joybus_transfer_cb callback;
   void *user_data;
   uint8_t *response;
   uint8_t arg;
@@ -134,7 +134,7 @@ static inline int joybus_disable(struct joybus *bus)
  * @return 0 on success, negative error code on failure
  */
 static inline int joybus_transfer(struct joybus *bus, const uint8_t *write_buf, uint8_t write_len, uint8_t *read_buf,
-                                  uint8_t read_len, joybus_transfer_cb_t callback, void *user_data)
+                                  uint8_t read_len, joybus_transfer_cb callback, void *user_data)
 {
   return bus->api->transfer(bus, write_buf, write_len, read_buf, read_len, callback, user_data);
 }

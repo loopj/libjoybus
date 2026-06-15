@@ -106,7 +106,7 @@ static void motor_write_cb(struct joybus *bus, int result, void *user_data)
     bus->host_op.callback(bus, result, bus->host_op.user_data);
 }
 
-static int motor_write(struct joybus *bus, uint8_t value, joybus_transfer_cb_t callback, void *user_data) {
+static int motor_write(struct joybus *bus, uint8_t value, joybus_transfer_cb callback, void *user_data) {
   // Fill a block with bytes
   uint8_t block[JOYBUS_PAK_BLOCK_SIZE];
   memset(block, value, sizeof(block));
@@ -125,7 +125,7 @@ int joybus_n64_rumble_pak_init(struct joybus *bus)
   return joybus_sync(joybus_n64_rumble_pak_init_async(bus, joybus_sync_cb, &ctx), &ctx);
 }
 
-int joybus_n64_rumble_pak_init_async(struct joybus *bus, joybus_transfer_cb_t callback, void *user_data)
+int joybus_n64_rumble_pak_init_async(struct joybus *bus, joybus_transfer_cb callback, void *user_data)
 {
   // Save the user callback for the end of the probe chain
   bus->host_op.callback  = callback;
@@ -142,7 +142,7 @@ int joybus_n64_rumble_pak_start(struct joybus *bus)
   return joybus_sync(joybus_n64_rumble_pak_start_async(bus, joybus_sync_cb, &ctx), &ctx);
 }
 
-int joybus_n64_rumble_pak_start_async(struct joybus *bus, joybus_transfer_cb_t callback, void *user_data)
+int joybus_n64_rumble_pak_start_async(struct joybus *bus, joybus_transfer_cb callback, void *user_data)
 {
   return motor_write(bus, RUMBLE_PAK_MOTOR_ON, callback, user_data);
 }
@@ -153,7 +153,7 @@ int joybus_n64_rumble_pak_stop(struct joybus *bus)
   return joybus_sync(joybus_n64_rumble_pak_stop_async(bus, joybus_sync_cb, &ctx), &ctx);
 }
 
-int joybus_n64_rumble_pak_stop_async(struct joybus *bus, joybus_transfer_cb_t callback, void *user_data)
+int joybus_n64_rumble_pak_stop_async(struct joybus *bus, joybus_transfer_cb callback, void *user_data)
 {
   return motor_write(bus, RUMBLE_PAK_MOTOR_OFF, callback, user_data);
 }

@@ -29,7 +29,7 @@ int joybus_n64_read(struct joybus *bus, struct joybus_n64_controller_state *resp
  * @return 0 on success, negative error code on failure
  */
 int joybus_n64_read_async(struct joybus *bus, struct joybus_n64_controller_state *response,
-                          joybus_transfer_cb_t callback, void *user_data);
+                          joybus_transfer_cb callback, void *user_data);
 
 /**
  * Write a block of data to the pak attached to an N64 controller.
@@ -60,7 +60,7 @@ int joybus_n64_pak_write(struct joybus *bus, uint16_t addr, const void *data, ui
  * @return 0 on success, negative error code on failure
  */
 int joybus_n64_pak_write_async(struct joybus *bus, uint16_t addr, const uint8_t data[JOYBUS_PAK_BLOCK_SIZE],
-                               uint8_t response[JOYBUS_CMD_N64_PAK_WRITE_RX], joybus_transfer_cb_t callback,
+                               uint8_t response[JOYBUS_CMD_N64_PAK_WRITE_RX], joybus_transfer_cb callback,
                                void *user_data);
 
 /**
@@ -90,6 +90,6 @@ int joybus_n64_pak_read(struct joybus *bus, uint16_t addr, uint8_t response[JOYB
  * @return 0 on success, negative error code on failure
  */
 int joybus_n64_pak_read_async(struct joybus *bus, uint16_t addr, uint8_t response[JOYBUS_CMD_N64_PAK_READ_RX],
-                              joybus_transfer_cb_t callback, void *user_data);
+                              joybus_transfer_cb callback, void *user_data);
 
 /** @} */
