@@ -1,20 +1,21 @@
 var annotated_dup =
 [
-    [ "detection_state", "structdetection__state.html", null ],
     [ "joybus", "structjoybus.html", null ],
     [ "joybus_api", "structjoybus__api.html", null ],
-    [ "joybus_gcn_controller", "structjoybus__gcn__controller.html", "structjoybus__gcn__controller" ],
-    [ "joybus_gcn_controller_input", "structjoybus__gcn__controller__input.html", "structjoybus__gcn__controller__input" ],
+    [ "joybus_gcn_controller_state", "structjoybus__gcn__controller__state.html", "structjoybus__gcn__controller__state" ],
     [ "joybus_gecko", "structjoybus__gecko.html", null ],
     [ "joybus_gecko_data", "structjoybus__gecko__data.html", null ],
-    [ "joybus_n64_accessory", "structjoybus__n64__accessory.html", "structjoybus__n64__accessory" ],
-    [ "joybus_n64_accessory_api", "structjoybus__n64__accessory__api.html", "structjoybus__n64__accessory__api" ],
-    [ "joybus_n64_controller", "structjoybus__n64__controller.html", "structjoybus__n64__controller" ],
-    [ "joybus_n64_controller_input", "structjoybus__n64__controller__input.html", "structjoybus__n64__controller__input" ],
-    [ "joybus_n64_rumble_pak", "structjoybus__n64__rumble__pak.html", "structjoybus__n64__rumble__pak" ],
+    [ "joybus_host_op", "structjoybus__host__op.html", null ],
+    [ "joybus_id", "structjoybus__id.html", "structjoybus__id" ],
+    [ "joybus_n64_controller_state", "structjoybus__n64__controller__state.html", "structjoybus__n64__controller__state" ],
     [ "joybus_rp2xxx", "structjoybus__rp2xxx.html", null ],
     [ "joybus_rp2xxx_data", "structjoybus__rp2xxx__data.html", null ],
     [ "joybus_sync_ctx", "structjoybus__sync__ctx.html", null ],
     [ "joybus_target", "structjoybus__target.html", "structjoybus__target" ],
-    [ "joybus_target_api", "structjoybus__target__api.html", "structjoybus__target__api" ]
+    [ "joybus_target_api", "structjoybus__target__api.html", "structjoybus__target__api" ],
+    [ "joybus_target_gcn_controller", "structjoybus__target__gcn__controller.html", "structjoybus__target__gcn__controller" ],
+    [ "joybus_target_n64_controller", "structjoybus__target__n64__controller.html", "structjoybus__target__n64__controller" ],
+    [ "joybus_target_n64_pak", "structjoybus__target__n64__pak.html", "structjoybus__target__n64__pak" ],
+    [ "joybus_target_n64_pak_api", "structjoybus__target__n64__pak__api.html", "structjoybus__target__n64__pak__api" ],
+    [ "joybus_target_n64_rumble_pak", "structjoybus__target__n64__rumble__pak.html", "structjoybus__target__n64__rumble__pak" ]
 ];

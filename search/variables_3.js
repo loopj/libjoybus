@@ -1,6 +1,4 @@
 var searchData=
 [
-  ['id_0',['id',['../structjoybus__gcn__controller.html#adb22d7d7cb98f9749972dbb557f1231b',1,'joybus_gcn_controller::id'],['../structjoybus__n64__controller.html#ae1fc6857cd053dd97c24455231b5f6b4',1,'joybus_n64_controller::id']]],
-  ['input_1',['input',['../structjoybus__gcn__controller.html#a62961c2b60f8b37b0eefe00b31e2236f',1,'joybus_gcn_controller::input'],['../structjoybus__n64__controller.html#a1f6e35bf415b3b799ec8f794fa04e98b',1,'joybus_n64_controller::input']]],
-  ['input_5fvalid_2',['input_valid',['../structjoybus__gcn__controller.html#adf747d3f9d30d6f82760de632facf473',1,'joybus_gcn_controller']]]
+  ['enabled_0',['enabled',['../structjoybus__target__n64__rumble__pak.html#ab0435b31da5431ba15de7523144d9f57',1,'joybus_target_n64_rumble_pak']]]
 ];

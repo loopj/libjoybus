@@ -1,10 +1,9 @@
 var searchData=
 [
-  ['joybus_5fgcn_5fcontroller_5fmotor_5fcb_5ft_0',['joybus_gcn_controller_motor_cb_t',['../group__joybus__target__gcn__controller.html#gafe598d49dd35eb48c04e9773b5db1b6d',1,'gcn_controller.h']]],
-  ['joybus_5fgcn_5fcontroller_5freset_5fcb_5ft_1',['joybus_gcn_controller_reset_cb_t',['../group__joybus__target__gcn__controller.html#ga241bbdb143619dd7211049a2f5d541d9',1,'gcn_controller.h']]],
-  ['joybus_5fn64_5faccessory_5fdetect_5fcb_5ft_2',['joybus_n64_accessory_detect_cb_t',['../group__joybus__host.html#ga0c99b5404b7fbbc67ba19b225c3fdb2c',1,'n64.h']]],
-  ['joybus_5fn64_5fcontroller_5freset_5fcb_5ft_3',['joybus_n64_controller_reset_cb_t',['../group__joybus__target__n64__controller.html#ga1c32462fcdf6291c430ffd87aa6b81ee',1,'n64_controller.h']]],
-  ['joybus_5fn64_5frumble_5fpak_5fmotor_5fcb_5ft_4',['joybus_n64_rumble_pak_motor_cb_t',['../group__joybus__target__n64__rumble__pak.html#gadc2bbf52055b178e60776fdd9b2babbc',1,'n64_rumble_pak.h']]],
-  ['joybus_5ftarget_5fresponse_5fcb_5ft_5',['joybus_target_response_cb_t',['../group__joybus__target.html#ga332cb12fb4b59bad4e8738d22b6499b1',1,'target.h']]],
-  ['joybus_5ftransfer_5fcb_5ft_6',['joybus_transfer_cb_t',['../group__joybus.html#ga9b3c1aac9f12c49896a283fd635233da',1,'bus.h']]]
+  ['joybus_5ftarget_5fgcn_5fcontroller_5fmotor_5fcb_0',['joybus_target_gcn_controller_motor_cb',['../group__joybus__target__gcn__controller.html#ga56032409c7bcad1c4c9ae8ea6970261c',1,'gcn_controller.h']]],
+  ['joybus_5ftarget_5fgcn_5fcontroller_5freset_5fcb_1',['joybus_target_gcn_controller_reset_cb',['../group__joybus__target__gcn__controller.html#gab1545058a40042a9b563f28b90acf589',1,'gcn_controller.h']]],
+  ['joybus_5ftarget_5fn64_5fcontroller_5freset_5fcb_2',['joybus_target_n64_controller_reset_cb',['../group__joybus__target__n64__controller.html#gad33495e7ca669aa18745ef1074353624',1,'n64_controller.h']]],
+  ['joybus_5ftarget_5fn64_5frumble_5fpak_5fmotor_5fcb_3',['joybus_target_n64_rumble_pak_motor_cb',['../group__joybus__target__n64__rumble__pak.html#gaab7631d172035ffcc2e52456d795c9d2',1,'n64_rumble_pak.h']]],
+  ['joybus_5ftarget_5fresponse_5fcb_4',['joybus_target_response_cb',['../group__joybus__target.html#ga11821ae29c4353ed116ddcec92e0bcc2',1,'target.h']]],
+  ['joybus_5ftransfer_5fcb_5',['joybus_transfer_cb',['../group__joybus.html#ga3a369b3d9cde58960068a67ee3d3c092',1,'bus.h']]]
 ];

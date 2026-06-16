@@ -1,8 +1,9 @@
 var searchData=
 [
-  ['read_5fblock_0',['read_block',['../structjoybus__n64__accessory__api.html#ab9d0843e99945ab61ccee67af7f1cf13',1,'joybus_n64_accessory_api']]],
-  ['registered_1',['registered',['../structjoybus__target.html#a5296f0eef57966530fc2d141b7503e7e',1,'joybus_target']]],
-  ['response_2',['response',['../structjoybus__n64__controller.html#a0b902d3aafdc265ab9ad56d47eb70121',1,'joybus_n64_controller']]],
-  ['rp2xxx_20backend_3',['RP2xxx Backend',['../group__joybus__backend__rp2xxx.html',1,'']]],
-  ['rumble_20pak_4',['N64 Rumble Pak',['../group__joybus__target__n64__rumble__pak.html',1,'']]]
+  ['status_0',['status',['../structjoybus__id.html#a12b2aac3439591cbf8985c4939ad28cc',1,'joybus_id::status'],['../identify_8h.html#ade818037fd6c985038ff29656089758d',1,'status:&#160;identify.h']]],
+  ['stick_5fx_1',['stick_x',['../structjoybus__gcn__controller__state.html#a93f06f1aa515e9ce9bda99d555c8c04b',1,'joybus_gcn_controller_state::stick_x'],['../structjoybus__n64__controller__state.html#a4edec4fcd54ef398fc53bc50506a5667',1,'joybus_n64_controller_state::stick_x'],['../common_2gcn__controller_8h.html#aaf671508229593fdb9a287a3ecd0a9dd',1,'stick_x:&#160;gcn_controller.h'],['../common_2n64__controller_8h.html#a8da384e2a04707e09a180c0dc4102a0a',1,'stick_x:&#160;n64_controller.h']]],
+  ['stick_5fy_2',['stick_y',['../structjoybus__gcn__controller__state.html#aff65c088b1b9ba9d17f3637f29f14383',1,'joybus_gcn_controller_state::stick_y'],['../structjoybus__n64__controller__state.html#a5bd549313c9da367fe8bdf7d07f3c8c7',1,'joybus_n64_controller_state::stick_y'],['../common_2gcn__controller_8h.html#af32d98fc87dfd133a7a71bc4d4d4d2b8',1,'stick_y:&#160;gcn_controller.h'],['../common_2n64__controller_8h.html#afdaee7e353daef83f1b21f01cdff8f53',1,'stick_y:&#160;n64_controller.h']]],
+  ['substick_5fx_3',['substick_x',['../structjoybus__gcn__controller__state.html#af847fa6ff23f8040958ff55fe7d3db6a',1,'joybus_gcn_controller_state::substick_x'],['../common_2gcn__controller_8h.html#a2b3da463515deac8332fe8320f414c69',1,'substick_x:&#160;gcn_controller.h']]],
+  ['substick_5fy_4',['substick_y',['../structjoybus__gcn__controller__state.html#a1bbdda5e73854a0568182d6c1dbe4766',1,'joybus_gcn_controller_state::substick_y'],['../common_2gcn__controller_8h.html#a40989423890116b171f5bf1b4b574eac',1,'substick_y:&#160;gcn_controller.h']]],
+  ['supported_20platforms_5',['Supported Platforms',['../index.html#autotoc_md2',1,'']]]
 ];

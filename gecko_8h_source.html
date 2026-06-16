@@ -155,7 +155,7 @@ $(function(){initNavTree('gecko_8h_source.html','',''); });
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  sl_sleeptimer_timer_handle_t rx_timeout_timer;</div>
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  <span class="comment">// Transfer state</span></div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  <a class="code hl_typedef" href="group__joybus.html#ga9b3c1aac9f12c49896a283fd635233da">joybus_transfer_cb_t</a> done_callback;</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  <a class="code hl_typedef" href="group__joybus.html#ga3a369b3d9cde58960068a67ee3d3c092">joybus_transfer_cb</a> done_callback;</div>
 <div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  <span class="keywordtype">void</span> *done_user_data;</div>
 <div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  <span class="comment">// RX timings</span></div>
@@ -192,10 +192,10 @@ $(function(){initNavTree('gecko_8h_source.html','',''); });
 <div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>                      USART_TypeDef *tx_usart);</div>
 <div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span></div>
 <div class="ttc" id="agroup__joybus__backend__gecko_html_gaf6ce4eb5cfc3d9b3e697ed48be6630f5"><div class="ttname"><a href="group__joybus__backend__gecko.html#gaf6ce4eb5cfc3d9b3e697ed48be6630f5">joybus_gecko_init</a></div><div class="ttdeci">int joybus_gecko_init(struct joybus_gecko *gecko_bus, GPIO_Port_TypeDef port, uint8_t pin, TIMER_TypeDef *rx_timer, USART_TypeDef *tx_usart)</div><div class="ttdoc">Initialize a Gecko Joybus instance.</div><div class="ttdef"><b>Definition</b> joybus.c:766</div></div>
-<div class="ttc" id="agroup__joybus_html_ga9b3c1aac9f12c49896a283fd635233da"><div class="ttname"><a href="group__joybus.html#ga9b3c1aac9f12c49896a283fd635233da">joybus_transfer_cb_t</a></div><div class="ttdeci">void(* joybus_transfer_cb_t)(struct joybus *bus, int result, void *user_data)</div><div class="ttdoc">Function type for transfer completion callbacks.</div><div class="ttdef"><b>Definition</b> bus.h:70</div></div>
+<div class="ttc" id="agroup__joybus_html_ga3a369b3d9cde58960068a67ee3d3c092"><div class="ttname"><a href="group__joybus.html#ga3a369b3d9cde58960068a67ee3d3c092">joybus_transfer_cb</a></div><div class="ttdeci">void(* joybus_transfer_cb)(struct joybus *bus, int status, void *user_data)</div><div class="ttdoc">Function type for transfer completion callbacks.</div><div class="ttdef"><b>Definition</b> bus.h:74</div></div>
 <div class="ttc" id="astructjoybus__gecko__data_html"><div class="ttname"><a href="structjoybus__gecko__data.html">joybus_gecko_data</a></div><div class="ttdef"><b>Definition</b> gecko.h:33</div></div>
 <div class="ttc" id="astructjoybus__gecko_html"><div class="ttname"><a href="structjoybus__gecko.html">joybus_gecko</a></div><div class="ttdoc">A Gecko Joybus instance.</div><div class="ttdef"><b>Definition</b> gecko.h:87</div></div>
-<div class="ttc" id="astructjoybus_html"><div class="ttname"><a href="structjoybus.html">joybus</a></div><div class="ttdoc">A Joybus instance.</div><div class="ttdef"><b>Definition</b> bus.h:85</div></div>
+<div class="ttc" id="astructjoybus_html"><div class="ttname"><a href="structjoybus.html">joybus</a></div><div class="ttdoc">A Joybus instance.</div><div class="ttdef"><b>Definition</b> bus.h:96</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 </div><!-- container -->

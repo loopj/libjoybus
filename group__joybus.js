@@ -1,9 +1,10 @@
 var group__joybus =
 [
     [ "joybus_api", "structjoybus__api.html", null ],
+    [ "joybus_host_op", "structjoybus__host__op.html", null ],
     [ "joybus", "structjoybus.html", null ],
+    [ "joybus_sync_ctx", "structjoybus__sync__ctx.html", null ],
     [ "JOYBUS", "group__joybus.html#gaf06db642865d9aae04c89330d3b9cc25", null ],
-    [ "JOYBUS_ACCESSORY_BLOCK_SIZE", "group__joybus.html#gaeba0b3392291f316c3279dfd07b383e2", null ],
     [ "JOYBUS_BLOCK_SIZE", "group__joybus.html#ga96357e747d908aa6c354b507d9b0fdc4", null ],
     [ "JOYBUS_BUS_IDLE_US", "group__joybus.html#ga8c9b9633b92365fb0bb147559ef3ea6e", null ],
     [ "JOYBUS_FREQ_GCN_CONSOLE", "group__joybus.html#gaadf50cd43928e2d19ae88ee6913287c2", null ],
@@ -16,14 +17,16 @@ var group__joybus =
     [ "JOYBUS_FREQ_WAVEBIRD_RECEIVER", "group__joybus.html#ga929f8c1526ed6185f2a7a637bb358aa1", null ],
     [ "JOYBUS_FREQ_WII_CONSOLE", "group__joybus.html#ga64e876071c5e4190a1af1542f758db91", null ],
     [ "JOYBUS_INTER_TRANSFER_DELAY_US", "group__joybus.html#gac5ab3e6873e93e3f6c2ba0759f227912", null ],
+    [ "JOYBUS_PAK_BLOCK_SIZE", "group__joybus.html#ga272b8f55fa8c16bac1524dda78c5ecef", null ],
     [ "JOYBUS_REPLY_TIMEOUT_US", "group__joybus.html#ga26e7ebcd25e8c5ffabf856df2a3ced6c", null ],
-    [ "joybus_transfer_cb_t", "group__joybus.html#ga9b3c1aac9f12c49896a283fd635233da", null ],
+    [ "joybus_transfer_cb", "group__joybus.html#ga3a369b3d9cde58960068a67ee3d3c092", null ],
     [ "joybus_error", "group__joybus.html#ga47435eba4c98726f93fdae3c8bb9fd76", [
       [ "JOYBUS_ERR_DISABLED", "group__joybus.html#gga47435eba4c98726f93fdae3c8bb9fd76a6496af2c91935e2e37a48a43f14dda21", null ],
       [ "JOYBUS_ERR_BUSY", "group__joybus.html#gga47435eba4c98726f93fdae3c8bb9fd76a861b6a4876c1569f6117a3f4d7601a3d", null ],
       [ "JOYBUS_ERR_TIMEOUT", "group__joybus.html#gga47435eba4c98726f93fdae3c8bb9fd76a2130afe5fb23ff6f7f2ee49df1441e14", null ],
       [ "JOYBUS_ERR_NOT_SUPPORTED", "group__joybus.html#gga47435eba4c98726f93fdae3c8bb9fd76a274cd46970af05945e6218f49e40efe0", null ],
-      [ "JOYBUS_ERR_CHECKSUM", "group__joybus.html#gga47435eba4c98726f93fdae3c8bb9fd76adc97e17cb4f7168b0f71926a6d357aac", null ]
+      [ "JOYBUS_ERR_CHECKSUM", "group__joybus.html#gga47435eba4c98726f93fdae3c8bb9fd76adc97e17cb4f7168b0f71926a6d357aac", null ],
+      [ "JOYBUS_ERR_NO_DEVICE", "group__joybus.html#gga47435eba4c98726f93fdae3c8bb9fd76a8c483cd1d2d0f43c85fbc5f2124c14c8", null ]
     ] ],
     [ "joybus_address_checksum", "group__joybus.html#ga395ca3d9f9844388c1b7372a0ae8bedf", null ],
     [ "joybus_data_checksum", "group__joybus.html#gad4e8d62b15102d8e6c580fb3730eb2b5", null ],
@@ -32,6 +35,6 @@ var group__joybus =
     [ "joybus_enable", "group__joybus.html#ga10316dbaf35990b5c627b2d2f6330248", null ],
     [ "joybus_target_register", "group__joybus.html#gadb1ce9137d553ae521755b77238fc45c", null ],
     [ "joybus_target_unregister", "group__joybus.html#gaa31869a974628cc7428404e0affc68b2", null ],
-    [ "joybus_transfer", "group__joybus.html#ga2c8bd40f7ab99754d8b64cb7baa447fd", null ],
+    [ "joybus_transfer", "group__joybus.html#gaa7d3786d5ed4f67c42ed0fb6718cdae5", null ],
     [ "joybus_transfer_sync", "group__joybus.html#gaa23c09a3db2e9880ab6dda70b0239061", null ]
 ];

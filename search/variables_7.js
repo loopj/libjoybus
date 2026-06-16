@@ -1,7 +1,6 @@
 var searchData=
 [
-  ['stick_5fx_0',['stick_x',['../structjoybus__gcn__controller__input.html#a1fdcef7a164dc55f2bd9652b3fa3a657',1,'joybus_gcn_controller_input::stick_x'],['../structjoybus__n64__controller__input.html#ae830f0a3a3b3ecc36dd213fa818716c6',1,'joybus_n64_controller_input::stick_x'],['../common_2gcn__controller_8h.html#aaf671508229593fdb9a287a3ecd0a9dd',1,'stick_x:&#160;gcn_controller.h'],['../common_2n64__controller_8h.html#aaf671508229593fdb9a287a3ecd0a9dd',1,'stick_x:&#160;n64_controller.h']]],
-  ['stick_5fy_1',['stick_y',['../structjoybus__gcn__controller__input.html#a78ff9d1a00ccd59f60849ac9acc15bf1',1,'joybus_gcn_controller_input::stick_y'],['../structjoybus__n64__controller__input.html#af1306a08d51b1cc12f2f61fd0842333b',1,'joybus_n64_controller_input::stick_y'],['../common_2gcn__controller_8h.html#af32d98fc87dfd133a7a71bc4d4d4d2b8',1,'stick_y:&#160;gcn_controller.h'],['../common_2n64__controller_8h.html#af32d98fc87dfd133a7a71bc4d4d4d2b8',1,'stick_y:&#160;n64_controller.h']]],
-  ['substick_5fx_2',['substick_x',['../structjoybus__gcn__controller__input.html#a98ceb8283c313ef769720edad290a14b',1,'joybus_gcn_controller_input::substick_x'],['../common_2gcn__controller_8h.html#a2b3da463515deac8332fe8320f414c69',1,'substick_x:&#160;gcn_controller.h']]],
-  ['substick_5fy_3',['substick_y',['../structjoybus__gcn__controller__input.html#a46875330dc66968c8f2944cce14257ed',1,'joybus_gcn_controller_input::substick_y'],['../common_2gcn__controller_8h.html#a40989423890116b171f5bf1b4b574eac',1,'substick_y:&#160;gcn_controller.h']]]
+  ['read_5fblock_0',['read_block',['../structjoybus__target__n64__pak__api.html#a5b9f14e476c04d577e5c6753afffaa64',1,'joybus_target_n64_pak_api']]],
+  ['registered_1',['registered',['../structjoybus__target.html#a5296f0eef57966530fc2d141b7503e7e',1,'joybus_target']]],
+  ['response_2',['response',['../structjoybus__target__n64__controller.html#a74657bd58787eb7f0f1dc364416b7950',1,'joybus_target_n64_controller']]]
 ];

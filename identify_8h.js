@@ -1,5 +1,6 @@
 var identify_8h =
 [
+    [ "joybus_id", "structjoybus__id.html", "structjoybus__id" ],
     [ "JOYBUS_DEVICE_GCN_CONTROLLER", "identify_8h.html#a9ef414d77d3204c9cf4f3b897d51bc0c", null ],
     [ "JOYBUS_DEVICE_GCN_WAVEBIRD", "identify_8h.html#a2271b6d31f067bd80991cf5b3c8b737f", null ],
     [ "JOYBUS_DEVICE_N64_CONTROLLER", "identify_8h.html#a2763d960f1226a656f33122d950f71ee", null ],
@@ -10,9 +11,9 @@ var identify_8h =
     [ "JOYBUS_STATUS_GCN_MOTOR_STATE_MASK", "identify_8h.html#ad85a4321f1dda28129c480c114f7a512", null ],
     [ "JOYBUS_STATUS_GCN_NEED_ORIGIN", "identify_8h.html#ad16a101ead9b57d38e493cb64b18df3c", null ],
     [ "JOYBUS_STATUS_GCN_WIRELESS_ID_MASK", "identify_8h.html#a747a65de2006eee58e345cf6cb0b7d3a", null ],
-    [ "JOYBUS_STATUS_N64_ACCESSORY_PRESENT", "identify_8h.html#a62db60e4e8291f2763d04806d64c6cd6", null ],
-    [ "JOYBUS_STATUS_N64_ACCESSORY_PULLED", "identify_8h.html#a35e93c859da21a2b3b51e64879efad06", null ],
     [ "JOYBUS_STATUS_N64_ADDR_CHECKSUM_ERROR", "identify_8h.html#a16970e43472f9ffe41e4f56c73ec13ea", null ],
+    [ "JOYBUS_STATUS_N64_PAK_PRESENT", "identify_8h.html#a6a5e1b47d0fff8ef416888b3fdc2a9f5", null ],
+    [ "JOYBUS_STATUS_N64_PAK_PULLED", "identify_8h.html#a9d5e77fbc72c4ea8dfb23c13877034ab", null ],
     [ "JOYBUS_STATUS_N64_VRU_INITIALIZED", "identify_8h.html#afa23791bdcc1d110a8e3557422198bfa", null ],
     [ "JOYBUS_TYPE_GBA_CABLE", "identify_8h.html#a755a36fa9d1bbb5245a116b53f4aff70", null ],
     [ "JOYBUS_TYPE_GCN_DEVICE", "identify_8h.html#a5011bd07627e77237ad79f40c5ad36c9", null ],
@@ -35,13 +36,13 @@ var identify_8h =
     [ "JOYBUS_TYPE_N64_RELATIVE", "identify_8h.html#a10fc8d11dc1d73c07580f95a124e5189", null ],
     [ "JOYBUS_TYPE_N64_RTC", "identify_8h.html#a7febc2701e4b1d00a374b6d5c0e32938", null ],
     [ "JOYBUS_TYPE_N64_VRU", "identify_8h.html#a897d25b1bef8c70714a1f21bcdc47778", null ],
-    [ "joybus_id_clear_status_flags", "identify_8h.html#adc1b9b491daf9c001a5e05a96d2c657c", null ],
-    [ "joybus_id_clear_type_flags", "identify_8h.html#a0758fbae219d64850c90e75aa4a51c91", null ],
-    [ "joybus_id_get_status", "identify_8h.html#a4f109aaebefe6897050a3f61541e1c9d", null ],
-    [ "joybus_id_get_type", "identify_8h.html#a748a2eb84d485a4e0e84c6e299485e35", null ],
-    [ "joybus_id_get_wireless_id", "identify_8h.html#a0a3ecbaa982f98cbd8623c7ad8b52a03", null ],
-    [ "joybus_id_n64_accessory_changed", "identify_8h.html#a8d3f6c9e21dc4449c7cb5f8e117ed2ed", null ],
-    [ "joybus_id_set_status_flags", "identify_8h.html#aa3d86275211a89a511373e29ae7cd90f", null ],
-    [ "joybus_id_set_type_flags", "identify_8h.html#a008065c35965a36496e61479f61cbe77", null ],
-    [ "joybus_id_set_wireless_id", "identify_8h.html#adbb6abead619a5b6450e8a4592dd6def", null ]
+    [ "joybus_id_clear_status_flags", "identify_8h.html#a7fb614e03d01fee1b79f91b3a83b6edd", null ],
+    [ "joybus_id_clear_type_flags", "identify_8h.html#a9f324f438db77f384151f7241f1c9b74", null ],
+    [ "joybus_id_get_wireless_id", "identify_8h.html#a71db096722f8b7544444f92449555e65", null ],
+    [ "joybus_id_n64_pak_changed", "identify_8h.html#acfd37408cb7382f68c0b9b38ab219fdc", null ],
+    [ "joybus_id_set_status_flags", "identify_8h.html#ac6116213b3a0432f928ea75a126b5e61", null ],
+    [ "joybus_id_set_type_flags", "identify_8h.html#ae332827467ade9992c191c46fac4675c", null ],
+    [ "joybus_id_set_wireless_id", "identify_8h.html#a2f39ceee82b807a4ce35ed8ab1b3c21b", null ],
+    [ "status", "identify_8h.html#ade818037fd6c985038ff29656089758d", null ],
+    [ "type", "identify_8h.html#acb5cfd209ba75c853d03f701e7f91679", null ]
 ];

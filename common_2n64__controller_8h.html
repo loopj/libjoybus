@@ -115,14 +115,13 @@ $(function(){initNavTree('common_2n64__controller_8h.html','',''); });
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-nested-classes" class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Data Structures</h2></td></tr>
-<tr class="memitem:joybus_5Fn64_5Fcontroller_5Finput" id="r_joybus_5Fn64_5Fcontroller_5Finput"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structjoybus__n64__controller__input.html">joybus_n64_controller_input</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">N64 controller input state.  <a href="structjoybus__n64__controller__input.html#details">More...</a><br /></td></tr>
+<tr class="memitem:joybus_5Fn64_5Fcontroller_5Fstate" id="r_joybus_5Fn64_5Fcontroller_5Fstate"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structjoybus__n64__controller__state.html">joybus_n64_controller_state</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">N64 controller input state.  <a href="structjoybus__n64__controller__state.html#details">More...</a><br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-define-members" class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:a5caf28bd0c4e16e845ac712b56ab4507" id="r_a5caf28bd0c4e16e845ac712b56ab4507"><td class="memItemLeft" align="right" valign="top"><a id="a5caf28bd0c4e16e845ac712b56ab4507" name="a5caf28bd0c4e16e845ac712b56ab4507"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_N64_BUTTON_RIGHT</b>&#160;&#160;&#160;(1 &lt;&lt; 0)</td></tr>
-<tr class="memdesc:a5caf28bd0c4e16e845ac712b56ab4507"><td class="mdescLeft">&#160;</td><td class="mdescRight">N64 controller button bitmask flags. <br /></td></tr>
+<tr class="memitem:a5caf28bd0c4e16e845ac712b56ab4507" id="r_a5caf28bd0c4e16e845ac712b56ab4507"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5caf28bd0c4e16e845ac712b56ab4507">JOYBUS_N64_BUTTON_RIGHT</a>&#160;&#160;&#160;(1 &lt;&lt; 0)</td></tr>
+<tr class="memdesc:a5caf28bd0c4e16e845ac712b56ab4507"><td class="mdescLeft">&#160;</td><td class="mdescRight">N64 controller button bitmask flags.  <br /></td></tr>
 <tr class="memitem:a14fdf752ba799f2ef2faac696476acb5" id="r_a14fdf752ba799f2ef2faac696476acb5"><td class="memItemLeft" align="right" valign="top"><a id="a14fdf752ba799f2ef2faac696476acb5" name="a14fdf752ba799f2ef2faac696476acb5"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_N64_BUTTON_LEFT</b>&#160;&#160;&#160;(1 &lt;&lt; 1)</td></tr>
 <tr class="memitem:ab63feda1113e97a9c421a9cdb7803eb1" id="r_ab63feda1113e97a9c421a9cdb7803eb1"><td class="memItemLeft" align="right" valign="top"><a id="ab63feda1113e97a9c421a9cdb7803eb1" name="ab63feda1113e97a9c421a9cdb7803eb1"></a>
@@ -156,24 +155,42 @@ Macros</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a50f61808e0170ee1ea6ac239ad8e6ee9" id="r_a50f61808e0170ee1ea6ac239ad8e6ee9"><td class="memItemLeft" align="right" valign="top"><a id="a50f61808e0170ee1ea6ac239ad8e6ee9" name="a50f61808e0170ee1ea6ac239ad8e6ee9"></a>
-struct <a class="el" href="structjoybus__n64__controller__input.html">joybus_n64_controller_input</a>&#160;</td><td class="memItemRight" valign="bottom"><b>__attribute__</b> ((packed))</td></tr>
+<tr class="memitem:a7172cbdc1131704ab2af35e8bd1842b2" id="r_a7172cbdc1131704ab2af35e8bd1842b2"><td class="memItemLeft" align="right" valign="top"><a id="a7172cbdc1131704ab2af35e8bd1842b2" name="a7172cbdc1131704ab2af35e8bd1842b2"></a>
+struct <a class="el" href="structjoybus__n64__controller__state.html">joybus_n64_controller_state</a>&#160;</td><td class="memItemRight" valign="bottom"><b>__attribute__</b> ((packed))</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-var-members" class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
 <tr class="memitem:a4e1392d4e76367aa3f8989638f05d156" id="r_a4e1392d4e76367aa3f8989638f05d156"><td class="memItemLeft" align="right" valign="top"><a id="a4e1392d4e76367aa3f8989638f05d156" name="a4e1392d4e76367aa3f8989638f05d156"></a>
 uint16_t&#160;</td><td class="memItemRight" valign="bottom"><b>buttons</b></td></tr>
 <tr class="memdesc:a4e1392d4e76367aa3f8989638f05d156"><td class="mdescLeft">&#160;</td><td class="mdescRight">Button state. <br /></td></tr>
-<tr class="memitem:aaf671508229593fdb9a287a3ecd0a9dd" id="r_aaf671508229593fdb9a287a3ecd0a9dd"><td class="memItemLeft" align="right" valign="top"><a id="aaf671508229593fdb9a287a3ecd0a9dd" name="aaf671508229593fdb9a287a3ecd0a9dd"></a>
-uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>stick_x</b></td></tr>
-<tr class="memdesc:aaf671508229593fdb9a287a3ecd0a9dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stick x-axis position. <br /></td></tr>
-<tr class="memitem:af32d98fc87dfd133a7a71bc4d4d4d2b8" id="r_af32d98fc87dfd133a7a71bc4d4d4d2b8"><td class="memItemLeft" align="right" valign="top"><a id="af32d98fc87dfd133a7a71bc4d4d4d2b8" name="af32d98fc87dfd133a7a71bc4d4d4d2b8"></a>
-uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>stick_y</b></td></tr>
-<tr class="memdesc:af32d98fc87dfd133a7a71bc4d4d4d2b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stick y-axis position. <br /></td></tr>
+<tr class="memitem:a8da384e2a04707e09a180c0dc4102a0a" id="r_a8da384e2a04707e09a180c0dc4102a0a"><td class="memItemLeft" align="right" valign="top"><a id="a8da384e2a04707e09a180c0dc4102a0a" name="a8da384e2a04707e09a180c0dc4102a0a"></a>
+int8_t&#160;</td><td class="memItemRight" valign="bottom"><b>stick_x</b></td></tr>
+<tr class="memdesc:a8da384e2a04707e09a180c0dc4102a0a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stick x-axis position, nominally -80..80. <br /></td></tr>
+<tr class="memitem:afdaee7e353daef83f1b21f01cdff8f53" id="r_afdaee7e353daef83f1b21f01cdff8f53"><td class="memItemLeft" align="right" valign="top"><a id="afdaee7e353daef83f1b21f01cdff8f53" name="afdaee7e353daef83f1b21f01cdff8f53"></a>
+int8_t&#160;</td><td class="memItemRight" valign="bottom"><b>stick_y</b></td></tr>
+<tr class="memdesc:afdaee7e353daef83f1b21f01cdff8f53"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stick y-axis position, nominally -80..80. <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Common definitions for N64 controllers. </p>
-</div></div><!-- contents -->
+</div><a name="doc-define-members" id="doc-define-members"></a><h2 id="header-doc-define-members" class="groupheader">Macro Definition Documentation</h2>
+<a id="a5caf28bd0c4e16e845ac712b56ab4507" name="a5caf28bd0c4e16e845ac712b56ab4507"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5caf28bd0c4e16e845ac712b56ab4507">&#9670;&#160;</a></span>JOYBUS_N64_BUTTON_RIGHT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define JOYBUS_N64_BUTTON_RIGHT&#160;&#160;&#160;(1 &lt;&lt; 0)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>N64 controller button bitmask flags. </p>
+<p>These test the <span class="tt">buttons</span> field of <a class="el" href="structjoybus__n64__controller__state.html" title="N64 controller input state.">joybus_n64_controller_state</a>. Bits 0-7 correspond to the first button byte of the wire input state, bits 8-15 to the second. </p>
+
+</div>
+</div>
+</div><!-- contents -->
 </div><!-- doc-content -->
 <div id="page-nav" class="page-nav-panel">
 <div id="page-nav-resize-handle"></div>

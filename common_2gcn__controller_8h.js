@@ -1,6 +1,6 @@
 var common_2gcn__controller_8h =
 [
-    [ "joybus_gcn_controller_input", "structjoybus__gcn__controller__input.html", "structjoybus__gcn__controller__input" ],
+    [ "joybus_gcn_controller_state", "structjoybus__gcn__controller__state.html", "structjoybus__gcn__controller__state" ],
     [ "JOYBUS_GCN_BUTTON_A", "common_2gcn__controller_8h.html#a9d1060fb0a0cc471d9d02f1a6a355ca0", null ],
     [ "joybus_gcn_analog_mode", "common_2gcn__controller_8h.html#a33b898739d5994e2a707715229a240b5", [
       [ "JOYBUS_GCN_ANALOG_MODE_0", "common_2gcn__controller_8h.html#a33b898739d5994e2a707715229a240b5a1445ca658a90b9d396f6f533102331d3", null ],

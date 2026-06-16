@@ -33,8 +33,7 @@ var NAVTREE =
       [ "Communicating with Controllers", "index.html#autotoc_md6", null ],
       [ "Emulating a Controller", "index.html#autotoc_md7", null ]
     ] ],
-    [ "Special Thanks", "index.html#autotoc_md8", null ],
-    [ "License", "index.html#autotoc_md9", null ],
+    [ "License", "index.html#autotoc_md8", null ],
     [ "Topics", "topics.html", "topics" ],
     [ "Data Structures", "annotated.html", [
       [ "Data Structures", "annotated.html", "annotated_dup" ],
@@ -61,7 +60,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"identify_8h.html#ac6195917e15c2fb4a0f21da348c5c767"
+"identify_8h.html#a9d5e77fbc72c4ea8dfb23c13877034ab"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';

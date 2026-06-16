@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['accessory_0',['N64 Controller Accessory',['../group__joybus__target__n64__accessory.html',1,'']]]
+  ['backend_0',['Backend',['../group__joybus__backend__gecko.html',1,'Gecko Backend'],['../group__joybus__backend__rp2xxx.html',1,'RP2xxx Backend']]],
+  ['backends_1',['Backends',['../group__joybus__backends.html',1,'']]]
 ];

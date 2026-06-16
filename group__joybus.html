@@ -113,8 +113,10 @@ $(function(){initNavTree('group__joybus.html','',''); });
 <tr class="heading"><td colspan="2"><h2 id="header-nested-classes" class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Data Structures</h2></td></tr>
 <tr class="memitem:joybus_5Fapi" id="r_joybus_5Fapi"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structjoybus__api.html">joybus_api</a></td></tr>
+<tr class="memitem:joybus_5Fhost_5Fop" id="r_joybus_5Fhost_5Fop"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structjoybus__host__op.html">joybus_host_op</a></td></tr>
 <tr class="memitem:joybus" id="r_joybus"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structjoybus.html">joybus</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A Joybus instance.  <a href="structjoybus.html#details">More...</a><br /></td></tr>
+<tr class="memitem:joybus_5Fsync_5Fctx" id="r_joybus_5Fsync_5Fctx"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structjoybus__sync__ctx.html">joybus_sync_ctx</a></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-define-members" class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
@@ -146,7 +148,7 @@ Macros</h2></td></tr>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_FREQ_GCN_GBA_CABLE</b>&#160;&#160;&#160;262144</td></tr>
 <tr class="memdesc:ga4a178a6e794ac9819521433f3937eff1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Joybus frequency of a GameCube Game Boy Advance cable (DOL-011). <br /></td></tr>
 <tr class="memitem:gac5ab3e6873e93e3f6c2ba0759f227912" id="r_gac5ab3e6873e93e3f6c2ba0759f227912"><td class="memItemLeft" align="right" valign="top"><a id="gac5ab3e6873e93e3f6c2ba0759f227912" name="gac5ab3e6873e93e3f6c2ba0759f227912"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_INTER_TRANSFER_DELAY_US</b>&#160;&#160;&#160;20</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_INTER_TRANSFER_DELAY_US</b>&#160;&#160;&#160;80</td></tr>
 <tr class="memdesc:gac5ab3e6873e93e3f6c2ba0759f227912"><td class="mdescLeft">&#160;</td><td class="mdescRight">Minimum delay between Joybus transfers, in microseconds. <br /></td></tr>
 <tr class="memitem:ga26e7ebcd25e8c5ffabf856df2a3ced6c" id="r_ga26e7ebcd25e8c5ffabf856df2a3ced6c"><td class="memItemLeft" align="right" valign="top"><a id="ga26e7ebcd25e8c5ffabf856df2a3ced6c" name="ga26e7ebcd25e8c5ffabf856df2a3ced6c"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_REPLY_TIMEOUT_US</b>&#160;&#160;&#160;100</td></tr>
@@ -157,16 +159,16 @@ Macros</h2></td></tr>
 <tr class="memitem:ga96357e747d908aa6c354b507d9b0fdc4" id="r_ga96357e747d908aa6c354b507d9b0fdc4"><td class="memItemLeft" align="right" valign="top"><a id="ga96357e747d908aa6c354b507d9b0fdc4" name="ga96357e747d908aa6c354b507d9b0fdc4"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_BLOCK_SIZE</b>&#160;&#160;&#160;64</td></tr>
 <tr class="memdesc:ga96357e747d908aa6c354b507d9b0fdc4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum size of a Joybus transfer, in bytes. <br /></td></tr>
-<tr class="memitem:gaeba0b3392291f316c3279dfd07b383e2" id="r_gaeba0b3392291f316c3279dfd07b383e2"><td class="memItemLeft" align="right" valign="top"><a id="gaeba0b3392291f316c3279dfd07b383e2" name="gaeba0b3392291f316c3279dfd07b383e2"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_ACCESSORY_BLOCK_SIZE</b>&#160;&#160;&#160;32</td></tr>
-<tr class="memdesc:gaeba0b3392291f316c3279dfd07b383e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Size of a Joybus N64 accessory read/write block. <br /></td></tr>
+<tr class="memitem:ga272b8f55fa8c16bac1524dda78c5ecef" id="r_ga272b8f55fa8c16bac1524dda78c5ecef"><td class="memItemLeft" align="right" valign="top"><a id="ga272b8f55fa8c16bac1524dda78c5ecef" name="ga272b8f55fa8c16bac1524dda78c5ecef"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_PAK_BLOCK_SIZE</b>&#160;&#160;&#160;32</td></tr>
+<tr class="memdesc:ga272b8f55fa8c16bac1524dda78c5ecef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Size of a Joybus N64 pak read/write block. <br /></td></tr>
 <tr class="memitem:gaf06db642865d9aae04c89330d3b9cc25" id="r_gaf06db642865d9aae04c89330d3b9cc25"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#gaf06db642865d9aae04c89330d3b9cc25">JOYBUS</a>(bus)</td></tr>
 <tr class="memdesc:gaf06db642865d9aae04c89330d3b9cc25"><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro to cast a backend-specific Joybus instance to a generic Joybus instance.  <br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-typedef-members" class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:ga9b3c1aac9f12c49896a283fd635233da" id="r_ga9b3c1aac9f12c49896a283fd635233da"><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga9b3c1aac9f12c49896a283fd635233da">joybus_transfer_cb_t</a>) (struct <a class="el" href="structjoybus.html">joybus</a> *bus, int result, void *user_data)</td></tr>
-<tr class="memdesc:ga9b3c1aac9f12c49896a283fd635233da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function type for transfer completion callbacks.  <br /></td></tr>
+<tr class="memitem:ga3a369b3d9cde58960068a67ee3d3c092" id="r_ga3a369b3d9cde58960068a67ee3d3c092"><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga3a369b3d9cde58960068a67ee3d3c092">joybus_transfer_cb</a>) (struct <a class="el" href="structjoybus.html">joybus</a> *bus, int <a class="el" href="identify_8h.html#ade818037fd6c985038ff29656089758d">status</a>, void *user_data)</td></tr>
+<tr class="memdesc:ga3a369b3d9cde58960068a67ee3d3c092"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function type for transfer completion callbacks.  <br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-enum-members" class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
@@ -180,6 +182,8 @@ Enumerations</h2></td></tr>
 &#160;&#160;<a class="el" href="#gga47435eba4c98726f93fdae3c8bb9fd76a274cd46970af05945e6218f49e40efe0">JOYBUS_ERR_NOT_SUPPORTED</a>
 , <br />
 &#160;&#160;<a class="el" href="#gga47435eba4c98726f93fdae3c8bb9fd76adc97e17cb4f7168b0f71926a6d357aac">JOYBUS_ERR_CHECKSUM</a>
+, <br />
+&#160;&#160;<a class="el" href="#gga47435eba4c98726f93fdae3c8bb9fd76a8c483cd1d2d0f43c85fbc5f2124c14c8">JOYBUS_ERR_NO_DEVICE</a>
 <br />
  }</td></tr>
 <tr class="memdesc:ga47435eba4c98726f93fdae3c8bb9fd76"><td class="mdescLeft">&#160;</td><td class="mdescRight">Joybus error codes.  <a href="#ga47435eba4c98726f93fdae3c8bb9fd76">More...</a><br /></td></tr>
@@ -190,14 +194,18 @@ Functions</h2></td></tr>
 <tr class="memdesc:ga10316dbaf35990b5c627b2d2f6330248"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable the Joybus instance.  <br /></td></tr>
 <tr class="memitem:gaabcba7cb477ed6aff47bc7db467f348b" id="r_gaabcba7cb477ed6aff47bc7db467f348b"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#gaabcba7cb477ed6aff47bc7db467f348b">joybus_disable</a> (struct <a class="el" href="structjoybus.html">joybus</a> *bus)</td></tr>
 <tr class="memdesc:gaabcba7cb477ed6aff47bc7db467f348b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Disable the Joybus instance.  <br /></td></tr>
-<tr class="memitem:ga2c8bd40f7ab99754d8b64cb7baa447fd" id="r_ga2c8bd40f7ab99754d8b64cb7baa447fd"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga2c8bd40f7ab99754d8b64cb7baa447fd">joybus_transfer</a> (struct <a class="el" href="structjoybus.html">joybus</a> *bus, const uint8_t *write_buf, uint8_t write_len, uint8_t *read_buf, uint8_t read_len, <a class="el" href="#ga9b3c1aac9f12c49896a283fd635233da">joybus_transfer_cb_t</a> callback, void *user_data)</td></tr>
-<tr class="memdesc:ga2c8bd40f7ab99754d8b64cb7baa447fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform a Joybus "write then read" transfer.  <br /></td></tr>
+<tr class="memitem:gaa7d3786d5ed4f67c42ed0fb6718cdae5" id="r_gaa7d3786d5ed4f67c42ed0fb6718cdae5"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#gaa7d3786d5ed4f67c42ed0fb6718cdae5">joybus_transfer</a> (struct <a class="el" href="structjoybus.html">joybus</a> *bus, const uint8_t *write_buf, uint8_t write_len, uint8_t *read_buf, uint8_t read_len, <a class="el" href="#ga3a369b3d9cde58960068a67ee3d3c092">joybus_transfer_cb</a> callback, void *user_data)</td></tr>
+<tr class="memdesc:gaa7d3786d5ed4f67c42ed0fb6718cdae5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform a Joybus "write then read" transfer.  <br /></td></tr>
 <tr class="memitem:gaa23c09a3db2e9880ab6dda70b0239061" id="r_gaa23c09a3db2e9880ab6dda70b0239061"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#gaa23c09a3db2e9880ab6dda70b0239061">joybus_transfer_sync</a> (struct <a class="el" href="structjoybus.html">joybus</a> *bus, const uint8_t *write_buf, uint8_t write_len, uint8_t *read_buf, uint8_t read_len)</td></tr>
 <tr class="memdesc:gaa23c09a3db2e9880ab6dda70b0239061"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform a synchronous "write then read" Joybus transfer.  <br /></td></tr>
 <tr class="memitem:gadb1ce9137d553ae521755b77238fc45c" id="r_gadb1ce9137d553ae521755b77238fc45c"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#gadb1ce9137d553ae521755b77238fc45c">joybus_target_register</a> (struct <a class="el" href="structjoybus.html">joybus</a> *bus, struct <a class="el" href="structjoybus__target.html">joybus_target</a> *target)</td></tr>
 <tr class="memdesc:gadb1ce9137d553ae521755b77238fc45c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable Joybus "target" mode, and register a target to handle commands.  <br /></td></tr>
 <tr class="memitem:gaa31869a974628cc7428404e0affc68b2" id="r_gaa31869a974628cc7428404e0affc68b2"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#gaa31869a974628cc7428404e0affc68b2">joybus_target_unregister</a> (struct <a class="el" href="structjoybus.html">joybus</a> *bus, struct <a class="el" href="structjoybus__target.html">joybus_target</a> *target)</td></tr>
 <tr class="memdesc:gaa31869a974628cc7428404e0affc68b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unregister a Joybus target.  <br /></td></tr>
+<tr class="memitem:ga907fb6719a85f40e70b0ba0e488f97c3" id="r_ga907fb6719a85f40e70b0ba0e488f97c3"><td class="memItemLeft" align="right" valign="top"><a id="ga907fb6719a85f40e70b0ba0e488f97c3" name="ga907fb6719a85f40e70b0ba0e488f97c3"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>joybus_sync_cb</b> (struct <a class="el" href="structjoybus.html">joybus</a> *bus, int <a class="el" href="identify_8h.html#ade818037fd6c985038ff29656089758d">status</a>, void *user_data)</td></tr>
+<tr class="memitem:gabf5f610ca3e4d1015c1220362dcc51d1" id="r_gabf5f610ca3e4d1015c1220362dcc51d1"><td class="memItemLeft" align="right" valign="top"><a id="gabf5f610ca3e4d1015c1220362dcc51d1" name="gabf5f610ca3e4d1015c1220362dcc51d1"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>joybus_sync</b> (int start_status, struct <a class="el" href="structjoybus__sync__ctx.html">joybus_sync_ctx</a> *ctx)</td></tr>
 <tr class="memitem:gaf0fb19213a219d0ec14fd0103f9b733e" id="r_gaf0fb19213a219d0ec14fd0103f9b733e"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#gaf0fb19213a219d0ec14fd0103f9b733e">joybus_data_checksum_update</a> (uint8_t crc, uint8_t byte)</td></tr>
 <tr class="memdesc:gaf0fb19213a219d0ec14fd0103f9b733e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fold one byte into a running Joybus data checksum.  <br /></td></tr>
 <tr class="memitem:gad4e8d62b15102d8e6c580fb3730eb2b5" id="r_gad4e8d62b15102d8e6c580fb3730eb2b5"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#gad4e8d62b15102d8e6c580fb3730eb2b5">joybus_data_checksum</a> (const uint8_t *data, size_t size)</td></tr>
@@ -224,31 +232,32 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line">((<span class="keyword">struct </span><a class="code hl_struct" href="structjoybus.html">joybus</a> *)(bus))</div>
-<div class="ttc" id="astructjoybus_html"><div class="ttname"><a href="structjoybus.html">joybus</a></div><div class="ttdoc">A Joybus instance.</div><div class="ttdef"><b>Definition</b> bus.h:85</div></div>
+<div class="ttc" id="astructjoybus_html"><div class="ttname"><a href="structjoybus.html">joybus</a></div><div class="ttdoc">A Joybus instance.</div><div class="ttdef"><b>Definition</b> bus.h:96</div></div>
 </div><!-- fragment -->
 <p>Macro to cast a backend-specific Joybus instance to a generic Joybus instance. </p>
 
 </div>
 </div>
 <a name="doc-typedef-members" id="doc-typedef-members"></a><h2 id="header-doc-typedef-members" class="groupheader">Typedef Documentation</h2>
-<a id="ga9b3c1aac9f12c49896a283fd635233da" name="ga9b3c1aac9f12c49896a283fd635233da"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga9b3c1aac9f12c49896a283fd635233da">&#9670;&#160;</a></span>joybus_transfer_cb_t</h2>
+<a id="ga3a369b3d9cde58960068a67ee3d3c092" name="ga3a369b3d9cde58960068a67ee3d3c092"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga3a369b3d9cde58960068a67ee3d3c092">&#9670;&#160;</a></span>joybus_transfer_cb</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef void(* joybus_transfer_cb_t) (struct <a class="el" href="structjoybus.html">joybus</a> *bus, int result, void *user_data)</td>
+          <td class="memname">typedef void(* joybus_transfer_cb) (struct <a class="el" href="structjoybus.html">joybus</a> *bus, int <a class="el" href="identify_8h.html#ade818037fd6c985038ff29656089758d">status</a>, void *user_data)</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Function type for transfer completion callbacks. </p>
+<p>Invoked once, after the async call has returned, when a started transfer completes. Runs in transfer-completion context, which is an interrupt on most backends, so it must not block.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">bus</td><td>the Joybus associated with the transfer </td></tr>
-    <tr><td class="paramname">result</td><td>positive number of bytes read on success, negative error code on failure </td></tr>
-    <tr><td class="paramname">user_data</td><td>user data passed to the callback </td></tr>
+    <tr><td class="paramname">status</td><td>0 on success, a negative <a class="el" href="#ga47435eba4c98726f93fdae3c8bb9fd76" title="Joybus error codes.">joybus_error</a> on failure </td></tr>
+    <tr><td class="paramname">user_data</td><td>the user_data passed to the async function </td></tr>
   </table>
   </dd>
 </dl>
@@ -269,6 +278,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Joybus error codes. </p>
+<p>Errors are reported as negatives of these codes. Functions return 0 on success or a negative <a class="el" href="#ga47435eba4c98726f93fdae3c8bb9fd76" title="Joybus error codes.">joybus_error</a> on failure, and the status passed to a transfer callback uses the same convention. If an async function returns an error, the transfer did not start, so its callback is not invoked. </p>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="gga47435eba4c98726f93fdae3c8bb9fd76a6496af2c91935e2e37a48a43f14dda21" name="gga47435eba4c98726f93fdae3c8bb9fd76a6496af2c91935e2e37a48a43f14dda21"></a>JOYBUS_ERR_DISABLED&#160;</td><td class="fielddoc"><p>Bus not enabled. </p>
 </td></tr>
@@ -279,6 +289,8 @@ Functions</h2></td></tr>
 <tr><td class="fieldname"><a id="gga47435eba4c98726f93fdae3c8bb9fd76a274cd46970af05945e6218f49e40efe0" name="gga47435eba4c98726f93fdae3c8bb9fd76a274cd46970af05945e6218f49e40efe0"></a>JOYBUS_ERR_NOT_SUPPORTED&#160;</td><td class="fielddoc"><p>Command not supported by Joybus target. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="gga47435eba4c98726f93fdae3c8bb9fd76adc97e17cb4f7168b0f71926a6d357aac" name="gga47435eba4c98726f93fdae3c8bb9fd76adc97e17cb4f7168b0f71926a6d357aac"></a>JOYBUS_ERR_CHECKSUM&#160;</td><td class="fielddoc"><p>Checksum error. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="gga47435eba4c98726f93fdae3c8bb9fd76a8c483cd1d2d0f43c85fbc5f2124c14c8" name="gga47435eba4c98726f93fdae3c8bb9fd76a8c483cd1d2d0f43c85fbc5f2124c14c8"></a>JOYBUS_ERR_NO_DEVICE&#160;</td><td class="fielddoc"><p>Expected device not detected. </p>
 </td></tr>
 </table>
 
@@ -475,7 +487,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>0 on success, negative error code on failure </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>0 on success, a negative <a class="el" href="#ga47435eba4c98726f93fdae3c8bb9fd76" title="Joybus error codes.">joybus_error</a> on failure </dd></dl>
 
 </div>
 </div>
@@ -514,12 +526,12 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>0 on success, negative error code on failure </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>0 on success, a negative <a class="el" href="#ga47435eba4c98726f93fdae3c8bb9fd76" title="Joybus error codes.">joybus_error</a> on failure </dd></dl>
 
 </div>
 </div>
-<a id="ga2c8bd40f7ab99754d8b64cb7baa447fd" name="ga2c8bd40f7ab99754d8b64cb7baa447fd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga2c8bd40f7ab99754d8b64cb7baa447fd">&#9670;&#160;</a></span>joybus_transfer()</h2>
+<a id="gaa7d3786d5ed4f67c42ed0fb6718cdae5" name="gaa7d3786d5ed4f67c42ed0fb6718cdae5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaa7d3786d5ed4f67c42ed0fb6718cdae5">&#9670;&#160;</a></span>joybus_transfer()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -555,7 +567,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="#ga9b3c1aac9f12c49896a283fd635233da">joybus_transfer_cb_t</a></td>          <td class="paramname"><span class="paramname"><em>callback</em></span>, </td>
+          <td class="paramtype"><a class="el" href="#ga3a369b3d9cde58960068a67ee3d3c092">joybus_transfer_cb</a></td>          <td class="paramname"><span class="paramname"><em>callback</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -571,7 +583,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Perform a Joybus "write then read" transfer. </p>
-<p>Sends a command to a device, and reads the response. The provided buffers must be valid until the transfer is complete.</p>
+<p>Sends a command to a device and reads the response. Returns once the transfer has started, and <code class="param">callback</code> is invoked with the status when it completes. The provided buffers must stay valid until the callback runs.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">bus</td><td>the Joybus instance to use </td></tr>
@@ -579,12 +591,12 @@ Functions</h2></td></tr>
     <tr><td class="paramname">write_len</td><td>the number of bytes to write </td></tr>
     <tr><td class="paramname">read_buf</td><td>the buffer to store the response in </td></tr>
     <tr><td class="paramname">read_len</td><td>the number of bytes to read </td></tr>
-    <tr><td class="paramname">callback</td><td>a callback function to call when the transfer is complete </td></tr>
+    <tr><td class="paramname">callback</td><td>invoked once when the transfer completes </td></tr>
     <tr><td class="paramname">user_data</td><td>user data to pass to the callback </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>0 on success, negative error code on failure </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>0 if the transfer was started, a negative <a class="el" href="#ga47435eba4c98726f93fdae3c8bb9fd76" title="Joybus error codes.">joybus_error</a> otherwise </dd></dl>
 
 </div>
 </div>
@@ -623,7 +635,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Perform a synchronous "write then read" Joybus transfer. </p>
-<p>Sends a command to a device, and waits for the response before returning.</p>
+<p>Sends a command to a device and blocks until the response arrives.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">bus</td><td>the Joybus instance to use </td></tr>
@@ -631,11 +643,11 @@ Functions</h2></td></tr>
     <tr><td class="paramname">write_len</td><td>the number of bytes to write </td></tr>
     <tr><td class="paramname">read_buf</td><td>the buffer to store the response in </td></tr>
     <tr><td class="paramname">read_len</td><td>the number of bytes to read </td></tr>
-    <tr><td class="paramname">timeout_ms</td><td>the timeout for the transfer, in milliseconds </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>positive number of bytes read on success, negative error code on failure </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>0 on success, a negative <a class="el" href="#ga47435eba4c98726f93fdae3c8bb9fd76" title="Joybus error codes.">joybus_error</a> on failure</dd></dl>
+<dl class="section warning"><dt>Warning</dt><dd>Blocks by busy-waiting, so it must not be called from an interrupt or timer callback. Use <a class="el" href="#gaa7d3786d5ed4f67c42ed0fb6718cdae5" title="Perform a Joybus &quot;write then read&quot; transfer.">joybus_transfer()</a> there. </dd></dl>
 
 </div>
 </div>

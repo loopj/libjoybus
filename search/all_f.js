@@ -1,9 +1,9 @@
 var searchData=
 [
-  ['special_20thanks_0',['Special Thanks',['../index.html#autotoc_md8',1,'']]],
-  ['stick_5fx_1',['stick_x',['../structjoybus__gcn__controller__input.html#a1fdcef7a164dc55f2bd9652b3fa3a657',1,'joybus_gcn_controller_input::stick_x'],['../structjoybus__n64__controller__input.html#ae830f0a3a3b3ecc36dd213fa818716c6',1,'joybus_n64_controller_input::stick_x'],['../common_2gcn__controller_8h.html#aaf671508229593fdb9a287a3ecd0a9dd',1,'stick_x:&#160;gcn_controller.h'],['../common_2n64__controller_8h.html#aaf671508229593fdb9a287a3ecd0a9dd',1,'stick_x:&#160;n64_controller.h']]],
-  ['stick_5fy_2',['stick_y',['../structjoybus__gcn__controller__input.html#a78ff9d1a00ccd59f60849ac9acc15bf1',1,'joybus_gcn_controller_input::stick_y'],['../structjoybus__n64__controller__input.html#af1306a08d51b1cc12f2f61fd0842333b',1,'joybus_n64_controller_input::stick_y'],['../common_2gcn__controller_8h.html#af32d98fc87dfd133a7a71bc4d4d4d2b8',1,'stick_y:&#160;gcn_controller.h'],['../common_2n64__controller_8h.html#af32d98fc87dfd133a7a71bc4d4d4d2b8',1,'stick_y:&#160;n64_controller.h']]],
-  ['substick_5fx_3',['substick_x',['../structjoybus__gcn__controller__input.html#a98ceb8283c313ef769720edad290a14b',1,'joybus_gcn_controller_input::substick_x'],['../common_2gcn__controller_8h.html#a2b3da463515deac8332fe8320f414c69',1,'substick_x:&#160;gcn_controller.h']]],
-  ['substick_5fy_4',['substick_y',['../structjoybus__gcn__controller__input.html#a46875330dc66968c8f2944cce14257ed',1,'joybus_gcn_controller_input::substick_y'],['../common_2gcn__controller_8h.html#a40989423890116b171f5bf1b4b574eac',1,'substick_y:&#160;gcn_controller.h']]],
-  ['supported_20platforms_5',['Supported Platforms',['../index.html#autotoc_md2',1,'']]]
+  ['target_0',['Target',['../group__joybus__target__gcn__controller.html',1,'GameCube Controller Target'],['../group__joybus__target__n64__controller.html',1,'N64 Controller Target']]],
+  ['targets_1',['Targets',['../group__joybus__target.html',1,'']]],
+  ['the_20joybus_2',['Initializing the Joybus',['../index.html#autotoc_md5',1,'']]],
+  ['trigger_5fleft_3',['trigger_left',['../structjoybus__gcn__controller__state.html#a92f2b3d07988e075e170ddb43a9aa079',1,'joybus_gcn_controller_state::trigger_left'],['../common_2gcn__controller_8h.html#aa7e5d70f5c304e47581ada1622f3d93f',1,'trigger_left:&#160;gcn_controller.h']]],
+  ['trigger_5fright_4',['trigger_right',['../structjoybus__gcn__controller__state.html#a4f4a1974f5ceccd4e94c472a6be42b63',1,'joybus_gcn_controller_state::trigger_right'],['../common_2gcn__controller_8h.html#a9de0206d5857ae92d3db20a251893a67',1,'trigger_right:&#160;gcn_controller.h']]],
+  ['type_5',['type',['../structjoybus__id.html#a58c5ce73f5a3f7b52fe8c77585d8dc37',1,'joybus_id::type'],['../identify_8h.html#acb5cfd209ba75c853d03f701e7f91679',1,'type:&#160;identify.h']]]
 ];

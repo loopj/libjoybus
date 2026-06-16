@@ -114,77 +114,82 @@ $(function(){initNavTree('identify_8h.html','',''); });
 </div>
 <p><a href="identify_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-nested-classes" class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Data Structures</h2></td></tr>
+<tr class="memitem:joybus_5Fid" id="r_joybus_5Fid"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structjoybus__id.html">joybus_id</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents the 3-byte ID field from an "identify" buffer.  <a href="structjoybus__id.html#details">More...</a><br /></td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-define-members" class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
 <tr class="memitem:ad0ec9c6c9fe9b7e36efe011a2d09a558" id="r_ad0ec9c6c9fe9b7e36efe011a2d09a558"><td class="memItemLeft" align="right" valign="top"><a id="ad0ec9c6c9fe9b7e36efe011a2d09a558" name="ad0ec9c6c9fe9b7e36efe011a2d09a558"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_TYPE_N64_MASK</b>&#160;&#160;&#160;0x071f</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_TYPE_N64_MASK</b>&#160;&#160;&#160;0x1f07</td></tr>
 <tr class="memdesc:ad0ec9c6c9fe9b7e36efe011a2d09a558"><td class="mdescLeft">&#160;</td><td class="mdescRight">N64 device type mask. <br /></td></tr>
-<tr class="memitem:a897d25b1bef8c70714a1f21bcdc47778" id="r_a897d25b1bef8c70714a1f21bcdc47778"><td class="memItemLeft" align="right" valign="top"><a id="a897d25b1bef8c70714a1f21bcdc47778" name="a897d25b1bef8c70714a1f21bcdc47778"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_TYPE_N64_VRU</b>&#160;&#160;&#160;0x0001</td></tr>
-<tr class="memdesc:a897d25b1bef8c70714a1f21bcdc47778"><td class="mdescLeft">&#160;</td><td class="mdescRight">N64 Voice Recognition Unit (NUS-020) <br /></td></tr>
-<tr class="memitem:ac599ad62024ecb56dcb162224f8624f5" id="r_ac599ad62024ecb56dcb162224f8624f5"><td class="memItemLeft" align="right" valign="top"><a id="ac599ad62024ecb56dcb162224f8624f5" name="ac599ad62024ecb56dcb162224f8624f5"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_TYPE_N64_KEYBOARD</b>&#160;&#160;&#160;0x0002</td></tr>
-<tr class="memdesc:ac599ad62024ecb56dcb162224f8624f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">N64 Randnet Keyboard (RND-001) <br /></td></tr>
-<tr class="memitem:a755a36fa9d1bbb5245a116b53f4aff70" id="r_a755a36fa9d1bbb5245a116b53f4aff70"><td class="memItemLeft" align="right" valign="top"><a id="a755a36fa9d1bbb5245a116b53f4aff70" name="a755a36fa9d1bbb5245a116b53f4aff70"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_TYPE_GBA_CABLE</b>&#160;&#160;&#160;0x0004</td></tr>
-<tr class="memdesc:a755a36fa9d1bbb5245a116b53f4aff70"><td class="mdescLeft">&#160;</td><td class="mdescRight">GBA connected via GameCube Game Boy Advance cable (DOL-011) <br /></td></tr>
-<tr class="memitem:a7febc2701e4b1d00a374b6d5c0e32938" id="r_a7febc2701e4b1d00a374b6d5c0e32938"><td class="memItemLeft" align="right" valign="top"><a id="a7febc2701e4b1d00a374b6d5c0e32938" name="a7febc2701e4b1d00a374b6d5c0e32938"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_TYPE_N64_RTC</b>&#160;&#160;&#160;0x0010</td></tr>
-<tr class="memdesc:a7febc2701e4b1d00a374b6d5c0e32938"><td class="mdescLeft">&#160;</td><td class="mdescRight">N64 cartridge RTC is present. <br /></td></tr>
-<tr class="memitem:a2933e5618033c04c771b919d3b681fef" id="r_a2933e5618033c04c771b919d3b681fef"><td class="memItemLeft" align="right" valign="top"><a id="a2933e5618033c04c771b919d3b681fef" name="a2933e5618033c04c771b919d3b681fef"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_TYPE_N64_EEPROM_16K</b>&#160;&#160;&#160;0x0040</td></tr>
-<tr class="memdesc:a2933e5618033c04c771b919d3b681fef"><td class="mdescLeft">&#160;</td><td class="mdescRight">N64 cartridge EEPROM is 16KB (otherwise 4KB) <br /></td></tr>
-<tr class="memitem:ac6195917e15c2fb4a0f21da348c5c767" id="r_ac6195917e15c2fb4a0f21da348c5c767"><td class="memItemLeft" align="right" valign="top"><a id="ac6195917e15c2fb4a0f21da348c5c767" name="ac6195917e15c2fb4a0f21da348c5c767"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_TYPE_N64_EEPROM</b>&#160;&#160;&#160;0x0080</td></tr>
-<tr class="memdesc:ac6195917e15c2fb4a0f21da348c5c767"><td class="mdescLeft">&#160;</td><td class="mdescRight">N64 cartridge EEPROM is present. <br /></td></tr>
 <tr class="memitem:ac722993a39c47ee0178e8e2ddfabaebf" id="r_ac722993a39c47ee0178e8e2ddfabaebf"><td class="memItemLeft" align="right" valign="top"><a id="ac722993a39c47ee0178e8e2ddfabaebf" name="ac722993a39c47ee0178e8e2ddfabaebf"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_TYPE_N64_ABSOLUTE</b>&#160;&#160;&#160;0x0100</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_TYPE_N64_ABSOLUTE</b>&#160;&#160;&#160;0x0001</td></tr>
 <tr class="memdesc:ac722993a39c47ee0178e8e2ddfabaebf"><td class="mdescLeft">&#160;</td><td class="mdescRight">N64 device reports absolute position. <br /></td></tr>
 <tr class="memitem:a10fc8d11dc1d73c07580f95a124e5189" id="r_a10fc8d11dc1d73c07580f95a124e5189"><td class="memItemLeft" align="right" valign="top"><a id="a10fc8d11dc1d73c07580f95a124e5189" name="a10fc8d11dc1d73c07580f95a124e5189"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_TYPE_N64_RELATIVE</b>&#160;&#160;&#160;0x0200</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_TYPE_N64_RELATIVE</b>&#160;&#160;&#160;0x0002</td></tr>
 <tr class="memdesc:a10fc8d11dc1d73c07580f95a124e5189"><td class="mdescLeft">&#160;</td><td class="mdescRight">N64 device reports relative position. <br /></td></tr>
 <tr class="memitem:a9871fda683dde97d86637cc3eccf75b5" id="r_a9871fda683dde97d86637cc3eccf75b5"><td class="memItemLeft" align="right" valign="top"><a id="a9871fda683dde97d86637cc3eccf75b5" name="a9871fda683dde97d86637cc3eccf75b5"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_TYPE_N64_JOYPORT</b>&#160;&#160;&#160;0x0400</td></tr>
-<tr class="memdesc:a9871fda683dde97d86637cc3eccf75b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">N64 device has a Joyport (accessory port) <br /></td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_TYPE_N64_JOYPORT</b>&#160;&#160;&#160;0x0004</td></tr>
+<tr class="memdesc:a9871fda683dde97d86637cc3eccf75b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">N64 device has a Joyport (pak port) <br /></td></tr>
+<tr class="memitem:a897d25b1bef8c70714a1f21bcdc47778" id="r_a897d25b1bef8c70714a1f21bcdc47778"><td class="memItemLeft" align="right" valign="top"><a id="a897d25b1bef8c70714a1f21bcdc47778" name="a897d25b1bef8c70714a1f21bcdc47778"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_TYPE_N64_VRU</b>&#160;&#160;&#160;0x0100</td></tr>
+<tr class="memdesc:a897d25b1bef8c70714a1f21bcdc47778"><td class="mdescLeft">&#160;</td><td class="mdescRight">N64 Voice Recognition Unit (NUS-020) <br /></td></tr>
+<tr class="memitem:ac599ad62024ecb56dcb162224f8624f5" id="r_ac599ad62024ecb56dcb162224f8624f5"><td class="memItemLeft" align="right" valign="top"><a id="ac599ad62024ecb56dcb162224f8624f5" name="ac599ad62024ecb56dcb162224f8624f5"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_TYPE_N64_KEYBOARD</b>&#160;&#160;&#160;0x0200</td></tr>
+<tr class="memdesc:ac599ad62024ecb56dcb162224f8624f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">N64 Randnet Keyboard (RND-001) <br /></td></tr>
+<tr class="memitem:a755a36fa9d1bbb5245a116b53f4aff70" id="r_a755a36fa9d1bbb5245a116b53f4aff70"><td class="memItemLeft" align="right" valign="top"><a id="a755a36fa9d1bbb5245a116b53f4aff70" name="a755a36fa9d1bbb5245a116b53f4aff70"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_TYPE_GBA_CABLE</b>&#160;&#160;&#160;0x0400</td></tr>
+<tr class="memdesc:a755a36fa9d1bbb5245a116b53f4aff70"><td class="mdescLeft">&#160;</td><td class="mdescRight">GBA connected via GameCube Game Boy Advance cable (DOL-011) <br /></td></tr>
+<tr class="memitem:a7febc2701e4b1d00a374b6d5c0e32938" id="r_a7febc2701e4b1d00a374b6d5c0e32938"><td class="memItemLeft" align="right" valign="top"><a id="a7febc2701e4b1d00a374b6d5c0e32938" name="a7febc2701e4b1d00a374b6d5c0e32938"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_TYPE_N64_RTC</b>&#160;&#160;&#160;0x1000</td></tr>
+<tr class="memdesc:a7febc2701e4b1d00a374b6d5c0e32938"><td class="mdescLeft">&#160;</td><td class="mdescRight">N64 cartridge RTC is present. <br /></td></tr>
+<tr class="memitem:a2933e5618033c04c771b919d3b681fef" id="r_a2933e5618033c04c771b919d3b681fef"><td class="memItemLeft" align="right" valign="top"><a id="a2933e5618033c04c771b919d3b681fef" name="a2933e5618033c04c771b919d3b681fef"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_TYPE_N64_EEPROM_16K</b>&#160;&#160;&#160;0x4000</td></tr>
+<tr class="memdesc:a2933e5618033c04c771b919d3b681fef"><td class="mdescLeft">&#160;</td><td class="mdescRight">N64 cartridge EEPROM is 16KB (otherwise 4KB) <br /></td></tr>
+<tr class="memitem:ac6195917e15c2fb4a0f21da348c5c767" id="r_ac6195917e15c2fb4a0f21da348c5c767"><td class="memItemLeft" align="right" valign="top"><a id="ac6195917e15c2fb4a0f21da348c5c767" name="ac6195917e15c2fb4a0f21da348c5c767"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_TYPE_N64_EEPROM</b>&#160;&#160;&#160;0x8000</td></tr>
+<tr class="memdesc:ac6195917e15c2fb4a0f21da348c5c767"><td class="mdescLeft">&#160;</td><td class="mdescRight">N64 cartridge EEPROM is present. <br /></td></tr>
 <tr class="memitem:a78be0017587d28068964baf6d9c63707" id="r_a78be0017587d28068964baf6d9c63707"><td class="memItemLeft" align="right" valign="top"><a id="a78be0017587d28068964baf6d9c63707" name="a78be0017587d28068964baf6d9c63707"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_TYPE_GCN_MASK</b>&#160;&#160;&#160;0x1800</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_TYPE_GCN_MASK</b>&#160;&#160;&#160;0x0018</td></tr>
 <tr class="memdesc:a78be0017587d28068964baf6d9c63707"><td class="mdescLeft">&#160;</td><td class="mdescRight">GameCube device type mask. <br /></td></tr>
-<tr class="memitem:afe915efda4d96ec8fe127ce8d07a164c" id="r_afe915efda4d96ec8fe127ce8d07a164c"><td class="memItemLeft" align="right" valign="top"><a id="afe915efda4d96ec8fe127ce8d07a164c" name="afe915efda4d96ec8fe127ce8d07a164c"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_TYPE_GCN_WIRELESS_ID_FIXED</b>&#160;&#160;&#160;0x0010</td></tr>
-<tr class="memdesc:afe915efda4d96ec8fe127ce8d07a164c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wireless ID has been fixed. <br /></td></tr>
-<tr class="memitem:a12c7453ef870c9dfbe2175d536cd3eff" id="r_a12c7453ef870c9dfbe2175d536cd3eff"><td class="memItemLeft" align="right" valign="top"><a id="a12c7453ef870c9dfbe2175d536cd3eff" name="a12c7453ef870c9dfbe2175d536cd3eff"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_TYPE_GCN_KEYBOARD</b>&#160;&#160;&#160;0x0020</td></tr>
-<tr class="memdesc:a12c7453ef870c9dfbe2175d536cd3eff"><td class="mdescLeft">&#160;</td><td class="mdescRight">GameCube ASCII keyboard. <br /></td></tr>
-<tr class="memitem:a422f6671c92d8ab7a530c8668e751a9a" id="r_a422f6671c92d8ab7a530c8668e751a9a"><td class="memItemLeft" align="right" valign="top"><a id="a422f6671c92d8ab7a530c8668e751a9a" name="a422f6671c92d8ab7a530c8668e751a9a"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_TYPE_GCN_WIRELESS_ORIGIN</b>&#160;&#160;&#160;0x0020</td></tr>
-<tr class="memdesc:a422f6671c92d8ab7a530c8668e751a9a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wireless origin available. <br /></td></tr>
-<tr class="memitem:a3d2c43f9dacc747a6c019eb1bbe83a7b" id="r_a3d2c43f9dacc747a6c019eb1bbe83a7b"><td class="memItemLeft" align="right" valign="top"><a id="a3d2c43f9dacc747a6c019eb1bbe83a7b" name="a3d2c43f9dacc747a6c019eb1bbe83a7b"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_TYPE_GCN_WIRELESS_ID_MASK</b>&#160;&#160;&#160;0x00C0</td></tr>
-<tr class="memdesc:a3d2c43f9dacc747a6c019eb1bbe83a7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Top 2 bits of wireless ID. <br /></td></tr>
 <tr class="memitem:a9019062697269e59a53730cf5b4f0368" id="r_a9019062697269e59a53730cf5b4f0368"><td class="memItemLeft" align="right" valign="top"><a id="a9019062697269e59a53730cf5b4f0368" name="a9019062697269e59a53730cf5b4f0368"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_TYPE_GCN_STANDARD</b>&#160;&#160;&#160;0x0100</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_TYPE_GCN_STANDARD</b>&#160;&#160;&#160;0x0001</td></tr>
 <tr class="memdesc:a9019062697269e59a53730cf5b4f0368"><td class="mdescLeft">&#160;</td><td class="mdescRight">Standard GameCube controller. <br /></td></tr>
 <tr class="memitem:a24336737aa8b89674e928df5070abaf2" id="r_a24336737aa8b89674e928df5070abaf2"><td class="memItemLeft" align="right" valign="top"><a id="a24336737aa8b89674e928df5070abaf2" name="a24336737aa8b89674e928df5070abaf2"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_TYPE_GCN_WIRELESS_STATE</b>&#160;&#160;&#160;0x0200</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_TYPE_GCN_WIRELESS_STATE</b>&#160;&#160;&#160;0x0002</td></tr>
 <tr class="memdesc:a24336737aa8b89674e928df5070abaf2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wireless state available. <br /></td></tr>
 <tr class="memitem:a5011bd07627e77237ad79f40c5ad36c9" id="r_a5011bd07627e77237ad79f40c5ad36c9"><td class="memItemLeft" align="right" valign="top"><a id="a5011bd07627e77237ad79f40c5ad36c9" name="a5011bd07627e77237ad79f40c5ad36c9"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_TYPE_GCN_DEVICE</b>&#160;&#160;&#160;0x0800</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_TYPE_GCN_DEVICE</b>&#160;&#160;&#160;0x0008</td></tr>
 <tr class="memdesc:a5011bd07627e77237ad79f40c5ad36c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Device is a GameCube device. <br /></td></tr>
 <tr class="memitem:aab51b01a178e2710ace1f7a2c638a32b" id="r_aab51b01a178e2710ace1f7a2c638a32b"><td class="memItemLeft" align="right" valign="top"><a id="aab51b01a178e2710ace1f7a2c638a32b" name="aab51b01a178e2710ace1f7a2c638a32b"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_TYPE_GCN_NO_MOTOR</b>&#160;&#160;&#160;0x2000</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_TYPE_GCN_NO_MOTOR</b>&#160;&#160;&#160;0x0020</td></tr>
 <tr class="memdesc:aab51b01a178e2710ace1f7a2c638a32b"><td class="mdescLeft">&#160;</td><td class="mdescRight">No rumble motor present. <br /></td></tr>
 <tr class="memitem:ae7dce3fe70f72d6df180a8b756913ce1" id="r_ae7dce3fe70f72d6df180a8b756913ce1"><td class="memItemLeft" align="right" valign="top"><a id="ae7dce3fe70f72d6df180a8b756913ce1" name="ae7dce3fe70f72d6df180a8b756913ce1"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_TYPE_GCN_WIRELESS_RECEIVED</b>&#160;&#160;&#160;0x4000</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_TYPE_GCN_WIRELESS_RECEIVED</b>&#160;&#160;&#160;0x0040</td></tr>
 <tr class="memdesc:ae7dce3fe70f72d6df180a8b756913ce1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wireless receiver has received a packet. <br /></td></tr>
 <tr class="memitem:abcb0c5fc31b75441ec0028127c15e157" id="r_abcb0c5fc31b75441ec0028127c15e157"><td class="memItemLeft" align="right" valign="top"><a id="abcb0c5fc31b75441ec0028127c15e157" name="abcb0c5fc31b75441ec0028127c15e157"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_TYPE_GCN_WIRELESS</b>&#160;&#160;&#160;0x8000</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_TYPE_GCN_WIRELESS</b>&#160;&#160;&#160;0x0080</td></tr>
 <tr class="memdesc:abcb0c5fc31b75441ec0028127c15e157"><td class="mdescLeft">&#160;</td><td class="mdescRight">Controller is wireless. <br /></td></tr>
-<tr class="memitem:a62db60e4e8291f2763d04806d64c6cd6" id="r_a62db60e4e8291f2763d04806d64c6cd6"><td class="memItemLeft" align="right" valign="top"><a id="a62db60e4e8291f2763d04806d64c6cd6" name="a62db60e4e8291f2763d04806d64c6cd6"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_STATUS_N64_ACCESSORY_PRESENT</b>&#160;&#160;&#160;0x01</td></tr>
-<tr class="memdesc:a62db60e4e8291f2763d04806d64c6cd6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Accessory present. <br /></td></tr>
-<tr class="memitem:a35e93c859da21a2b3b51e64879efad06" id="r_a35e93c859da21a2b3b51e64879efad06"><td class="memItemLeft" align="right" valign="top"><a id="a35e93c859da21a2b3b51e64879efad06" name="a35e93c859da21a2b3b51e64879efad06"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_STATUS_N64_ACCESSORY_PULLED</b>&#160;&#160;&#160;0x02</td></tr>
-<tr class="memdesc:a35e93c859da21a2b3b51e64879efad06"><td class="mdescLeft">&#160;</td><td class="mdescRight">Accessory removal/change detected. <br /></td></tr>
+<tr class="memitem:afe915efda4d96ec8fe127ce8d07a164c" id="r_afe915efda4d96ec8fe127ce8d07a164c"><td class="memItemLeft" align="right" valign="top"><a id="afe915efda4d96ec8fe127ce8d07a164c" name="afe915efda4d96ec8fe127ce8d07a164c"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_TYPE_GCN_WIRELESS_ID_FIXED</b>&#160;&#160;&#160;0x1000</td></tr>
+<tr class="memdesc:afe915efda4d96ec8fe127ce8d07a164c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wireless ID has been fixed. <br /></td></tr>
+<tr class="memitem:a12c7453ef870c9dfbe2175d536cd3eff" id="r_a12c7453ef870c9dfbe2175d536cd3eff"><td class="memItemLeft" align="right" valign="top"><a id="a12c7453ef870c9dfbe2175d536cd3eff" name="a12c7453ef870c9dfbe2175d536cd3eff"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_TYPE_GCN_KEYBOARD</b>&#160;&#160;&#160;0x2000</td></tr>
+<tr class="memdesc:a12c7453ef870c9dfbe2175d536cd3eff"><td class="mdescLeft">&#160;</td><td class="mdescRight">GameCube ASCII keyboard. <br /></td></tr>
+<tr class="memitem:a422f6671c92d8ab7a530c8668e751a9a" id="r_a422f6671c92d8ab7a530c8668e751a9a"><td class="memItemLeft" align="right" valign="top"><a id="a422f6671c92d8ab7a530c8668e751a9a" name="a422f6671c92d8ab7a530c8668e751a9a"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_TYPE_GCN_WIRELESS_ORIGIN</b>&#160;&#160;&#160;0x2000</td></tr>
+<tr class="memdesc:a422f6671c92d8ab7a530c8668e751a9a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wireless origin available. <br /></td></tr>
+<tr class="memitem:a3d2c43f9dacc747a6c019eb1bbe83a7b" id="r_a3d2c43f9dacc747a6c019eb1bbe83a7b"><td class="memItemLeft" align="right" valign="top"><a id="a3d2c43f9dacc747a6c019eb1bbe83a7b" name="a3d2c43f9dacc747a6c019eb1bbe83a7b"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_TYPE_GCN_WIRELESS_ID_MASK</b>&#160;&#160;&#160;0xC000</td></tr>
+<tr class="memdesc:a3d2c43f9dacc747a6c019eb1bbe83a7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Top 2 bits of wireless ID. <br /></td></tr>
+<tr class="memitem:a6a5e1b47d0fff8ef416888b3fdc2a9f5" id="r_a6a5e1b47d0fff8ef416888b3fdc2a9f5"><td class="memItemLeft" align="right" valign="top"><a id="a6a5e1b47d0fff8ef416888b3fdc2a9f5" name="a6a5e1b47d0fff8ef416888b3fdc2a9f5"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_STATUS_N64_PAK_PRESENT</b>&#160;&#160;&#160;0x01</td></tr>
+<tr class="memdesc:a6a5e1b47d0fff8ef416888b3fdc2a9f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pak present. <br /></td></tr>
+<tr class="memitem:a9d5e77fbc72c4ea8dfb23c13877034ab" id="r_a9d5e77fbc72c4ea8dfb23c13877034ab"><td class="memItemLeft" align="right" valign="top"><a id="a9d5e77fbc72c4ea8dfb23c13877034ab" name="a9d5e77fbc72c4ea8dfb23c13877034ab"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_STATUS_N64_PAK_PULLED</b>&#160;&#160;&#160;0x02</td></tr>
+<tr class="memdesc:a9d5e77fbc72c4ea8dfb23c13877034ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pak removal/change detected. <br /></td></tr>
 <tr class="memitem:a16970e43472f9ffe41e4f56c73ec13ea" id="r_a16970e43472f9ffe41e4f56c73ec13ea"><td class="memItemLeft" align="right" valign="top"><a id="a16970e43472f9ffe41e4f56c73ec13ea" name="a16970e43472f9ffe41e4f56c73ec13ea"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_STATUS_N64_ADDR_CHECKSUM_ERROR</b>&#160;&#160;&#160;0x04</td></tr>
 <tr class="memdesc:a16970e43472f9ffe41e4f56c73ec13ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Address checksum error. <br /></td></tr>
@@ -228,30 +233,37 @@ Macros</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a748a2eb84d485a4e0e84c6e299485e35" id="r_a748a2eb84d485a4e0e84c6e299485e35"><td class="memItemLeft" align="right" valign="top">static uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a748a2eb84d485a4e0e84c6e299485e35">joybus_id_get_type</a> (const uint8_t *id)</td></tr>
-<tr class="memdesc:a748a2eb84d485a4e0e84c6e299485e35"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the controller type from an "identify" buffer.  <br /></td></tr>
-<tr class="memitem:a0758fbae219d64850c90e75aa4a51c91" id="r_a0758fbae219d64850c90e75aa4a51c91"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0758fbae219d64850c90e75aa4a51c91">joybus_id_clear_type_flags</a> (uint8_t *id, uint16_t flags)</td></tr>
-<tr class="memdesc:a0758fbae219d64850c90e75aa4a51c91"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear type flags in an "identify" buffer.  <br /></td></tr>
-<tr class="memitem:a008065c35965a36496e61479f61cbe77" id="r_a008065c35965a36496e61479f61cbe77"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a008065c35965a36496e61479f61cbe77">joybus_id_set_type_flags</a> (uint8_t *id, uint16_t flags)</td></tr>
-<tr class="memdesc:a008065c35965a36496e61479f61cbe77"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set type flags in an "identify" buffer.  <br /></td></tr>
-<tr class="memitem:a4f109aaebefe6897050a3f61541e1c9d" id="r_a4f109aaebefe6897050a3f61541e1c9d"><td class="memItemLeft" align="right" valign="top">static uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4f109aaebefe6897050a3f61541e1c9d">joybus_id_get_status</a> (const uint8_t *id)</td></tr>
-<tr class="memdesc:a4f109aaebefe6897050a3f61541e1c9d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the status byte from an "identify" buffer.  <br /></td></tr>
-<tr class="memitem:adc1b9b491daf9c001a5e05a96d2c657c" id="r_adc1b9b491daf9c001a5e05a96d2c657c"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adc1b9b491daf9c001a5e05a96d2c657c">joybus_id_clear_status_flags</a> (uint8_t *id, uint8_t flags)</td></tr>
-<tr class="memdesc:adc1b9b491daf9c001a5e05a96d2c657c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear status flags in an "identify" buffer.  <br /></td></tr>
-<tr class="memitem:aa3d86275211a89a511373e29ae7cd90f" id="r_aa3d86275211a89a511373e29ae7cd90f"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa3d86275211a89a511373e29ae7cd90f">joybus_id_set_status_flags</a> (uint8_t *id, uint8_t flags)</td></tr>
-<tr class="memdesc:aa3d86275211a89a511373e29ae7cd90f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set status flags in an "identify" buffer.  <br /></td></tr>
-<tr class="memitem:a0a3ecbaa982f98cbd8623c7ad8b52a03" id="r_a0a3ecbaa982f98cbd8623c7ad8b52a03"><td class="memItemLeft" align="right" valign="top">static uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0a3ecbaa982f98cbd8623c7ad8b52a03">joybus_id_get_wireless_id</a> (const uint8_t *id)</td></tr>
-<tr class="memdesc:a0a3ecbaa982f98cbd8623c7ad8b52a03"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the 10-bit wireless ID from an "identify" buffer.  <br /></td></tr>
-<tr class="memitem:adbb6abead619a5b6450e8a4592dd6def" id="r_adbb6abead619a5b6450e8a4592dd6def"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adbb6abead619a5b6450e8a4592dd6def">joybus_id_set_wireless_id</a> (uint8_t *id, uint16_t wireless_id)</td></tr>
-<tr class="memdesc:adbb6abead619a5b6450e8a4592dd6def"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the 10-bit wireless ID in an "identify" buffer.  <br /></td></tr>
-<tr class="memitem:a8d3f6c9e21dc4449c7cb5f8e117ed2ed" id="r_a8d3f6c9e21dc4449c7cb5f8e117ed2ed"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8d3f6c9e21dc4449c7cb5f8e117ed2ed">joybus_id_n64_accessory_changed</a> (uint8_t *id)</td></tr>
-<tr class="memdesc:a8d3f6c9e21dc4449c7cb5f8e117ed2ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the accessory changed flag is set in an "identify" buffer.  <br /></td></tr>
+<tr class="memitem:a6691fe71cd5b506f548caee9ec564575" id="r_a6691fe71cd5b506f548caee9ec564575"><td class="memItemLeft" align="right" valign="top"><a id="a6691fe71cd5b506f548caee9ec564575" name="a6691fe71cd5b506f548caee9ec564575"></a>
+struct <a class="el" href="structjoybus__id.html">joybus_id</a>&#160;</td><td class="memItemRight" valign="bottom"><b>__attribute__</b> ((packed))</td></tr>
+<tr class="memitem:a9f324f438db77f384151f7241f1c9b74" id="r_a9f324f438db77f384151f7241f1c9b74"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9f324f438db77f384151f7241f1c9b74">joybus_id_clear_type_flags</a> (struct <a class="el" href="structjoybus__id.html">joybus_id</a> *id, uint16_t flags)</td></tr>
+<tr class="memdesc:a9f324f438db77f384151f7241f1c9b74"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear type flags in an "identify" buffer.  <br /></td></tr>
+<tr class="memitem:ae332827467ade9992c191c46fac4675c" id="r_ae332827467ade9992c191c46fac4675c"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae332827467ade9992c191c46fac4675c">joybus_id_set_type_flags</a> (struct <a class="el" href="structjoybus__id.html">joybus_id</a> *id, uint16_t flags)</td></tr>
+<tr class="memdesc:ae332827467ade9992c191c46fac4675c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set type flags in an "identify" buffer.  <br /></td></tr>
+<tr class="memitem:a7fb614e03d01fee1b79f91b3a83b6edd" id="r_a7fb614e03d01fee1b79f91b3a83b6edd"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7fb614e03d01fee1b79f91b3a83b6edd">joybus_id_clear_status_flags</a> (struct <a class="el" href="structjoybus__id.html">joybus_id</a> *id, uint8_t flags)</td></tr>
+<tr class="memdesc:a7fb614e03d01fee1b79f91b3a83b6edd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear status flags in an "identify" buffer.  <br /></td></tr>
+<tr class="memitem:ac6116213b3a0432f928ea75a126b5e61" id="r_ac6116213b3a0432f928ea75a126b5e61"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac6116213b3a0432f928ea75a126b5e61">joybus_id_set_status_flags</a> (struct <a class="el" href="structjoybus__id.html">joybus_id</a> *id, uint8_t flags)</td></tr>
+<tr class="memdesc:ac6116213b3a0432f928ea75a126b5e61"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set status flags in an "identify" buffer.  <br /></td></tr>
+<tr class="memitem:a71db096722f8b7544444f92449555e65" id="r_a71db096722f8b7544444f92449555e65"><td class="memItemLeft" align="right" valign="top">static uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a71db096722f8b7544444f92449555e65">joybus_id_get_wireless_id</a> (const struct <a class="el" href="structjoybus__id.html">joybus_id</a> *id)</td></tr>
+<tr class="memdesc:a71db096722f8b7544444f92449555e65"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the 10-bit wireless ID from an "identify" buffer.  <br /></td></tr>
+<tr class="memitem:a2f39ceee82b807a4ce35ed8ab1b3c21b" id="r_a2f39ceee82b807a4ce35ed8ab1b3c21b"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2f39ceee82b807a4ce35ed8ab1b3c21b">joybus_id_set_wireless_id</a> (struct <a class="el" href="structjoybus__id.html">joybus_id</a> *id, uint16_t wireless_id)</td></tr>
+<tr class="memdesc:a2f39ceee82b807a4ce35ed8ab1b3c21b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the 10-bit wireless ID in an "identify" buffer.  <br /></td></tr>
+<tr class="memitem:acfd37408cb7382f68c0b9b38ab219fdc" id="r_acfd37408cb7382f68c0b9b38ab219fdc"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acfd37408cb7382f68c0b9b38ab219fdc">joybus_id_n64_pak_changed</a> (const struct <a class="el" href="structjoybus__id.html">joybus_id</a> *id)</td></tr>
+<tr class="memdesc:acfd37408cb7382f68c0b9b38ab219fdc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the pak changed flag is set in an "identify" buffer.  <br /></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-var-members" class="groupheader"><a id="var-members" name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:acb5cfd209ba75c853d03f701e7f91679" id="r_acb5cfd209ba75c853d03f701e7f91679"><td class="memItemLeft" align="right" valign="top"><a id="acb5cfd209ba75c853d03f701e7f91679" name="acb5cfd209ba75c853d03f701e7f91679"></a>
+uint16_t&#160;</td><td class="memItemRight" valign="bottom"><b>type</b></td></tr>
+<tr class="memdesc:acb5cfd209ba75c853d03f701e7f91679"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type flags. <br /></td></tr>
+<tr class="memitem:ade818037fd6c985038ff29656089758d" id="r_ade818037fd6c985038ff29656089758d"><td class="memItemLeft" align="right" valign="top"><a id="ade818037fd6c985038ff29656089758d" name="ade818037fd6c985038ff29656089758d"></a>
+uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>status</b></td></tr>
+<tr class="memdesc:ade818037fd6c985038ff29656089758d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Status flags. <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Joybus device identification values and utilities. </p>
 </div><a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Function Documentation</h2>
-<a id="adc1b9b491daf9c001a5e05a96d2c657c" name="adc1b9b491daf9c001a5e05a96d2c657c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adc1b9b491daf9c001a5e05a96d2c657c">&#9670;&#160;</a></span>joybus_id_clear_status_flags()</h2>
+<a id="a7fb614e03d01fee1b79f91b3a83b6edd" name="a7fb614e03d01fee1b79f91b3a83b6edd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7fb614e03d01fee1b79f91b3a83b6edd">&#9670;&#160;</a></span>joybus_id_clear_status_flags()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -262,7 +274,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">void joybus_id_clear_status_flags </td>
           <td>(</td>
-          <td class="paramtype">uint8_t *</td>          <td class="paramname"><span class="paramname"><em>id</em></span>, </td>
+          <td class="paramtype">struct <a class="el" href="structjoybus__id.html">joybus_id</a> *</td>          <td class="paramname"><span class="paramname"><em>id</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -280,7 +292,7 @@ Functions</h2></td></tr>
 <p>Clear status flags in an "identify" buffer. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">id</td><td>pointer to the 3-byte ID field from an "identify" buffer </td></tr>
+    <tr><td class="paramname">id</td><td>the id to clear status flags from </td></tr>
     <tr><td class="paramname">flags</td><td>status flags to clear </td></tr>
   </table>
   </dd>
@@ -288,8 +300,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a0758fbae219d64850c90e75aa4a51c91" name="a0758fbae219d64850c90e75aa4a51c91"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0758fbae219d64850c90e75aa4a51c91">&#9670;&#160;</a></span>joybus_id_clear_type_flags()</h2>
+<a id="a9f324f438db77f384151f7241f1c9b74" name="a9f324f438db77f384151f7241f1c9b74"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9f324f438db77f384151f7241f1c9b74">&#9670;&#160;</a></span>joybus_id_clear_type_flags()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -300,7 +312,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">void joybus_id_clear_type_flags </td>
           <td>(</td>
-          <td class="paramtype">uint8_t *</td>          <td class="paramname"><span class="paramname"><em>id</em></span>, </td>
+          <td class="paramtype">struct <a class="el" href="structjoybus__id.html">joybus_id</a> *</td>          <td class="paramname"><span class="paramname"><em>id</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -318,7 +330,7 @@ Functions</h2></td></tr>
 <p>Clear type flags in an "identify" buffer. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">id</td><td>pointer to a 3-byte "identify" buffer </td></tr>
+    <tr><td class="paramname">id</td><td>the id to clear type flags from </td></tr>
     <tr><td class="paramname">flags</td><td>type flags to clear </td></tr>
   </table>
   </dd>
@@ -326,8 +338,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a4f109aaebefe6897050a3f61541e1c9d" name="a4f109aaebefe6897050a3f61541e1c9d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4f109aaebefe6897050a3f61541e1c9d">&#9670;&#160;</a></span>joybus_id_get_status()</h2>
+<a id="a71db096722f8b7544444f92449555e65" name="a71db096722f8b7544444f92449555e65"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a71db096722f8b7544444f92449555e65">&#9670;&#160;</a></span>joybus_id_get_wireless_id()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -336,77 +348,9 @@ Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">uint8_t joybus_id_get_status </td>
+          <td class="memname">uint16_t joybus_id_get_wireless_id </td>
           <td>(</td>
-          <td class="paramtype">const uint8_t *</td>          <td class="paramname"><span class="paramname"><em>id</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel static">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Get the status byte from an "identify" buffer. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">id</td><td>pointer to the 3-byte ID field from an "identify" buffer </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>the status byte (third byte of ID field) </dd></dl>
-
-</div>
-</div>
-<a id="a748a2eb84d485a4e0e84c6e299485e35" name="a748a2eb84d485a4e0e84c6e299485e35"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a748a2eb84d485a4e0e84c6e299485e35">&#9670;&#160;</a></span>joybus_id_get_type()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint16_t joybus_id_get_type </td>
-          <td>(</td>
-          <td class="paramtype">const uint8_t *</td>          <td class="paramname"><span class="paramname"><em>id</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel static">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Get the controller type from an "identify" buffer. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">id</td><td>pointer to a 3-byte "identify" buffer </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>the controller type value (first two bytes of ID field) </dd></dl>
-
-</div>
-</div>
-<a id="a0a3ecbaa982f98cbd8623c7ad8b52a03" name="a0a3ecbaa982f98cbd8623c7ad8b52a03"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0a3ecbaa982f98cbd8623c7ad8b52a03">&#9670;&#160;</a></span>joybus_id_get_wireless_id()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint8_t joybus_id_get_wireless_id </td>
-          <td>(</td>
-          <td class="paramtype">const uint8_t *</td>          <td class="paramname"><span class="paramname"><em>id</em></span></td><td>)</td>
+          <td class="paramtype">const struct <a class="el" href="structjoybus__id.html">joybus_id</a> *</td>          <td class="paramname"><span class="paramname"><em>id</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -420,7 +364,7 @@ Functions</h2></td></tr>
 <p>Get the 10-bit wireless ID from an "identify" buffer. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">id</td><td>pointer to the 3-byte ID field from an "identify" buffer </td></tr>
+    <tr><td class="paramname">id</td><td>the id to get the wireless ID from </td></tr>
   </table>
   </dd>
 </dl>
@@ -428,8 +372,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a8d3f6c9e21dc4449c7cb5f8e117ed2ed" name="a8d3f6c9e21dc4449c7cb5f8e117ed2ed"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8d3f6c9e21dc4449c7cb5f8e117ed2ed">&#9670;&#160;</a></span>joybus_id_n64_accessory_changed()</h2>
+<a id="acfd37408cb7382f68c0b9b38ab219fdc" name="acfd37408cb7382f68c0b9b38ab219fdc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acfd37408cb7382f68c0b9b38ab219fdc">&#9670;&#160;</a></span>joybus_id_n64_pak_changed()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -438,9 +382,9 @@ Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool joybus_id_n64_accessory_changed </td>
+          <td class="memname">bool joybus_id_n64_pak_changed </td>
           <td>(</td>
-          <td class="paramtype">uint8_t *</td>          <td class="paramname"><span class="paramname"><em>id</em></span></td><td>)</td>
+          <td class="paramtype">const struct <a class="el" href="structjoybus__id.html">joybus_id</a> *</td>          <td class="paramname"><span class="paramname"><em>id</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -451,19 +395,19 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Check if the accessory changed flag is set in an "identify" buffer. </p>
+<p>Check if the pak changed flag is set in an "identify" buffer. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">id</td><td>pointer to the 3-byte ID field from an "identify" buffer </td></tr>
+    <tr><td class="paramname">id</td><td>the id to check the pak changed flag on </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>true if accessory changed flag is set, false otherwise </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>true if pak changed flag is set, false otherwise </dd></dl>
 
 </div>
 </div>
-<a id="aa3d86275211a89a511373e29ae7cd90f" name="aa3d86275211a89a511373e29ae7cd90f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa3d86275211a89a511373e29ae7cd90f">&#9670;&#160;</a></span>joybus_id_set_status_flags()</h2>
+<a id="ac6116213b3a0432f928ea75a126b5e61" name="ac6116213b3a0432f928ea75a126b5e61"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac6116213b3a0432f928ea75a126b5e61">&#9670;&#160;</a></span>joybus_id_set_status_flags()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -474,7 +418,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">void joybus_id_set_status_flags </td>
           <td>(</td>
-          <td class="paramtype">uint8_t *</td>          <td class="paramname"><span class="paramname"><em>id</em></span>, </td>
+          <td class="paramtype">struct <a class="el" href="structjoybus__id.html">joybus_id</a> *</td>          <td class="paramname"><span class="paramname"><em>id</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -492,7 +436,7 @@ Functions</h2></td></tr>
 <p>Set status flags in an "identify" buffer. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">id</td><td>pointer to the 3-byte ID field from an "identify" buffer </td></tr>
+    <tr><td class="paramname">id</td><td>the id to set status flags on </td></tr>
     <tr><td class="paramname">flags</td><td>status flags to set </td></tr>
   </table>
   </dd>
@@ -500,8 +444,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a008065c35965a36496e61479f61cbe77" name="a008065c35965a36496e61479f61cbe77"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a008065c35965a36496e61479f61cbe77">&#9670;&#160;</a></span>joybus_id_set_type_flags()</h2>
+<a id="ae332827467ade9992c191c46fac4675c" name="ae332827467ade9992c191c46fac4675c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae332827467ade9992c191c46fac4675c">&#9670;&#160;</a></span>joybus_id_set_type_flags()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -512,7 +456,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">void joybus_id_set_type_flags </td>
           <td>(</td>
-          <td class="paramtype">uint8_t *</td>          <td class="paramname"><span class="paramname"><em>id</em></span>, </td>
+          <td class="paramtype">struct <a class="el" href="structjoybus__id.html">joybus_id</a> *</td>          <td class="paramname"><span class="paramname"><em>id</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -530,7 +474,7 @@ Functions</h2></td></tr>
 <p>Set type flags in an "identify" buffer. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">id</td><td>pointer to the 3-byte ID field from an "identify" buffer </td></tr>
+    <tr><td class="paramname">id</td><td>the id to set type flags on </td></tr>
     <tr><td class="paramname">flags</td><td>type flags to set </td></tr>
   </table>
   </dd>
@@ -538,8 +482,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="adbb6abead619a5b6450e8a4592dd6def" name="adbb6abead619a5b6450e8a4592dd6def"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adbb6abead619a5b6450e8a4592dd6def">&#9670;&#160;</a></span>joybus_id_set_wireless_id()</h2>
+<a id="a2f39ceee82b807a4ce35ed8ab1b3c21b" name="a2f39ceee82b807a4ce35ed8ab1b3c21b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2f39ceee82b807a4ce35ed8ab1b3c21b">&#9670;&#160;</a></span>joybus_id_set_wireless_id()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -550,7 +494,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">void joybus_id_set_wireless_id </td>
           <td>(</td>
-          <td class="paramtype">uint8_t *</td>          <td class="paramname"><span class="paramname"><em>id</em></span>, </td>
+          <td class="paramtype">struct <a class="el" href="structjoybus__id.html">joybus_id</a> *</td>          <td class="paramname"><span class="paramname"><em>id</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -568,7 +512,7 @@ Functions</h2></td></tr>
 <p>Set the 10-bit wireless ID in an "identify" buffer. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">id</td><td>pointer to the 3-byte ID field from an "identify" buffer </td></tr>
+    <tr><td class="paramname">id</td><td>the id to set the wireless ID on </td></tr>
     <tr><td class="paramname">wireless_id</td><td>the wireless ID to set (10 bits) </td></tr>
   </table>
   </dd>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.14.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>libjoybus: joybus_n64_accessory_api Struct Reference</title>
+<title>libjoybus: joybus_target_n64_controller Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -77,7 +77,7 @@ $(function() {
   </div>
 </div>
 <script type="text/javascript">
-$(function(){initNavTree('structjoybus__n64__accessory__api.html','',''); });
+$(function(){initNavTree('structjoybus__target__n64__controller.html','',''); });
 </script>
 <div id="container">
 <div id="doc-content">
@@ -103,77 +103,46 @@ $(function(){initNavTree('structjoybus__n64__accessory__api.html','',''); });
 </div>
 
 <div class="header">
-  <div class="headertitle"><div class="title">joybus_n64_accessory_api Struct Reference<div class="ingroups"><a class="el" href="group__joybus__target.html">Targets</a> &raquo; <a class="el" href="group__joybus__target__n64__controller.html">N64 Controller Target</a> &raquo; <a class="el" href="group__joybus__target__n64__accessory.html">N64 Controller Accessory</a></div></div></div>
+  <div class="headertitle"><div class="title">joybus_target_n64_controller Struct Reference<div class="ingroups"><a class="el" href="group__joybus__target.html">Targets</a> &raquo; <a class="el" href="group__joybus__target__n64__controller.html">N64 Controller Target</a></div></div></div>
 </div><!--header-->
 <div class="contents">
 
-<p>API for implementing an N64 controller accessory.  
+<p>N64 controller Joybus target.  
  <a href="#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="n64__accessory_8h_source.html">n64_accessory.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="target_2n64__controller_8h_source.html">n64_controller.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-attribs" class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Data Fields</h2></td></tr>
-<tr class="memitem:ab9d0843e99945ab61ccee67af7f1cf13" id="r_ab9d0843e99945ab61ccee67af7f1cf13"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab9d0843e99945ab61ccee67af7f1cf13">read_block</a> )(struct <a class="el" href="structjoybus__n64__accessory.html">joybus_n64_accessory</a> *accessory, uint16_t addr, uint8_t buf[<a class="el" href="group__joybus.html#gaeba0b3392291f316c3279dfd07b383e2">JOYBUS_ACCESSORY_BLOCK_SIZE</a>])</td></tr>
-<tr class="memdesc:ab9d0843e99945ab61ccee67af7f1cf13"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called when a host requests to read a 32-byte block from the accessory.  <br /></td></tr>
-<tr class="memitem:a2bf39f573935d05cea18fe273b6280a6" id="r_a2bf39f573935d05cea18fe273b6280a6"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2bf39f573935d05cea18fe273b6280a6">write_block</a> )(struct <a class="el" href="structjoybus__n64__accessory.html">joybus_n64_accessory</a> *accessory, uint16_t addr, const uint8_t buf[<a class="el" href="group__joybus.html#gaeba0b3392291f316c3279dfd07b383e2">JOYBUS_ACCESSORY_BLOCK_SIZE</a>])</td></tr>
-<tr class="memdesc:a2bf39f573935d05cea18fe273b6280a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called when a host requests to write a 32-byte block to the accessory.  <br /></td></tr>
+<tr class="memitem:a7a91ec400b17a67bcfcea99533cc7445" id="r_a7a91ec400b17a67bcfcea99533cc7445"><td class="memItemLeft" align="right" valign="top"><a id="a7a91ec400b17a67bcfcea99533cc7445" name="a7a91ec400b17a67bcfcea99533cc7445"></a>
+struct <a class="el" href="structjoybus__target.html">joybus_target</a>&#160;</td><td class="memItemRight" valign="bottom"><b>base</b></td></tr>
+<tr class="memdesc:a7a91ec400b17a67bcfcea99533cc7445"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base target interface. <br /></td></tr>
+<tr class="memitem:a944cec752e33f168276dabeb4d2df2f6" id="r_a944cec752e33f168276dabeb4d2df2f6"><td class="memItemLeft" align="right" valign="top"><a id="a944cec752e33f168276dabeb4d2df2f6" name="a944cec752e33f168276dabeb4d2df2f6"></a>
+struct <a class="el" href="structjoybus__id.html">joybus_id</a>&#160;</td><td class="memItemRight" valign="bottom"><b>id</b></td></tr>
+<tr class="memdesc:a944cec752e33f168276dabeb4d2df2f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Controller ID. <br /></td></tr>
+<tr class="memitem:a679333e1061d580b75075633482fb870" id="r_a679333e1061d580b75075633482fb870"><td class="memItemLeft" align="right" valign="top"><a id="a679333e1061d580b75075633482fb870" name="a679333e1061d580b75075633482fb870"></a>
+struct <a class="el" href="structjoybus__n64__controller__state.html">joybus_n64_controller_state</a>&#160;</td><td class="memItemRight" valign="bottom"><b>origin</b></td></tr>
+<tr class="memdesc:a679333e1061d580b75075633482fb870"><td class="mdescLeft">&#160;</td><td class="mdescRight">Origin input state. <br /></td></tr>
+<tr class="memitem:a4760ae041c4ba3203ff95f183c09fbb7" id="r_a4760ae041c4ba3203ff95f183c09fbb7"><td class="memItemLeft" align="right" valign="top"><a id="a4760ae041c4ba3203ff95f183c09fbb7" name="a4760ae041c4ba3203ff95f183c09fbb7"></a>
+struct <a class="el" href="structjoybus__n64__controller__state.html">joybus_n64_controller_state</a>&#160;</td><td class="memItemRight" valign="bottom"><b>input</b></td></tr>
+<tr class="memdesc:a4760ae041c4ba3203ff95f183c09fbb7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Current input state. <br /></td></tr>
+<tr class="memitem:a49c2f407a008d42c7eae32a0e0e89f72" id="r_a49c2f407a008d42c7eae32a0e0e89f72"><td class="memItemLeft" align="right" valign="top"><a id="a49c2f407a008d42c7eae32a0e0e89f72" name="a49c2f407a008d42c7eae32a0e0e89f72"></a>
+<a class="el" href="group__joybus__target__n64__controller.html#gad33495e7ca669aa18745ef1074353624">joybus_target_n64_controller_reset_cb</a>&#160;</td><td class="memItemRight" valign="bottom"><b>on_reset</b></td></tr>
+<tr class="memdesc:a49c2f407a008d42c7eae32a0e0e89f72"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback for controller reset events. <br /></td></tr>
+<tr class="memitem:af5f72177ebb5e37d658412efd56dcba7" id="r_af5f72177ebb5e37d658412efd56dcba7"><td class="memItemLeft" align="right" valign="top"><a id="af5f72177ebb5e37d658412efd56dcba7" name="af5f72177ebb5e37d658412efd56dcba7"></a>
+struct <a class="el" href="structjoybus__target__n64__pak.html">joybus_target_n64_pak</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>pak</b></td></tr>
+<tr class="memdesc:af5f72177ebb5e37d658412efd56dcba7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Currently attached pak (if any) <br /></td></tr>
+<tr class="memitem:a92712974f97ac35abd878197f2482f46" id="r_a92712974f97ac35abd878197f2482f46"><td class="memItemLeft" align="right" valign="top"><a id="a92712974f97ac35abd878197f2482f46" name="a92712974f97ac35abd878197f2482f46"></a>
+uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>crc</b></td></tr>
+<tr class="memdesc:a92712974f97ac35abd878197f2482f46"><td class="mdescLeft">&#160;</td><td class="mdescRight">CRC for data transfer commands. <br /></td></tr>
+<tr class="memitem:a74657bd58787eb7f0f1dc364416b7950" id="r_a74657bd58787eb7f0f1dc364416b7950"><td class="memItemLeft" align="right" valign="top"><a id="a74657bd58787eb7f0f1dc364416b7950" name="a74657bd58787eb7f0f1dc364416b7950"></a>
+uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>response</b> [<a class="el" href="group__joybus.html#ga96357e747d908aa6c354b507d9b0fdc4">JOYBUS_BLOCK_SIZE</a>]</td></tr>
+<tr class="memdesc:a74657bd58787eb7f0f1dc364416b7950"><td class="mdescLeft">&#160;</td><td class="mdescRight">Response buffer. <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>API for implementing an N64 controller accessory. </p>
-</div><a name="doc-variable-members" id="doc-variable-members"></a><h2 id="header-doc-variable-members" class="groupheader">Field Documentation</h2>
-<a id="ab9d0843e99945ab61ccee67af7f1cf13" name="ab9d0843e99945ab61ccee67af7f1cf13"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab9d0843e99945ab61ccee67af7f1cf13">&#9670;&#160;</a></span>read_block</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void(* joybus_n64_accessory_api::read_block) (struct <a class="el" href="structjoybus__n64__accessory.html">joybus_n64_accessory</a> *accessory, uint16_t addr, uint8_t buf[<a class="el" href="group__joybus.html#gaeba0b3392291f316c3279dfd07b383e2">JOYBUS_ACCESSORY_BLOCK_SIZE</a>])</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Called when a host requests to read a 32-byte block from the accessory. </p>
-<p>Runs in interrupt context, on the response critical path, so it must return quickly.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">accessory</td><td>the accessory being read from </td></tr>
-    <tr><td class="paramname">addr</td><td>block-aligned address (low 5 bits are zero) </td></tr>
-    <tr><td class="paramname">buf</td><td>destination buffer, exactly 32 bytes </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="a2bf39f573935d05cea18fe273b6280a6" name="a2bf39f573935d05cea18fe273b6280a6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2bf39f573935d05cea18fe273b6280a6">&#9670;&#160;</a></span>write_block</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void(* joybus_n64_accessory_api::write_block) (struct <a class="el" href="structjoybus__n64__accessory.html">joybus_n64_accessory</a> *accessory, uint16_t addr, const uint8_t buf[<a class="el" href="group__joybus.html#gaeba0b3392291f316c3279dfd07b383e2">JOYBUS_ACCESSORY_BLOCK_SIZE</a>])</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Called when a host requests to write a 32-byte block to the accessory. </p>
-<p>Runs in interrupt context, AFTER the CRC response has been sent, but still on the command handling path, so must return before the next command byte is received.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">accessory</td><td>the accessory being written to </td></tr>
-    <tr><td class="paramname">addr</td><td>block-aligned address (low 5 bits are zero) </td></tr>
-    <tr><td class="paramname">buf</td><td>source buffer, exactly 32 bytes </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<hr/>The documentation for this struct was generated from the following file:<ul>
-<li>include/joybus/target/<a class="el" href="n64__accessory_8h_source.html">n64_accessory.h</a></li>
+<div class="textblock"><p>N64 controller Joybus target. </p>
+</div><hr/>The documentation for this struct was generated from the following file:<ul>
+<li>include/joybus/target/<a class="el" href="target_2n64__controller_8h_source.html">n64_controller.h</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -188,7 +157,7 @@ Data Fields</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a href="structjoybus__n64__accessory__api.html">joybus_n64_accessory_api</a></li>
+    <li class="navelem"><a href="structjoybus__target__n64__controller.html">joybus_target_n64_controller</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.14.0 </li>
   </ul>
 </div>

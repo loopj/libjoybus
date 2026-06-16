@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.14.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>libjoybus: Loopback Backend</title>
+<title>libjoybus: N64 Pak</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -77,7 +77,7 @@ $(function() {
   </div>
 </div>
 <script type="text/javascript">
-$(function(){initNavTree('group__joybus__backend__loopback.html','',''); });
+$(function(){initNavTree('group__joybus__target__n64__pak.html','',''); });
 </script>
 <div id="container">
 <div id="doc-content">
@@ -103,44 +103,55 @@ $(function(){initNavTree('group__joybus__backend__loopback.html','',''); });
 </div>
 
 <div class="header">
-  <div class="headertitle"><div class="title">Loopback Backend <div class="ingroups"><a class="el" href="group__joybus__backends.html">Backends</a></div></div></div>
+  <div class="headertitle"><div class="title">N64 Pak <div class="ingroups"><a class="el" href="group__joybus__target.html">Targets</a> &raquo; <a class="el" href="group__joybus__target__n64__controller.html">N64 Controller Target</a></div></div></div>
 </div><!--header-->
 <div class="contents">
 
-<p>Loopback Joybus backend (for testing)  
+<p>Interface for implementing N64 "Pak" behavior (Rumble Pak, Controller Pak, etc.) when attached to an N64 controller target.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
-Functions</h2></td></tr>
-<tr class="memitem:gaf544e9c1e6945fef5432c4a40278b844" id="r_gaf544e9c1e6945fef5432c4a40278b844"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#gaf544e9c1e6945fef5432c4a40278b844">joybus_loopback_init</a> (struct <a class="el" href="structjoybus.html">joybus</a> *bus)</td></tr>
-<tr class="memdesc:gaf544e9c1e6945fef5432c4a40278b844"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize a loopback Joybus instance.  <br /></td></tr>
+<tr class="heading"><td colspan="2"><h2 id="header-groups" class="groupheader"><a id="groups" name="groups"></a>
+Topics</h2></td></tr>
+<tr class="memitem:joybus_5Ftarget_5Fn64_5Frumble_5Fpak" id="r_joybus_5Ftarget_5Fn64_5Frumble_5Fpak"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__joybus__target__n64__rumble__pak.html">N64 Rumble Pak</a></td></tr>
+<tr class="memdesc:group__joybus__target__n64__rumble__pak"><td class="mdescLeft">&#160;</td><td class="mdescRight">N64 pak implementation which emulates a Rumble Pak, providing a callback for motor state changes. <br /></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-nested-classes" class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Data Structures</h2></td></tr>
+<tr class="memitem:joybus_5Ftarget_5Fn64_5Fpak_5Fapi" id="r_joybus_5Ftarget_5Fn64_5Fpak_5Fapi"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structjoybus__target__n64__pak__api.html">joybus_target_n64_pak_api</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">API for implementing an N64 pak.  <a href="structjoybus__target__n64__pak__api.html#details">More...</a><br /></td></tr>
+<tr class="memitem:joybus_5Ftarget_5Fn64_5Fpak" id="r_joybus_5Ftarget_5Fn64_5Fpak"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structjoybus__target__n64__pak.html">joybus_target_n64_pak</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An N64 pak, such as a Rumble Pak or Controller Pak.  <a href="structjoybus__target__n64__pak.html#details">More...</a><br /></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-define-members" class="groupheader"><a id="define-members" name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:ga0673982f1d0e2879e6ac81021580a1f1" id="r_ga0673982f1d0e2879e6ac81021580a1f1"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga0673982f1d0e2879e6ac81021580a1f1">JOYBUS_TARGET_N64_PAK</a>(pak)</td></tr>
+<tr class="memdesc:ga0673982f1d0e2879e6ac81021580a1f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro to cast a concrete N64 pak instance to a generic N64 pak instance.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
-<p>Loopback Joybus backend (for testing) </p>
-<a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Function Documentation</h2>
-<a id="gaf544e9c1e6945fef5432c4a40278b844" name="gaf544e9c1e6945fef5432c4a40278b844"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaf544e9c1e6945fef5432c4a40278b844">&#9670;&#160;</a></span>joybus_loopback_init()</h2>
+<p>Interface for implementing N64 "Pak" behavior (Rumble Pak, Controller Pak, etc.) when attached to an N64 controller target. </p>
+<p>A pak plugs into the expansion port (officially the "Joyport") on the back of an N64 controller, such as a Rumble Pak, Controller Pak, or Transfer Pak. The console reaches it indirectly: it sends read and write commands to the controller, which forwards them to whatever pak is attached.</p>
+<p>Every pak presents a flat 16-bit address space, read and written 32 bytes at a time (<a class="el" href="group__joybus.html#ga272b8f55fa8c16bac1524dda78c5ecef" title="Size of a Joybus N64 pak read/write block.">JOYBUS_PAK_BLOCK_SIZE</a>). It is up to the pak how it manages the address space, and what reads and writes to each address do. For example, a Controller Pak uses the address space to map to 32 KB of storage, but a Rumble Pak treats the addresses as control registers for the rumble motor.</p>
+<p>The protocol details (command framing, the address checksum, and the data CRC) are handled by libjoybus, so pak implementations just need to implement the logic for responding to reads and writes at each address.</p>
+<p>To create your own pak, define a struct whose first member is a <a class="el" href="structjoybus__target__n64__pak.html" title="An N64 pak, such as a Rumble Pak or Controller Pak.">joybus_target_n64_pak</a> (so it can be cast through <a class="el" href="#ga0673982f1d0e2879e6ac81021580a1f1" title="Macro to cast a concrete N64 pak instance to a generic N64 pak instance.">JOYBUS_TARGET_N64_PAK</a>), point its api at a <a class="el" href="structjoybus__target__n64__pak__api.html" title="API for implementing an N64 pak.">joybus_target_n64_pak_api</a> table, and attach it with <a class="el" href="group__joybus__target__n64__controller.html#gadae4e8dc29793918a7e9834726e7113f" title="Attach an pak to the controller.">joybus_target_n64_controller_attach_pak()</a>. </p>
+<a name="doc-define-members" id="doc-define-members"></a><h2 id="header-doc-define-members" class="groupheader">Macro Definition Documentation</h2>
+<a id="ga0673982f1d0e2879e6ac81021580a1f1" name="ga0673982f1d0e2879e6ac81021580a1f1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga0673982f1d0e2879e6ac81021580a1f1">&#9670;&#160;</a></span>JOYBUS_TARGET_N64_PAK</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int joybus_loopback_init </td>
+          <td class="memname">#define JOYBUS_TARGET_N64_PAK</td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structjoybus.html">joybus</a> *</td>          <td class="paramname"><span class="paramname"><em>bus</em></span></td><td>)</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>pak</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p>Initialize a loopback Joybus instance. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">bus</td><td>the Joybus instance to initialize </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>0 on success, negative error code on failure </dd></dl>
+<b>Value:</b><div class="fragment"><div class="line">((<span class="keyword">struct </span><a class="code hl_struct" href="structjoybus__target__n64__pak.html">joybus_target_n64_pak</a> *)(pak))</div>
+<div class="ttc" id="astructjoybus__target__n64__pak_html"><div class="ttname"><a href="structjoybus__target__n64__pak.html">joybus_target_n64_pak</a></div><div class="ttdoc">An N64 pak, such as a Rumble Pak or Controller Pak.</div><div class="ttdef"><b>Definition</b> n64_pak.h:76</div></div>
+</div><!-- fragment -->
+<p>Macro to cast a concrete N64 pak instance to a generic N64 pak instance. </p>
 
 </div>
 </div>

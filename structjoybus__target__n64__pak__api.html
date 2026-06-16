@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.14.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>libjoybus: joybus_n64_controller_input Struct Reference</title>
+<title>libjoybus: joybus_target_n64_pak_api Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -77,7 +77,7 @@ $(function() {
   </div>
 </div>
 <script type="text/javascript">
-$(function(){initNavTree('structjoybus__n64__controller__input.html','',''); });
+$(function(){initNavTree('structjoybus__target__n64__pak__api.html','',''); });
 </script>
 <div id="container">
 <div id="doc-content">
@@ -103,31 +103,77 @@ $(function(){initNavTree('structjoybus__n64__controller__input.html','',''); });
 </div>
 
 <div class="header">
-  <div class="headertitle"><div class="title">joybus_n64_controller_input Struct Reference</div></div>
+  <div class="headertitle"><div class="title">joybus_target_n64_pak_api Struct Reference<div class="ingroups"><a class="el" href="group__joybus__target.html">Targets</a> &raquo; <a class="el" href="group__joybus__target__n64__controller.html">N64 Controller Target</a> &raquo; <a class="el" href="group__joybus__target__n64__pak.html">N64 Pak</a></div></div></div>
 </div><!--header-->
 <div class="contents">
 
-<p>N64 controller input state.  
+<p>API for implementing an N64 pak.  
  <a href="#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="common_2n64__controller_8h_source.html">n64_controller.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="n64__pak_8h_source.html">n64_pak.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-attribs" class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Data Fields</h2></td></tr>
-<tr class="memitem:a26984ed7ef725298a1fdc5f922432133" id="r_a26984ed7ef725298a1fdc5f922432133"><td class="memItemLeft" align="right" valign="top"><a id="a26984ed7ef725298a1fdc5f922432133" name="a26984ed7ef725298a1fdc5f922432133"></a>
-uint16_t&#160;</td><td class="memItemRight" valign="bottom"><b>buttons</b></td></tr>
-<tr class="memdesc:a26984ed7ef725298a1fdc5f922432133"><td class="mdescLeft">&#160;</td><td class="mdescRight">Button state. <br /></td></tr>
-<tr class="memitem:ae830f0a3a3b3ecc36dd213fa818716c6" id="r_ae830f0a3a3b3ecc36dd213fa818716c6"><td class="memItemLeft" align="right" valign="top"><a id="ae830f0a3a3b3ecc36dd213fa818716c6" name="ae830f0a3a3b3ecc36dd213fa818716c6"></a>
-uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>stick_x</b></td></tr>
-<tr class="memdesc:ae830f0a3a3b3ecc36dd213fa818716c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stick x-axis position. <br /></td></tr>
-<tr class="memitem:af1306a08d51b1cc12f2f61fd0842333b" id="r_af1306a08d51b1cc12f2f61fd0842333b"><td class="memItemLeft" align="right" valign="top"><a id="af1306a08d51b1cc12f2f61fd0842333b" name="af1306a08d51b1cc12f2f61fd0842333b"></a>
-uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>stick_y</b></td></tr>
-<tr class="memdesc:af1306a08d51b1cc12f2f61fd0842333b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stick y-axis position. <br /></td></tr>
+<tr class="memitem:a5b9f14e476c04d577e5c6753afffaa64" id="r_a5b9f14e476c04d577e5c6753afffaa64"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5b9f14e476c04d577e5c6753afffaa64">read_block</a> )(struct <a class="el" href="structjoybus__target__n64__pak.html">joybus_target_n64_pak</a> *pak, uint16_t addr, uint8_t buf[<a class="el" href="group__joybus.html#ga272b8f55fa8c16bac1524dda78c5ecef">JOYBUS_PAK_BLOCK_SIZE</a>])</td></tr>
+<tr class="memdesc:a5b9f14e476c04d577e5c6753afffaa64"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called when a host requests to read a 32-byte block from the pak.  <br /></td></tr>
+<tr class="memitem:a05d8a1fe1d70223b9e8b84fa7799c817" id="r_a05d8a1fe1d70223b9e8b84fa7799c817"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a05d8a1fe1d70223b9e8b84fa7799c817">write_block</a> )(struct <a class="el" href="structjoybus__target__n64__pak.html">joybus_target_n64_pak</a> *pak, uint16_t addr, const uint8_t buf[<a class="el" href="group__joybus.html#ga272b8f55fa8c16bac1524dda78c5ecef">JOYBUS_PAK_BLOCK_SIZE</a>])</td></tr>
+<tr class="memdesc:a05d8a1fe1d70223b9e8b84fa7799c817"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called when a host requests to write a 32-byte block to the pak.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>N64 controller input state. </p>
-</div><hr/>The documentation for this struct was generated from the following file:<ul>
-<li>include/joybus/common/<a class="el" href="common_2n64__controller_8h_source.html">n64_controller.h</a></li>
+<div class="textblock"><p>API for implementing an N64 pak. </p>
+</div><a name="doc-variable-members" id="doc-variable-members"></a><h2 id="header-doc-variable-members" class="groupheader">Field Documentation</h2>
+<a id="a5b9f14e476c04d577e5c6753afffaa64" name="a5b9f14e476c04d577e5c6753afffaa64"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5b9f14e476c04d577e5c6753afffaa64">&#9670;&#160;</a></span>read_block</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void(* joybus_target_n64_pak_api::read_block) (struct <a class="el" href="structjoybus__target__n64__pak.html">joybus_target_n64_pak</a> *pak, uint16_t addr, uint8_t buf[<a class="el" href="group__joybus.html#ga272b8f55fa8c16bac1524dda78c5ecef">JOYBUS_PAK_BLOCK_SIZE</a>])</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Called when a host requests to read a 32-byte block from the pak. </p>
+<p>Runs in interrupt context, on the response critical path, so it must return quickly.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pak</td><td>the pak being read from </td></tr>
+    <tr><td class="paramname">addr</td><td>block-aligned address (low 5 bits are zero) </td></tr>
+    <tr><td class="paramname">buf</td><td>destination buffer, exactly 32 bytes </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a05d8a1fe1d70223b9e8b84fa7799c817" name="a05d8a1fe1d70223b9e8b84fa7799c817"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a05d8a1fe1d70223b9e8b84fa7799c817">&#9670;&#160;</a></span>write_block</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void(* joybus_target_n64_pak_api::write_block) (struct <a class="el" href="structjoybus__target__n64__pak.html">joybus_target_n64_pak</a> *pak, uint16_t addr, const uint8_t buf[<a class="el" href="group__joybus.html#ga272b8f55fa8c16bac1524dda78c5ecef">JOYBUS_PAK_BLOCK_SIZE</a>])</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Called when a host requests to write a 32-byte block to the pak. </p>
+<p>Runs in interrupt context, AFTER the CRC response has been sent, but still on the command handling path, so must return before the next command byte is received.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pak</td><td>the pak being written to </td></tr>
+    <tr><td class="paramname">addr</td><td>block-aligned address (low 5 bits are zero) </td></tr>
+    <tr><td class="paramname">buf</td><td>source buffer, exactly 32 bytes </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following file:<ul>
+<li>include/joybus/target/<a class="el" href="n64__pak_8h_source.html">n64_pak.h</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -142,7 +188,7 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>stick_y</b></td></
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a href="structjoybus__n64__controller__input.html">joybus_n64_controller_input</a></li>
+    <li class="navelem"><a href="structjoybus__target__n64__pak__api.html">joybus_target_n64_pak_api</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.14.0 </li>
   </ul>
 </div>

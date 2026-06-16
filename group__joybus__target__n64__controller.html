@@ -112,68 +112,70 @@ $(function(){initNavTree('group__joybus__target__n64__controller.html','',''); }
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-groups" class="groupheader"><a id="groups" name="groups"></a>
 Topics</h2></td></tr>
-<tr class="memitem:joybus_5Ftarget_5Fn64_5Faccessory" id="r_joybus_5Ftarget_5Fn64_5Faccessory"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__joybus__target__n64__accessory.html">N64 Controller Accessory</a></td></tr>
-<tr class="memdesc:group__joybus__target__n64__accessory"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interface for implementing N64 controller accessories (rumble pak, controller pak, etc.) <br /></td></tr>
+<tr class="memitem:joybus_5Ftarget_5Fn64_5Fpak" id="r_joybus_5Ftarget_5Fn64_5Fpak"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__joybus__target__n64__pak.html">N64 Pak</a></td></tr>
+<tr class="memdesc:group__joybus__target__n64__pak"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interface for implementing N64 "Pak" behavior (Rumble Pak, Controller Pak, etc.) when attached to an N64 controller target. <br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-nested-classes" class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Data Structures</h2></td></tr>
-<tr class="memitem:joybus_5Fn64_5Fcontroller" id="r_joybus_5Fn64_5Fcontroller"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structjoybus__n64__controller.html">joybus_n64_controller</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">N64 controller Joybus target.  <a href="structjoybus__n64__controller.html#details">More...</a><br /></td></tr>
+<tr class="memitem:joybus_5Ftarget_5Fn64_5Fcontroller" id="r_joybus_5Ftarget_5Fn64_5Fcontroller"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structjoybus__target__n64__controller.html">joybus_target_n64_controller</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">N64 controller Joybus target.  <a href="structjoybus__target__n64__controller.html#details">More...</a><br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-define-members" class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:ga7b5d26ec0e2d223895e5b11a91405775" id="r_ga7b5d26ec0e2d223895e5b11a91405775"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga7b5d26ec0e2d223895e5b11a91405775">JOYBUS_N64_CONTROLLER</a>(target)</td></tr>
-<tr class="memdesc:ga7b5d26ec0e2d223895e5b11a91405775"><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro to cast from a generic Joybus target to an N64 controller target.  <br /></td></tr>
+<tr class="memitem:ga322502cc038b67dddf6094c0e0bfc46f" id="r_ga322502cc038b67dddf6094c0e0bfc46f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga322502cc038b67dddf6094c0e0bfc46f">JOYBUS_TARGET_N64_CONTROLLER</a>(target)</td></tr>
+<tr class="memdesc:ga322502cc038b67dddf6094c0e0bfc46f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro to cast from a generic Joybus target to an N64 controller target.  <br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-typedef-members" class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:ga1c32462fcdf6291c430ffd87aa6b81ee" id="r_ga1c32462fcdf6291c430ffd87aa6b81ee"><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga1c32462fcdf6291c430ffd87aa6b81ee">joybus_n64_controller_reset_cb_t</a>) (struct <a class="el" href="structjoybus__n64__controller.html">joybus_n64_controller</a> *controller)</td></tr>
-<tr class="memdesc:ga1c32462fcdf6291c430ffd87aa6b81ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback type for N64 controller reset events.  <br /></td></tr>
+<tr class="memitem:gad33495e7ca669aa18745ef1074353624" id="r_gad33495e7ca669aa18745ef1074353624"><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#gad33495e7ca669aa18745ef1074353624">joybus_target_n64_controller_reset_cb</a>) (struct <a class="el" href="structjoybus__target__n64__controller.html">joybus_target_n64_controller</a> *controller)</td></tr>
+<tr class="memdesc:gad33495e7ca669aa18745ef1074353624"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback type for N64 controller reset events.  <br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ga2dac50c6a8461f411cf579464c983936" id="r_ga2dac50c6a8461f411cf579464c983936"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga2dac50c6a8461f411cf579464c983936">joybus_n64_controller_init</a> (struct <a class="el" href="structjoybus__n64__controller.html">joybus_n64_controller</a> *controller)</td></tr>
-<tr class="memdesc:ga2dac50c6a8461f411cf579464c983936"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize an N64 controller.  <br /></td></tr>
-<tr class="memitem:gac9d7f1d7d2857e227948eb4bf291ec71" id="r_gac9d7f1d7d2857e227948eb4bf291ec71"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#gac9d7f1d7d2857e227948eb4bf291ec71">joybus_n64_controller_set_reset_callback</a> (struct <a class="el" href="structjoybus__n64__controller.html">joybus_n64_controller</a> *controller, <a class="el" href="#ga1c32462fcdf6291c430ffd87aa6b81ee">joybus_n64_controller_reset_cb_t</a> callback)</td></tr>
-<tr class="memdesc:gac9d7f1d7d2857e227948eb4bf291ec71"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the reset callback for the controller.  <br /></td></tr>
-<tr class="memitem:gaedb778418fa0d4be9f8c3ebbef50d4c2" id="r_gaedb778418fa0d4be9f8c3ebbef50d4c2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#gaedb778418fa0d4be9f8c3ebbef50d4c2">joybus_n64_controller_attach_accessory</a> (struct <a class="el" href="structjoybus__n64__controller.html">joybus_n64_controller</a> *controller, struct <a class="el" href="structjoybus__n64__accessory.html">joybus_n64_accessory</a> *accessory)</td></tr>
-<tr class="memdesc:gaedb778418fa0d4be9f8c3ebbef50d4c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attach an accessory to the controller.  <br /></td></tr>
-<tr class="memitem:ga0048cbf671db30f77f43861e21bc50e8" id="r_ga0048cbf671db30f77f43861e21bc50e8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga0048cbf671db30f77f43861e21bc50e8">joybus_n64_controller_detach_accessory</a> (struct <a class="el" href="structjoybus__n64__controller.html">joybus_n64_controller</a> *controller)</td></tr>
-<tr class="memdesc:ga0048cbf671db30f77f43861e21bc50e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Detach the currently attached accessory from the controller.  <br /></td></tr>
+<tr class="memitem:gac6bb359d4fa66931efa6aea8dbd483d2" id="r_gac6bb359d4fa66931efa6aea8dbd483d2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#gac6bb359d4fa66931efa6aea8dbd483d2">joybus_target_n64_controller_init</a> (struct <a class="el" href="structjoybus__target__n64__controller.html">joybus_target_n64_controller</a> *controller)</td></tr>
+<tr class="memdesc:gac6bb359d4fa66931efa6aea8dbd483d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize an N64 controller.  <br /></td></tr>
+<tr class="memitem:ga4747a23ab0f0de44f021f613df6aeef8" id="r_ga4747a23ab0f0de44f021f613df6aeef8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga4747a23ab0f0de44f021f613df6aeef8">joybus_target_n64_controller_set_reset_cb</a> (struct <a class="el" href="structjoybus__target__n64__controller.html">joybus_target_n64_controller</a> *controller, <a class="el" href="#gad33495e7ca669aa18745ef1074353624">joybus_target_n64_controller_reset_cb</a> callback)</td></tr>
+<tr class="memdesc:ga4747a23ab0f0de44f021f613df6aeef8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the reset callback for the controller.  <br /></td></tr>
+<tr class="memitem:gadae4e8dc29793918a7e9834726e7113f" id="r_gadae4e8dc29793918a7e9834726e7113f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#gadae4e8dc29793918a7e9834726e7113f">joybus_target_n64_controller_attach_pak</a> (struct <a class="el" href="structjoybus__target__n64__controller.html">joybus_target_n64_controller</a> *controller, struct <a class="el" href="structjoybus__target__n64__pak.html">joybus_target_n64_pak</a> *pak)</td></tr>
+<tr class="memdesc:gadae4e8dc29793918a7e9834726e7113f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attach an pak to the controller.  <br /></td></tr>
+<tr class="memitem:gaa4c28115bc4bcf3296e19cf4ae7c3589" id="r_gaa4c28115bc4bcf3296e19cf4ae7c3589"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#gaa4c28115bc4bcf3296e19cf4ae7c3589">joybus_target_n64_controller_detach_pak</a> (struct <a class="el" href="structjoybus__target__n64__controller.html">joybus_target_n64_controller</a> *controller)</td></tr>
+<tr class="memdesc:gaa4c28115bc4bcf3296e19cf4ae7c3589"><td class="mdescLeft">&#160;</td><td class="mdescRight">Detach the currently attached pak from the controller.  <br /></td></tr>
+<tr class="memitem:ga53d0f42e5ed48d0dfebe2cd6abf1d7d2" id="r_ga53d0f42e5ed48d0dfebe2cd6abf1d7d2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga53d0f42e5ed48d0dfebe2cd6abf1d7d2">joybus_target_n64_controller_calibrate</a> (struct <a class="el" href="structjoybus__target__n64__controller.html">joybus_target_n64_controller</a> *controller)</td></tr>
+<tr class="memdesc:ga53d0f42e5ed48d0dfebe2cd6abf1d7d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sample the current stick position as the controller's neutral origin.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <p>Joybus target implementation for standard N64 controllers. </p>
 <a name="doc-define-members" id="doc-define-members"></a><h2 id="header-doc-define-members" class="groupheader">Macro Definition Documentation</h2>
-<a id="ga7b5d26ec0e2d223895e5b11a91405775" name="ga7b5d26ec0e2d223895e5b11a91405775"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga7b5d26ec0e2d223895e5b11a91405775">&#9670;&#160;</a></span>JOYBUS_N64_CONTROLLER</h2>
+<a id="ga322502cc038b67dddf6094c0e0bfc46f" name="ga322502cc038b67dddf6094c0e0bfc46f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga322502cc038b67dddf6094c0e0bfc46f">&#9670;&#160;</a></span>JOYBUS_TARGET_N64_CONTROLLER</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define JOYBUS_N64_CONTROLLER</td>
+          <td class="memname">#define JOYBUS_TARGET_N64_CONTROLLER</td>
           <td>(</td>
           <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>target</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">((<span class="keyword">struct </span><a class="code hl_struct" href="structjoybus__n64__controller.html">joybus_n64_controller</a> *)(target))</div>
-<div class="ttc" id="astructjoybus__n64__controller_html"><div class="ttname"><a href="structjoybus__n64__controller.html">joybus_n64_controller</a></div><div class="ttdoc">N64 controller Joybus target.</div><div class="ttdef"><b>Definition</b> n64_controller.h:32</div></div>
+<b>Value:</b><div class="fragment"><div class="line">((<span class="keyword">struct </span><a class="code hl_struct" href="structjoybus__target__n64__controller.html">joybus_target_n64_controller</a> *)(target))</div>
+<div class="ttc" id="astructjoybus__target__n64__controller_html"><div class="ttname"><a href="structjoybus__target__n64__controller.html">joybus_target_n64_controller</a></div><div class="ttdoc">N64 controller Joybus target.</div><div class="ttdef"><b>Definition</b> n64_controller.h:33</div></div>
 </div><!-- fragment -->
 <p>Macro to cast from a generic Joybus target to an N64 controller target. </p>
 
 </div>
 </div>
 <a name="doc-typedef-members" id="doc-typedef-members"></a><h2 id="header-doc-typedef-members" class="groupheader">Typedef Documentation</h2>
-<a id="ga1c32462fcdf6291c430ffd87aa6b81ee" name="ga1c32462fcdf6291c430ffd87aa6b81ee"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga1c32462fcdf6291c430ffd87aa6b81ee">&#9670;&#160;</a></span>joybus_n64_controller_reset_cb_t</h2>
+<a id="gad33495e7ca669aa18745ef1074353624" name="gad33495e7ca669aa18745ef1074353624"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gad33495e7ca669aa18745ef1074353624">&#9670;&#160;</a></span>joybus_target_n64_controller_reset_cb</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef void(* joybus_n64_controller_reset_cb_t) (struct <a class="el" href="structjoybus__n64__controller.html">joybus_n64_controller</a> *controller)</td>
+          <td class="memname">typedef void(* joybus_target_n64_controller_reset_cb) (struct <a class="el" href="structjoybus__target__n64__controller.html">joybus_target_n64_controller</a> *controller)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -189,71 +191,96 @@ Functions</h2></td></tr>
 </div>
 </div>
 <a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Function Documentation</h2>
-<a id="gaedb778418fa0d4be9f8c3ebbef50d4c2" name="gaedb778418fa0d4be9f8c3ebbef50d4c2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaedb778418fa0d4be9f8c3ebbef50d4c2">&#9670;&#160;</a></span>joybus_n64_controller_attach_accessory()</h2>
+<a id="gadae4e8dc29793918a7e9834726e7113f" name="gadae4e8dc29793918a7e9834726e7113f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gadae4e8dc29793918a7e9834726e7113f">&#9670;&#160;</a></span>joybus_target_n64_controller_attach_pak()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void joybus_n64_controller_attach_accessory </td>
+          <td class="memname">void joybus_target_n64_controller_attach_pak </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structjoybus__n64__controller.html">joybus_n64_controller</a> *</td>          <td class="paramname"><span class="paramname"><em>controller</em></span>, </td>
+          <td class="paramtype">struct <a class="el" href="structjoybus__target__n64__controller.html">joybus_target_n64_controller</a> *</td>          <td class="paramname"><span class="paramname"><em>controller</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">struct <a class="el" href="structjoybus__n64__accessory.html">joybus_n64_accessory</a> *</td>          <td class="paramname"><span class="paramname"><em>accessory</em></span>&#160;)</td>
+          <td class="paramtype">struct <a class="el" href="structjoybus__target__n64__pak.html">joybus_target_n64_pak</a> *</td>          <td class="paramname"><span class="paramname"><em>pak</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Attach an accessory to the controller. </p>
+<p>Attach an pak to the controller. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">controller</td><td>the controller to attach the accessory to </td></tr>
-    <tr><td class="paramname">accessory</td><td>the accessory to attach </td></tr>
+    <tr><td class="paramname">controller</td><td>the controller to attach the pak to </td></tr>
+    <tr><td class="paramname">pak</td><td>the pak to attach </td></tr>
   </table>
   </dd>
 </dl>
 
 </div>
 </div>
-<a id="ga0048cbf671db30f77f43861e21bc50e8" name="ga0048cbf671db30f77f43861e21bc50e8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga0048cbf671db30f77f43861e21bc50e8">&#9670;&#160;</a></span>joybus_n64_controller_detach_accessory()</h2>
+<a id="ga53d0f42e5ed48d0dfebe2cd6abf1d7d2" name="ga53d0f42e5ed48d0dfebe2cd6abf1d7d2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga53d0f42e5ed48d0dfebe2cd6abf1d7d2">&#9670;&#160;</a></span>joybus_target_n64_controller_calibrate()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void joybus_n64_controller_detach_accessory </td>
+          <td class="memname">void joybus_target_n64_controller_calibrate </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structjoybus__n64__controller.html">joybus_n64_controller</a> *</td>          <td class="paramname"><span class="paramname"><em>controller</em></span></td><td>)</td>
+          <td class="paramtype">struct <a class="el" href="structjoybus__target__n64__controller.html">joybus_target_n64_controller</a> *</td>          <td class="paramname"><span class="paramname"><em>controller</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Detach the currently attached accessory from the controller. </p>
+<p>Sample the current stick position as the controller's neutral origin. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">controller</td><td>the controller to detach the accessory from </td></tr>
+    <tr><td class="paramname">controller</td><td>the controller to calibrate </td></tr>
   </table>
   </dd>
 </dl>
 
 </div>
 </div>
-<a id="ga2dac50c6a8461f411cf579464c983936" name="ga2dac50c6a8461f411cf579464c983936"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga2dac50c6a8461f411cf579464c983936">&#9670;&#160;</a></span>joybus_n64_controller_init()</h2>
+<a id="gaa4c28115bc4bcf3296e19cf4ae7c3589" name="gaa4c28115bc4bcf3296e19cf4ae7c3589"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaa4c28115bc4bcf3296e19cf4ae7c3589">&#9670;&#160;</a></span>joybus_target_n64_controller_detach_pak()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void joybus_n64_controller_init </td>
+          <td class="memname">void joybus_target_n64_controller_detach_pak </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structjoybus__n64__controller.html">joybus_n64_controller</a> *</td>          <td class="paramname"><span class="paramname"><em>controller</em></span></td><td>)</td>
+          <td class="paramtype">struct <a class="el" href="structjoybus__target__n64__controller.html">joybus_target_n64_controller</a> *</td>          <td class="paramname"><span class="paramname"><em>controller</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Detach the currently attached pak from the controller. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">controller</td><td>the controller to detach the pak from </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="gac6bb359d4fa66931efa6aea8dbd483d2" name="gac6bb359d4fa66931efa6aea8dbd483d2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gac6bb359d4fa66931efa6aea8dbd483d2">&#9670;&#160;</a></span>joybus_target_n64_controller_init()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void joybus_target_n64_controller_init </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structjoybus__target__n64__controller.html">joybus_target_n64_controller</a> *</td>          <td class="paramname"><span class="paramname"><em>controller</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -270,27 +297,26 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="gac9d7f1d7d2857e227948eb4bf291ec71" name="gac9d7f1d7d2857e227948eb4bf291ec71"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gac9d7f1d7d2857e227948eb4bf291ec71">&#9670;&#160;</a></span>joybus_n64_controller_set_reset_callback()</h2>
+<a id="ga4747a23ab0f0de44f021f613df6aeef8" name="ga4747a23ab0f0de44f021f613df6aeef8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga4747a23ab0f0de44f021f613df6aeef8">&#9670;&#160;</a></span>joybus_target_n64_controller_set_reset_cb()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void joybus_n64_controller_set_reset_callback </td>
+          <td class="memname">void joybus_target_n64_controller_set_reset_cb </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structjoybus__n64__controller.html">joybus_n64_controller</a> *</td>          <td class="paramname"><span class="paramname"><em>controller</em></span>, </td>
+          <td class="paramtype">struct <a class="el" href="structjoybus__target__n64__controller.html">joybus_target_n64_controller</a> *</td>          <td class="paramname"><span class="paramname"><em>controller</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="#ga1c32462fcdf6291c430ffd87aa6b81ee">joybus_n64_controller_reset_cb_t</a></td>          <td class="paramname"><span class="paramname"><em>callback</em></span>&#160;)</td>
+          <td class="paramtype"><a class="el" href="#gad33495e7ca669aa18745ef1074353624">joybus_target_n64_controller_reset_cb</a></td>          <td class="paramname"><span class="paramname"><em>callback</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Set the reset callback for the controller. </p>
-<p>NOTE: Reset callbacks are called from interrupt context, do not perform any blocking operations within the callback.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">controller</td><td>the controller to set the callback for </td></tr>

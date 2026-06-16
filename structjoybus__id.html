@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.14.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>libjoybus: joybus_n64_rumble_pak Struct Reference</title>
+<title>libjoybus: joybus_id Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -77,7 +77,7 @@ $(function() {
   </div>
 </div>
 <script type="text/javascript">
-$(function(){initNavTree('structjoybus__n64__rumble__pak.html','',''); });
+$(function(){initNavTree('structjoybus__id.html','',''); });
 </script>
 <div id="container">
 <div id="doc-content">
@@ -103,31 +103,28 @@ $(function(){initNavTree('structjoybus__n64__rumble__pak.html','',''); });
 </div>
 
 <div class="header">
-  <div class="headertitle"><div class="title">joybus_n64_rumble_pak Struct Reference<div class="ingroups"><a class="el" href="group__joybus__target.html">Targets</a> &raquo; <a class="el" href="group__joybus__target__n64__controller.html">N64 Controller Target</a> &raquo; <a class="el" href="group__joybus__target__n64__accessory.html">N64 Controller Accessory</a> &raquo; <a class="el" href="group__joybus__target__n64__rumble__pak.html">N64 Rumble Pak</a></div></div></div>
+  <div class="headertitle"><div class="title">joybus_id Struct Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
-<p>N64 Rumble Pak accessory.  
+<p>Represents the 3-byte ID field from an "identify" buffer.  
  <a href="#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="n64__rumble__pak_8h_source.html">n64_rumble_pak.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="identify_8h_source.html">identify.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-attribs" class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Data Fields</h2></td></tr>
-<tr class="memitem:a5c850100512bc48d84822243a8fa91aa" id="r_a5c850100512bc48d84822243a8fa91aa"><td class="memItemLeft" align="right" valign="top"><a id="a5c850100512bc48d84822243a8fa91aa" name="a5c850100512bc48d84822243a8fa91aa"></a>
-struct <a class="el" href="structjoybus__n64__accessory.html">joybus_n64_accessory</a>&#160;</td><td class="memItemRight" valign="bottom"><b>base</b></td></tr>
-<tr class="memdesc:a5c850100512bc48d84822243a8fa91aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base accessory interface. <br /></td></tr>
-<tr class="memitem:ac1c6a37963ec5d1d3d92d7380c3d6b3d" id="r_ac1c6a37963ec5d1d3d92d7380c3d6b3d"><td class="memItemLeft" align="right" valign="top"><a id="ac1c6a37963ec5d1d3d92d7380c3d6b3d" name="ac1c6a37963ec5d1d3d92d7380c3d6b3d"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>active</b></td></tr>
-<tr class="memdesc:ac1c6a37963ec5d1d3d92d7380c3d6b3d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Current motor state. <br /></td></tr>
-<tr class="memitem:abb4046480081cf5bfe8f1e1b2c8aa0d5" id="r_abb4046480081cf5bfe8f1e1b2c8aa0d5"><td class="memItemLeft" align="right" valign="top"><a id="abb4046480081cf5bfe8f1e1b2c8aa0d5" name="abb4046480081cf5bfe8f1e1b2c8aa0d5"></a>
-<a class="el" href="group__joybus__target__n64__rumble__pak.html#gadc2bbf52055b178e60776fdd9b2babbc">joybus_n64_rumble_pak_motor_cb_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>on_motor_change</b></td></tr>
-<tr class="memdesc:abb4046480081cf5bfe8f1e1b2c8aa0d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback for motor state change events. <br /></td></tr>
+<tr class="memitem:a58c5ce73f5a3f7b52fe8c77585d8dc37" id="r_a58c5ce73f5a3f7b52fe8c77585d8dc37"><td class="memItemLeft" align="right" valign="top"><a id="a58c5ce73f5a3f7b52fe8c77585d8dc37" name="a58c5ce73f5a3f7b52fe8c77585d8dc37"></a>
+uint16_t&#160;</td><td class="memItemRight" valign="bottom"><b>type</b></td></tr>
+<tr class="memdesc:a58c5ce73f5a3f7b52fe8c77585d8dc37"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type flags. <br /></td></tr>
+<tr class="memitem:a12b2aac3439591cbf8985c4939ad28cc" id="r_a12b2aac3439591cbf8985c4939ad28cc"><td class="memItemLeft" align="right" valign="top"><a id="a12b2aac3439591cbf8985c4939ad28cc" name="a12b2aac3439591cbf8985c4939ad28cc"></a>
+uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>status</b></td></tr>
+<tr class="memdesc:a12b2aac3439591cbf8985c4939ad28cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Status flags. <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>N64 Rumble Pak accessory. </p>
+<div class="textblock"><p>Represents the 3-byte ID field from an "identify" buffer. </p>
 </div><hr/>The documentation for this struct was generated from the following file:<ul>
-<li>include/joybus/target/<a class="el" href="n64__rumble__pak_8h_source.html">n64_rumble_pak.h</a></li>
+<li>include/joybus/<a class="el" href="identify_8h_source.html">identify.h</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -142,7 +139,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>active</b></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a href="structjoybus__n64__rumble__pak.html">joybus_n64_rumble_pak</a></li>
+    <li class="navelem"><a href="structjoybus__id.html">joybus_id</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.14.0 </li>
   </ul>
 </div>
