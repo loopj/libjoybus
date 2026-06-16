@@ -23,47 +23,6 @@
  * at a ::joybus_target_api table, and register it on a bus with
  * joybus_target_register().
  *
- * ### Example
- *
- * ```c
- * // Command handler for the target
- * static int my_target_byte_received(struct joybus_target *target, const uint8_t *command, uint8_t byte_idx,
- *                                    joybus_target_response_cb response_ready, void *user_data) {
- *   switch (command[0]) {
- *     case 0x00:
- *       uint8_t response[] = {0x05, 0x00, 0x01};
- *       response_ready(response, sizeof(response), user_data);
- *       return 0;
- *   }
- *
- *   return -JOYBUS_ERR_NOT_SUPPORTED;
- * }
- *
- * // Expose the handler through an API table
- * static const struct joybus_target_api my_target_api = {
- *   .byte_received = my_target_byte_received,
- * };
- *
- * // Define the target struct
- * struct my_target {
- *   // Base target interface, must be first member for casting to work
- *   struct joybus_target base;
- *
- *   // Any custom state your target needs goes here
- * };
- *
- * // Provide an init function to set up the api pointer and any state
- * void my_target_init(struct my_target *target) {
- *   // Attach the API table
- *   target->base.api = &my_target_api;
- *
- *   // Initialize any custom state here
- * }
- *
- * // Register the target on a bus to start handling commands
- * joybus_target_register(bus, JOYBUS_TARGET(&my_target));
- * ```
- *
  * @{
  */
 

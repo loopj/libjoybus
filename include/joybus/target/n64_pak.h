@@ -26,41 +26,6 @@
  * point its api at a ::joybus_target_n64_pak_api table, and attach it with
  * joybus_target_n64_controller_attach_pak().
  *
- * ### Example
- *
- * ```c
- * // Implement the read/write handlers for your pak
- * static void my_pak_read(struct joybus_target_n64_pak *pak, uint16_t addr, uint8_t buf[32]) {
- *   // Fill buf with the 32 bytes the console should receive for this block
- * }
- *
- * static void my_pak_write(struct joybus_target_n64_pak *pak, uint16_t addr, const uint8_t buf[32]) {
- *   // Handle the 32 bytes the console sent for this block
- * }
- *
- * // Expose the handlers through an API table
- * static const struct joybus_target_n64_pak_api my_pak_api = {
- *   .read_block = my_pak_read,
- *   .write_block = my_pak_write,
- * };
- *
- * // Define the pak struct
- * struct my_pak {
- *   // Base pak interface, must be first member for casting to work
- *   struct joybus_target_n64_pak base;
- *
- *   // Any custom state your pak needs goes here
- * };
- *
- * // Provide an init function to set up the api pointer and any state
- * void my_pak_init(struct my_pak *pak) {
- *   // Attach the API table
- *   pak->base.api = &my_pak_api;
- *
- *   // Initialize any custom state here
- * }
- * ```
- *
  * @{
  */
 
