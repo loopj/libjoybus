@@ -10,6 +10,10 @@
 
 /**
  * N64 controller button bitmask flags.
+ *
+ * These test the `buttons` field of ::joybus_n64_controller_state. Bits 0-7
+ * correspond to the first button byte of the wire input state, bits 8-15 to
+ * the second.
  */
 #define JOYBUS_N64_BUTTON_RIGHT   (1 << 0)
 #define JOYBUS_N64_BUTTON_LEFT    (1 << 1)
@@ -30,14 +34,18 @@
 
 /**
  * N64 controller input state.
+ *
+ * Matches the wire format of the input state byte-for-byte on a
+ * little-endian CPU (wire byte 0 is the low byte of `buttons`), so it can
+ * be sent and received without repacking.
  */
-struct joybus_n64_controller_input {
+struct joybus_n64_controller_state {
   /// Button state
   uint16_t buttons;
 
-  /// Stick x-axis position
-  uint8_t stick_x;
+  /// Stick x-axis position, nominally -80..80
+  int8_t stick_x;
 
-  /// Stick y-axis position
-  uint8_t stick_y;
+  /// Stick y-axis position, nominally -80..80
+  int8_t stick_y;
 } __attribute__((packed));

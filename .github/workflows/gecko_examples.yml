@@ -24,7 +24,7 @@ jobs:
 
       - name: Cache ARM GNU Toolchain
         id: cache-arm-toolchain
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: arm-gnu-toolchain-${{ env.ARM_GNU_TOOLCHAIN_VERSION }}-x86_64-arm-none-eabi
           key: arm-toolchain-${{ env.ARM_GNU_TOOLCHAIN_VERSION }}
@@ -37,7 +37,7 @@ jobs:
 
       - name: Cache Simplicity SDK
         id: cache-simplicity-sdk
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: simplicity_sdk
           key: simplicity-sdk-${{ env.SIMPLICITY_SDK_VERSION }}
@@ -50,7 +50,7 @@ jobs:
 
       - name: Cache SLC-CLI
         id: cache-slc-cli
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: slc_cli
           key: slc-cli-${{ runner.os }}
@@ -82,14 +82,14 @@ jobs:
           sudo apt-get install -y cmake ninja-build
 
       - name: Set up Java
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: "corretto"
           java-version: "21"
 
       # Restore the toolchain and SDKs populated by the setup job
       - name: Restore ARM GNU Toolchain
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         with:
           path: arm-gnu-toolchain-${{ env.ARM_GNU_TOOLCHAIN_VERSION }}-x86_64-arm-none-eabi
           key: arm-toolchain-${{ env.ARM_GNU_TOOLCHAIN_VERSION }}
@@ -97,17 +97,19 @@ jobs:
 
       - name: Add ARM toolchain to PATH
         run: |
-          echo "$PWD/arm-gnu-toolchain-${{ env.ARM_GNU_TOOLCHAIN_VERSION }}-x86_64-arm-none-eabi/bin" >> $GITHUB_PATH
+          TOOLCHAIN_ROOT="$PWD/arm-gnu-toolchain-${{ env.ARM_GNU_TOOLCHAIN_VERSION }}-x86_64-arm-none-eabi"
+          echo "$TOOLCHAIN_ROOT/bin" >> $GITHUB_PATH
+          echo "ARM_GCC_DIR=$TOOLCHAIN_ROOT" >> $GITHUB_ENV
 
       - name: Restore Simplicity SDK
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         with:
           path: simplicity_sdk
           key: simplicity-sdk-${{ env.SIMPLICITY_SDK_VERSION }}
           fail-on-cache-miss: true
 
       - name: Restore SLC-CLI
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         with:
           path: slc_cli
           key: slc-cli-${{ runner.os }}

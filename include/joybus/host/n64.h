@@ -1,5 +1,6 @@
 /**
- * @addtogroup joybus_host
+ * @defgroup joybus_host_n64 N64 Commands
+ * @ingroup joybus_host
  *
  * @{
  */
@@ -7,109 +8,89 @@
 #pragma once
 
 #include <joybus/bus.h>
+#include <joybus/commands.h>
 #include <joybus/common/n64_controller.h>
 
 /**
- * N64 controller accessory types.
+ * Read the current input state of an N64 controller or mouse.
+ *
+ * @param bus the Joybus instance to use
+ * @param response buffer to store the response in
+ * @return 0 on success, a negative joybus_error on failure
  */
-enum joybus_n64_accessory_type {
-  /// No accessory connected
-  JOYBUS_N64_ACCESSORY_NONE = 0,
-
-  /// Accessory type could not be determined
-  JOYBUS_N64_ACCESSORY_UNKNOWN,
-
-  /// Controller Pak
-  JOYBUS_N64_ACCESSORY_CONTROLLER_PAK,
-
-  /// Rumble Pak
-  JOYBUS_N64_ACCESSORY_RUMBLE_PAK,
-
-  /// Transfer Pak
-  JOYBUS_N64_ACCESSORY_TRANSFER_PAK,
-
-  /// Bio Sensor
-  JOYBUS_N64_ACCESSORY_BIO_SENSOR,
-
-  /// Snap Station
-  JOYBUS_N64_ACCESSORY_SNAP_STATION,
-};
+int joybus_n64_read(struct joybus *bus, struct joybus_n64_controller_state *response);
 
 /**
- * Callback type for N64 accessory detection.
+ * Read the current input state of an N64 controller or mouse, asynchronously.
  *
- * @param accessory_type the detected accessory type, one of JOYBUS_N64_ACCESSORY_*
- * @param user_data user data passed to the detection function
- */
-typedef void (*joybus_n64_accessory_detect_cb_t)(int accessory_type, void *user_data);
-
-/**
- * Read the current input state of an N64 controller.
- *
- * @param bus the Joybus to use
- * @param response buffer to store the response in, must be at least JOYBUS_CMD_N64_READ_RX bytes
+ * @param bus the Joybus instance to use
+ * @param response buffer to store the response in
  * @param callback a callback function to call when the transfer is complete
  * @param user_data user data to pass to the callback function
- * @return 0 on success, negative error code on failure
+ * @return 0 if the transfer was started, a negative joybus_error otherwise
  */
-int joybus_n64_read(struct joybus *bus, uint8_t *response, joybus_transfer_cb_t callback, void *user_data);
+int joybus_n64_read_async(struct joybus *bus, struct joybus_n64_controller_state *response,
+                          joybus_transfer_cb callback, void *user_data);
 
 /**
- * Write data to a N64 controller's accessory port.
+ * Write a block of data to the pak attached to an N64 controller.
  *
- * Address checksum is automatically calculated.
+ * The response buffer will be populated with a checksum of the written data
+ * (see joybus_data_checksum)
  *
- * @param bus the Joybus to use
+ * @param bus the Joybus instance to use
+ * @param addr the address to read from, must be 32-byte aligned
+ * @param data buffer to store the data in
+ * @param response buffer to store the response in
+ * @return 0 on success, a negative joybus_error on failure
+ */
+int joybus_n64_pak_write(struct joybus *bus, uint16_t addr, const void *data, uint8_t response[JOYBUS_CMD_N64_PAK_WRITE_RX]);
+
+/**
+ * Write a block of data to the pak attached to an N64 controller, asynchronously.
+ *
+ * The response buffer will be populated with a checksum of the written data
+ * (see joybus_data_checksum).
+ *
+ * @param bus the Joybus instance to use
  * @param addr the address to write to, must be 32-byte aligned
  * @param data the data to write
- * @param response buffer to store the response in, must be at least JOYBUS_CMD_N64_WRITE_MEM_RX bytes
+ * @param response buffer to store the response in
  * @param callback a callback function to call when the transfer is complete
  * @param user_data user data to pass to the callback function
- * @return 0 on success, negative error code on failure
+ * @return 0 if the transfer was started, a negative joybus_error otherwise
  */
-int joybus_n64_accessory_write(struct joybus *bus, uint16_t addr, const uint8_t *data, uint8_t *response,
-                               joybus_transfer_cb_t callback, void *user_data);
+int joybus_n64_pak_write_async(struct joybus *bus, uint16_t addr, const uint8_t data[JOYBUS_PAK_BLOCK_SIZE],
+                               uint8_t response[JOYBUS_CMD_N64_PAK_WRITE_RX], joybus_transfer_cb callback,
+                               void *user_data);
 
 /**
- * Read data from a N64 controller's accessory port.
+ * Read a block of data from the pak attached to an N64 controller.
  *
- * Address checksum is automatically calculated.
+ * The response buffer will be populated with 32 bytes of data read from the pak,
+ * followed by a checksum.
+ *
+ * @param bus the Joybus instance to use
+ * @param addr the address to read from, must be 32-byte aligned
+ * @param response buffer to store the response in
+ * @return 0 on success, a negative joybus_error on failure
+ */
+int joybus_n64_pak_read(struct joybus *bus, uint16_t addr, uint8_t response[JOYBUS_CMD_N64_PAK_READ_RX]);
+
+/**
+ * Read a block of data from the pak attached to an N64 controller, asynchronously.
+ *
+ * The response buffer will be populated with 32 bytes of data read from the pak,
+ * followed by a checksum.
  *
  * @param bus the Joybus to use
  * @param addr the address to read from, must be 32-byte aligned
- * @param response buffer to store the response in, must be at least JOYBUS_CMD_N64_ACCESSORY_READ_RX bytes
+ * @param response buffer to store the response in, must be at least JOYBUS_CMD_N64_PAK_READ_RX bytes
  * @param callback a callback function to call when the transfer is complete
  * @param user_data user data to pass to the callback function
- * @return 0 on success, negative error code on failure
+ * @return 0 if the transfer was started, a negative joybus_error otherwise
  */
-int joybus_n64_accessory_read(struct joybus *bus, uint16_t addr, uint8_t *response, joybus_transfer_cb_t callback,
-                              void *user_data);
-
-/**
- * Helper function to detect the accessory connected to a N64 controller.
- *
- * This function initiates an asynchronous sequence of commands to detect the accessory type.
- * The provided callback will be called with the detected accessory type once the detection
- * sequence is complete.
- *
- * @param bus the Joybus to use
- * @param callback a callback function to call when the detection is complete
- * @param user_data user data to pass to the callback function
- */
-void joybus_n64_accessory_detect(struct joybus *bus, joybus_n64_accessory_detect_cb_t callback, void *user_data);
-
-/**
- * Helper function to start the rumble motor in a N64 Rumble Pak.
- *
- * @param bus the Joybus to use
- */
-void joybus_n64_motor_start(struct joybus *bus);
-
-/**
- * Helper function to stop the rumble motor in a N64 Rumble Pak.
- *
- * @param bus the Joybus to use
- */
-void joybus_n64_motor_stop(struct joybus *bus);
+int joybus_n64_pak_read_async(struct joybus *bus, uint16_t addr, uint8_t response[JOYBUS_CMD_N64_PAK_READ_RX],
+                              joybus_transfer_cb callback, void *user_data);
 
 /** @} */

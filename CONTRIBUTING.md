@@ -59,14 +59,13 @@ Ideally, your backend should also meet the following criteria:
 
 ## Running tests
 
-Most of the higher level functionality of `libjoybus` can be tested using the
-`loopback` backend. This backend simulates Joybus communication by connecting a
-host and target together in software.
+Most of the higher level functionality of `libjoybus` can be tested without a
+running on an embedded backend.
 
 Build the test suite
 
 ```bash
-cmake -Bbuild -DJOYBUS_BACKEND_LOOPBACK=1 && cmake --build build
+cmake -Bbuild && cmake --build build
 ```
 
 Run the tests

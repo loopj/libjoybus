@@ -14,7 +14,7 @@ set(TARGET gcn-adapter-nintendo)
 pico_sdk_init()
 
 # Define platform for libjoybus
-set(JOYBUS_BACKEND_RP2XXX TRUE)
+set(JOYBUS_BACKEND rp2xxx)
 
 # Make libjoybus available
 set(LIBJOYBUS_ROOT ${CMAKE_CURRENT_LIST_DIR}/../../..)

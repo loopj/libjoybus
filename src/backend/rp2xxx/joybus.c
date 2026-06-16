@@ -206,9 +206,9 @@ static inline void host_byte_received(struct joybus *bus)
     // Record the completion time for enforcing minimum interval between transfers
     data->last_transfer_time = get_absolute_time();
 
-    // Call the transfer complete callback
+    // Call the transfer complete callback with a success status
     if (data->done_callback)
-      data->done_callback(bus, data->read_len, data->done_user_data);
+      data->done_callback(bus, 0, data->done_user_data);
   }
 }
 
@@ -367,7 +367,7 @@ static int joybus_rp2xxx_disable(struct joybus *bus)
 }
 
 static int joybus_rp2xxx_transfer(struct joybus *bus, const uint8_t *write_buf, uint8_t write_len, uint8_t *read_buf,
-                                  uint8_t read_len, joybus_transfer_cb_t callback, void *user_data)
+                                  uint8_t read_len, joybus_transfer_cb callback, void *user_data)
 {
   struct joybus_rp2xxx_data *data = &JOYBUS_RP2XXX(bus)->data;
 

@@ -299,9 +299,9 @@ static bool ldma_rx_handler(unsigned int chan, unsigned int iteration, void *use
         data->state = BUS_STATE_HOST_IDLE;
       }
 
-      // Call the transfer complete callback
+      // Call the transfer complete callback with a success status
       if (data->done_callback)
-        data->done_callback(bus, data->read_len, data->done_user_data);
+        data->done_callback(bus, 0, data->done_user_data);
 
       // Cancel rx timeout
       sl_sleeptimer_stop_timer(&data->rx_timeout_timer);
@@ -688,7 +688,7 @@ static int joybus_gecko_disable(struct joybus *bus)
 }
 
 static int joybus_gecko_transfer(struct joybus *bus, const uint8_t *write_buf, uint8_t write_len, uint8_t *read_buf,
-                                 uint8_t read_len, joybus_transfer_cb_t callback, void *user_data)
+                                 uint8_t read_len, joybus_transfer_cb callback, void *user_data)
 {
   struct joybus_gecko_data *data = &JOYBUS_GECKO(bus)->data;
 

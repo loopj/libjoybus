@@ -61,23 +61,21 @@ controllers in your projects.
 
 ```c
 #include <joybus/joybus.h>
-#include <joybus/host/gcn.h>
 
 struct joybus_rp2xxx rp2xxx_bus;
 struct joybus *bus = JOYBUS(&rp2xxx_bus);
 
-struct joybus_gcn_controller_input input;
-uint8_t joybus_buffer[JOYBUS_BLOCK_SIZE];
+void read_controller() {
+  // Read a GameCube controller in analog mode 3 with the rumble motor off
+  struct joybus_gcn_controller_state input;
+  int rc = joybus_gcn_read(bus, JOYBUS_GCN_ANALOG_MODE_3, JOYBUS_GCN_MOTOR_STOP, &input);
+  if (rc < 0) {
+    // ...handle read error
+    return;
+  }
 
-void poll_cb(struct joybus *bus, int result, void *user_data) {
-  // Check for errors
-  // TODO
-
-  // Unpack the input data from the response
-  joybus_gcn_unpack_input(&input, joybus_buffer, JOYBUS_GCN_ANALOG_MODE_3);
-
-  // Do something with the input data
-  if(input.buttons & JOYBUS_GCN_BUTTON_A) {
+  // Do something with the input state
+  if (input.buttons & JOYBUS_GCN_BUTTON_A) {
     // The A button is pressed
   }
 }
@@ -87,11 +85,9 @@ void main() {
   joybus_rp2xxx_init(&rp2xxx_bus, MY_GPIO, pio0);
   joybus_enable(bus);
 
+  // Read the controller state in a loop
   while (1) {
-    // Read a GameCube controller in analog mode 3 with the rumble motor off
-    joybus_gcn_read(bus, JOYBUS_GCN_ANALOG_MODE_3, JOYBUS_GCN_MOTOR_STOP, joybus_buffer,
-                    poll_cb, NULL);
-
+    read_controller();
     sleep_ms(10);
   }
 }
@@ -107,21 +103,18 @@ I've provided built-in targets for N64 controllers and GameCube controllers so y
 
 ```c
 #include <joybus/joybus.h>
-#include <joybus/target/gcn_controller.h>
 
 struct joybus_rp2xxx rp2xxx_bus;
 struct joybus *bus = JOYBUS(&rp2xxx_bus);
-struct joybus_gcn_controller controller;
+struct joybus_target_gcn_controller controller;
 
 void main() {
-  // Initialize the Joybus
+  // Initialize and enable the Joybus
   joybus_rp2xxx_init(&rp2xxx_bus, MY_GPIO, pio0);
   joybus_enable(bus);
 
-  // Initialize a GameCube controller target
-  joybus_gcn_controller_init(&controller);
-
-  // Register the target on the bus
+  // Initialize a GameCube controller target and register it on the bus
+  joybus_target_gcn_controller_init(&controller);
   joybus_target_register(bus, JOYBUS_TARGET(&controller));
 
   // At this point the target will respond to commands from a connected console!
@@ -141,10 +134,6 @@ void main() {
   }
 }
 ```
-
-## Special Thanks
-
-The (insane) accessory detection logic for N64 accessory paks is *heavily* based on the implementation in the fantastic [`libdragon`](https://github.com/DragonMinded/libdragon), which I consider the gold standard for this.
 
 ## License
 

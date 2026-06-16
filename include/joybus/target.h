@@ -23,47 +23,6 @@
  * at a ::joybus_target_api table, and register it on a bus with
  * joybus_target_register().
  *
- * ### Example
- *
- * ```c
- * // Command handler for the target
- * static int my_target_byte_received(struct joybus_target *target, const uint8_t *command, uint8_t byte_idx,
- *                                    joybus_target_response_cb_t response_ready, void *user_data) {
- *   switch (command[0]) {
- *     case 0x00:
- *       uint8_t response[] = {0x05, 0x00, 0x01};
- *       response_ready(response, sizeof(response), user_data);
- *       return 0;
- *   }
- *
- *   return -JOYBUS_ERR_NOT_SUPPORTED;
- * }
- *
- * // Expose the handler through an API table
- * static const struct joybus_target_api my_target_api = {
- *   .byte_received = my_target_byte_received,
- * };
- *
- * // Define the target struct
- * struct my_target {
- *   // Base target interface, must be first member for casting to work
- *   struct joybus_target base;
- *
- *   // Any custom state your target needs goes here
- * };
- *
- * // Provide an init function to set up the api pointer and any state
- * void my_target_init(struct my_target *target) {
- *   // Attach the API table
- *   target->base.api = &my_target_api;
- *
- *   // Initialize any custom state here
- * }
- *
- * // Register the target on a bus to start handling commands
- * joybus_target_register(bus, JOYBUS_TARGET(&my_target));
- * ```
- *
  * @{
  */
 
@@ -84,7 +43,7 @@ struct joybus_target;
  * @param len the length of the response data
  * @param user_data user data passed to the command handler
  */
-typedef void (*joybus_target_response_cb_t)(const uint8_t *response, uint8_t len, void *user_data);
+typedef void (*joybus_target_response_cb)(const uint8_t *response, uint8_t len, void *user_data);
 
 /**
  * API for implementing a Joybus target.
@@ -98,10 +57,10 @@ struct joybus_target_api {
    * @param byte_idx the index of the byte that was just received
    * @param send_response a callback function to send the response
    * @param user_data user data to pass to the response callback
-   * @return positive number of bytes still expected, 0 if no more bytes expected, negative error code on failure
+   * @return positive number of bytes still expected, 0 if no more bytes expected, a negative joybus_error on failure
    */
   int (*byte_received)(struct joybus_target *target, const uint8_t *command, uint8_t byte_idx,
-                       joybus_target_response_cb_t send_response, void *user_data);
+                       joybus_target_response_cb send_response, void *user_data);
 };
 
 /**
@@ -123,10 +82,10 @@ struct joybus_target {
  * @param byte_idx the index of the byte that was just received
  * @param send_response a callback function to send the response
  * @param user_data user data to pass to the response callback
- * @return positive number of bytes still expected, 0 if no more bytes expected, negative error code on failure
+ * @return positive number of bytes still expected, 0 if no more bytes expected, a negative joybus_error on failure
  */
 static inline int joybus_target_byte_received(struct joybus_target *target, const uint8_t *command, uint8_t byte_idx,
-                                              joybus_target_response_cb_t send_response, void *user_data)
+                                              joybus_target_response_cb send_response, void *user_data)
 {
   return target->api->byte_received(target, command, byte_idx, send_response, user_data);
 }
