@@ -7,11 +7,11 @@
 #include "joybus/host/n64_rumble_pak.h"
 #include <joybus/backend/rp2xxx.h>
 
-#define JOYBUS_GPIO       12
-#define LED_GPIO          13
+#define JOYBUS_GPIO           12
+#define LED_GPIO              13
 
-#define POLL_INTERVAL_MS  16
-#define IDENTIFY_INTERVAL 120
+#define POLL_INTERVAL_MS      16
+#define IDENTIFY_INTERVAL_MS  2000
 
 // Joybus instance
 struct joybus_rp2xxx rp2xxx_bus;
@@ -23,13 +23,15 @@ static struct joybus_n64_controller_state controller_state;
 static bool controller_present = false;
 static bool rumble_available   = false;
 static bool rumble_on          = false;
-static uint32_t frame          = 0;
 
 // Poll the controller for presence, input state, and accessory changes
 static void poll_controller(void)
 {
-  // Read controller and accessory state (at start, and periodically)
-  if (!controller_present || frame % IDENTIFY_INTERVAL == 0) {
+  // Re-identify at startup, and periodically to track accessory changes
+  static absolute_time_t next_identify;
+  if (!controller_present || time_reached(next_identify)) {
+    next_identify = make_timeout_time_ms(IDENTIFY_INTERVAL_MS);
+
     if (joybus_identify(bus, &id) >= 0) {
       controller_present = id.type & JOYBUS_DEVICE_N64_CONTROLLER;
 
@@ -50,8 +52,6 @@ static void poll_controller(void)
   // Read the latest input state
   if (controller_present)
     joybus_n64_read(bus, &controller_state);
-
-  frame++;
 }
 
 // Start/stop the rumble motor when the requested state changes
