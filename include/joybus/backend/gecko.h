@@ -100,7 +100,7 @@ struct joybus_gecko {
  * @param pin the GPIO pin to use for the Joybus data line
  * @param rx_timer the TIMER peripheral to use for receiving data
  * @param tx_usart the USART peripheral to use for transmitting data
- * @return 0 on success, negative error code on failure
+ * @return 0 on success, a negative joybus_error on failure
  */
 int joybus_gecko_init(struct joybus_gecko *gecko_bus, GPIO_Port_TypeDef port, uint8_t pin, TIMER_TypeDef *rx_timer,
                       USART_TypeDef *tx_usart);

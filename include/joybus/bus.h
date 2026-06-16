@@ -63,9 +63,13 @@ struct joybus;
 /**
  * Function type for transfer completion callbacks.
  *
+ * Invoked once, after the async call has returned, when a started transfer
+ * completes. Runs in transfer-completion context, which is an interrupt on most
+ * backends, so it must not block.
+ *
  * @param bus the Joybus associated with the transfer
- * @param status positive number of bytes read on success, negative error code on failure
- * @param user_data user data passed to the callback
+ * @param status 0 on success, a negative joybus_error on failure
+ * @param user_data the user_data passed to the async function
  */
 typedef void (*joybus_transfer_cb)(struct joybus *bus, int status, void *user_data);
 
@@ -121,17 +125,18 @@ static inline int joybus_disable(struct joybus *bus)
 /**
  * Perform a Joybus "write then read" transfer.
  *
- * Sends a command to a device, and reads the response.
- * The provided buffers must be valid until the transfer is complete.
+ * Sends a command to a device and reads the response. Returns once the transfer
+ * has started, and @p callback is invoked with the status when it completes.
+ * The provided buffers must stay valid until the callback runs.
  *
  * @param bus the Joybus instance to use
  * @param write_buf the buffer containing the command to send
  * @param write_len the number of bytes to write
  * @param read_buf the buffer to store the response in
  * @param read_len the number of bytes to read
- * @param callback a callback function to call when the transfer is complete
+ * @param callback invoked once when the transfer completes
  * @param user_data user data to pass to the callback
- * @return 0 on success, negative error code on failure
+ * @return 0 if the transfer was started, a negative joybus_error otherwise
  */
 static inline int joybus_transfer(struct joybus *bus, const uint8_t *write_buf, uint8_t write_len, uint8_t *read_buf,
                                   uint8_t read_len, joybus_transfer_cb callback, void *user_data)
@@ -142,15 +147,17 @@ static inline int joybus_transfer(struct joybus *bus, const uint8_t *write_buf, 
 /**
  * Perform a synchronous "write then read" Joybus transfer.
  *
- * Sends a command to a device, and waits for the response before returning.
+ * Sends a command to a device and blocks until the response arrives.
  *
  * @param bus the Joybus instance to use
  * @param write_buf the buffer containing the command to send
  * @param write_len the number of bytes to write
  * @param read_buf the buffer to store the response in
  * @param read_len the number of bytes to read
- * @param timeout_ms the timeout for the transfer, in milliseconds
- * @return positive number of bytes read on success, negative error code on failure
+ * @return 0 on success, a negative joybus_error on failure
+ *
+ * @warning Blocks by busy-waiting, so it must not be called from an interrupt
+ *   or timer callback. Use joybus_transfer() there.
  */
 int joybus_transfer_sync(struct joybus *bus, const uint8_t *write_buf, uint8_t write_len, uint8_t *read_buf,
                          uint8_t read_len);
@@ -160,7 +167,7 @@ int joybus_transfer_sync(struct joybus *bus, const uint8_t *write_buf, uint8_t w
  *
  * @param bus the Joybus instance to use
  * @param target the target to register
- * @return 0 on success, negative error code on failure
+ * @return 0 on success, a negative joybus_error on failure
  */
 static inline int joybus_target_register(struct joybus *bus, struct joybus_target *target)
 {
@@ -177,7 +184,7 @@ static inline int joybus_target_register(struct joybus *bus, struct joybus_targe
  *
  * @param bus the Joybus instance to use
  * @param target the target to unregister
- * @return 0 on success, negative error code on failure
+ * @return 0 on success, a negative joybus_error on failure
  */
 static inline int joybus_target_unregister(struct joybus *bus, struct joybus_target *target)
 {

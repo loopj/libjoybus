@@ -69,7 +69,7 @@ struct joybus_rp2xxx {
  * @param rp2xxx_bus the RP2xxx Joybus instance to initialize
  * @param gpio the GPIO pin to use for the Joybus data line
  * @param pio the PIO instance to use (eg. pio0 or pio1)
- * @return 0 on success, negative error code on failure
+ * @return 0 on success, a negative joybus_error on failure
  */
 int joybus_rp2xxx_init(struct joybus_rp2xxx *rp2xxx_bus, uint8_t gpio, PIO pio);
 

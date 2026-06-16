@@ -98,7 +98,7 @@ struct joybus_target_api {
    * @param byte_idx the index of the byte that was just received
    * @param send_response a callback function to send the response
    * @param user_data user data to pass to the response callback
-   * @return positive number of bytes still expected, 0 if no more bytes expected, negative error code on failure
+   * @return positive number of bytes still expected, 0 if no more bytes expected, a negative joybus_error on failure
    */
   int (*byte_received)(struct joybus_target *target, const uint8_t *command, uint8_t byte_idx,
                        joybus_target_response_cb send_response, void *user_data);
@@ -123,7 +123,7 @@ struct joybus_target {
  * @param byte_idx the index of the byte that was just received
  * @param send_response a callback function to send the response
  * @param user_data user data to pass to the response callback
- * @return positive number of bytes still expected, 0 if no more bytes expected, negative error code on failure
+ * @return positive number of bytes still expected, 0 if no more bytes expected, a negative joybus_error on failure
  */
 static inline int joybus_target_byte_received(struct joybus_target *target, const uint8_t *command, uint8_t byte_idx,
                                               joybus_target_response_cb send_response, void *user_data)

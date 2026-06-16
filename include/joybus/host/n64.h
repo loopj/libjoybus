@@ -15,7 +15,7 @@
  *
  * @param bus the Joybus instance to use
  * @param response buffer to store the response in
- * @return 0 on success, negative error code on failure
+ * @return 0 on success, a negative joybus_error on failure
  */
 int joybus_n64_read(struct joybus *bus, struct joybus_n64_controller_state *response);
 
@@ -26,7 +26,7 @@ int joybus_n64_read(struct joybus *bus, struct joybus_n64_controller_state *resp
  * @param response buffer to store the response in
  * @param callback a callback function to call when the transfer is complete
  * @param user_data user data to pass to the callback function
- * @return 0 on success, negative error code on failure
+ * @return 0 if the transfer was started, a negative joybus_error otherwise
  */
 int joybus_n64_read_async(struct joybus *bus, struct joybus_n64_controller_state *response,
                           joybus_transfer_cb callback, void *user_data);
@@ -41,7 +41,7 @@ int joybus_n64_read_async(struct joybus *bus, struct joybus_n64_controller_state
  * @param addr the address to read from, must be 32-byte aligned
  * @param data buffer to store the data in
  * @param response buffer to store the response in
- * @return 0 on success, negative error code on failure
+ * @return 0 on success, a negative joybus_error on failure
  */
 int joybus_n64_pak_write(struct joybus *bus, uint16_t addr, const void *data, uint8_t response[JOYBUS_CMD_N64_PAK_WRITE_RX]);
 
@@ -57,7 +57,7 @@ int joybus_n64_pak_write(struct joybus *bus, uint16_t addr, const void *data, ui
  * @param response buffer to store the response in
  * @param callback a callback function to call when the transfer is complete
  * @param user_data user data to pass to the callback function
- * @return 0 on success, negative error code on failure
+ * @return 0 if the transfer was started, a negative joybus_error otherwise
  */
 int joybus_n64_pak_write_async(struct joybus *bus, uint16_t addr, const uint8_t data[JOYBUS_PAK_BLOCK_SIZE],
                                uint8_t response[JOYBUS_CMD_N64_PAK_WRITE_RX], joybus_transfer_cb callback,
@@ -72,7 +72,7 @@ int joybus_n64_pak_write_async(struct joybus *bus, uint16_t addr, const uint8_t 
  * @param bus the Joybus instance to use
  * @param addr the address to read from, must be 32-byte aligned
  * @param response buffer to store the response in
- * @return 0 on success, negative error code on failure
+ * @return 0 on success, a negative joybus_error on failure
  */
 int joybus_n64_pak_read(struct joybus *bus, uint16_t addr, uint8_t response[JOYBUS_CMD_N64_PAK_READ_RX]);
 
@@ -87,7 +87,7 @@ int joybus_n64_pak_read(struct joybus *bus, uint16_t addr, uint8_t response[JOYB
  * @param response buffer to store the response in, must be at least JOYBUS_CMD_N64_PAK_READ_RX bytes
  * @param callback a callback function to call when the transfer is complete
  * @param user_data user data to pass to the callback function
- * @return 0 on success, negative error code on failure
+ * @return 0 if the transfer was started, a negative joybus_error otherwise
  */
 int joybus_n64_pak_read_async(struct joybus *bus, uint16_t addr, uint8_t response[JOYBUS_CMD_N64_PAK_READ_RX],
                               joybus_transfer_cb callback, void *user_data);

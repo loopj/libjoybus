@@ -18,7 +18,7 @@
  * @param analog_mode the analog mode to use
  * @param motor_state the motor state to use
  * @param response buffer to store the input state response in
- * @return 0 on success, negative error code on failure
+ * @return 0 on success, a negative joybus_error on failure
  */
 int joybus_gcn_read(struct joybus *bus, enum joybus_gcn_analog_mode analog_mode,
                     enum joybus_gcn_motor_state motor_state, struct joybus_gcn_controller_state *response);
@@ -32,7 +32,7 @@ int joybus_gcn_read(struct joybus *bus, enum joybus_gcn_analog_mode analog_mode,
  * @param response buffer to store the input state response in
  * @param callback a callback function to call when the transfer is complete
  * @param user_data user data to pass to the callback function
- * @return 0 on success, negative error code on failure
+ * @return 0 if the transfer was started, a negative joybus_error otherwise
  */
 int joybus_gcn_read_async(struct joybus *bus, enum joybus_gcn_analog_mode analog_mode,
                           enum joybus_gcn_motor_state motor_state, struct joybus_gcn_controller_state *response,
@@ -43,7 +43,7 @@ int joybus_gcn_read_async(struct joybus *bus, enum joybus_gcn_analog_mode analog
  *
  * @param bus the Joybus instance to use
  * @param response buffer to store the origin state response in
- * @return 0 on success, negative error code on failure
+ * @return 0 on success, a negative joybus_error on failure
  */
 int joybus_gcn_read_origin(struct joybus *bus, struct joybus_gcn_controller_state *response);
 
@@ -54,7 +54,7 @@ int joybus_gcn_read_origin(struct joybus *bus, struct joybus_gcn_controller_stat
  * @param response buffer to store the origin state response in
  * @param callback a callback function to call when the transfer is complete
  * @param user_data user data to pass to the callback function
- * @return 0 on success, negative error code on failure
+ * @return 0 if the transfer was started, a negative joybus_error otherwise
  */
 int joybus_gcn_read_origin_async(struct joybus *bus, struct joybus_gcn_controller_state *response,
                                  joybus_transfer_cb callback, void *user_data);
@@ -64,7 +64,7 @@ int joybus_gcn_read_origin_async(struct joybus *bus, struct joybus_gcn_controlle
  *
  * @param bus the Joybus instance to use
  * @param response buffer to store the origin state response in
- * @return 0 on success, negative error code on failure
+ * @return 0 on success, a negative joybus_error on failure
  */
 int joybus_gcn_calibrate(struct joybus *bus, struct joybus_gcn_controller_state *response);
 
@@ -75,7 +75,7 @@ int joybus_gcn_calibrate(struct joybus *bus, struct joybus_gcn_controller_state 
  * @param response buffer to store the origin state response
  * @param callback a callback function to call when the transfer is complete
  * @param user_data user data to pass to the callback function
- * @return 0 on success, negative error code on failure
+ * @return 0 if the transfer was started, a negative joybus_error otherwise
  */
 int joybus_gcn_calibrate_async(struct joybus *bus, struct joybus_gcn_controller_state *response,
                                joybus_transfer_cb callback, void *user_data);
@@ -86,7 +86,7 @@ int joybus_gcn_calibrate_async(struct joybus *bus, struct joybus_gcn_controller_
  * @param bus the Joybus instance to use
  * @param motor_state the motor state to use (one of JOYBUS_GCN_MOTOR_*)
  * @param response buffer to store the input state response
- * @return 0 on success, negative error code on failure
+ * @return 0 on success, a negative joybus_error on failure
  */
 int joybus_gcn_read_long(struct joybus *bus, enum joybus_gcn_motor_state motor_state,
                          struct joybus_gcn_controller_state *response);
@@ -99,7 +99,7 @@ int joybus_gcn_read_long(struct joybus *bus, enum joybus_gcn_motor_state motor_s
  * @param response buffer to store the input state response
  * @param callback a callback function to call when the transfer is complete
  * @param user_data user data to pass to the callback function
- * @return 0 on success, negative error code on failure
+ * @return 0 if the transfer was started, a negative joybus_error otherwise
  */
 int joybus_gcn_read_long_async(struct joybus *bus, enum joybus_gcn_motor_state motor_state,
                                struct joybus_gcn_controller_state *response, joybus_transfer_cb callback,
@@ -110,7 +110,7 @@ int joybus_gcn_read_long_async(struct joybus *bus, enum joybus_gcn_motor_state m
  *
  * @param bus the Joybus instance to use
  * @param response buffer to store the response in
- * @return 0 on success, negative error code on failure
+ * @return 0 on success, a negative joybus_error on failure
  */
 int joybus_gcn_probe_device(struct joybus *bus, uint8_t response[JOYBUS_CMD_GCN_PROBE_DEVICE_RX]);
 
@@ -148,7 +148,7 @@ int joybus_gcn_fix_device(struct joybus *bus, uint16_t wireless_id, struct joybu
  * @param response buffer to store the identity response in
  * @param callback a callback function to call when the transfer is complete
  * @param user_data user data to pass to the callback function
- * @return 0 on success, negative error code on failure
+ * @return 0 if the transfer was started, a negative joybus_error otherwise
  */
 int joybus_gcn_fix_device_async(struct joybus *bus, uint16_t wireless_id, struct joybus_id *response,
                                 joybus_transfer_cb callback, void *user_data);

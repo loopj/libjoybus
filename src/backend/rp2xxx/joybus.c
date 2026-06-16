@@ -206,9 +206,9 @@ static inline void host_byte_received(struct joybus *bus)
     // Record the completion time for enforcing minimum interval between transfers
     data->last_transfer_time = get_absolute_time();
 
-    // Call the transfer complete callback
+    // Call the transfer complete callback with a success status
     if (data->done_callback)
-      data->done_callback(bus, data->read_len, data->done_user_data);
+      data->done_callback(bus, 0, data->done_user_data);
   }
 }
 
