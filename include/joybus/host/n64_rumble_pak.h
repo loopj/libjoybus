@@ -1,3 +1,10 @@
+/**
+ * @defgroup joybus_host_n64_rumble_pak N64 Rumble Pak Commands
+ * @ingroup joybus_host_n64
+ *
+ * @{
+ */
+
 #pragma once
 
 #include <joybus/bus.h>
@@ -55,3 +62,5 @@ int joybus_n64_rumble_pak_stop(struct joybus *bus);
  * @return 0 if the transfer was started, a negative joybus_error otherwise
  */
 int joybus_n64_rumble_pak_stop_async(struct joybus *bus, joybus_transfer_cb callback, void *user_data);
+
+/** @} */

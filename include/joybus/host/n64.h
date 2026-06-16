@@ -1,5 +1,6 @@
 /**
- * @addtogroup joybus_host
+ * @defgroup joybus_host_n64 N64 Commands
+ * @ingroup joybus_host
  *
  * @{
  */

@@ -1,5 +1,6 @@
 /**
- * @addtogroup joybus_host
+ * @defgroup joybus_host_common Common Commands
+ * @ingroup joybus_host
  *
  * @{
  */
