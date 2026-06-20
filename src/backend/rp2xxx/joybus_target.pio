@@ -4,6 +4,12 @@
 ; Joybus "target" implementation for reading commands from a host and sending responses.
 ; Received bytes are stored in the RX FIFO with an IRQ fired after each complete byte.
 ; Responses are transmitted from the TX FIFO when software jumps to the transmit entry point.
+;
+; NOTE: We should really restructure this so it waits to fire the irq until the falling edge
+;       of the next bit (either the stop bit, or the first bit of the next byte). Currently, if
+;       the last bit of a command is a 1, the `wait 1 pin 0` resolves immediately, firing the
+;       irq before the stop bit is received, meaning without an artificial delay, we may end up
+;       transmitting too early.
 
 .program joybus_target
 .side_set 1 pindirs                       ; Side-set controls pin direction
@@ -29,6 +35,7 @@ bitloop_rx:
 ; Block until we have data to send
 public transmit:
     pull block            side 0 [Q*2-1]  ; Wait for data and guarantee a short delay
+    nop                   side 0 [Q-1]    ; HACK: Extra delay due to jitter in our approach, see note above
 
 ; Clock out each bit
 bitloop_tx:
