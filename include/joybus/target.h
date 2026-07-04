@@ -31,6 +31,8 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+#include <joybus/errors.h>
+
 struct joybus_target;
 
 /// Macro to cast a concrete Joybus target instance to a generic Joybus target instance.
@@ -87,6 +89,10 @@ struct joybus_target {
 static inline int joybus_target_byte_received(struct joybus_target *target, const uint8_t *command, uint8_t byte_idx,
                                               joybus_target_response_cb send_response, void *user_data)
 {
+  // No target registered to handle the command
+  if (!target)
+    return -JOYBUS_ERR_NOT_SUPPORTED;
+
   return target->api->byte_received(target, command, byte_idx, send_response, user_data);
 }
 

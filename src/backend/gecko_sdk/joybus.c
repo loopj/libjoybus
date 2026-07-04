@@ -723,44 +723,10 @@ static int joybus_gecko_transfer(struct joybus *bus, const uint8_t *write_buf, u
   return 0;
 }
 
-static int joybus_gecko_target_register(struct joybus *bus, struct joybus_target *target)
-{
-  struct joybus_gecko_data *data = &JOYBUS_GECKO(bus)->data;
-
-  // Immediately start listening for commands if the bus is enabled
-  if (data->state != BUS_STATE_DISABLED) {
-    set_tx_timings(bus, BUS_MODE_TARGET);
-    enter_target_read_mode(bus, true);
-  }
-
-  return 0;
-}
-
-static int joybus_gecko_target_unregister(struct joybus *bus, struct joybus_target *target)
-{
-  struct joybus_gecko_data *data = &JOYBUS_GECKO(bus)->data;
-
-  if (data->state != BUS_STATE_DISABLED) {
-    // Cancel any ongoing RX/TX
-    TIMER_Enable(data->rx_timer, false);
-    DMADRV_StopTransfer(data->tx_dma_channel);
-
-    // Set TX timings back to host mode
-    set_tx_timings(bus, BUS_MODE_HOST);
-  }
-
-  // Set bus state to idle
-  data->state = BUS_STATE_HOST_IDLE;
-
-  return 0;
-}
-
 static const struct joybus_api gecko_api = {
-  .enable            = joybus_gecko_enable,
-  .disable           = joybus_gecko_disable,
-  .transfer          = joybus_gecko_transfer,
-  .target_register   = joybus_gecko_target_register,
-  .target_unregister = joybus_gecko_target_unregister,
+  .enable   = joybus_gecko_enable,
+  .disable  = joybus_gecko_disable,
+  .transfer = joybus_gecko_transfer,
 };
 
 int joybus_gecko_init(struct joybus_gecko *gecko_bus, GPIO_Port_TypeDef port, uint8_t pin, TIMER_TypeDef *rx_timer,

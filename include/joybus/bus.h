@@ -90,8 +90,6 @@ struct joybus_api {
   int (*disable)(struct joybus *bus);
   int (*transfer)(struct joybus *bus, const uint8_t *write_buf, uint8_t write_len, uint8_t *read_buf, uint8_t read_len,
                   joybus_transfer_cb callback, void *user_data);
-  int (*target_register)(struct joybus *bus, struct joybus_target *target);
-  int (*target_unregister)(struct joybus *bus, struct joybus_target *target);
 };
 
 struct joybus_host_op {
@@ -175,7 +173,7 @@ int joybus_transfer_sync(struct joybus *bus, const uint8_t *write_buf, uint8_t w
                          uint8_t read_len);
 
 /**
- * Enable Joybus "target" mode, and register a target to handle commands.
+ * Register a target to handle commands received in target mode.
  *
  * @param bus the Joybus instance to use
  * @param target the target to register
@@ -183,12 +181,10 @@ int joybus_transfer_sync(struct joybus *bus, const uint8_t *write_buf, uint8_t w
  */
 static inline int joybus_target_register(struct joybus *bus, struct joybus_target *target)
 {
-  // Common setup
   bus->target        = target;
   target->registered = true;
 
-  // Backend-specific registration
-  return bus->api->target_register(bus, target);
+  return 0;
 }
 
 /**
@@ -200,14 +196,10 @@ static inline int joybus_target_register(struct joybus *bus, struct joybus_targe
  */
 static inline int joybus_target_unregister(struct joybus *bus, struct joybus_target *target)
 {
-  // Backend-specific unregistration
-  int status = bus->api->target_unregister(bus, target);
-
-  // Common teardown
   bus->target        = NULL;
   target->registered = false;
 
-  return status;
+  return 0;
 }
 
 // Context for a blocking Joybus operation

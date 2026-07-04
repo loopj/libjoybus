@@ -397,34 +397,10 @@ static int joybus_rp2xxx_transfer(struct joybus *bus, const uint8_t *write_buf, 
   return 0;
 }
 
-static int joybus_rp2xxx_target_register(struct joybus *bus, struct joybus_target *target)
-{
-  struct joybus_rp2xxx_data *data = &JOYBUS_RP2XXX(bus)->data;
-
-  // Switch to target read mode if bus is enabled
-  if (data->state != BUS_STATE_DISABLED)
-    enter_idle_mode(bus, true);
-
-  return 0;
-}
-
-static int joybus_rp2xxx_target_unregister(struct joybus *bus, struct joybus_target *target)
-{
-  struct joybus_rp2xxx_data *data = &JOYBUS_RP2XXX(bus)->data;
-
-  // Switch to host idle mode if bus is enabled
-  if (data->state != BUS_STATE_DISABLED)
-    enter_idle_mode(bus, false);
-
-  return 0;
-}
-
 static const struct joybus_api rp2xxx_api = {
-  .enable            = joybus_rp2xxx_enable,
-  .disable           = joybus_rp2xxx_disable,
-  .transfer          = joybus_rp2xxx_transfer,
-  .target_register   = joybus_rp2xxx_target_register,
-  .target_unregister = joybus_rp2xxx_target_unregister,
+  .enable   = joybus_rp2xxx_enable,
+  .disable  = joybus_rp2xxx_disable,
+  .transfer = joybus_rp2xxx_transfer,
 };
 
 int joybus_rp2xxx_init(struct joybus_rp2xxx *rp2xxx_bus, uint8_t gpio, PIO pio, enum joybus_mode mode)
