@@ -61,6 +61,17 @@ struct joybus;
 #define JOYBUS(bus) ((struct joybus *)(bus))
 
 /**
+ * The role a Joybus instance plays on the bus.
+ *
+ * Fixed when the instance is initialized. A host drives the bus and polls
+ * devices, a target responds to commands from a host.
+ */
+enum joybus_mode {
+  JOYBUS_MODE_HOST,
+  JOYBUS_MODE_TARGET,
+};
+
+/**
  * Function type for transfer completion callbacks.
  *
  * Invoked once, after the async call has returned, when a started transfer
@@ -96,6 +107,7 @@ struct joybus_host_op {
 struct joybus {
   const struct joybus_api *api;
 
+  enum joybus_mode mode;
   struct joybus_target *target;
   uint8_t command_buffer[JOYBUS_BLOCK_SIZE];
   uint8_t response_buffer[JOYBUS_BLOCK_SIZE];

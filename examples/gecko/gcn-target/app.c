@@ -27,15 +27,17 @@ void app_init(void)
   CMU_ClockEnable(cmuClock_GPIO, true);
   GPIO_PinModeSet(BTN_PORT, BTN_PIN, gpioModeInput, 1);
 
-  // Initialize the Joybus
-  joybus_gecko_init(&gecko_bus, JOYBUS_DATA_PORT, JOYBUS_DATA_PIN, JOYBUS_TIMER, JOYBUS_USART);
-  joybus_enable(bus);
+  // Initialize the Joybus in target mode
+  joybus_gecko_init(&gecko_bus, JOYBUS_DATA_PORT, JOYBUS_DATA_PIN, JOYBUS_TIMER, JOYBUS_USART, JOYBUS_MODE_TARGET);
 
   // Initialize a GameCube controller target as a standard controller
   joybus_target_gcn_controller_init(&gcn_controller);
 
   // Register the target on the bus
   joybus_target_register(bus, JOYBUS_TARGET(&gcn_controller));
+
+  // Enable the Joybus
+  joybus_enable(bus);
 }
 
 void app_process_action(void)

@@ -66,7 +66,7 @@ static inline void enter_idle_mode(struct joybus *bus, bool await_idle)
 {
   struct joybus_rp2xxx_data *data = &JOYBUS_RP2XXX(bus)->data;
 
-  if (bus->target) {
+  if (bus->mode == JOYBUS_MODE_TARGET) {
     // Wait for bus idle
     if (await_idle) {
       absolute_time_t high_since = get_absolute_time();
@@ -427,11 +427,12 @@ static const struct joybus_api rp2xxx_api = {
   .target_unregister = joybus_rp2xxx_target_unregister,
 };
 
-int joybus_rp2xxx_init(struct joybus_rp2xxx *rp2xxx_bus, uint8_t gpio, PIO pio)
+int joybus_rp2xxx_init(struct joybus_rp2xxx *rp2xxx_bus, uint8_t gpio, PIO pio, enum joybus_mode mode)
 {
   // Save the bus API
   struct joybus *bus = JOYBUS(rp2xxx_bus);
   bus->api           = &rp2xxx_api;
+  bus->mode          = mode;
   bus->target        = NULL;
 
   // Save the joybus configuration

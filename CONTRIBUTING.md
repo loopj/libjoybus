@@ -15,9 +15,10 @@ static const struct joybus_api mybackend_api = {
   .target_unregister = joybus_mybackend_target_unregister,
 };
 
-int joybus_mybackend_init(struct joybus *bus, ...)
+int joybus_mybackend_init(struct joybus *bus, ..., enum joybus_mode mode)
 {
-  bus->api    = &mybackend_api;
+  bus->api  = &mybackend_api;
+  bus->mode = mode;
 
   // Rest of initialization code...
 

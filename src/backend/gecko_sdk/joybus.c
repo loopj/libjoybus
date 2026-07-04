@@ -242,7 +242,7 @@ void transfer_timeout(sl_sleeptimer_timer_handle_t *handle, void *user_data)
   struct joybus_gecko_data *data = &JOYBUS_GECKO(bus)->data;
 
   // Timeout occurred, switch back to idle/read mode
-  if (bus->target) {
+  if (bus->mode == JOYBUS_MODE_TARGET) {
     enter_target_read_mode(bus, true);
   } else {
     data->state = BUS_STATE_HOST_IDLE;
@@ -260,7 +260,7 @@ void target_rx_timeout(sl_sleeptimer_timer_handle_t *handle, void *user_data)
   struct joybus_gecko_data *data = &JOYBUS_GECKO(bus)->data;
 
   // Timeout occurred, switch back to idle/read mode
-  if (bus->target) {
+  if (bus->mode == JOYBUS_MODE_TARGET) {
     enter_target_read_mode(bus, true);
   } else {
     data->state = BUS_STATE_HOST_IDLE;
@@ -293,7 +293,7 @@ static bool ldma_rx_handler(unsigned int chan, unsigned int iteration, void *use
       TIMER_Enable(data->rx_timer, false);
 
       // Switch back to idle/read mode
-      if (bus->target) {
+      if (bus->mode == JOYBUS_MODE_TARGET) {
         enter_target_read_mode(bus, true);
       } else {
         data->state = BUS_STATE_HOST_IDLE;
@@ -342,7 +342,7 @@ static bool ldma_rx_handler(unsigned int chan, unsigned int iteration, void *use
         TIMER_Enable(data->rx_timer, false);
 
         // No response to send, switch back to read mode or idle
-        if (bus->target) {
+        if (bus->mode == JOYBUS_MODE_TARGET) {
           enter_target_read_mode(bus, false);
         } else {
           data->state = BUS_STATE_HOST_IDLE;
@@ -367,7 +367,7 @@ static bool ldma_rx_handler(unsigned int chan, unsigned int iteration, void *use
       TIMER_Enable(data->rx_timer, false);
 
       // Switch back to idle/read mode
-      if (bus->target) {
+      if (bus->mode == JOYBUS_MODE_TARGET) {
         enter_target_read_mode(bus, true);
       } else {
         data->state = BUS_STATE_HOST_IDLE;
@@ -423,7 +423,7 @@ static bool ldma_tx_handler(unsigned int chan, unsigned int iteration, void *use
       // If we are handling a command response (target mode), and a target is
       // still registered, flip back into read mode to listen for the next
       // command. Otherwise, go idle.
-      if (bus->target) {
+      if (bus->mode == JOYBUS_MODE_TARGET) {
         enter_target_read_mode(bus, false);
       } else {
         data->state = BUS_STATE_HOST_IDLE;
@@ -659,7 +659,7 @@ static int joybus_gecko_enable(struct joybus *bus)
   // Initialize sleeptimer for timeouts
   sl_sleeptimer_init();
 
-  if (bus->target) {
+  if (bus->mode == JOYBUS_MODE_TARGET) {
     set_tx_timings(bus, BUS_MODE_TARGET);
     enter_target_read_mode(bus, true);
   } else {
@@ -764,10 +764,11 @@ static const struct joybus_api gecko_api = {
 };
 
 int joybus_gecko_init(struct joybus_gecko *gecko_bus, GPIO_Port_TypeDef port, uint8_t pin, TIMER_TypeDef *rx_timer,
-                      USART_TypeDef *tx_usart)
+                      USART_TypeDef *tx_usart, enum joybus_mode mode)
 {
   struct joybus *bus = JOYBUS(gecko_bus);
   bus->api           = &gecko_api;
+  bus->mode          = mode;
   bus->target        = NULL;
 
   // Save the joybus configuration
