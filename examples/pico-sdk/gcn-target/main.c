@@ -19,8 +19,8 @@ int main()
   gpio_init(BUTTON_A_GPIO);
   gpio_pull_up(BUTTON_A_GPIO);
 
-  // Initialize the Joybus in target mode
-  joybus_rp2xxx_init(&rp2xxx_bus, JOYBUS_MODE_TARGET, JOYBUS_GPIO, pio0);
+  // Initialize the Joybus
+  joybus_rp2xxx_init(&rp2xxx_bus, JOYBUS_GPIO, pio0);
 
   // Initialize a GameCube controller target as a standard controller
   joybus_target_gcn_controller_init(&gcn_controller);
@@ -28,8 +28,8 @@ int main()
   // Register the target on the bus
   joybus_target_register(bus, JOYBUS_TARGET(&gcn_controller));
 
-  // Enable the Joybus
-  joybus_enable(bus);
+  // Enable the Joybus in target mode
+  joybus_enable(bus, JOYBUS_MODE_TARGET);
 
   while (1) {
     // Clear previous button state

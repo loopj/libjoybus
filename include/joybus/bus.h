@@ -110,12 +110,18 @@ struct joybus {
 };
 
 /**
- * Enable the Joybus instance.
+ * Enable the Joybus instance in the given mode.
+ *
+ * Spins up the backend peripherals and starts operating as a host or a target.
+ * The mode applies until the instance is disabled; to switch modes, disable the
+ * instance and enable it again with the other mode.
  *
  * @param bus the Joybus instance to enable
+ * @param mode whether to operate as a host or a target
  */
-static inline int joybus_enable(struct joybus *bus)
+static inline int joybus_enable(struct joybus *bus, enum joybus_mode mode)
 {
+  bus->mode = mode;
   return bus->api->enable(bus);
 }
 

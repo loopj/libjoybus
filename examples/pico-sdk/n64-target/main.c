@@ -53,8 +53,8 @@ static int8_t read_stick_axis(uint gpio, int origin, bool inverted)
 
 int main()
 {
-  // Initialize the Joybus in target mode
-  joybus_rp2xxx_init(&rp2xxx_bus, JOYBUS_MODE_TARGET, JOYBUS_GPIO, pio0);
+  // Initialize the Joybus
+  joybus_rp2xxx_init(&rp2xxx_bus, JOYBUS_GPIO, pio0);
 
   // Initialize a N64 controller target as a standard controller
   joybus_target_n64_controller_init(&n64_controller);
@@ -62,8 +62,8 @@ int main()
   // Register the target on the bus
   joybus_target_register(bus, JOYBUS_TARGET(&n64_controller));
 
-  // Enable the Joybus
-  joybus_enable(bus);
+  // Enable the Joybus in target mode
+  joybus_enable(bus, JOYBUS_MODE_TARGET);
 
   // Configure button GPIOs as input with pull-up (active low)
   for (size_t i = 0; i < sizeof(button_map) / sizeof(button_map[0]); i++) {

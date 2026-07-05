@@ -710,12 +710,11 @@ static const struct joybus_api gecko_api = {
   .transfer = joybus_gecko_transfer,
 };
 
-int joybus_gecko_init(struct joybus_gecko *gecko_bus, enum joybus_mode mode, GPIO_Port_TypeDef port, uint8_t pin,
-                      TIMER_TypeDef *rx_timer, USART_TypeDef *tx_usart)
+int joybus_gecko_init(struct joybus_gecko *gecko_bus, GPIO_Port_TypeDef port, uint8_t pin, TIMER_TypeDef *rx_timer,
+                      USART_TypeDef *tx_usart)
 {
   struct joybus *bus = JOYBUS(gecko_bus);
   bus->api           = &gecko_api;
-  bus->mode          = mode;
   bus->target        = NULL;
 
   // Save the joybus configuration
