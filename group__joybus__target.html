@@ -138,8 +138,8 @@ Typedefs</h2></td></tr>
 Functions</h2></td></tr>
 <tr class="memitem:ga09d49f8c2e39b7ddfb5cb68299671b41" id="r_ga09d49f8c2e39b7ddfb5cb68299671b41"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga09d49f8c2e39b7ddfb5cb68299671b41">joybus_target_byte_received</a> (struct <a class="el" href="structjoybus__target.html">joybus_target</a> *target, const uint8_t *command, uint8_t byte_idx, <a class="el" href="#ga11821ae29c4353ed116ddcec92e0bcc2">joybus_target_response_cb</a> send_response, void *user_data)</td></tr>
 <tr class="memdesc:ga09d49f8c2e39b7ddfb5cb68299671b41"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle a received command byte for a Joybus target.  <br /></td></tr>
-<tr class="memitem:ga60c8cf845660abf4c0aac3a3cc26b902" id="r_ga60c8cf845660abf4c0aac3a3cc26b902"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga60c8cf845660abf4c0aac3a3cc26b902">joybus_target_is_registered</a> (struct <a class="el" href="structjoybus__target.html">joybus_target</a> *target)</td></tr>
-<tr class="memdesc:ga60c8cf845660abf4c0aac3a3cc26b902"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if a target is currently registered on the bus.  <br /></td></tr>
+<tr class="memitem:gadcfefe81051be0c27c0824001820ef74" id="r_gadcfefe81051be0c27c0824001820ef74"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#gadcfefe81051be0c27c0824001820ef74">joybus_target_is_attached</a> (struct <a class="el" href="structjoybus__target.html">joybus_target</a> *target)</td></tr>
+<tr class="memdesc:gadcfefe81051be0c27c0824001820ef74"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if a target is currently attached to a bus.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <p>Interfaces for implementing Joybus targets and N64 accessories. </p>
@@ -147,7 +147,7 @@ Functions</h2></td></tr>
 <p>Commands arrive one byte at a time. As each byte is received, libjoybus calls the <a class="el" href="structjoybus__target__api.html#a7dfc9d4a13ae3907c7325fc7993d2cf8" title="Handle a received command byte.">joybus_target_api::byte_received</a> handler with the bytes accumulated so far. The handler inspects them to decide how many more bytes the command needs, returning the count of bytes still expected.</p>
 <p>To send a response, the handler must call the "response ready" callback with a pointer to the (long-lived) response data and its length.</p>
 <p>Handlers should call the response callback as soon as the response is ready, even if they are still expecting more command bytes. For many commands, the response data is fully determined by the first few bytes of the command. This allows the backend to start transmitting the response <em>immediately</em> after the last byte is received.</p>
-<p>To create your own target, define a struct whose first member is a <a class="el" href="structjoybus__target.html" title="Interface for a Joybus target, a device on the Joybus which responds to commands from a host.">joybus_target</a> (so it can be cast through <a class="el" href="#ga261618f4fa23d85cf113ee51f67d4a61" title="Macro to cast a concrete Joybus target instance to a generic Joybus target instance.">JOYBUS_TARGET</a>), point its api at a <a class="el" href="structjoybus__target__api.html" title="API for implementing a Joybus target.">joybus_target_api</a> table, and register it on a bus with <a class="el" href="group__joybus.html#gadb1ce9137d553ae521755b77238fc45c" title="Enable Joybus &quot;target&quot; mode, and register a target to handle commands.">joybus_target_register()</a>. </p>
+<p>To create your own target, define a struct whose first member is a <a class="el" href="structjoybus__target.html" title="Interface for a Joybus target, a device on the Joybus which responds to commands from a host.">joybus_target</a> (so it can be cast through <a class="el" href="#ga261618f4fa23d85cf113ee51f67d4a61" title="Macro to cast a concrete Joybus target instance to a generic Joybus target instance.">JOYBUS_TARGET</a>), point its api at a <a class="el" href="structjoybus__target__api.html" title="API for implementing a Joybus target.">joybus_target_api</a> table, and attach it to a bus with <a class="el" href="group__joybus.html#gaac8c456ffdda03362b1a75f2c4525f03" title="Attach a target to handle commands received in target mode.">joybus_attach_target()</a>. </p>
 <a name="doc-define-members" id="doc-define-members"></a><h2 id="header-doc-define-members" class="groupheader">Macro Definition Documentation</h2>
 <a id="ga261618f4fa23d85cf113ee51f67d4a61" name="ga261618f4fa23d85cf113ee51f67d4a61"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga261618f4fa23d85cf113ee51f67d4a61">&#9670;&#160;</a></span>JOYBUS_TARGET</h2>
@@ -164,7 +164,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line">((<span class="keyword">struct </span><a class="code hl_struct" href="structjoybus__target.html">joybus_target</a> *)(target))</div>
-<div class="ttc" id="astructjoybus__target_html"><div class="ttname"><a href="structjoybus__target.html">joybus_target</a></div><div class="ttdoc">Interface for a Joybus target, a device on the Joybus which responds to commands from a host.</div><div class="ttdef"><b>Definition</b> target.h:69</div></div>
+<div class="ttc" id="astructjoybus__target_html"><div class="ttname"><a href="structjoybus__target.html">joybus_target</a></div><div class="ttdoc">Interface for a Joybus target, a device on the Joybus which responds to commands from a host.</div><div class="ttdef"><b>Definition</b> target.h:71</div></div>
 </div><!-- fragment -->
 <p>Macro to cast a concrete Joybus target instance to a generic Joybus target instance. </p>
 
@@ -253,8 +253,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ga60c8cf845660abf4c0aac3a3cc26b902" name="ga60c8cf845660abf4c0aac3a3cc26b902"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga60c8cf845660abf4c0aac3a3cc26b902">&#9670;&#160;</a></span>joybus_target_is_registered()</h2>
+<a id="gadcfefe81051be0c27c0824001820ef74" name="gadcfefe81051be0c27c0824001820ef74"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gadcfefe81051be0c27c0824001820ef74">&#9670;&#160;</a></span>joybus_target_is_attached()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -263,7 +263,7 @@ Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool joybus_target_is_registered </td>
+          <td class="memname">bool joybus_target_is_attached </td>
           <td>(</td>
           <td class="paramtype">struct <a class="el" href="structjoybus__target.html">joybus_target</a> *</td>          <td class="paramname"><span class="paramname"><em>target</em></span></td><td>)</td>
           <td></td>
@@ -276,14 +276,14 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Check if a target is currently registered on the bus. </p>
+<p>Check if a target is currently attached to a bus. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">target</td><td>the target to check </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>true if the target is registered, false otherwise </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>true if the target is attached, false otherwise </dd></dl>
 
 </div>
 </div>
