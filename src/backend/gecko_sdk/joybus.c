@@ -46,6 +46,7 @@ static const uint8_t HOST_STOP   = 0b01111111;
 static const uint8_t TARGET_STOP = 0b00111111;
 
 static void enter_target_read_mode(struct joybus *bus, bool await_idle);
+static void enter_idle_mode(struct joybus *bus, bool await_idle);
 static void handle_command_response(const uint8_t *buffer, uint8_t length, void *user_data);
 static bool ldma_tx_handler(unsigned int chan, unsigned int iteration, void *user_data);
 
@@ -237,11 +238,7 @@ void transfer_timeout(sl_sleeptimer_timer_handle_t *handle, void *user_data)
   struct joybus_gecko_data *data = &JOYBUS_GECKO(bus)->data;
 
   // Timeout occurred, switch back to idle/read mode
-  if (bus->mode == JOYBUS_MODE_TARGET) {
-    enter_target_read_mode(bus, true);
-  } else {
-    data->state = BUS_STATE_HOST_IDLE;
-  }
+  enter_idle_mode(bus, true);
 
   // Call the transfer complete callback with an error
   if (data->done_callback)
@@ -255,11 +252,7 @@ void target_rx_timeout(sl_sleeptimer_timer_handle_t *handle, void *user_data)
   struct joybus_gecko_data *data = &JOYBUS_GECKO(bus)->data;
 
   // Timeout occurred, switch back to idle/read mode
-  if (bus->mode == JOYBUS_MODE_TARGET) {
-    enter_target_read_mode(bus, true);
-  } else {
-    data->state = BUS_STATE_HOST_IDLE;
-  }
+  enter_idle_mode(bus, true);
 }
 
 static inline uint32_t sl_sleeptimer_us_to_tick(uint32_t time_us)
@@ -288,11 +281,7 @@ static bool ldma_rx_handler(unsigned int chan, unsigned int iteration, void *use
       TIMER_Enable(data->rx_timer, false);
 
       // Switch back to idle/read mode
-      if (bus->mode == JOYBUS_MODE_TARGET) {
-        enter_target_read_mode(bus, true);
-      } else {
-        data->state = BUS_STATE_HOST_IDLE;
-      }
+      enter_idle_mode(bus, true);
 
       // Call the transfer complete callback with a success status
       if (data->done_callback)
@@ -337,11 +326,7 @@ static bool ldma_rx_handler(unsigned int chan, unsigned int iteration, void *use
         TIMER_Enable(data->rx_timer, false);
 
         // No response to send, switch back to read mode or idle
-        if (bus->mode == JOYBUS_MODE_TARGET) {
-          enter_target_read_mode(bus, false);
-        } else {
-          data->state = BUS_STATE_HOST_IDLE;
-        }
+        enter_idle_mode(bus, false);
       }
 
       // Cancel rx timeout
@@ -362,11 +347,7 @@ static bool ldma_rx_handler(unsigned int chan, unsigned int iteration, void *use
       TIMER_Enable(data->rx_timer, false);
 
       // Switch back to idle/read mode
-      if (bus->mode == JOYBUS_MODE_TARGET) {
-        enter_target_read_mode(bus, true);
-      } else {
-        data->state = BUS_STATE_HOST_IDLE;
-      }
+      enter_idle_mode(bus, true);
 
       // Cancel rx timeout
       sl_sleeptimer_stop_timer(&data->rx_timeout_timer);
@@ -415,14 +396,9 @@ static bool ldma_tx_handler(unsigned int chan, unsigned int iteration, void *use
           data->done_callback(bus, 0, data->done_user_data);
       }
     } else if (data->state == BUS_STATE_TARGET_TX) {
-      // If we are handling a command response (target mode), and a target is
-      // still registered, flip back into read mode to listen for the next
-      // command. Otherwise, go idle.
-      if (bus->mode == JOYBUS_MODE_TARGET) {
-        enter_target_read_mode(bus, false);
-      } else {
-        data->state = BUS_STATE_HOST_IDLE;
-      }
+      // After sending a command response, flip back into read mode to listen
+      // for the next command.
+      enter_idle_mode(bus, false);
     }
   }
 
@@ -460,6 +436,16 @@ static void enter_target_read_mode(struct joybus *bus, bool await_idle)
 
   // Transition state
   data->state = BUS_STATE_TARGET_RX;
+}
+
+// Return to the resting state for the bus mode: target read mode, or host idle
+static void enter_idle_mode(struct joybus *bus, bool await_idle)
+{
+  if (bus->mode == JOYBUS_MODE_TARGET) {
+    enter_target_read_mode(bus, await_idle);
+  } else {
+    JOYBUS_GECKO(bus)->data.state = BUS_STATE_HOST_IDLE;
+  }
 }
 
 // Prepare an SI write operation by pre-encoding the first one or two bytes

@@ -55,7 +55,7 @@ static void configure_state_machine(struct joybus *bus)
   data->pio_configured = true;
 }
 
-// Enter either host idle mode or target read mode, depending on whether a target is registered
+// Enter either host idle mode or target read mode, depending on the bus mode
 static inline void enter_idle_mode(struct joybus *bus, bool await_idle)
 {
   struct joybus_rp2xxx_data *data = &JOYBUS_RP2XXX(bus)->data;
