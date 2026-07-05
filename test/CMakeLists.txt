@@ -10,6 +10,9 @@ function(add_libjoybus_test TEST_NAME)
   # Create the test executable
   add_executable(${TEST_NAME} ${ARGN})
 
+  # Enable compiler warnings for the test and library sources
+  target_compile_options(${TEST_NAME} PRIVATE -Wall -Wextra -Wno-unused-parameter)
+
   # Link against the joybus library and Unity
   target_link_libraries(${TEST_NAME} joybus unity::framework)
 
