@@ -13,6 +13,9 @@
 
 struct joybus;
 
+/// Nominal Joybus frequency, matching an OEM N64/GameCube controller.
+#define JOYBUS_FREQ_NOMINAL             250000
+
 /// Joybus frequency of an N64 console (NUS-001).
 #define JOYBUS_FREQ_N64_CONSOLE         244141 // PIF-NUS @ 15.625MHz / 64
 
@@ -64,7 +67,10 @@ struct joybus;
  * The role a Joybus instance plays on the bus.
  */
 enum joybus_mode {
+  /** Host mode, sends commands and reads responses from a target device. */
   JOYBUS_MODE_HOST,
+
+  /** Target mode, listens for commands from a host device and responds accordingly. */
   JOYBUS_MODE_TARGET,
 };
 
@@ -100,10 +106,18 @@ struct joybus_host_op {
  * A Joybus instance.
  */
 struct joybus {
+  /** The backend API implementation for this Joybus instance. */
   const struct joybus_api *api;
 
+  /** The operating mode of this Joybus instance (host or target). */
   enum joybus_mode mode;
+
+  /** The frequency of the bus, in Hz. */
+  uint32_t freq;
+
+  /** The target device attached to this Joybus instance, if any. */
   struct joybus_target *target;
+
   uint8_t command_buffer[JOYBUS_BLOCK_SIZE];
   uint8_t response_buffer[JOYBUS_BLOCK_SIZE];
   struct joybus_host_op host_op;

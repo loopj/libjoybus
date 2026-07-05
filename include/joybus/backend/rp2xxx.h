@@ -24,10 +24,6 @@ struct joybus_rp2xxx_data {
   // Bus state
   uint8_t state;
 
-  // Bus frequencies
-  uint32_t target_freq;
-  uint32_t host_freq;
-
   // GPIO configuration
   uint gpio;
 

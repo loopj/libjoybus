@@ -192,11 +192,11 @@ static void set_tx_timings(struct joybus *bus)
 {
   struct joybus_gecko_data *data = &JOYBUS_GECKO(bus)->data;
 
+  USART_BaudrateSyncSet(data->tx_usart, 0, bus->freq * CHIPS_PER_BIT);
+
   if (bus->mode == JOYBUS_MODE_TARGET) {
-    USART_BaudrateSyncSet(data->tx_usart, 0, data->target_freq * CHIPS_PER_BIT);
     data->tx_descriptors[2].xfer.srcAddr = (uint32_t)&TARGET_STOP;
   } else {
-    USART_BaudrateSyncSet(data->tx_usart, 0, data->host_freq * CHIPS_PER_BIT);
     data->tx_descriptors[2].xfer.srcAddr = (uint32_t)&HOST_STOP;
   }
 }
@@ -272,7 +272,7 @@ static bool ldma_rx_handler(unsigned int chan, unsigned int iteration, void *use
   if (data->state == BUS_STATE_HOST_RX) {
     // Process the received pulses into the byte buffer
     decode_pulses(bus, &data->read_buf[iteration - 1], data->rx_edge_timings[data->rx_current_buffer],
-                  data->target_pulse_period_half, iteration - 1);
+                  data->pulse_period_half, iteration - 1);
     data->rx_current_buffer ^= 1;
 
     if (iteration == data->read_len) {
@@ -306,7 +306,7 @@ static bool ldma_rx_handler(unsigned int chan, unsigned int iteration, void *use
   } else if (data->state == BUS_STATE_TARGET_RX) {
     // Process the received pulses into the byte buffer
     decode_pulses(bus, &data->read_buf[iteration - 1], data->rx_edge_timings[data->rx_current_buffer],
-                  data->host_pulse_period_half, iteration - 1);
+                  data->pulse_period_half, iteration - 1);
     data->rx_current_buffer ^= 1;
 
     // Handle the received byte
@@ -516,10 +516,9 @@ static int enable_rx(struct joybus *bus)
     (data->gpio_port << _GPIO_TIMER_CC0ROUTE_PORT_SHIFT) | (data->gpio_pin << _GPIO_TIMER_CC0ROUTE_PIN_SHIFT);
 
   // Set up the timings for rx pulses
-  uint32_t rx_timer_freq         = CMU_ClockFreqGet(get_timer_clock(data->rx_timer));
-  data->host_pulse_period_half   = (rx_timer_freq / data->host_freq) / 2;
-  data->target_pulse_period_half = (rx_timer_freq / data->target_freq) / 2;
-  data->bus_idle_period          = rx_timer_freq / 1000000UL * JOYBUS_BUS_IDLE_US;
+  uint32_t rx_timer_freq  = CMU_ClockFreqGet(get_timer_clock(data->rx_timer));
+  data->pulse_period_half = (rx_timer_freq / bus->freq) / 2;
+  data->bus_idle_period   = rx_timer_freq / 1000000UL * JOYBUS_BUS_IDLE_US;
 
   // LDMA RX configuration
   data->rx_config = (LDMA_TransferCfg_t)LDMA_TRANSFER_CFG_PERIPHERAL(get_timer_ldma_signal(data->rx_timer));
@@ -567,7 +566,7 @@ static int enable_tx(struct joybus *bus)
 
   // Initialize USART
   USART_InitSync_TypeDef usartConfig = USART_INITSYNC_DEFAULT;
-  usartConfig.baudrate               = data->host_freq * CHIPS_PER_BIT;
+  usartConfig.baudrate               = bus->freq * CHIPS_PER_BIT;
   usartConfig.msbf                   = true;
   USART_InitSync(data->tx_usart, &usartConfig);
 
@@ -715,6 +714,7 @@ int joybus_gecko_init(struct joybus_gecko *gecko_bus, GPIO_Port_TypeDef port, ui
 {
   struct joybus *bus = JOYBUS(gecko_bus);
   bus->api           = &gecko_api;
+  bus->freq          = JOYBUS_FREQ_NOMINAL;
   bus->target        = NULL;
 
   // Save the joybus configuration
@@ -724,8 +724,6 @@ int joybus_gecko_init(struct joybus_gecko *gecko_bus, GPIO_Port_TypeDef port, ui
   data->rx_timer                 = rx_timer;
   data->tx_usart                 = tx_usart;
   data->state                    = BUS_STATE_DISABLED;
-  data->host_freq                = JOYBUS_FREQ_GCN_CONSOLE;
-  data->target_freq              = JOYBUS_FREQ_GCN_CONTROLLER;
 
   return 0;
 }

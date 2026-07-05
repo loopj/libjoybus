@@ -34,10 +34,6 @@ struct joybus_gecko_data {
   // Bus state
   uint8_t state;
 
-  // Bus frequencies
-  uint32_t host_freq;
-  uint32_t target_freq;
-
   // GPIO configuration
   GPIO_Port_TypeDef gpio_port;
   uint8_t gpio_pin;
@@ -60,8 +56,7 @@ struct joybus_gecko_data {
   void *done_user_data;
 
   // RX timings
-  uint16_t host_pulse_period_half;
-  uint16_t target_pulse_period_half;
+  uint16_t pulse_period_half;
   uint16_t bus_idle_period;
 
   // RX ping-pong LDMA configuration
