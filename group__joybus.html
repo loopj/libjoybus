@@ -120,6 +120,9 @@ Data Structures</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-define-members" class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
+<tr class="memitem:ga8605997a75f0f98d3372733222706dec" id="r_ga8605997a75f0f98d3372733222706dec"><td class="memItemLeft" align="right" valign="top"><a id="ga8605997a75f0f98d3372733222706dec" name="ga8605997a75f0f98d3372733222706dec"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_FREQ_NOMINAL</b>&#160;&#160;&#160;250000</td></tr>
+<tr class="memdesc:ga8605997a75f0f98d3372733222706dec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Nominal Joybus frequency, matching an OEM N64/GameCube controller. <br /></td></tr>
 <tr class="memitem:gab3efc8de2beb9990fae3b417ef5b956d" id="r_gab3efc8de2beb9990fae3b417ef5b956d"><td class="memItemLeft" align="right" valign="top"><a id="gab3efc8de2beb9990fae3b417ef5b956d" name="gab3efc8de2beb9990fae3b417ef5b956d"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_FREQ_N64_CONSOLE</b>&#160;&#160;&#160;244141</td></tr>
 <tr class="memdesc:gab3efc8de2beb9990fae3b417ef5b956d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Joybus frequency of an N64 console (NUS-001). <br /></td></tr>
@@ -172,13 +175,13 @@ Typedefs</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-enum-members" class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:ga269224343f9733d075007781871a99a6" id="r_ga269224343f9733d075007781871a99a6"><td class="memItemLeft" align="right" valign="top"><a id="ga269224343f9733d075007781871a99a6" name="ga269224343f9733d075007781871a99a6"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga269224343f9733d075007781871a99a6">joybus_mode</a> { <br />
-&#160;&#160;<b>JOYBUS_MODE_HOST</b>
+<tr class="memitem:ga269224343f9733d075007781871a99a6" id="r_ga269224343f9733d075007781871a99a6"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga269224343f9733d075007781871a99a6">joybus_mode</a> { <br />
+&#160;&#160;<a class="el" href="#gga269224343f9733d075007781871a99a6a47334759b78cadcd189b2f88892dfbe6">JOYBUS_MODE_HOST</a>
 , <br />
-&#160;&#160;<b>JOYBUS_MODE_TARGET</b>
+&#160;&#160;<a class="el" href="#gga269224343f9733d075007781871a99a6abff296695cb9bacfdb5342209f4c8507">JOYBUS_MODE_TARGET</a>
 <br />
  }</td></tr>
-<tr class="memdesc:ga269224343f9733d075007781871a99a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">The role a Joybus instance plays on the bus. <br /></td></tr>
+<tr class="memdesc:ga269224343f9733d075007781871a99a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">The role a Joybus instance plays on the bus.  <a href="#ga269224343f9733d075007781871a99a6">More...</a><br /></td></tr>
 <tr class="memitem:ga47435eba4c98726f93fdae3c8bb9fd76" id="r_ga47435eba4c98726f93fdae3c8bb9fd76"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga47435eba4c98726f93fdae3c8bb9fd76">joybus_error</a> { <br />
 &#160;&#160;<a class="el" href="#gga47435eba4c98726f93fdae3c8bb9fd76a6496af2c91935e2e37a48a43f14dda21">JOYBUS_ERR_DISABLED</a> = 1
 , <br />
@@ -239,7 +242,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>joybus_sync</b> (int s
       </table>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line">((<span class="keyword">struct </span><a class="code hl_struct" href="structjoybus.html">joybus</a> *)(bus))</div>
-<div class="ttc" id="astructjoybus_html"><div class="ttname"><a href="structjoybus.html">joybus</a></div><div class="ttdoc">A Joybus instance.</div><div class="ttdef"><b>Definition</b> bus.h:102</div></div>
+<div class="ttc" id="astructjoybus_html"><div class="ttname"><a href="structjoybus.html">joybus</a></div><div class="ttdoc">A Joybus instance.</div><div class="ttdef"><b>Definition</b> bus.h:108</div></div>
 </div><!-- fragment -->
 <p>Macro to cast a backend-specific Joybus instance to a generic Joybus instance. </p>
 
@@ -298,6 +301,28 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>joybus_sync</b> (int s
 <tr><td class="fieldname"><a id="gga47435eba4c98726f93fdae3c8bb9fd76adc97e17cb4f7168b0f71926a6d357aac" name="gga47435eba4c98726f93fdae3c8bb9fd76adc97e17cb4f7168b0f71926a6d357aac"></a>JOYBUS_ERR_CHECKSUM&#160;</td><td class="fielddoc"><p>Checksum error. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="gga47435eba4c98726f93fdae3c8bb9fd76a8c483cd1d2d0f43c85fbc5f2124c14c8" name="gga47435eba4c98726f93fdae3c8bb9fd76a8c483cd1d2d0f43c85fbc5f2124c14c8"></a>JOYBUS_ERR_NO_DEVICE&#160;</td><td class="fielddoc"><p>Expected device not detected. </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<a id="ga269224343f9733d075007781871a99a6" name="ga269224343f9733d075007781871a99a6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga269224343f9733d075007781871a99a6">&#9670;&#160;</a></span>joybus_mode</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="#ga269224343f9733d075007781871a99a6">joybus_mode</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The role a Joybus instance plays on the bus. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="gga269224343f9733d075007781871a99a6a47334759b78cadcd189b2f88892dfbe6" name="gga269224343f9733d075007781871a99a6a47334759b78cadcd189b2f88892dfbe6"></a>JOYBUS_MODE_HOST&#160;</td><td class="fielddoc"><p>Host mode, sends commands and reads responses from a target device. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="gga269224343f9733d075007781871a99a6abff296695cb9bacfdb5342209f4c8507" name="gga269224343f9733d075007781871a99a6abff296695cb9bacfdb5342209f4c8507"></a>JOYBUS_MODE_TARGET&#160;</td><td class="fielddoc"><p>Target mode, listens for commands from a host device and responds accordingly. </p>
 </td></tr>
 </table>
 

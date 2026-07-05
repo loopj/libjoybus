@@ -115,6 +115,8 @@ Data Structures</h2></td></tr>
 <tr class="memitem:joybus_5Frp2xxx_5Fdata" id="r_joybus_5Frp2xxx_5Fdata"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structjoybus__rp2xxx__data.html">joybus_rp2xxx_data</a></td></tr>
 <tr class="memitem:joybus_5Frp2xxx" id="r_joybus_5Frp2xxx"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structjoybus__rp2xxx.html">joybus_rp2xxx</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A RP2xxx Joybus instance.  <a href="structjoybus__rp2xxx.html#details">More...</a><br /></td></tr>
+<tr class="memitem:joybus_5Frp2xxx_5Fconfig" id="r_joybus_5Frp2xxx_5Fconfig"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structjoybus__rp2xxx__config.html">joybus_rp2xxx_config</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configuration for a RP2xxx Joybus instance.  <a href="structjoybus__rp2xxx__config.html#details">More...</a><br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-define-members" class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
@@ -123,8 +125,10 @@ Macros</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:gafa5c44f45e70e3cf007ee9e471b250ac" id="r_gafa5c44f45e70e3cf007ee9e471b250ac"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#gafa5c44f45e70e3cf007ee9e471b250ac">joybus_rp2xxx_init</a> (struct <a class="el" href="structjoybus__rp2xxx.html">joybus_rp2xxx</a> *rp2xxx_bus, uint8_t gpio, PIO pio)</td></tr>
-<tr class="memdesc:gafa5c44f45e70e3cf007ee9e471b250ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize a RP2xxx Joybus instance.  <br /></td></tr>
+<tr class="memitem:gaee0cd8ab837f829a59e11e70d4db487b" id="r_gaee0cd8ab837f829a59e11e70d4db487b"><td class="memItemLeft" align="right" valign="top">static struct <a class="el" href="structjoybus__rp2xxx__config.html">joybus_rp2xxx_config</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#gaee0cd8ab837f829a59e11e70d4db487b">joybus_rp2xxx_config_default</a> (uint8_t gpio)</td></tr>
+<tr class="memdesc:gaee0cd8ab837f829a59e11e70d4db487b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build a RP2xxx config with default values.  <br /></td></tr>
+<tr class="memitem:ga1d61948754428d35bb965c8a00dfa9c4" id="r_ga1d61948754428d35bb965c8a00dfa9c4"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga1d61948754428d35bb965c8a00dfa9c4">joybus_rp2xxx_init</a> (struct <a class="el" href="structjoybus__rp2xxx.html">joybus_rp2xxx</a> *rp2xxx_bus, struct <a class="el" href="structjoybus__rp2xxx__config.html">joybus_rp2xxx_config</a> config)</td></tr>
+<tr class="memdesc:ga1d61948754428d35bb965c8a00dfa9c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize a RP2xxx Joybus instance.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <p>Raspberry Pi RP2040/RP2350 Joybus backend. </p>
@@ -144,15 +148,49 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line">((<span class="keyword">struct </span><a class="code hl_struct" href="structjoybus__rp2xxx.html">joybus_rp2xxx</a> *)(bus))</div>
-<div class="ttc" id="astructjoybus__rp2xxx_html"><div class="ttname"><a href="structjoybus__rp2xxx.html">joybus_rp2xxx</a></div><div class="ttdoc">A RP2xxx Joybus instance.</div><div class="ttdef"><b>Definition</b> rp2xxx.h:61</div></div>
+<div class="ttc" id="astructjoybus__rp2xxx_html"><div class="ttname"><a href="structjoybus__rp2xxx.html">joybus_rp2xxx</a></div><div class="ttdoc">A RP2xxx Joybus instance.</div><div class="ttdef"><b>Definition</b> rp2xxx.h:57</div></div>
 </div><!-- fragment -->
 <p>Macro to cast a generic Joybus instance to a RP2xxx Joybus instance. </p>
 
 </div>
 </div>
 <a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Function Documentation</h2>
-<a id="gafa5c44f45e70e3cf007ee9e471b250ac" name="gafa5c44f45e70e3cf007ee9e471b250ac"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gafa5c44f45e70e3cf007ee9e471b250ac">&#9670;&#160;</a></span>joybus_rp2xxx_init()</h2>
+<a id="gaee0cd8ab837f829a59e11e70d4db487b" name="gaee0cd8ab837f829a59e11e70d4db487b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaee0cd8ab837f829a59e11e70d4db487b">&#9670;&#160;</a></span>joybus_rp2xxx_config_default()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="structjoybus__rp2xxx__config.html">joybus_rp2xxx_config</a> joybus_rp2xxx_config_default </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>gpio</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel static">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Build a RP2xxx config with default values. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">gpio</td><td>the GPIO pin to use for the Joybus data line </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>a config with the given GPIO, the pio0 instance, and a nominal frequency </dd></dl>
+
+</div>
+</div>
+<a id="ga1d61948754428d35bb965c8a00dfa9c4" name="ga1d61948754428d35bb965c8a00dfa9c4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga1d61948754428d35bb965c8a00dfa9c4">&#9670;&#160;</a></span>joybus_rp2xxx_init()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -165,12 +203,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>gpio</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">PIO</td>          <td class="paramname"><span class="paramname"><em>pio</em></span>&#160;)</td>
+          <td class="paramtype">struct <a class="el" href="structjoybus__rp2xxx__config.html">joybus_rp2xxx_config</a></td>          <td class="paramname"><span class="paramname"><em>config</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -179,8 +212,7 @@ Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">rp2xxx_bus</td><td>the RP2xxx Joybus instance to initialize </td></tr>
-    <tr><td class="paramname">gpio</td><td>the GPIO pin to use for the Joybus data line </td></tr>
-    <tr><td class="paramname">pio</td><td>the PIO instance to use (eg. pio0 or pio1) </td></tr>
+    <tr><td class="paramname">config</td><td>the configuration to use, eg. from <a class="el" href="#gaee0cd8ab837f829a59e11e70d4db487b" title="Build a RP2xxx config with default values.">joybus_rp2xxx_config_default()</a> </td></tr>
   </table>
   </dd>
 </dl>

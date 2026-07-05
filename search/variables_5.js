@@ -1,7 +1,6 @@
 var searchData=
 [
-  ['on_5fmotor_5fchange_0',['on_motor_change',['../structjoybus__target__n64__rumble__pak.html#a2a7d50683b06af6813b1ee65845f1d0c',1,'joybus_target_n64_rumble_pak']]],
-  ['on_5fmotor_5fstate_5fchange_1',['on_motor_state_change',['../structjoybus__target__gcn__controller.html#a18b770b14a09c25d9e1db2eaaae71fb7',1,'joybus_target_gcn_controller']]],
-  ['on_5freset_2',['on_reset',['../structjoybus__target__gcn__controller.html#a09fd381ce8ceb588a0610d0d1b0d79ec',1,'joybus_target_gcn_controller::on_reset'],['../structjoybus__target__n64__controller.html#a49c2f407a008d42c7eae32a0e0e89f72',1,'joybus_target_n64_controller::on_reset']]],
-  ['origin_3',['origin',['../structjoybus__target__gcn__controller.html#a37b393cf1fa662d9f2e05f768c801858',1,'joybus_target_gcn_controller::origin'],['../structjoybus__target__n64__controller.html#a679333e1061d580b75075633482fb870',1,'joybus_target_n64_controller::origin']]]
+  ['gpio_0',['gpio',['../structjoybus__rp2xxx__config.html#a192756400328edba0c4bac8054943704',1,'joybus_rp2xxx_config']]],
+  ['gpio_5fpin_1',['gpio_pin',['../structjoybus__gecko__config.html#a4799378bd2b259bf57efde7ce5de959e',1,'joybus_gecko_config']]],
+  ['gpio_5fport_2',['gpio_port',['../structjoybus__gecko__config.html#a5db993d22c9d52f98ad9d3f5a9d849e4',1,'joybus_gecko_config']]]
 ];

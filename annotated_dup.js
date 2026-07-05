@@ -1,14 +1,16 @@
 var annotated_dup =
 [
-    [ "joybus", "structjoybus.html", null ],
+    [ "joybus", "structjoybus.html", "structjoybus" ],
     [ "joybus_api", "structjoybus__api.html", null ],
     [ "joybus_gcn_controller_state", "structjoybus__gcn__controller__state.html", "structjoybus__gcn__controller__state" ],
     [ "joybus_gecko", "structjoybus__gecko.html", null ],
+    [ "joybus_gecko_config", "structjoybus__gecko__config.html", "structjoybus__gecko__config" ],
     [ "joybus_gecko_data", "structjoybus__gecko__data.html", null ],
     [ "joybus_host_op", "structjoybus__host__op.html", null ],
     [ "joybus_id", "structjoybus__id.html", "structjoybus__id" ],
     [ "joybus_n64_controller_state", "structjoybus__n64__controller__state.html", "structjoybus__n64__controller__state" ],
     [ "joybus_rp2xxx", "structjoybus__rp2xxx.html", null ],
+    [ "joybus_rp2xxx_config", "structjoybus__rp2xxx__config.html", "structjoybus__rp2xxx__config" ],
     [ "joybus_rp2xxx_data", "structjoybus__rp2xxx__data.html", null ],
     [ "joybus_sync_ctx", "structjoybus__sync__ctx.html", null ],
     [ "joybus_target", "structjoybus__target.html", "structjoybus__target" ],

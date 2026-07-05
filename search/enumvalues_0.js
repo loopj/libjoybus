@@ -13,5 +13,7 @@ var searchData=
   ['joybus_5fgcn_5fanalog_5fmode_5f4_10',['JOYBUS_GCN_ANALOG_MODE_4',['../common_2gcn__controller_8h.html#a33b898739d5994e2a707715229a240b5a854d82ee2451364137e0176785f89056',1,'gcn_controller.h']]],
   ['joybus_5fgcn_5fmotor_5frumble_11',['JOYBUS_GCN_MOTOR_RUMBLE',['../common_2gcn__controller_8h.html#a124c73338239611c4780fd69add6da4aad9320afd9b0fb2ff99a55ac2a022d7da',1,'gcn_controller.h']]],
   ['joybus_5fgcn_5fmotor_5fstop_12',['JOYBUS_GCN_MOTOR_STOP',['../common_2gcn__controller_8h.html#a124c73338239611c4780fd69add6da4aaf5911416531c855fbe565f3d957fe32a',1,'gcn_controller.h']]],
-  ['joybus_5fgcn_5fmotor_5fstop_5fhard_13',['JOYBUS_GCN_MOTOR_STOP_HARD',['../common_2gcn__controller_8h.html#a124c73338239611c4780fd69add6da4aada4e81b1f3cb2b6f639aee5148b3d641',1,'gcn_controller.h']]]
+  ['joybus_5fgcn_5fmotor_5fstop_5fhard_13',['JOYBUS_GCN_MOTOR_STOP_HARD',['../common_2gcn__controller_8h.html#a124c73338239611c4780fd69add6da4aada4e81b1f3cb2b6f639aee5148b3d641',1,'gcn_controller.h']]],
+  ['joybus_5fmode_5fhost_14',['JOYBUS_MODE_HOST',['../group__joybus.html#gga269224343f9733d075007781871a99a6a47334759b78cadcd189b2f88892dfbe6',1,'bus.h']]],
+  ['joybus_5fmode_5ftarget_15',['JOYBUS_MODE_TARGET',['../group__joybus.html#gga269224343f9733d075007781871a99a6abff296695cb9bacfdb5342209f4c8507',1,'bus.h']]]
 ];

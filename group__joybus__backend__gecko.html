@@ -115,6 +115,8 @@ Data Structures</h2></td></tr>
 <tr class="memitem:joybus_5Fgecko_5Fdata" id="r_joybus_5Fgecko_5Fdata"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structjoybus__gecko__data.html">joybus_gecko_data</a></td></tr>
 <tr class="memitem:joybus_5Fgecko" id="r_joybus_5Fgecko"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structjoybus__gecko.html">joybus_gecko</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A Gecko Joybus instance.  <a href="structjoybus__gecko.html#details">More...</a><br /></td></tr>
+<tr class="memitem:joybus_5Fgecko_5Fconfig" id="r_joybus_5Fgecko_5Fconfig"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structjoybus__gecko__config.html">joybus_gecko_config</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configuration for a Gecko Joybus instance.  <a href="structjoybus__gecko__config.html#details">More...</a><br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-define-members" class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
@@ -127,8 +129,10 @@ Macros</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:gaf6ce4eb5cfc3d9b3e697ed48be6630f5" id="r_gaf6ce4eb5cfc3d9b3e697ed48be6630f5"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#gaf6ce4eb5cfc3d9b3e697ed48be6630f5">joybus_gecko_init</a> (struct <a class="el" href="structjoybus__gecko.html">joybus_gecko</a> *gecko_bus, GPIO_Port_TypeDef port, uint8_t pin, TIMER_TypeDef *rx_timer, USART_TypeDef *tx_usart)</td></tr>
-<tr class="memdesc:gaf6ce4eb5cfc3d9b3e697ed48be6630f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize a Gecko Joybus instance.  <br /></td></tr>
+<tr class="memitem:gacf277c10513cdda2d0e4440472893aa2" id="r_gacf277c10513cdda2d0e4440472893aa2"><td class="memItemLeft" align="right" valign="top">static struct <a class="el" href="structjoybus__gecko__config.html">joybus_gecko_config</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#gacf277c10513cdda2d0e4440472893aa2">joybus_gecko_config_default</a> (GPIO_Port_TypeDef port, uint8_t pin)</td></tr>
+<tr class="memdesc:gacf277c10513cdda2d0e4440472893aa2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build a Gecko config with default values.  <br /></td></tr>
+<tr class="memitem:ga36d5bebe9674f1d99933a9561eba8c8b" id="r_ga36d5bebe9674f1d99933a9561eba8c8b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga36d5bebe9674f1d99933a9561eba8c8b">joybus_gecko_init</a> (struct <a class="el" href="structjoybus__gecko.html">joybus_gecko</a> *gecko_bus, struct <a class="el" href="structjoybus__gecko__config.html">joybus_gecko_config</a> config)</td></tr>
+<tr class="memdesc:ga36d5bebe9674f1d99933a9561eba8c8b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize a Gecko Joybus instance.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <p>Silicon Labs EFM32/EFR32 Joybus backend. </p>
@@ -148,15 +152,54 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line">((<span class="keyword">struct </span><a class="code hl_struct" href="structjoybus__gecko.html">joybus_gecko</a> *)(bus))</div>
-<div class="ttc" id="astructjoybus__gecko_html"><div class="ttname"><a href="structjoybus__gecko.html">joybus_gecko</a></div><div class="ttdoc">A Gecko Joybus instance.</div><div class="ttdef"><b>Definition</b> gecko.h:87</div></div>
+<div class="ttc" id="astructjoybus__gecko_html"><div class="ttname"><a href="structjoybus__gecko.html">joybus_gecko</a></div><div class="ttdoc">A Gecko Joybus instance.</div><div class="ttdef"><b>Definition</b> gecko.h:82</div></div>
 </div><!-- fragment -->
 <p>Macro to cast a generic Joybus instance to a Gecko Joybus instance. </p>
 
 </div>
 </div>
 <a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Function Documentation</h2>
-<a id="gaf6ce4eb5cfc3d9b3e697ed48be6630f5" name="gaf6ce4eb5cfc3d9b3e697ed48be6630f5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaf6ce4eb5cfc3d9b3e697ed48be6630f5">&#9670;&#160;</a></span>joybus_gecko_init()</h2>
+<a id="gacf277c10513cdda2d0e4440472893aa2" name="gacf277c10513cdda2d0e4440472893aa2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gacf277c10513cdda2d0e4440472893aa2">&#9670;&#160;</a></span>joybus_gecko_config_default()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="structjoybus__gecko__config.html">joybus_gecko_config</a> joybus_gecko_config_default </td>
+          <td>(</td>
+          <td class="paramtype">GPIO_Port_TypeDef</td>          <td class="paramname"><span class="paramname"><em>port</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>pin</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel static">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Build a Gecko config with default values. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">port</td><td>the GPIO port to use for the Joybus data line </td></tr>
+    <tr><td class="paramname">pin</td><td>the GPIO pin to use for the Joybus data line </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>a config with the given GPIO, the TIMER0/USART0 peripherals, and a nominal frequency </dd></dl>
+
+</div>
+</div>
+<a id="ga36d5bebe9674f1d99933a9561eba8c8b" name="ga36d5bebe9674f1d99933a9561eba8c8b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga36d5bebe9674f1d99933a9561eba8c8b">&#9670;&#160;</a></span>joybus_gecko_init()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -169,35 +212,16 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">GPIO_Port_TypeDef</td>          <td class="paramname"><span class="paramname"><em>port</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>pin</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">TIMER_TypeDef *</td>          <td class="paramname"><span class="paramname"><em>rx_timer</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">USART_TypeDef *</td>          <td class="paramname"><span class="paramname"><em>tx_usart</em></span>&#160;)</td>
+          <td class="paramtype">struct <a class="el" href="structjoybus__gecko__config.html">joybus_gecko_config</a></td>          <td class="paramname"><span class="paramname"><em>config</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Initialize a Gecko Joybus instance. </p>
-<p>Note: Some peripherals cannot be used on certain ports, check the DBUS Routing Table in the reference manual for your MCU.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">gecko_bus</td><td>the Gecko Joybus instance to initialize </td></tr>
-    <tr><td class="paramname">port</td><td>the GPIO port to use for the Joybus data line </td></tr>
-    <tr><td class="paramname">pin</td><td>the GPIO pin to use for the Joybus data line </td></tr>
-    <tr><td class="paramname">rx_timer</td><td>the TIMER peripheral to use for receiving data </td></tr>
-    <tr><td class="paramname">tx_usart</td><td>the USART peripheral to use for transmitting data </td></tr>
+    <tr><td class="paramname">config</td><td>the configuration to use, eg. from <a class="el" href="#gacf277c10513cdda2d0e4440472893aa2" title="Build a Gecko config with default values.">joybus_gecko_config_default()</a> </td></tr>
   </table>
   </dd>
 </dl>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.14.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>libjoybus: Data Structure Index</title>
+<title>libjoybus: joybus_gecko_config Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -77,7 +77,7 @@ $(function() {
   </div>
 </div>
 <script type="text/javascript">
-$(function(){initNavTree('classes.html','',''); });
+$(function(){initNavTree('structjoybus__gecko__config.html','',''); });
 </script>
 <div id="container">
 <div id="doc-content">
@@ -103,21 +103,53 @@ $(function(){initNavTree('classes.html','',''); });
 </div>
 
 <div class="header">
-  <div class="headertitle"><div class="title">Data Structure Index</div></div>
+  <div class="headertitle"><div class="title">joybus_gecko_config Struct Reference<div class="ingroups"><a class="el" href="group__joybus__backends.html">Backends</a> &raquo; <a class="el" href="group__joybus__backend__gecko.html">Gecko Backend</a></div></div></div>
 </div><!--header-->
 <div class="contents">
-<div class="qindex"><a class="qindex" href="#letter_J">J</a></div>
-<div class="classindex">
-<dl class="classindex even">
-<dt class="alphachar"><a id="letter_J" name="letter_J">J</a></dt>
-<dd><a class="el" href="structjoybus.html">joybus</a></dd><dd><a class="el" href="structjoybus__api.html">joybus_api</a></dd><dd><a class="el" href="structjoybus__gcn__controller__state.html">joybus_gcn_controller_state</a></dd><dd><a class="el" href="structjoybus__gecko.html">joybus_gecko</a></dd><dd><a class="el" href="structjoybus__gecko__config.html">joybus_gecko_config</a></dd><dd><a class="el" href="structjoybus__gecko__data.html">joybus_gecko_data</a></dd><dd><a class="el" href="structjoybus__host__op.html">joybus_host_op</a></dd><dd><a class="el" href="structjoybus__id.html">joybus_id</a></dd><dd><a class="el" href="structjoybus__n64__controller__state.html">joybus_n64_controller_state</a></dd><dd><a class="el" href="structjoybus__rp2xxx.html">joybus_rp2xxx</a></dd><dd><a class="el" href="structjoybus__rp2xxx__config.html">joybus_rp2xxx_config</a></dd><dd><a class="el" href="structjoybus__rp2xxx__data.html">joybus_rp2xxx_data</a></dd><dd><a class="el" href="structjoybus__sync__ctx.html">joybus_sync_ctx</a></dd><dd><a class="el" href="structjoybus__target.html">joybus_target</a></dd><dd><a class="el" href="structjoybus__target__api.html">joybus_target_api</a></dd><dd><a class="el" href="structjoybus__target__gcn__controller.html">joybus_target_gcn_controller</a></dd><dd><a class="el" href="structjoybus__target__n64__controller.html">joybus_target_n64_controller</a></dd><dd><a class="el" href="structjoybus__target__n64__pak.html">joybus_target_n64_pak</a></dd><dd><a class="el" href="structjoybus__target__n64__pak__api.html">joybus_target_n64_pak_api</a></dd><dd><a class="el" href="structjoybus__target__n64__rumble__pak.html">joybus_target_n64_rumble_pak</a></dd></dl>
-</div>
+
+<p>Configuration for a Gecko Joybus instance.  
+ <a href="#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="gecko_8h_source.html">gecko.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pub-attribs" class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
+Data Fields</h2></td></tr>
+<tr class="memitem:a5db993d22c9d52f98ad9d3f5a9d849e4" id="r_a5db993d22c9d52f98ad9d3f5a9d849e4"><td class="memItemLeft" align="right" valign="top"><a id="a5db993d22c9d52f98ad9d3f5a9d849e4" name="a5db993d22c9d52f98ad9d3f5a9d849e4"></a>
+GPIO_Port_TypeDef&#160;</td><td class="memItemRight" valign="bottom"><b>gpio_port</b></td></tr>
+<tr class="memdesc:a5db993d22c9d52f98ad9d3f5a9d849e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">GPIO port to use for the Joybus data line. <br /></td></tr>
+<tr class="memitem:a4799378bd2b259bf57efde7ce5de959e" id="r_a4799378bd2b259bf57efde7ce5de959e"><td class="memItemLeft" align="right" valign="top"><a id="a4799378bd2b259bf57efde7ce5de959e" name="a4799378bd2b259bf57efde7ce5de959e"></a>
+uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>gpio_pin</b></td></tr>
+<tr class="memdesc:a4799378bd2b259bf57efde7ce5de959e"><td class="mdescLeft">&#160;</td><td class="mdescRight">GPIO pin to use for the Joybus data line. <br /></td></tr>
+<tr class="memitem:ad37b5e55384b4c283c772e3a49773c0e" id="r_ad37b5e55384b4c283c772e3a49773c0e"><td class="memItemLeft" align="right" valign="top"><a id="ad37b5e55384b4c283c772e3a49773c0e" name="ad37b5e55384b4c283c772e3a49773c0e"></a>
+TIMER_TypeDef *&#160;</td><td class="memItemRight" valign="bottom"><b>rx_timer</b></td></tr>
+<tr class="memdesc:ad37b5e55384b4c283c772e3a49773c0e"><td class="mdescLeft">&#160;</td><td class="mdescRight">TIMER peripheral to use for receiving data. <br /></td></tr>
+<tr class="memitem:aaf1f50502c492762c1fa6ded1e7934b6" id="r_aaf1f50502c492762c1fa6ded1e7934b6"><td class="memItemLeft" align="right" valign="top"><a id="aaf1f50502c492762c1fa6ded1e7934b6" name="aaf1f50502c492762c1fa6ded1e7934b6"></a>
+USART_TypeDef *&#160;</td><td class="memItemRight" valign="bottom"><b>tx_usart</b></td></tr>
+<tr class="memdesc:aaf1f50502c492762c1fa6ded1e7934b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">USART peripheral to use for transmitting data. <br /></td></tr>
+<tr class="memitem:a178345b0613a70cacf29e7ad306ed80a" id="r_a178345b0613a70cacf29e7ad306ed80a"><td class="memItemLeft" align="right" valign="top"><a id="a178345b0613a70cacf29e7ad306ed80a" name="a178345b0613a70cacf29e7ad306ed80a"></a>
+uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>freq</b></td></tr>
+<tr class="memdesc:a178345b0613a70cacf29e7ad306ed80a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transmit frequency, in Hz. <br /></td></tr>
+</table>
+<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Configuration for a Gecko Joybus instance. </p>
+<p>Note: Some peripherals cannot be used on certain ports, check the DBUS Routing Table in the reference manual for your MCU. </p>
+</div><hr/>The documentation for this struct was generated from the following file:<ul>
+<li>include/joybus/backend/<a class="el" href="gecko_8h_source.html">gecko.h</a></li>
+</ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
+<div id="page-nav" class="page-nav-panel">
+<div id="page-nav-resize-handle"></div>
+<div id="page-nav-tree">
+<div id="page-nav-contents">
+</div><!-- page-nav-contents -->
+</div><!-- page-nav-tree -->
+</div><!-- page-nav -->
 </div><!-- container -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
+    <li class="navelem"><a href="structjoybus__gecko__config.html">joybus_gecko_config</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.14.0 </li>
   </ul>
 </div>

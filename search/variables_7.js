@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['read_5fblock_0',['read_block',['../structjoybus__target__n64__pak__api.html#a5b9f14e476c04d577e5c6753afffaa64',1,'joybus_target_n64_pak_api']]],
-  ['response_1',['response',['../structjoybus__target__n64__controller.html#a74657bd58787eb7f0f1dc364416b7950',1,'joybus_target_n64_controller']]]
+  ['mode_0',['mode',['../structjoybus.html#a1a1a20d7331501113ff4e94f5ba00e4b',1,'joybus']]]
 ];
