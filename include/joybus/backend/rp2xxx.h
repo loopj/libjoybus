@@ -34,7 +34,7 @@ struct joybus_rp2xxx_data {
   // PIO instance and state machine
   PIO pio;
   uint pio_sm;
-  uint8_t pio_sm_mode;
+  bool pio_configured;
 
   // DMA configuration
   uint dma_chan_tx;
@@ -67,11 +67,11 @@ struct joybus_rp2xxx {
  * Initialize a RP2xxx Joybus instance.
  *
  * @param rp2xxx_bus the RP2xxx Joybus instance to initialize
+ * @param mode whether this instance acts as a host or a target
  * @param gpio the GPIO pin to use for the Joybus data line
  * @param pio the PIO instance to use (eg. pio0 or pio1)
- * @param mode whether this instance acts as a host or a target
  * @return 0 on success, a negative joybus_error on failure
  */
-int joybus_rp2xxx_init(struct joybus_rp2xxx *rp2xxx_bus, uint8_t gpio, PIO pio, enum joybus_mode mode);
+int joybus_rp2xxx_init(struct joybus_rp2xxx *rp2xxx_bus, enum joybus_mode mode, uint8_t gpio, PIO pio);
 
 /** @} */

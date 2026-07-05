@@ -22,12 +22,6 @@ enum {
   BUS_STATE_TARGET_TX,
 };
 
-enum {
-  BUS_MODE_NONE,
-  BUS_MODE_HOST,
-  BUS_MODE_TARGET,
-};
-
 // Global state to track loaded PIO programs and bus instances
 static struct {
   uint host_offset;
@@ -36,20 +30,21 @@ static struct {
   struct joybus *bus_instances[NUM_PIO_STATE_MACHINES];
 } pio_state[NUM_PIOS] = {0};
 
-// Configure the state machine for host or target mode
-static void configure_state_machine(struct joybus *bus, int mode)
+// Load the PIO program for the bus mode. The mode is fixed at init, so this
+// only needs to run once.
+static void configure_state_machine(struct joybus *bus)
 {
   struct joybus_rp2xxx_data *data = &JOYBUS_RP2XXX(bus)->data;
 
-  // Return early if already in the requested mode
-  if (data->pio_sm_mode == mode)
+  // Return early if the program is already loaded
+  if (data->pio_configured)
     return;
 
   // Disable current state machine
   pio_sm_set_enabled(data->pio, data->pio_sm, false);
 
   // Initialize the PIO program
-  if (mode == BUS_MODE_HOST) {
+  if (bus->mode == JOYBUS_MODE_HOST) {
     joybus_host_program_init(data->pio, data->pio_sm, pio_state[PIO_NUM(data->pio)].host_offset, data->gpio,
                              data->host_freq);
   } else {
@@ -57,8 +52,7 @@ static void configure_state_machine(struct joybus *bus, int mode)
                                data->target_freq);
   }
 
-  // Update the mode
-  data->pio_sm_mode = mode;
+  data->pio_configured = true;
 }
 
 // Enter either host idle mode or target read mode, depending on whether a target is registered
@@ -82,8 +76,8 @@ static inline void enter_idle_mode(struct joybus *bus, bool await_idle)
     data->read_len   = JOYBUS_BLOCK_SIZE;
     data->read_count = 0;
 
-    // Make sure the state machine is in target mode
-    configure_state_machine(bus, BUS_MODE_TARGET);
+    // Make sure the PIO program is loaded
+    configure_state_machine(bus);
 
     // Restart the state machine
     // TODO: Consider performing the state machine reset only when strictly needed
@@ -97,8 +91,8 @@ static inline void enter_idle_mode(struct joybus *bus, bool await_idle)
     // Transition state
     data->state = BUS_STATE_TARGET_RX;
   } else {
-    // Make sure the state machine is in host mode
-    configure_state_machine(bus, BUS_MODE_HOST);
+    // Make sure the PIO program is loaded
+    configure_state_machine(bus);
 
     // Enter host idle mode
     // TODO: Consider performing the state machine reset only when strictly needed
@@ -403,7 +397,7 @@ static const struct joybus_api rp2xxx_api = {
   .transfer = joybus_rp2xxx_transfer,
 };
 
-int joybus_rp2xxx_init(struct joybus_rp2xxx *rp2xxx_bus, uint8_t gpio, PIO pio, enum joybus_mode mode)
+int joybus_rp2xxx_init(struct joybus_rp2xxx *rp2xxx_bus, enum joybus_mode mode, uint8_t gpio, PIO pio)
 {
   // Save the bus API
   struct joybus *bus = JOYBUS(rp2xxx_bus);
@@ -415,7 +409,7 @@ int joybus_rp2xxx_init(struct joybus_rp2xxx *rp2xxx_bus, uint8_t gpio, PIO pio, 
   struct joybus_rp2xxx_data *data = &rp2xxx_bus->data;
   data->gpio                      = gpio;
   data->pio                       = pio;
-  data->pio_sm_mode               = BUS_MODE_NONE;
+  data->pio_configured            = false;
   data->state                     = BUS_STATE_DISABLED;
   data->host_freq                 = JOYBUS_FREQ_GCN_CONSOLE;
   data->target_freq               = JOYBUS_FREQ_GCN_CONTROLLER;

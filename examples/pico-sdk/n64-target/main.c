@@ -54,7 +54,7 @@ static int8_t read_stick_axis(uint gpio, int origin, bool inverted)
 int main()
 {
   // Initialize the Joybus in target mode
-  joybus_rp2xxx_init(&rp2xxx_bus, JOYBUS_GPIO, pio0, JOYBUS_MODE_TARGET);
+  joybus_rp2xxx_init(&rp2xxx_bus, JOYBUS_MODE_TARGET, JOYBUS_GPIO, pio0);
 
   // Initialize a N64 controller target as a standard controller
   joybus_target_n64_controller_init(&n64_controller);

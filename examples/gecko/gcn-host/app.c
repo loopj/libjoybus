@@ -91,7 +91,7 @@ void app_init(void)
   GPIO_PinModeSet(LED_PORT, LED_PIN, gpioModePushPull, 0);
 
   // Initialize Joybus
-  joybus_gecko_init(&gecko_bus, JOYBUS_PORT, JOYBUS_PIN, JOYBUS_TIMER, JOYBUS_USART, JOYBUS_MODE_HOST);
+  joybus_gecko_init(&gecko_bus, JOYBUS_MODE_HOST, JOYBUS_PORT, JOYBUS_PIN, JOYBUS_TIMER, JOYBUS_USART);
   joybus_enable(bus);
 
   // Poll for Joybus data at regular intervals

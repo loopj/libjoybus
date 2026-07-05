@@ -13,7 +13,7 @@ static const struct joybus_api mybackend_api = {
   .transfer = joybus_mybackend_transfer,
 };
 
-int joybus_mybackend_init(struct joybus *bus, ..., enum joybus_mode mode)
+int joybus_mybackend_init(struct joybus *bus, enum joybus_mode mode, ...)
 {
   bus->api  = &mybackend_api;
   bus->mode = mode;

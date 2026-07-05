@@ -62,9 +62,6 @@ struct joybus;
 
 /**
  * The role a Joybus instance plays on the bus.
- *
- * Fixed when the instance is initialized. A host drives the bus and polls
- * devices, a target responds to commands from a host.
  */
 enum joybus_mode {
   JOYBUS_MODE_HOST,

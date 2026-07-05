@@ -310,7 +310,7 @@ int main(void)
 
   // Initialize Joybus channels
   for (int i = 0; i < GCCA_JOYBUS_CHANNELS; i++) {
-    joybus_rp2xxx_init(&rp2xxx_bus[i], JOYBUS_GPIOS[i], pio0, JOYBUS_MODE_HOST);
+    joybus_rp2xxx_init(&rp2xxx_bus[i], JOYBUS_MODE_HOST, JOYBUS_GPIOS[i], pio0);
     joybus_enable(JOYBUS(&rp2xxx_bus[i]));
 
     reset_bus_state(i);

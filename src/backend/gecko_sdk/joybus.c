@@ -31,11 +31,6 @@
 #include <joybus/backend/gecko.h>
 
 enum {
-  BUS_MODE_HOST,
-  BUS_MODE_TARGET,
-};
-
-enum {
   BUS_STATE_DISABLED,
   BUS_STATE_HOST_IDLE,
   BUS_STATE_HOST_TX,
@@ -191,12 +186,12 @@ static inline void encode_byte(uint8_t *dest, uint8_t src)
   dest[3] = ((src & 0x02) ? BIT_1 : BIT_0) << 4 | ((src & 0x01) ? BIT_1 : BIT_0);
 }
 
-// Adjust TX timings for host/target mode
-static void set_tx_timings(struct joybus *bus, uint8_t mode)
+// Adjust TX timings for the bus mode
+static void set_tx_timings(struct joybus *bus)
 {
   struct joybus_gecko_data *data = &JOYBUS_GECKO(bus)->data;
 
-  if (mode == BUS_MODE_TARGET) {
+  if (bus->mode == JOYBUS_MODE_TARGET) {
     USART_BaudrateSyncSet(data->tx_usart, 0, data->target_freq * CHIPS_PER_BIT);
     data->tx_descriptors[2].xfer.srcAddr = (uint32_t)&TARGET_STOP;
   } else {
@@ -660,7 +655,7 @@ static int joybus_gecko_enable(struct joybus *bus)
   sl_sleeptimer_init();
 
   if (bus->mode == JOYBUS_MODE_TARGET) {
-    set_tx_timings(bus, BUS_MODE_TARGET);
+    set_tx_timings(bus);
     enter_target_read_mode(bus, true);
   } else {
     data->state = BUS_STATE_HOST_IDLE;
@@ -729,8 +724,8 @@ static const struct joybus_api gecko_api = {
   .transfer = joybus_gecko_transfer,
 };
 
-int joybus_gecko_init(struct joybus_gecko *gecko_bus, GPIO_Port_TypeDef port, uint8_t pin, TIMER_TypeDef *rx_timer,
-                      USART_TypeDef *tx_usart, enum joybus_mode mode)
+int joybus_gecko_init(struct joybus_gecko *gecko_bus, enum joybus_mode mode, GPIO_Port_TypeDef port, uint8_t pin,
+                      TIMER_TypeDef *rx_timer, USART_TypeDef *tx_usart)
 {
   struct joybus *bus = JOYBUS(gecko_bus);
   bus->api           = &gecko_api;

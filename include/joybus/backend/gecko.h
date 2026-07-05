@@ -96,14 +96,14 @@ struct joybus_gecko {
  * Routing Table in the reference manual for your MCU.
  *
  * @param gecko_bus the Gecko Joybus instance to initialize
+ * @param mode whether this instance acts as a host or a target
  * @param port the GPIO port to use for the Joybus data line
  * @param pin the GPIO pin to use for the Joybus data line
  * @param rx_timer the TIMER peripheral to use for receiving data
  * @param tx_usart the USART peripheral to use for transmitting data
- * @param mode whether this instance acts as a host or a target
  * @return 0 on success, a negative joybus_error on failure
  */
-int joybus_gecko_init(struct joybus_gecko *gecko_bus, GPIO_Port_TypeDef port, uint8_t pin, TIMER_TypeDef *rx_timer,
-                      USART_TypeDef *tx_usart, enum joybus_mode mode);
+int joybus_gecko_init(struct joybus_gecko *gecko_bus, enum joybus_mode mode, GPIO_Port_TypeDef port, uint8_t pin,
+                      TIMER_TypeDef *rx_timer, USART_TypeDef *tx_usart);
 
 /** @} */
