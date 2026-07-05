@@ -85,19 +85,53 @@ struct joybus_gecko {
 };
 
 /**
- * Initialize a Gecko Joybus instance.
+ * Configuration for a Gecko Joybus instance.
  *
  * Note: Some peripherals cannot be used on certain ports, check the DBUS
  * Routing Table in the reference manual for your MCU.
+ */
+struct joybus_gecko_config {
+  /// GPIO port to use for the Joybus data line
+  GPIO_Port_TypeDef gpio_port;
+
+  /// GPIO pin to use for the Joybus data line
+  uint8_t gpio_pin;
+
+  /// TIMER peripheral to use for receiving data
+  TIMER_TypeDef *rx_timer;
+
+  /// USART peripheral to use for transmitting data
+  USART_TypeDef *tx_usart;
+
+  /// Transmit frequency, in Hz
+  uint32_t freq;
+};
+
+/**
+ * Build a Gecko config with default values.
  *
- * @param gecko_bus the Gecko Joybus instance to initialize
  * @param port the GPIO port to use for the Joybus data line
  * @param pin the GPIO pin to use for the Joybus data line
- * @param rx_timer the TIMER peripheral to use for receiving data
- * @param tx_usart the USART peripheral to use for transmitting data
+ * @return a config with the given GPIO, the TIMER0/USART0 peripherals, and a nominal frequency
+ */
+static inline struct joybus_gecko_config joybus_gecko_config_default(GPIO_Port_TypeDef port, uint8_t pin)
+{
+  return (struct joybus_gecko_config){
+    .gpio_port = port,
+    .gpio_pin  = pin,
+    .rx_timer  = TIMER0,
+    .tx_usart  = USART0,
+    .freq      = JOYBUS_FREQ_NOMINAL,
+  };
+}
+
+/**
+ * Initialize a Gecko Joybus instance.
+ *
+ * @param gecko_bus the Gecko Joybus instance to initialize
+ * @param config the configuration to use, eg. from joybus_gecko_config_default()
  * @return 0 on success, a negative joybus_error on failure
  */
-int joybus_gecko_init(struct joybus_gecko *gecko_bus, GPIO_Port_TypeDef port, uint8_t pin, TIMER_TypeDef *rx_timer,
-                      USART_TypeDef *tx_usart);
+int joybus_gecko_init(struct joybus_gecko *gecko_bus, struct joybus_gecko_config config);
 
 /** @} */

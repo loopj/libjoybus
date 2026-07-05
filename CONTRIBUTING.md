@@ -4,7 +4,7 @@
 
 New backends should follow the structure of existing backends in `src/backend/`.
 
-Each backend is expected to implement a `joybus_backend_init(...)` function, and provide implementations for each of the functions in the `joybus_api` struct:
+Each backend defines a `joybus_<backend>_config` struct holding the constant configuration for a bus (peripherals, transmit frequency), a `joybus_<backend>_config_default(...)` helper that fills it with sensible defaults, and a `joybus_<backend>_init(bus, config)` function. It also provides implementations for each of the functions in the `joybus_api` struct:
 
 ```c
 static const struct joybus_api mybackend_api = {
@@ -13,9 +13,10 @@ static const struct joybus_api mybackend_api = {
   .transfer = joybus_mybackend_transfer,
 };
 
-int joybus_mybackend_init(struct joybus *bus, ...)
+int joybus_mybackend_init(struct joybus *bus, struct joybus_mybackend_config config)
 {
-  bus->api = &mybackend_api;
+  bus->api  = &mybackend_api;
+  bus->freq = config.freq;
 
   // Rest of initialization code...
 

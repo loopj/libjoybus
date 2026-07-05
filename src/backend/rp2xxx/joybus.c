@@ -396,18 +396,18 @@ static const struct joybus_api rp2xxx_api = {
   .transfer = joybus_rp2xxx_transfer,
 };
 
-int joybus_rp2xxx_init(struct joybus_rp2xxx *rp2xxx_bus, uint8_t gpio, PIO pio)
+int joybus_rp2xxx_init(struct joybus_rp2xxx *rp2xxx_bus, struct joybus_rp2xxx_config config)
 {
   // Save the bus API
   struct joybus *bus = JOYBUS(rp2xxx_bus);
   bus->api           = &rp2xxx_api;
-  bus->freq          = JOYBUS_FREQ_NOMINAL;
+  bus->freq          = config.freq;
   bus->target        = NULL;
 
   // Save the joybus configuration
   struct joybus_rp2xxx_data *data = &rp2xxx_bus->data;
-  data->gpio                      = gpio;
-  data->pio                       = pio;
+  data->gpio                      = config.gpio;
+  data->pio                       = config.pio;
   data->pio_configured            = false;
   data->state                     = BUS_STATE_DISABLED;
   data->last_transfer_time        = nil_time;

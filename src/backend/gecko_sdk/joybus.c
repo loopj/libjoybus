@@ -147,10 +147,10 @@ static inline unsigned long get_usart_ldma_signal(USART_TypeDef *usart)
 }
 
 // Process received SI edge timings into a byte
-static inline void decode_pulses(struct joybus *bus, uint8_t *dest, const uint16_t *src, uint16_t threshold,
-                                 uint8_t byte_index)
+static inline void decode_pulses(struct joybus *bus, uint8_t *dest, const uint16_t *src, uint8_t byte_index)
 {
   struct joybus_gecko_data *data = &JOYBUS_GECKO(bus)->data;
+  uint16_t threshold             = data->pulse_period_half;
 
   uint8_t result = 0;
   if (byte_index == 0) {
@@ -185,20 +185,6 @@ static inline void encode_byte(uint8_t *dest, uint8_t src)
   dest[1] = ((src & 0x20) ? BIT_1 : BIT_0) << 4 | ((src & 0x10) ? BIT_1 : BIT_0);
   dest[2] = ((src & 0x08) ? BIT_1 : BIT_0) << 4 | ((src & 0x04) ? BIT_1 : BIT_0);
   dest[3] = ((src & 0x02) ? BIT_1 : BIT_0) << 4 | ((src & 0x01) ? BIT_1 : BIT_0);
-}
-
-// Adjust TX timings for the bus mode
-static void set_tx_timings(struct joybus *bus)
-{
-  struct joybus_gecko_data *data = &JOYBUS_GECKO(bus)->data;
-
-  USART_BaudrateSyncSet(data->tx_usart, 0, bus->freq * CHIPS_PER_BIT);
-
-  if (bus->mode == JOYBUS_MODE_TARGET) {
-    data->tx_descriptors[2].xfer.srcAddr = (uint32_t)&TARGET_STOP;
-  } else {
-    data->tx_descriptors[2].xfer.srcAddr = (uint32_t)&HOST_STOP;
-  }
 }
 
 // Wait for the Joybus to be idle
@@ -271,8 +257,7 @@ static bool ldma_rx_handler(unsigned int chan, unsigned int iteration, void *use
 
   if (data->state == BUS_STATE_HOST_RX) {
     // Process the received pulses into the byte buffer
-    decode_pulses(bus, &data->read_buf[iteration - 1], data->rx_edge_timings[data->rx_current_buffer],
-                  data->pulse_period_half, iteration - 1);
+    decode_pulses(bus, &data->read_buf[iteration - 1], data->rx_edge_timings[data->rx_current_buffer], iteration - 1);
     data->rx_current_buffer ^= 1;
 
     if (iteration == data->read_len) {
@@ -305,8 +290,7 @@ static bool ldma_rx_handler(unsigned int chan, unsigned int iteration, void *use
     }
   } else if (data->state == BUS_STATE_TARGET_RX) {
     // Process the received pulses into the byte buffer
-    decode_pulses(bus, &data->read_buf[iteration - 1], data->rx_edge_timings[data->rx_current_buffer],
-                  data->pulse_period_half, iteration - 1);
+    decode_pulses(bus, &data->read_buf[iteration - 1], data->rx_edge_timings[data->rx_current_buffer], iteration - 1);
     data->rx_current_buffer ^= 1;
 
     // Handle the received byte
@@ -590,9 +574,9 @@ static int enable_tx(struct joybus *bus)
     LDMA_DESCRIPTOR_LINKREL_M2P_BYTE(data->tx_encoded_bytes[1], &(data->tx_usart->TXDATA), CHIPS_PER_BIT, -1);
   data->tx_descriptors[1].xfer.decLoopCnt = 1;
 
-  // LDMA stop bit descriptor
-  data->tx_descriptors[2] = (LDMA_Descriptor_t)
-    LDMA_DESCRIPTOR_SINGLE_M2P_BYTE(&HOST_STOP, &(data->tx_usart->TXDATA), 1);
+  // LDMA stop bit descriptor (the stop symbol differs between host and target)
+  data->tx_descriptors[2] = (LDMA_Descriptor_t)LDMA_DESCRIPTOR_SINGLE_M2P_BYTE(
+    bus->mode == JOYBUS_MODE_TARGET ? &TARGET_STOP : &HOST_STOP, &(data->tx_usart->TXDATA), 1);
   // clang-format on
 
   return 0;
@@ -640,7 +624,6 @@ static int joybus_gecko_enable(struct joybus *bus)
   sl_sleeptimer_init();
 
   if (bus->mode == JOYBUS_MODE_TARGET) {
-    set_tx_timings(bus);
     enter_target_read_mode(bus, true);
   } else {
     data->state = BUS_STATE_HOST_IDLE;
@@ -709,20 +692,19 @@ static const struct joybus_api gecko_api = {
   .transfer = joybus_gecko_transfer,
 };
 
-int joybus_gecko_init(struct joybus_gecko *gecko_bus, GPIO_Port_TypeDef port, uint8_t pin, TIMER_TypeDef *rx_timer,
-                      USART_TypeDef *tx_usart)
+int joybus_gecko_init(struct joybus_gecko *gecko_bus, struct joybus_gecko_config config)
 {
   struct joybus *bus = JOYBUS(gecko_bus);
   bus->api           = &gecko_api;
-  bus->freq          = JOYBUS_FREQ_NOMINAL;
+  bus->freq          = config.freq;
   bus->target        = NULL;
 
   // Save the joybus configuration
   struct joybus_gecko_data *data = &gecko_bus->data;
-  data->gpio_port                = port;
-  data->gpio_pin                 = pin;
-  data->rx_timer                 = rx_timer;
-  data->tx_usart                 = tx_usart;
+  data->gpio_port                = config.gpio_port;
+  data->gpio_pin                 = config.gpio_pin;
+  data->rx_timer                 = config.rx_timer;
+  data->tx_usart                 = config.tx_usart;
   data->state                    = BUS_STATE_DISABLED;
 
   return 0;
