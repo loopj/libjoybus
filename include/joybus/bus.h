@@ -176,31 +176,31 @@ int joybus_transfer_sync(struct joybus *bus, const uint8_t *write_buf, uint8_t w
                          uint8_t read_len);
 
 /**
- * Register a target to handle commands received in target mode.
+ * Attach a target to handle commands received in target mode.
  *
  * @param bus the Joybus instance to use
- * @param target the target to register
+ * @param target the target to attach
  * @return 0 on success, a negative joybus_error on failure
  */
-static inline int joybus_target_register(struct joybus *bus, struct joybus_target *target)
+static inline int joybus_attach_target(struct joybus *bus, struct joybus_target *target)
 {
-  bus->target        = target;
-  target->registered = true;
+  bus->target      = target;
+  target->attached = true;
 
   return 0;
 }
 
 /**
- * Unregister a Joybus target.
+ * Detach a target from the bus.
  *
  * @param bus the Joybus instance to use
- * @param target the target to unregister
+ * @param target the target to detach
  * @return 0 on success, a negative joybus_error on failure
  */
-static inline int joybus_target_unregister(struct joybus *bus, struct joybus_target *target)
+static inline int joybus_detach_target(struct joybus *bus, struct joybus_target *target)
 {
-  bus->target        = NULL;
-  target->registered = false;
+  bus->target      = NULL;
+  target->attached = false;
 
   return 0;
 }

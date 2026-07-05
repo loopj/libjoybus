@@ -20,8 +20,8 @@
  *
  * To create your own target, define a struct whose first member is a
  * ::joybus_target (so it can be cast through ::JOYBUS_TARGET), point its api
- * at a ::joybus_target_api table, and register it on a bus with
- * joybus_target_register().
+ * at a ::joybus_target_api table, and attach it to a bus with
+ * joybus_attach_target().
  *
  * @{
  */
@@ -72,8 +72,8 @@ struct joybus_target {
   /// API for handling received commands
   const struct joybus_target_api *api;
 
-  /// Whether the target is currently registered on the bus
-  bool registered;
+  /// Whether the target is currently attached to a bus
+  bool attached;
 };
 
 /**
@@ -89,7 +89,7 @@ struct joybus_target {
 static inline int joybus_target_byte_received(struct joybus_target *target, const uint8_t *command, uint8_t byte_idx,
                                               joybus_target_response_cb send_response, void *user_data)
 {
-  // No target registered to handle the command
+  // No target attached to handle the command
   if (!target)
     return -JOYBUS_ERR_NOT_SUPPORTED;
 
@@ -97,14 +97,14 @@ static inline int joybus_target_byte_received(struct joybus_target *target, cons
 }
 
 /**
- * Check if a target is currently registered on the bus.
+ * Check if a target is currently attached to a bus.
  *
  * @param target the target to check
- * @return true if the target is registered, false otherwise
+ * @return true if the target is attached, false otherwise
  */
-static inline bool joybus_target_is_registered(struct joybus_target *target)
+static inline bool joybus_target_is_attached(struct joybus_target *target)
 {
-  return target->registered;
+  return target->attached;
 }
 
 /** @} */

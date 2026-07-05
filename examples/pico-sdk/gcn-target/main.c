@@ -25,8 +25,8 @@ int main()
   // Initialize a GameCube controller target as a standard controller
   joybus_target_gcn_controller_init(&gcn_controller);
 
-  // Register the target on the bus
-  joybus_target_register(bus, JOYBUS_TARGET(&gcn_controller));
+  // Attach the target to the bus
+  joybus_attach_target(bus, JOYBUS_TARGET(&gcn_controller));
 
   // Enable the Joybus in target mode
   joybus_enable(bus, JOYBUS_MODE_TARGET);

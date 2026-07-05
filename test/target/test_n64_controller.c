@@ -84,7 +84,7 @@ static void fill_payload(uint8_t payload[JOYBUS_PAK_BLOCK_SIZE])
 
 void setUp(void)
 {
-  // init zeroes the whole struct itself, including the registered flag
+  // init zeroes the whole struct itself, including the attached flag
   joybus_target_n64_controller_init(&controller);
 
   // Set up the fake pak, detached until a test attaches it
@@ -131,11 +131,11 @@ static void test_attach_pak_before_registration(void)
   TEST_ASSERT_EQUAL_HEX8(JOYBUS_STATUS_N64_PAK_PRESENT, controller.id.status);
 }
 
-// Test that attaching a pak while registered reports it as changed (present and pulled together)
-static void test_attach_pak_while_registered(void)
+// Test that attaching a pak while attached reports it as changed (present and pulled together)
+static void test_attach_pak_while_attached(void)
 {
   // Simulate "powered on" without involving a bus
-  controller.base.registered = true;
+  controller.base.attached = true;
 
   joybus_target_n64_controller_attach_pak(&controller, &pak);
 
@@ -174,7 +174,7 @@ static void test_identify(void)
 // Test that identify reports "pak changed" exactly once, then "pak present"
 static void test_identify_acks_pak_changed(void)
 {
-  controller.base.registered = true;
+  controller.base.attached = true;
   joybus_target_n64_controller_attach_pak(&controller, &pak);
 
   uint8_t command[] = {JOYBUS_CMD_IDENTIFY};
@@ -399,7 +399,7 @@ static void test_pak_read_no_pak(void)
 // Test that a pak read is refused while the pak change has not been acknowledged by an identify
 static void test_pak_read_refused_while_pak_changed(void)
 {
-  controller.base.registered = true;
+  controller.base.attached = true;
   joybus_target_n64_controller_attach_pak(&controller, &pak);
 
   uint16_t addr     = valid_pak_addr(0x8000);
@@ -492,7 +492,7 @@ static void test_pak_write_no_pak(void)
 // Test that a pak write is refused while the pak change has not been acknowledged by an identify
 static void test_pak_write_refused_while_pak_changed(void)
 {
-  controller.base.registered = true;
+  controller.base.attached = true;
   joybus_target_n64_controller_attach_pak(&controller, &pak);
 
   uint8_t payload[JOYBUS_PAK_BLOCK_SIZE];
@@ -545,7 +545,7 @@ static void test_unknown_command_not_supported(void)
 // Test the full pak lifecycle as the host sees it (absent -> changed -> present -> pulled)
 static void test_pak_lifecycle(void)
 {
-  controller.base.registered = true;
+  controller.base.attached = true;
   uint8_t identify[]         = {JOYBUS_CMD_IDENTIFY};
 
   // No pak after power-on
@@ -570,7 +570,7 @@ static void test_pak_lifecycle(void)
 // Test that pak reads start working after an identify acknowledges the hotplugged pak
 static void test_pak_read_works_after_changed_acked(void)
 {
-  controller.base.registered = true;
+  controller.base.attached = true;
   joybus_target_n64_controller_attach_pak(&controller, &pak);
 
   uint16_t addr      = valid_pak_addr(0x8000);
@@ -595,7 +595,7 @@ int main(void)
   // State API
   RUN_TEST(test_init_defaults);
   RUN_TEST(test_attach_pak_before_registration);
-  RUN_TEST(test_attach_pak_while_registered);
+  RUN_TEST(test_attach_pak_while_attached);
   RUN_TEST(test_detach_pak);
 
   // Identify

@@ -273,7 +273,7 @@ void joybus_target_n64_controller_attach_pak(struct joybus_target_n64_controller
   controller->pak = pak;
 
   joybus_id_clear_status_flags(&controller->id, JOYBUS_STATUS_N64_PAK_PRESENT | JOYBUS_STATUS_N64_PAK_PULLED);
-  if (joybus_target_is_registered(JOYBUS_TARGET(controller))) {
+  if (joybus_target_is_attached(JOYBUS_TARGET(controller))) {
     joybus_id_set_status_flags(&controller->id, JOYBUS_STATUS_N64_PAK_PRESENT | JOYBUS_STATUS_N64_PAK_PULLED);
   } else {
     joybus_id_set_status_flags(&controller->id, JOYBUS_STATUS_N64_PAK_PRESENT);

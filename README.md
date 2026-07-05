@@ -81,7 +81,7 @@ void read_controller() {
 }
 
 void main() {
-  // Initialize the Joybus and enable it as a host
+  // Initialize the Joybus and enable it in host mode
   joybus_rp2xxx_init(&rp2xxx_bus, MY_GPIO, pio0);
   joybus_enable(bus, JOYBUS_MODE_HOST);
 
@@ -112,11 +112,11 @@ void main() {
   // Initialize the Joybus
   joybus_rp2xxx_init(&rp2xxx_bus, MY_GPIO, pio0);
 
-  // Initialize a GameCube controller target and register it on the bus
+  // Initialize a GameCube controller target and attach it to the bus
   joybus_target_gcn_controller_init(&controller);
-  joybus_target_register(bus, JOYBUS_TARGET(&controller));
+  joybus_attach_target(bus, JOYBUS_TARGET(&controller));
 
-  // Enable the Joybus as a target once the target handler is registered
+  // Enable the Joybus in target mode
   joybus_enable(bus, JOYBUS_MODE_TARGET);
 
   // At this point the target will respond to commands from a connected console!

@@ -481,7 +481,7 @@ static inline void prepare_write(struct joybus *bus, const uint8_t *buffer, uint
                            ldma_tx_handler, bus);
 }
 
-// Callback for handling a command response from the registered target
+// Callback for handling a command response from the attached target
 static void handle_command_response(const uint8_t *buffer, uint8_t length, void *user_data)
 {
   struct joybus *bus = (struct joybus *)user_data;
