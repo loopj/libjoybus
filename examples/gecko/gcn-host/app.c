@@ -9,8 +9,6 @@
 // Change these defines to match your hardware setup
 #define JOYBUS_PORT             gpioPortD
 #define JOYBUS_PIN              3
-#define JOYBUS_TIMER            TIMER0
-#define JOYBUS_USART            USART0
 #define LED_PORT                gpioPortA
 #define LED_PIN                 4
 
@@ -91,7 +89,7 @@ void app_init(void)
   GPIO_PinModeSet(LED_PORT, LED_PIN, gpioModePushPull, 0);
 
   // Initialize Joybus
-  joybus_gecko_init(&gecko_bus, JOYBUS_PORT, JOYBUS_PIN, JOYBUS_TIMER, JOYBUS_USART);
+  joybus_gecko_init(&gecko_bus, joybus_gecko_config_default(JOYBUS_PORT, JOYBUS_PIN));
   joybus_enable(bus, JOYBUS_MODE_HOST);
 
   // Poll for Joybus data at regular intervals

@@ -80,7 +80,7 @@ int main()
   gpio_put(LED_GPIO, 0);
 
   // Initialize Joybus
-  joybus_rp2xxx_init(&rp2xxx_bus, JOYBUS_GPIO, pio0);
+  joybus_rp2xxx_init(&rp2xxx_bus, joybus_rp2xxx_config_default(JOYBUS_GPIO));
   joybus_enable(bus, JOYBUS_MODE_HOST);
 
   // Poll the controller once per "frame"
