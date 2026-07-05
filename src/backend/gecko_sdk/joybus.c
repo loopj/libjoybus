@@ -31,11 +31,6 @@
 #include <joybus/backend/gecko.h>
 
 enum {
-  BUS_MODE_HOST,
-  BUS_MODE_TARGET,
-};
-
-enum {
   BUS_STATE_DISABLED,
   BUS_STATE_HOST_IDLE,
   BUS_STATE_HOST_TX,
@@ -51,6 +46,7 @@ static const uint8_t HOST_STOP   = 0b01111111;
 static const uint8_t TARGET_STOP = 0b00111111;
 
 static void enter_target_read_mode(struct joybus *bus, bool await_idle);
+static void enter_idle_mode(struct joybus *bus, bool await_idle);
 static void handle_command_response(const uint8_t *buffer, uint8_t length, void *user_data);
 static bool ldma_tx_handler(unsigned int chan, unsigned int iteration, void *user_data);
 
@@ -191,12 +187,12 @@ static inline void encode_byte(uint8_t *dest, uint8_t src)
   dest[3] = ((src & 0x02) ? BIT_1 : BIT_0) << 4 | ((src & 0x01) ? BIT_1 : BIT_0);
 }
 
-// Adjust TX timings for host/target mode
-static void set_tx_timings(struct joybus *bus, uint8_t mode)
+// Adjust TX timings for the bus mode
+static void set_tx_timings(struct joybus *bus)
 {
   struct joybus_gecko_data *data = &JOYBUS_GECKO(bus)->data;
 
-  if (mode == BUS_MODE_TARGET) {
+  if (bus->mode == JOYBUS_MODE_TARGET) {
     USART_BaudrateSyncSet(data->tx_usart, 0, data->target_freq * CHIPS_PER_BIT);
     data->tx_descriptors[2].xfer.srcAddr = (uint32_t)&TARGET_STOP;
   } else {
@@ -242,11 +238,7 @@ void transfer_timeout(sl_sleeptimer_timer_handle_t *handle, void *user_data)
   struct joybus_gecko_data *data = &JOYBUS_GECKO(bus)->data;
 
   // Timeout occurred, switch back to idle/read mode
-  if (bus->target) {
-    enter_target_read_mode(bus, true);
-  } else {
-    data->state = BUS_STATE_HOST_IDLE;
-  }
+  enter_idle_mode(bus, true);
 
   // Call the transfer complete callback with an error
   if (data->done_callback)
@@ -260,11 +252,7 @@ void target_rx_timeout(sl_sleeptimer_timer_handle_t *handle, void *user_data)
   struct joybus_gecko_data *data = &JOYBUS_GECKO(bus)->data;
 
   // Timeout occurred, switch back to idle/read mode
-  if (bus->target) {
-    enter_target_read_mode(bus, true);
-  } else {
-    data->state = BUS_STATE_HOST_IDLE;
-  }
+  enter_idle_mode(bus, true);
 }
 
 static inline uint32_t sl_sleeptimer_us_to_tick(uint32_t time_us)
@@ -293,11 +281,7 @@ static bool ldma_rx_handler(unsigned int chan, unsigned int iteration, void *use
       TIMER_Enable(data->rx_timer, false);
 
       // Switch back to idle/read mode
-      if (bus->target) {
-        enter_target_read_mode(bus, true);
-      } else {
-        data->state = BUS_STATE_HOST_IDLE;
-      }
+      enter_idle_mode(bus, true);
 
       // Call the transfer complete callback with a success status
       if (data->done_callback)
@@ -342,11 +326,7 @@ static bool ldma_rx_handler(unsigned int chan, unsigned int iteration, void *use
         TIMER_Enable(data->rx_timer, false);
 
         // No response to send, switch back to read mode or idle
-        if (bus->target) {
-          enter_target_read_mode(bus, false);
-        } else {
-          data->state = BUS_STATE_HOST_IDLE;
-        }
+        enter_idle_mode(bus, false);
       }
 
       // Cancel rx timeout
@@ -367,11 +347,7 @@ static bool ldma_rx_handler(unsigned int chan, unsigned int iteration, void *use
       TIMER_Enable(data->rx_timer, false);
 
       // Switch back to idle/read mode
-      if (bus->target) {
-        enter_target_read_mode(bus, true);
-      } else {
-        data->state = BUS_STATE_HOST_IDLE;
-      }
+      enter_idle_mode(bus, true);
 
       // Cancel rx timeout
       sl_sleeptimer_stop_timer(&data->rx_timeout_timer);
@@ -420,14 +396,9 @@ static bool ldma_tx_handler(unsigned int chan, unsigned int iteration, void *use
           data->done_callback(bus, 0, data->done_user_data);
       }
     } else if (data->state == BUS_STATE_TARGET_TX) {
-      // If we are handling a command response (target mode), and a target is
-      // still registered, flip back into read mode to listen for the next
-      // command. Otherwise, go idle.
-      if (bus->target) {
-        enter_target_read_mode(bus, false);
-      } else {
-        data->state = BUS_STATE_HOST_IDLE;
-      }
+      // After sending a command response, flip back into read mode to listen
+      // for the next command.
+      enter_idle_mode(bus, false);
     }
   }
 
@@ -467,6 +438,16 @@ static void enter_target_read_mode(struct joybus *bus, bool await_idle)
   data->state = BUS_STATE_TARGET_RX;
 }
 
+// Return to the resting state for the bus mode: target read mode, or host idle
+static void enter_idle_mode(struct joybus *bus, bool await_idle)
+{
+  if (bus->mode == JOYBUS_MODE_TARGET) {
+    enter_target_read_mode(bus, await_idle);
+  } else {
+    JOYBUS_GECKO(bus)->data.state = BUS_STATE_HOST_IDLE;
+  }
+}
+
 // Prepare an SI write operation by pre-encoding the first one or two bytes
 static inline void prepare_write(struct joybus *bus, const uint8_t *buffer, uint8_t length)
 {
@@ -500,7 +481,7 @@ static inline void prepare_write(struct joybus *bus, const uint8_t *buffer, uint
                            ldma_tx_handler, bus);
 }
 
-// Callback for handling a command response from the registered target
+// Callback for handling a command response from the attached target
 static void handle_command_response(const uint8_t *buffer, uint8_t length, void *user_data)
 {
   struct joybus *bus = (struct joybus *)user_data;
@@ -659,8 +640,8 @@ static int joybus_gecko_enable(struct joybus *bus)
   // Initialize sleeptimer for timeouts
   sl_sleeptimer_init();
 
-  if (bus->target) {
-    set_tx_timings(bus, BUS_MODE_TARGET);
+  if (bus->mode == JOYBUS_MODE_TARGET) {
+    set_tx_timings(bus);
     enter_target_read_mode(bus, true);
   } else {
     data->state = BUS_STATE_HOST_IDLE;
@@ -723,44 +704,10 @@ static int joybus_gecko_transfer(struct joybus *bus, const uint8_t *write_buf, u
   return 0;
 }
 
-static int joybus_gecko_target_register(struct joybus *bus, struct joybus_target *target)
-{
-  struct joybus_gecko_data *data = &JOYBUS_GECKO(bus)->data;
-
-  // Immediately start listening for commands if the bus is enabled
-  if (data->state != BUS_STATE_DISABLED) {
-    set_tx_timings(bus, BUS_MODE_TARGET);
-    enter_target_read_mode(bus, true);
-  }
-
-  return 0;
-}
-
-static int joybus_gecko_target_unregister(struct joybus *bus, struct joybus_target *target)
-{
-  struct joybus_gecko_data *data = &JOYBUS_GECKO(bus)->data;
-
-  if (data->state != BUS_STATE_DISABLED) {
-    // Cancel any ongoing RX/TX
-    TIMER_Enable(data->rx_timer, false);
-    DMADRV_StopTransfer(data->tx_dma_channel);
-
-    // Set TX timings back to host mode
-    set_tx_timings(bus, BUS_MODE_HOST);
-  }
-
-  // Set bus state to idle
-  data->state = BUS_STATE_HOST_IDLE;
-
-  return 0;
-}
-
 static const struct joybus_api gecko_api = {
-  .enable            = joybus_gecko_enable,
-  .disable           = joybus_gecko_disable,
-  .transfer          = joybus_gecko_transfer,
-  .target_register   = joybus_gecko_target_register,
-  .target_unregister = joybus_gecko_target_unregister,
+  .enable   = joybus_gecko_enable,
+  .disable  = joybus_gecko_disable,
+  .transfer = joybus_gecko_transfer,
 };
 
 int joybus_gecko_init(struct joybus_gecko *gecko_bus, GPIO_Port_TypeDef port, uint8_t pin, TIMER_TypeDef *rx_timer,

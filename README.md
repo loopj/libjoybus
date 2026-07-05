@@ -81,9 +81,9 @@ void read_controller() {
 }
 
 void main() {
-  // Initialize the Joybus
+  // Initialize the Joybus and enable it in host mode
   joybus_rp2xxx_init(&rp2xxx_bus, MY_GPIO, pio0);
-  joybus_enable(bus);
+  joybus_enable(bus, JOYBUS_MODE_HOST);
 
   // Read the controller state in a loop
   while (1) {
@@ -109,13 +109,15 @@ struct joybus *bus = JOYBUS(&rp2xxx_bus);
 struct joybus_target_gcn_controller controller;
 
 void main() {
-  // Initialize and enable the Joybus
+  // Initialize the Joybus
   joybus_rp2xxx_init(&rp2xxx_bus, MY_GPIO, pio0);
-  joybus_enable(bus);
 
-  // Initialize a GameCube controller target and register it on the bus
+  // Initialize a GameCube controller target and attach it to the bus
   joybus_target_gcn_controller_init(&controller);
-  joybus_target_register(bus, JOYBUS_TARGET(&controller));
+  joybus_attach_target(bus, JOYBUS_TARGET(&controller));
+
+  // Enable the Joybus in target mode
+  joybus_enable(bus, JOYBUS_MODE_TARGET);
 
   // At this point the target will respond to commands from a connected console!
   // Modify the input state as needed, for example based on GPIO or ADC readings

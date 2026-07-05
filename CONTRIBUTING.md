@@ -8,16 +8,14 @@ Each backend is expected to implement a `joybus_backend_init(...)` function, and
 
 ```c
 static const struct joybus_api mybackend_api = {
-  .enable            = joybus_mybackend_enable,
-  .disable           = joybus_mybackend_disable,
-  .transfer          = joybus_mybackend_transfer,
-  .target_register   = joybus_mybackend_target_register,
-  .target_unregister = joybus_mybackend_target_unregister,
+  .enable   = joybus_mybackend_enable,
+  .disable  = joybus_mybackend_disable,
+  .transfer = joybus_mybackend_transfer,
 };
 
 int joybus_mybackend_init(struct joybus *bus, ...)
 {
-  bus->api    = &mybackend_api;
+  bus->api = &mybackend_api;
 
   // Rest of initialization code...
 

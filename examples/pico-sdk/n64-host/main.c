@@ -81,7 +81,7 @@ int main()
 
   // Initialize Joybus
   joybus_rp2xxx_init(&rp2xxx_bus, JOYBUS_GPIO, pio0);
-  joybus_enable(bus);
+  joybus_enable(bus, JOYBUS_MODE_HOST);
 
   // Poll the controller once per "frame"
   absolute_time_t next_frame = get_absolute_time();

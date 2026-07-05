@@ -34,7 +34,7 @@ struct joybus_rp2xxx_data {
   // PIO instance and state machine
   PIO pio;
   uint pio_sm;
-  uint8_t pio_sm_mode;
+  bool pio_configured;
 
   // DMA configuration
   uint dma_chan_tx;

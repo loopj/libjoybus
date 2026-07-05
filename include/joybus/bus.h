@@ -61,6 +61,14 @@ struct joybus;
 #define JOYBUS(bus) ((struct joybus *)(bus))
 
 /**
+ * The role a Joybus instance plays on the bus.
+ */
+enum joybus_mode {
+  JOYBUS_MODE_HOST,
+  JOYBUS_MODE_TARGET,
+};
+
+/**
  * Function type for transfer completion callbacks.
  *
  * Invoked once, after the async call has returned, when a started transfer
@@ -79,8 +87,6 @@ struct joybus_api {
   int (*disable)(struct joybus *bus);
   int (*transfer)(struct joybus *bus, const uint8_t *write_buf, uint8_t write_len, uint8_t *read_buf, uint8_t read_len,
                   joybus_transfer_cb callback, void *user_data);
-  int (*target_register)(struct joybus *bus, struct joybus_target *target);
-  int (*target_unregister)(struct joybus *bus, struct joybus_target *target);
 };
 
 struct joybus_host_op {
@@ -96,6 +102,7 @@ struct joybus_host_op {
 struct joybus {
   const struct joybus_api *api;
 
+  enum joybus_mode mode;
   struct joybus_target *target;
   uint8_t command_buffer[JOYBUS_BLOCK_SIZE];
   uint8_t response_buffer[JOYBUS_BLOCK_SIZE];
@@ -103,12 +110,18 @@ struct joybus {
 };
 
 /**
- * Enable the Joybus instance.
+ * Enable the Joybus instance in the given mode.
+ *
+ * Spins up the backend peripherals and starts operating as a host or a target.
+ * The mode applies until the instance is disabled; to switch modes, disable the
+ * instance and enable it again with the other mode.
  *
  * @param bus the Joybus instance to enable
+ * @param mode whether to operate as a host or a target
  */
-static inline int joybus_enable(struct joybus *bus)
+static inline int joybus_enable(struct joybus *bus, enum joybus_mode mode)
 {
+  bus->mode = mode;
   return bus->api->enable(bus);
 }
 
@@ -163,39 +176,33 @@ int joybus_transfer_sync(struct joybus *bus, const uint8_t *write_buf, uint8_t w
                          uint8_t read_len);
 
 /**
- * Enable Joybus "target" mode, and register a target to handle commands.
+ * Attach a target to handle commands received in target mode.
  *
  * @param bus the Joybus instance to use
- * @param target the target to register
+ * @param target the target to attach
  * @return 0 on success, a negative joybus_error on failure
  */
-static inline int joybus_target_register(struct joybus *bus, struct joybus_target *target)
+static inline int joybus_attach_target(struct joybus *bus, struct joybus_target *target)
 {
-  // Common setup
-  bus->target        = target;
-  target->registered = true;
+  bus->target      = target;
+  target->attached = true;
 
-  // Backend-specific registration
-  return bus->api->target_register(bus, target);
+  return 0;
 }
 
 /**
- * Unregister a Joybus target.
+ * Detach a target from the bus.
  *
  * @param bus the Joybus instance to use
- * @param target the target to unregister
+ * @param target the target to detach
  * @return 0 on success, a negative joybus_error on failure
  */
-static inline int joybus_target_unregister(struct joybus *bus, struct joybus_target *target)
+static inline int joybus_detach_target(struct joybus *bus, struct joybus_target *target)
 {
-  // Backend-specific unregistration
-  int status = bus->api->target_unregister(bus, target);
+  bus->target      = NULL;
+  target->attached = false;
 
-  // Common teardown
-  bus->target        = NULL;
-  target->registered = false;
-
-  return status;
+  return 0;
 }
 
 // Context for a blocking Joybus operation

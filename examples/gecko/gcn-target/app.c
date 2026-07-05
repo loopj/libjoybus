@@ -29,13 +29,15 @@ void app_init(void)
 
   // Initialize the Joybus
   joybus_gecko_init(&gecko_bus, JOYBUS_DATA_PORT, JOYBUS_DATA_PIN, JOYBUS_TIMER, JOYBUS_USART);
-  joybus_enable(bus);
 
   // Initialize a GameCube controller target as a standard controller
   joybus_target_gcn_controller_init(&gcn_controller);
 
-  // Register the target on the bus
-  joybus_target_register(bus, JOYBUS_TARGET(&gcn_controller));
+  // Attach the target to the bus
+  joybus_attach_target(bus, JOYBUS_TARGET(&gcn_controller));
+
+  // Enable the Joybus in target mode
+  joybus_enable(bus, JOYBUS_MODE_TARGET);
 }
 
 void app_process_action(void)
