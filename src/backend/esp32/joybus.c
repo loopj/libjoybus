@@ -248,6 +248,9 @@ static IRAM_ATTR void transfer_finish(struct joybus *bus, int status)
 {
   struct joybus_esp32_data *data = &JOYBUS_ESP32(bus)->data;
 
+  // Return to idle BEFORE the callback, since apps could kick off a new transfer from inside done_callback
+  data->state = BUS_STATE_HOST_IDLE;
+
   // Disable RX
   rmt_ll_rx_enable(&RMT, data->rmt_rx_ch, false);
 
@@ -260,9 +263,6 @@ static IRAM_ATTR void transfer_finish(struct joybus *bus, int status)
   // Call the transfer complete callback with status
   if (data->done_callback)
     data->done_callback(bus, status, data->done_user_data);
-
-  // Transition state
-  data->state = BUS_STATE_HOST_IDLE;
 }
 
 // Handle host tx complete (all command bytes sent)
