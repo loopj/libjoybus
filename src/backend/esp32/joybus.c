@@ -109,9 +109,6 @@ static IRAM_ATTR void start_write(struct joybus *bus)
   struct joybus_esp32_data *data  = &JOYBUS_ESP32(bus)->data;
   volatile rmt_symbol_word_t *mem = RMTMEM[data->rmt_tx_ch];
 
-  // Reset RMT TX pointer
-  rmt_ll_tx_reset_pointer(&RMT, data->rmt_tx_ch);
-
   // Write the first byte's first symbol, fire immediately, then fill the rest of the byte
   uint8_t v0 = data->write_buf[0];
   for (uint16_t off = 0; off < SYMBOLS_PER_BYTE; off++) {
@@ -205,6 +202,9 @@ static IRAM_ATTR void enter_target_rx_mode(struct joybus *bus)
   rmt_ll_rx_set_mem_owner(&RMT, data->rmt_rx_ch, RMT_LL_MEM_OWNER_HW);
   rmt_ll_rx_reset_pointer(&RMT, data->rmt_rx_ch);
 
+  // Reset the TX read pointer now, while we are idle
+  rmt_ll_tx_reset_pointer(&RMT, data->rmt_tx_ch);
+
   // Enable RX
   rmt_ll_rx_enable(&RMT, data->rmt_rx_ch, true);
 
@@ -241,6 +241,10 @@ static IRAM_ATTR void transfer_start(struct joybus *bus)
     rmt_ll_rx_enable(&RMT, data->rmt_rx_ch, true);
   }
 
+  // Reset the TX read pointer
+  rmt_ll_tx_reset_pointer(&RMT, data->rmt_tx_ch);
+
+  // Start the write
   start_write(bus);
 
   // Transition state
@@ -327,17 +331,22 @@ static inline IRAM_ATTR void target_byte_received(struct joybus *bus)
   int rc = joybus_target_byte_received(bus->target, data->read_buf, data->read_count, handle_command_response, bus);
   if (rc == 0) {
     // No more bytes expected
-    // Stop input capture
-    rmt_ll_rx_enable(&RMT, data->rmt_rx_ch, false);
-    rmt_ll_clear_interrupt_status(&RMT, RMT_LL_EVENT_RX_DONE(data->rmt_rx_ch));
-
-    // Start the response transfer if there is one
     if (data->write_len > 0) {
+      // A response is expected - switch to target TX mode and kick off the write
       data->state = BUS_STATE_TARGET_TX;
-      rmt_ll_clear_interrupt_status(&RMT, RMT_LL_EVENT_TX_DONE(data->rmt_tx_ch));
       start_write(bus);
+
+      // Stop capturing and clear interrupt status
+      rmt_ll_rx_enable(&RMT, data->rmt_rx_ch, false);
+      rmt_ll_clear_interrupt_status(&RMT, RMT_LL_EVENT_RX_DONE(data->rmt_rx_ch));
+      rmt_ll_clear_interrupt_status(&RMT, RMT_LL_EVENT_TX_DONE(data->rmt_tx_ch));
     } else {
-      // No response to send, switch back to target read mode
+      // No response to send
+      // Stop capturing and clear interrupt status
+      rmt_ll_rx_enable(&RMT, data->rmt_rx_ch, false);
+      rmt_ll_clear_interrupt_status(&RMT, RMT_LL_EVENT_RX_DONE(data->rmt_rx_ch));
+
+      // Switch back to target read mode
       enter_target_rx_mode(bus);
     }
   } else if (rc > 0) {
