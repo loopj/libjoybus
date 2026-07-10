@@ -1,3 +1,7 @@
+/**
+ * Espressif ESP32 implementation
+ */
+
 #include <joybus/bus.h>
 #include <joybus/errors.h>
 #include <joybus/target.h>
@@ -5,14 +9,27 @@
 
 #include <esp_attr.h>
 #include <esp_clk_tree.h>
+#include <esp_idf_version.h>
 #include <esp_intr_alloc.h>
 #include <esp_rom_gpio.h>
 #include <esp_timer.h>
 #include <esp_private/periph_ctrl.h>
 #include <hal/rmt_ll.h>
 #include <soc/clk_tree_defs.h>
-#include <soc/rmt_periph.h>
 #include <soc/soc_caps.h>
+
+// Compatibility macros for ESP-IDF v5 vs v6
+#if ESP_IDF_VERSION_MAJOR >= 6
+#include <hal/rmt_periph.h>
+#define JOYBUS_RMT_GROUP0             soc_rmt_signals[0]
+#define JOYBUS_RMT_CHANNELS_PER_GROUP RMT_LL_CHANS_PER_INST
+#define JOYBUS_RMT_TX_CANDIDATES      RMT_LL_TX_CANDIDATES_PER_INST
+#else
+#include <soc/rmt_periph.h>
+#define JOYBUS_RMT_GROUP0             rmt_periph_signals.groups[0]
+#define JOYBUS_RMT_CHANNELS_PER_GROUP SOC_RMT_CHANNELS_PER_GROUP
+#define JOYBUS_RMT_TX_CANDIDATES      SOC_RMT_TX_CANDIDATES_PER_GROUP
+#endif
 
 // Internal bus state
 enum {
@@ -48,7 +65,7 @@ enum {
 #endif
 
 // Direct access to RMT memory (linker-provided symbol)
-extern volatile rmt_symbol_word_t RMTMEM[SOC_RMT_CHANNELS_PER_GROUP][SOC_RMT_MEM_WORDS_PER_CHANNEL];
+extern volatile rmt_symbol_word_t RMTMEM[JOYBUS_RMT_CHANNELS_PER_GROUP][SOC_RMT_MEM_WORDS_PER_CHANNEL];
 
 // Encode a byte from write_buf into RMT TX memory
 static inline IRAM_ATTR void encode_byte(struct joybus_esp32_data *data, uint16_t byte_idx)
@@ -424,7 +441,7 @@ static void enable_rx(struct joybus *bus, uint32_t rmt_clk_freq)
   rmt_ll_rx_set_idle_thres(&RMT, data->rmt_rx_ch, idle_thres);
 
   // Route the Joybus GPIO to the RMT RX channel
-  esp_rom_gpio_connect_in_signal(data->gpio, rmt_periph_signals.groups[0].channels[data->rmt_rx_mem_ch].rx_sig, false);
+  esp_rom_gpio_connect_in_signal(data->gpio, JOYBUS_RMT_GROUP0.channels[data->rmt_rx_mem_ch].rx_sig, false);
 
   // Enable RX interrupts
   rmt_ll_clear_interrupt_status(&RMT, RMT_LL_EVENT_RX_THRES(data->rmt_rx_ch) | RMT_LL_EVENT_RX_DONE(data->rmt_rx_ch));
@@ -457,8 +474,7 @@ static void enable_tx(struct joybus *bus, uint32_t rmt_clk_freq)
   rmt_ll_tx_stop(&RMT, data->rmt_tx_ch);
 
   // Route the TX output to the Joybus GPIO
-  esp_rom_gpio_connect_out_signal(data->gpio, rmt_periph_signals.groups[0].channels[data->rmt_tx_ch].tx_sig, false,
-                                  false);
+  esp_rom_gpio_connect_out_signal(data->gpio, JOYBUS_RMT_GROUP0.channels[data->rmt_tx_ch].tx_sig, false, false);
 
   // Enable TX interrupts
   rmt_ll_clear_interrupt_status(&RMT, RMT_LL_EVENT_TX_DONE(data->rmt_tx_ch));
@@ -504,8 +520,7 @@ static int joybus_esp32_enable(struct joybus *bus)
   enable_tx(bus, rmt_clk_freq);
 
   // Allocate the RMT interrupt handler
-  if (esp_intr_alloc(rmt_periph_signals.groups[0].irq, ESP_INTR_FLAG_LEVEL3, rmt_irq_handler, bus, &data->rmt_intr) !=
-      0)
+  if (esp_intr_alloc(JOYBUS_RMT_GROUP0.irq, ESP_INTR_FLAG_LEVEL3, rmt_irq_handler, bus, &data->rmt_intr) != 0)
     return -JOYBUS_ERR_NOT_SUPPORTED;
 
   // Setup transfer start timer
@@ -627,7 +642,7 @@ int joybus_esp32_init(struct joybus_esp32 *esp32_bus, struct joybus_esp32_config
   data->gpio                     = config.gpio;
   data->rmt_tx_ch                = config.rmt_tx_ch;
   data->rmt_rx_ch                = config.rmt_rx_ch;
-  data->rmt_rx_mem_ch            = config.rmt_rx_ch + (SOC_RMT_CHANNELS_PER_GROUP - SOC_RMT_TX_CANDIDATES_PER_GROUP);
+  data->rmt_rx_mem_ch            = config.rmt_rx_ch + (JOYBUS_RMT_CHANNELS_PER_GROUP - JOYBUS_RMT_TX_CANDIDATES);
   data->rmt_intr                 = NULL;
   data->transfer_start_timer     = NULL;
   data->rx_timeout_timer         = NULL;
