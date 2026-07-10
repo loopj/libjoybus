@@ -1,8 +1,2 @@
 # Applied on top of `idf.py set-target esp32s3`.
 CONFIG_ESP_CONSOLE_UART_DEFAULT=y
-
-# Keep the RMT RX path in IRAM so flash execute-in-place cache misses can't add jitter to the
-# command-to-response turnaround. These are performance tuning, not requirements -- the esp32
-# backend adapts to whichever way they are set.
-CONFIG_RMT_ISR_IRAM_SAFE=y
-CONFIG_RMT_RECV_FUNC_IN_IRAM=y

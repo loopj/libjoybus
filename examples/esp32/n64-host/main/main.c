@@ -7,7 +7,7 @@
 #include <joybus/host/n64_rumble_pak.h>
 
 #define JOYBUS_GPIO          1
-#define LED_GPIO             1
+#define LED_GPIO             2
 
 #define POLL_INTERVAL_MS     16
 #define IDENTIFY_INTERVAL_MS 2000
