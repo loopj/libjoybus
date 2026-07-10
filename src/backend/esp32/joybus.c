@@ -431,12 +431,15 @@ static void enable_rx(struct joybus *bus, uint32_t rmt_clk_freq)
   // Line idle (high) for > 5/4 of a nominal bit period during RX should end reception
   uint16_t idle_thres = (rmt_clk_freq / JOYBUS_FREQ_NOMINAL) * 5 / 4;
 
+  // Reject glitches narrower than ~1/20 of a bit period
+  uint16_t filter_thres = (rmt_clk_freq / JOYBUS_FREQ_NOMINAL) / 20;
+
   // Configure RMT RX channel
   rmt_ll_rx_set_channel_clock_div(&RMT, data->rmt_rx_ch, 1);
   rmt_ll_rx_set_mem_blocks(&RMT, data->rmt_rx_ch, 1);
   rmt_ll_rx_enable_wrap(&RMT, data->rmt_rx_ch, true);
   rmt_ll_rx_enable_carrier_demodulation(&RMT, data->rmt_rx_ch, false);
-  rmt_ll_rx_set_filter_thres(&RMT, data->rmt_rx_ch, 16);
+  rmt_ll_rx_set_filter_thres(&RMT, data->rmt_rx_ch, filter_thres);
   rmt_ll_rx_enable_filter(&RMT, data->rmt_rx_ch, true);
   rmt_ll_rx_set_idle_thres(&RMT, data->rmt_rx_ch, idle_thres);
 
@@ -506,12 +509,12 @@ static int joybus_esp32_enable(struct joybus *bus)
 
   // Configure memory access
   rmt_ll_enable_mem_access_nonfifo(&RMT, true);
-  rmt_ll_set_group_clock_src(&RMT, data->rmt_rx_ch, RMT_CLK_SRC_APB, 1, 1, 0);
+  rmt_ll_set_group_clock_src(&RMT, data->rmt_rx_ch, RMT_CLK_SRC_DEFAULT, 1, 1, 0);
   rmt_ll_enable_group_clock(&RMT, true);
 
   // Get the RMT source clock rate (ticks/sec)
   uint32_t rmt_clk_freq = 0;
-  if (esp_clk_tree_src_get_freq_hz((soc_module_clk_t)RMT_CLK_SRC_APB, ESP_CLK_TREE_SRC_FREQ_PRECISION_CACHED,
+  if (esp_clk_tree_src_get_freq_hz((soc_module_clk_t)RMT_CLK_SRC_DEFAULT, ESP_CLK_TREE_SRC_FREQ_PRECISION_CACHED,
                                    &rmt_clk_freq) != ESP_OK)
     return -JOYBUS_ERR_NOT_SUPPORTED;
 
