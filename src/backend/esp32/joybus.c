@@ -46,11 +46,8 @@ enum {
 // 8 bits = 8 RMT symbols = 1 byte
 #define SYMBOLS_PER_BYTE  8
 
-// RX capture ring (wraps for long frames)
-#define RX_RING           SOC_RMT_MEM_WORDS_PER_CHANNEL
-
-// 2 blocks; wrap boundary for the TX refill
-#define TX_MEM_SYMS       (2 * SOC_RMT_MEM_WORDS_PER_CHANNEL)
+// RX capture ring buffer size
+#define RX_RING SOC_RMT_MEM_WORDS_PER_CHANNEL
 
 // Use lower latency interrupt dispatch method if available
 #if CONFIG_ESP_TIMER_SUPPORTS_ISR_DISPATCH_METHOD
@@ -59,7 +56,19 @@ enum {
 #define TIMER_DISPATCH ESP_TIMER_TASK
 #endif
 
-// Static check that TX_MEM_SYMS is a multiple of SYMBOLS_PER_BYTE
+// Fire the "byte received" interrupt this many symbols early, so we decode the
+// captured bits while the last ones arrive instead of after the byte completes
+#if defined(CONFIG_IDF_TARGET_ESP32H2)
+#define RX_DECODE_HIDE 2
+#else
+#define RX_DECODE_HIDE 1
+#endif
+#if RX_DECODE_HIDE < 0 || RX_DECODE_HIDE >= SYMBOLS_PER_BYTE
+#error "RX_DECODE_HIDE must be between 0 and SYMBOLS_PER_BYTE-1"
+#endif
+
+// 2 blocks, the wrap boundary for the TX refill
+#define TX_MEM_SYMS (2 * SOC_RMT_MEM_WORDS_PER_CHANNEL)
 #if TX_MEM_SYMS % SYMBOLS_PER_BYTE != 0
 #error "TX_MEM_SYMS must be a multiple of SYMBOLS_PER_BYTE"
 #endif
@@ -173,13 +182,15 @@ static inline IRAM_ATTR uint8_t decode_byte(struct joybus_esp32_data *data, int 
   // Wrap the byte's start into the capture ring
   int base = base_sym % RX_RING;
 
-  // Fill the byte, folding in each bit as its symbol commits
-  uint8_t byte = 0;
-  for (int i = 0; i < SYMBOLS_PER_BYTE;) {
-    if (rx_committed(data, base) > i) {
-      byte = (uint8_t)((byte << 1) | decode_bit(mem[(base + i) % RX_RING]));
-      i++;
-    }
+  // Fill the byte, folding in each bit as its symbol commits. Read the writer offset once and
+  // re-read it only when we catch up to it: it barely moves while we read the bits that already
+  // landed, and on a slow peripheral bus (the ESP32-H2) re-reading it every bit dominates the decode.
+  uint8_t byte      = 0;
+  int     committed = rx_committed(data, base);
+  for (int i = 0; i < SYMBOLS_PER_BYTE; i++) {
+    while (committed <= i)
+      committed = rx_committed(data, base);
+    byte = (uint8_t)((byte << 1) | decode_bit(mem[(base + i) % RX_RING]));
   }
 
   return byte;
@@ -196,9 +207,9 @@ static IRAM_ATTR void enter_target_rx_mode(struct joybus *bus)
   data->write_buf  = NULL;
   data->write_len  = 0;
 
-  // Configure RMT RX for a fresh frame
-  // Use a 7-symbol limit for the first byte to fire the interrupt early
-  rmt_ll_rx_set_limit(&RMT, data->rmt_rx_ch, SYMBOLS_PER_BYTE - 1);
+  // Configure RMT RX for a fresh frame, firing the byte-received interrupt RX_DECODE_HIDE
+  // symbols early so the decode of the already-captured bits overlaps the last bits arriving
+  rmt_ll_rx_set_limit(&RMT, data->rmt_rx_ch, SYMBOLS_PER_BYTE - RX_DECODE_HIDE);
   rmt_ll_rx_set_mem_owner(&RMT, data->rmt_rx_ch, RMT_LL_MEM_OWNER_HW);
   rmt_ll_rx_reset_pointer(&RMT, data->rmt_rx_ch);
 
