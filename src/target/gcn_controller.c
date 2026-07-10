@@ -78,6 +78,7 @@ static inline void set_need_origin(struct joybus_target_gcn_controller *controll
  * Command:         {0xFF}
  * Response:        A 3-byte controller ID
  */
+JOYBUS_RAM_FUNC
 static inline int handle_reset(struct joybus_target_gcn_controller *controller, const uint8_t *command,
                                uint8_t bytes_read, joybus_target_response_cb send_response, void *user_data)
 {
@@ -101,6 +102,7 @@ static inline int handle_reset(struct joybus_target_gcn_controller *controller, 
  * Command:         {0x00}
  * Response:        A 3-byte controller ID
  */
+JOYBUS_RAM_FUNC
 static inline int handle_identify(struct joybus_target_gcn_controller *controller, const uint8_t *command,
                                   uint8_t bytes_read, joybus_target_response_cb send_response, void *user_data)
 {
@@ -116,6 +118,7 @@ static inline int handle_identify(struct joybus_target_gcn_controller *controlle
  * Command:         {0x40, analog_mode, motor_state}
  * Response:        An 8-byte packed input state, see `pack_input_state` for details
  */
+JOYBUS_RAM_FUNC
 static inline int handle_read(struct joybus_target_gcn_controller *controller, const uint8_t *command,
                               uint8_t bytes_read, joybus_target_response_cb send_response, void *user_data)
 {
@@ -306,6 +309,7 @@ static inline int handle_fix_device(struct joybus_target_gcn_controller *control
   return JOYBUS_CMD_GCN_FIX_DEVICE_TX - bytes_read;
 }
 
+JOYBUS_RAM_FUNC
 static int gcn_controller_byte_received(struct joybus_target *target, const uint8_t *command, uint8_t bytes_read,
                                         joybus_target_response_cb send_response, void *user_data)
 {
