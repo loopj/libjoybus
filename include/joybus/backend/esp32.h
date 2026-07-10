@@ -48,13 +48,13 @@ struct joybus_esp32_data {
   uint8_t *read_buf;
   uint8_t read_len;
   uint8_t read_count;
+  uint8_t rx_skip;
   const uint8_t *write_buf;
   uint8_t write_len;
   uint8_t write_count;
 
-  // One-shot timers for inter-transfer gap scheduling and reply timeout
+  // One-shot timer for inter-transfer gap scheduling
   esp_timer_handle_t transfer_start_timer;
-  esp_timer_handle_t rx_timeout_timer;
 
   // Transfer state
   joybus_transfer_cb done_callback;

@@ -162,29 +162,25 @@ static inline IRAM_ATTR int rx_committed(struct joybus_esp32_data *data, int bas
 }
 
 /*
- * Decode byte `byte_idx` from RMT RX memory.
+ * Decode one byte from RMT RX memory, starting at symbol index `base_sym`
  *
- * Another turnaround trick: in target mode the "byte received" interrupt can
- * fire before the byte's final symbol is committed (rx_lim is 7 for the first
- * byte, then 8 to keep each byte's interrupt landing one symbol early). So we
- * fold in each bit the moment its symbol commits. The bits already captured are
- * read while the last bit is still on the wire, and we busy-wait only for that
- * final symbol.
+ * The "byte received" interrupt can fire before the byte's final symbol is
+ * committed (the byte clock is set to land one symbol early), so we fold in
+ * each bit the moment its symbol commits and busy-wait only for that final
+ * symbol.
  */
-static inline IRAM_ATTR uint8_t decode_byte(struct joybus_esp32_data *data, int byte_idx)
+static inline IRAM_ATTR uint8_t decode_byte(struct joybus_esp32_data *data, int base_sym)
 {
   volatile rmt_symbol_word_t *mem = RMTMEM[data->rmt_rx_mem_ch];
 
-  // Find our position in the ring buffer
-  int base = (byte_idx * SYMBOLS_PER_BYTE) % RX_RING;
+  // Wrap the byte's start into the capture ring
+  int base = base_sym % RX_RING;
 
-  // Fill the byte
+  // Fill the byte, folding in each bit as its symbol commits
   uint8_t byte = 0;
   for (int i = 0; i < SYMBOLS_PER_BYTE;) {
-    // Check if the symbol has been committed
     if (rx_committed(data, base) > i) {
-      // Decode the bit and fold it into the byte
-      byte = (uint8_t)((byte << 1) | decode_bit(mem[base + i]));
+      byte = (uint8_t)((byte << 1) | decode_bit(mem[(base + i) % RX_RING]));
       i++;
     }
   }
@@ -228,13 +224,21 @@ static IRAM_ATTR void transfer_start(struct joybus *bus)
 
   // Prepare to receive a response
   if (data->read_len > 0) {
-    // Reset the byte counter
+    // Reset the receive state
     data->read_count = 0;
 
-    // Configure RX for a fresh frame
+    // Skip the command bytes in the RX capture, so we only decode the reply
+    data->rx_skip = data->write_len;
+
+    // Arm RX before transmitting, so the capture is already running when the
+    // reply arrives. RX records our own command, the stop bit, and the reply
+    // as one continuous capture, and the reply is decoded afterward from a
+    // fixed symbol offset. This is the most reliable way to begin capturing
+    // responses to commands, no matter the MCU clock speed.
     rmt_ll_rx_set_limit(&RMT, data->rmt_rx_ch, SYMBOLS_PER_BYTE);
     rmt_ll_rx_set_mem_owner(&RMT, data->rmt_rx_ch, RMT_LL_MEM_OWNER_HW);
     rmt_ll_rx_reset_pointer(&RMT, data->rmt_rx_ch);
+    rmt_ll_rx_enable(&RMT, data->rmt_rx_ch, true);
   }
 
   start_write(bus);
@@ -248,14 +252,15 @@ static IRAM_ATTR void transfer_finish(struct joybus *bus, int status)
 {
   struct joybus_esp32_data *data = &JOYBUS_ESP32(bus)->data;
 
+  // A transfer finishes once. Bail if it already returned to idle so the callback fires only once.
+  if (data->state == BUS_STATE_HOST_IDLE)
+    return;
+
   // Return to idle BEFORE the callback, since apps could kick off a new transfer from inside done_callback
   data->state = BUS_STATE_HOST_IDLE;
 
   // Disable RX
   rmt_ll_rx_enable(&RMT, data->rmt_rx_ch, false);
-
-  // Cancel rx timeout
-  esp_timer_stop(data->rx_timeout_timer);
 
   // Record the completion time for enforcing minimum interval between transfers
   data->last_transfer_us = esp_timer_get_time();
@@ -272,12 +277,8 @@ static inline IRAM_ATTR void host_tx_complete(struct joybus *bus)
 
   // We've finished sending a command, check if we need to receive a response
   if (data->read_len > 0) {
-    // Immediately flip into read mode
+    // RX is already capturing, so just switch to the receive state
     data->state = BUS_STATE_HOST_RX;
-    rmt_ll_rx_enable(&RMT, data->rmt_rx_ch, true);
-
-    // Start the RX timeout timer
-    esp_timer_start_once(data->rx_timeout_timer, JOYBUS_REPLY_TIMEOUT_US);
   } else {
     // No reply expected, go idle and call the transfer complete callback
     transfer_finish(bus, 0);
@@ -291,20 +292,24 @@ static inline IRAM_ATTR void target_tx_complete(struct joybus *bus)
   enter_target_rx_mode(bus);
 }
 
-// Handle host byte received
+// Handle a host RX "byte received" interrupt: skip our own captured command, then stream the reply.
 static inline IRAM_ATTR void host_byte_received(struct joybus *bus)
 {
   struct joybus_esp32_data *data = &JOYBUS_ESP32(bus)->data;
 
-  // Process the received pulses into the byte buffer
-  data->read_buf[data->read_count] = decode_byte(data, data->read_count);
+  // RX captures our command too, so the first write_len byte-clock ticks belong to the command
+  if (data->rx_skip > 0) {
+    data->rx_skip--;
+    return;
+  }
+
+  // Decode the next reply byte. The reply starts one symbol past the command and its stop bit, so
+  // every reply byte lands one symbol early, the same interrupt timing decode_byte handles
+  int base_sym = (data->write_len * SYMBOLS_PER_BYTE + 1) + data->read_count * SYMBOLS_PER_BYTE;
+  data->read_buf[data->read_count] = decode_byte(data, base_sym);
   data->read_count++;
 
-  // First byte: the reply has started, cancel the start timeout
-  if (data->read_count == 1)
-    esp_timer_stop(data->rx_timeout_timer);
-
-  // Last byte
+  // Whole reply captured
   if (data->read_count == data->read_len)
     transfer_finish(bus, 0);
 }
@@ -315,7 +320,7 @@ static inline IRAM_ATTR void target_byte_received(struct joybus *bus)
   struct joybus_esp32_data *data = &JOYBUS_ESP32(bus)->data;
 
   // Save the received byte in the buffer
-  data->read_buf[data->read_count] = decode_byte(data, data->read_count);
+  data->read_buf[data->read_count] = decode_byte(data, data->read_count * SYMBOLS_PER_BYTE);
   data->read_count++;
 
   // Call the target handler to prepare a response if needed
@@ -358,14 +363,6 @@ static void IRAM_ATTR transfer_start_timer_cb(void *arg)
   transfer_start(bus);
 }
 
-// RX timeout timer callback
-static void IRAM_ATTR rx_timeout_timer_cb(void *arg)
-{
-  struct joybus *bus = (struct joybus *)arg;
-
-  transfer_finish(bus, -JOYBUS_ERR_TIMEOUT);
-}
-
 // RMT interrupt handler
 static void IRAM_ATTR rmt_irq_handler(void *arg)
 {
@@ -388,7 +385,9 @@ static void IRAM_ATTR rmt_irq_handler(void *arg)
   if (status & RMT_LL_EVENT_RX_THRES(data->rmt_rx_ch)) {
     rmt_ll_clear_interrupt_status(&RMT, RMT_LL_EVENT_RX_THRES(data->rmt_rx_ch));
 
-    if (data->state == BUS_STATE_HOST_RX) {
+    // The host counts these ticks from the start of capture, during both command TX and the reply,
+    // so it runs in HOST_TX and HOST_RX. The command ticks are skipped inside host_byte_received.
+    if (data->state == BUS_STATE_HOST_TX || data->state == BUS_STATE_HOST_RX) {
       host_byte_received(bus);
     } else if (data->state == BUS_STATE_TARGET_RX) {
       target_byte_received(bus);
@@ -417,7 +416,7 @@ static void IRAM_ATTR rmt_irq_handler(void *arg)
       // The bus became idle without a complete command, listen for the next one
       enter_target_rx_mode(bus);
     } else if (data->state == BUS_STATE_HOST_RX) {
-      // Reply ended at idle before all bytes arrived, finish with a timeout
+      // The reply frame ended before all bytes were streamed in: finish with a timeout
       transfer_finish(bus, -JOYBUS_ERR_TIMEOUT);
     }
   }
@@ -427,9 +426,23 @@ static void enable_rx(struct joybus *bus, uint32_t rmt_clk_freq)
 {
   struct joybus_esp32_data *data = &JOYBUS_ESP32(bus)->data;
 
-  // Pick a reasonable RMT RX idle threshold based on the nominal protocol rate
-  // Line idle (high) for > 5/4 of a nominal bit period during RX should end reception
-  uint16_t idle_thres = (rmt_clk_freq / JOYBUS_FREQ_NOMINAL) * 5 / 4;
+  // RMT RX idle threshold, how long the line must stay high before reception ends
+  uint16_t idle_thres;
+  if (bus->mode == JOYBUS_MODE_HOST) {
+    // RX is armed before TX and stays on through the whole exchange, so the
+    // RMT captures our command pulses as well as the response pulses as one
+    // continuous capture. The turnaround time between command and response
+    // reads as an idle line, so we need to set the idle threshold to the
+    // longest turnaround the protocol allows. Doing this also means we get
+    // response timeout detection for free from the RMT hardware.
+    idle_thres = (uint16_t)((uint64_t)rmt_clk_freq * JOYBUS_REPLY_TIMEOUT_US / 1000000);
+  } else {
+    // A target knows a command is complete from its byte count, so completion
+    // should happen inside the RX_THRES handler. We use the idle threshold
+    // here to detect when the line becomes idle before a complete response
+    // arrives.
+    idle_thres = (rmt_clk_freq / JOYBUS_FREQ_NOMINAL) * 5 / 4;
+  }
 
   // Reject glitches narrower than ~1/20 of a bit period
   uint16_t filter_thres = (rmt_clk_freq / JOYBUS_FREQ_NOMINAL) / 20;
@@ -537,17 +550,6 @@ static int joybus_esp32_enable(struct joybus *bus)
   if (esp_timer_create(&transfer_start_args, &data->transfer_start_timer) != 0)
     return -JOYBUS_ERR_NOT_SUPPORTED;
 
-  // Setup RX timeout timer
-  esp_timer_create_args_t rx_timeout_args = {
-    .callback        = rx_timeout_timer_cb,
-    .arg             = bus,
-    .dispatch_method = TIMER_DISPATCH,
-    .name            = "joybus_rx_timeout",
-  };
-
-  if (esp_timer_create(&rx_timeout_args, &data->rx_timeout_timer) != 0)
-    return -JOYBUS_ERR_NOT_SUPPORTED;
-
   // Enter the appropriate initial state based on the bus mode
   if (bus->mode == JOYBUS_MODE_TARGET) {
     enter_target_rx_mode(bus);
@@ -579,12 +581,6 @@ static int joybus_esp32_disable(struct joybus *bus)
     esp_timer_stop(data->transfer_start_timer);
     esp_timer_delete(data->transfer_start_timer);
     data->transfer_start_timer = NULL;
-  }
-
-  if (data->rx_timeout_timer) {
-    esp_timer_stop(data->rx_timeout_timer);
-    esp_timer_delete(data->rx_timeout_timer);
-    data->rx_timeout_timer = NULL;
   }
 
   data->state = BUS_STATE_DISABLED;
@@ -648,7 +644,6 @@ int joybus_esp32_init(struct joybus_esp32 *esp32_bus, struct joybus_esp32_config
   data->rmt_rx_mem_ch            = config.rmt_rx_ch + (JOYBUS_RMT_CHANNELS_PER_GROUP - JOYBUS_RMT_TX_CANDIDATES);
   data->rmt_intr                 = NULL;
   data->transfer_start_timer     = NULL;
-  data->rx_timeout_timer         = NULL;
   data->last_transfer_us         = 0;
 
   return 0;
