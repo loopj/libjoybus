@@ -18,6 +18,13 @@ jobs:
         example: [gcn-host, gcn-target, n64-host, n64-target]
         target: [esp32c3, esp32s3, esp32c6, esp32h2]
         include:
+          # USB HID needs native USB-OTG, so these examples are ESP32-S3 only
+          - idf: release-v6.0
+            example: gcn-adapter-usb-hid
+            target: esp32s3
+          - idf: release-v6.0
+            example: n64-adapter-usb-hid
+            target: esp32s3
           # Also exercise the ESP-IDF v5 compatibility path
           - idf: release-v5.5
             example: n64-host
