@@ -1,3 +1,12 @@
+# Set the root directory for libjoybus
+set(LIBJOYBUS_ROOT_DIR ${CMAKE_CURRENT_LIST_DIR})
+
+# Hand off to ESP-IDF build if being built from idf.py
+if(ESP_PLATFORM)
+  include(${CMAKE_CURRENT_LIST_DIR}/cmake/esp-idf.cmake)
+  return()
+endif()
+
 # Set minimum CMake version
 cmake_minimum_required(VERSION "3.21")
 
@@ -5,20 +14,9 @@ cmake_minimum_required(VERSION "3.21")
 project(libjoybus LANGUAGES C)
 
 # Define the library
+file(GLOB SOURCES src/*.c src/host/*.c src/target/*.c)
 add_library(joybus INTERFACE)
-target_sources(
-  joybus
-  INTERFACE
-    src/bus.c
-    src/checksum.c
-    src/host/common.c
-    src/host/gcn.c
-    src/host/n64.c
-    src/host/n64_rumble_pak.c
-    src/target/gcn_controller.c
-    src/target/n64_controller.c
-    src/target/n64_rumble_pak.c
-)
+target_sources(joybus INTERFACE ${SOURCES})
 
 # Specify the include paths
 target_include_directories(joybus INTERFACE include)

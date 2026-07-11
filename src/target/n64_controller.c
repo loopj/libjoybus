@@ -18,12 +18,14 @@ static inline bool pak_ready(struct joybus_target_n64_controller *controller)
 }
 
 // Sample the current input as the origin
+JOYBUS_RAM_FUNC
 static void n64_controller_recalibrate(struct joybus_target_n64_controller *controller)
 {
   controller->origin = controller->input;
 }
 
 // Apply the origin to a raw stick value, clamping to INT8_MIN/MAX on overflow
+JOYBUS_RAM_FUNC
 static int8_t n64_controller_apply_origin(int8_t value, int8_t origin)
 {
   int delta = value - origin;
@@ -41,6 +43,7 @@ static int8_t n64_controller_apply_origin(int8_t value, int8_t origin)
  * Command:         {0xFF}
  * Response:        A 3-byte controller ID
  */
+JOYBUS_RAM_FUNC
 static int handle_reset(struct joybus_target_n64_controller *controller, const uint8_t *command, uint8_t bytes_read,
                         joybus_target_response_cb send_response, void *user_data)
 {
@@ -63,6 +66,7 @@ static int handle_reset(struct joybus_target_n64_controller *controller, const u
  * Command:         {0x00}
  * Response:        A 3-byte controller ID
  */
+JOYBUS_RAM_FUNC
 static int handle_identify(struct joybus_target_n64_controller *controller, const uint8_t *command, uint8_t bytes_read,
                            joybus_target_response_cb send_response, void *user_data)
 {
@@ -88,6 +92,7 @@ static int handle_identify(struct joybus_target_n64_controller *controller, cons
  * Command:         {0x01}
  * Response:        An 4-byte input state.
  */
+JOYBUS_RAM_FUNC
 static int handle_read(struct joybus_target_n64_controller *controller, const uint8_t *command, uint8_t bytes_read,
                        joybus_target_response_cb send_response, void *user_data)
 {
@@ -222,6 +227,7 @@ static int handle_pak_write(struct joybus_target_n64_controller *controller, con
   return JOYBUS_CMD_N64_PAK_WRITE_TX - bytes_read;
 }
 
+JOYBUS_RAM_FUNC
 static int n64_controller_byte_received(struct joybus_target *target, const uint8_t *command, uint8_t bytes_read,
                                         joybus_target_response_cb send_response, void *user_data)
 {

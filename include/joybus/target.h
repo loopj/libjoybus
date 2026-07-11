@@ -31,6 +31,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+#include <joybus/attributes.h>
 #include <joybus/errors.h>
 
 struct joybus_target;

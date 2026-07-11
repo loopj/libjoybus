@@ -47,7 +47,7 @@ struct joybus;
 #define JOYBUS_INTER_TRANSFER_DELAY_US  80
 
 /// Timeout for waiting for a reply from a target, in microseconds
-#define JOYBUS_REPLY_TIMEOUT_US         100
+#define JOYBUS_REPLY_TIMEOUT_US         64
 
 /// Minimum line-high time to consider the bus idle, in microseconds
 #define JOYBUS_BUS_IDLE_US              100
