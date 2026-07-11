@@ -5,7 +5,9 @@ license: MIT
 url: https://loopj.com/libjoybus
 repository: https://github.com/loopj/libjoybus
 targets:
-  - esp32s3
   - esp32c3
+  - esp32s3
+  - esp32c6
+  - esp32h2
 dependencies:
   idf: ">=5.0"

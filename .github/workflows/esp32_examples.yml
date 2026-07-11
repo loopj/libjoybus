@@ -1,0 +1,38 @@
+name: Build ESP32 Examples
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build-esp32-examples:
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        idf: [release-v6.0]
+        example: [gcn-host, gcn-target, n64-host, n64-target]
+        target: [esp32c3, esp32s3, esp32c6, esp32h2]
+        include:
+          # Also exercise the ESP-IDF v5 compatibility path
+          - idf: release-v5.5
+            example: n64-host
+            target: esp32c3
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      # The esp-idf-ci-action builds inside the pinned espressif/idf Docker
+      # image, so it carries its own toolchain and needs no SDK cache. It sets
+      # the target and runs idf.py build in the example directory.
+      - name: Build project
+        uses: espressif/esp-idf-ci-action@v1
+        with:
+          esp_idf_version: ${{ matrix.idf }}
+          target: ${{ matrix.target }}
+          path: examples/esp32/${{ matrix.example }}
