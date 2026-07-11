@@ -20,6 +20,10 @@
 #include <soc/clk_tree_defs.h>
 #include <soc/soc_caps.h>
 
+#if !SOC_RMT_SUPPORT_RX_PINGPONG
+#error "Joybus ESP32 backend currently requires RMT RX ping-pong"
+#endif
+
 // Compatibility macros for ESP-IDF v5 vs v6
 #if ESP_IDF_VERSION_MAJOR >= 6
 #include <hal/rmt_periph.h>
