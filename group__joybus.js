@@ -24,7 +24,9 @@ var group__joybus =
     [ "JOYBUS_FREQ_WII_CONSOLE", "group__joybus.html#ga64e876071c5e4190a1af1542f758db91", null ],
     [ "JOYBUS_INTER_TRANSFER_DELAY_US", "group__joybus.html#gac5ab3e6873e93e3f6c2ba0759f227912", null ],
     [ "JOYBUS_PAK_BLOCK_SIZE", "group__joybus.html#ga272b8f55fa8c16bac1524dda78c5ecef", null ],
+    [ "JOYBUS_RAM_FUNC", "group__joybus.html#gaa0e9a2c10cd9d4e85a03c3977bdcdec4", null ],
     [ "JOYBUS_REPLY_TIMEOUT_US", "group__joybus.html#ga26e7ebcd25e8c5ffabf856df2a3ced6c", null ],
+    [ "JOYBUS_USE_RAM_FUNCS", "group__joybus.html#ga2f5b2a946448c841b1f042d508876a99", null ],
     [ "joybus_transfer_cb", "group__joybus.html#ga3a369b3d9cde58960068a67ee3d3c092", null ],
     [ "joybus_error", "group__joybus.html#ga47435eba4c98726f93fdae3c8bb9fd76", [
       [ "JOYBUS_ERR_DISABLED", "group__joybus.html#gga47435eba4c98726f93fdae3c8bb9fd76a6496af2c91935e2e37a48a43f14dda21", null ],

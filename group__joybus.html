@@ -120,6 +120,10 @@ Data Structures</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-define-members" class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
+<tr class="memitem:ga2f5b2a946448c841b1f042d508876a99" id="r_ga2f5b2a946448c841b1f042d508876a99"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga2f5b2a946448c841b1f042d508876a99">JOYBUS_USE_RAM_FUNCS</a>&#160;&#160;&#160;1</td></tr>
+<tr class="memdesc:ga2f5b2a946448c841b1f042d508876a99"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether to place latency-critical functions in RAM.  <br /></td></tr>
+<tr class="memitem:gaa0e9a2c10cd9d4e85a03c3977bdcdec4" id="r_gaa0e9a2c10cd9d4e85a03c3977bdcdec4"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#gaa0e9a2c10cd9d4e85a03c3977bdcdec4">JOYBUS_RAM_FUNC</a></td></tr>
+<tr class="memdesc:gaa0e9a2c10cd9d4e85a03c3977bdcdec4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attribute for a latency-critical function, such as a target command handler.  <br /></td></tr>
 <tr class="memitem:ga8605997a75f0f98d3372733222706dec" id="r_ga8605997a75f0f98d3372733222706dec"><td class="memItemLeft" align="right" valign="top"><a id="ga8605997a75f0f98d3372733222706dec" name="ga8605997a75f0f98d3372733222706dec"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_FREQ_NOMINAL</b>&#160;&#160;&#160;250000</td></tr>
 <tr class="memdesc:ga8605997a75f0f98d3372733222706dec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Nominal Joybus frequency, matching an OEM N64/GameCube controller. <br /></td></tr>
@@ -154,7 +158,7 @@ Macros</h2></td></tr>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_INTER_TRANSFER_DELAY_US</b>&#160;&#160;&#160;80</td></tr>
 <tr class="memdesc:gac5ab3e6873e93e3f6c2ba0759f227912"><td class="mdescLeft">&#160;</td><td class="mdescRight">Minimum delay between Joybus transfers, in microseconds. <br /></td></tr>
 <tr class="memitem:ga26e7ebcd25e8c5ffabf856df2a3ced6c" id="r_ga26e7ebcd25e8c5ffabf856df2a3ced6c"><td class="memItemLeft" align="right" valign="top"><a id="ga26e7ebcd25e8c5ffabf856df2a3ced6c" name="ga26e7ebcd25e8c5ffabf856df2a3ced6c"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_REPLY_TIMEOUT_US</b>&#160;&#160;&#160;100</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_REPLY_TIMEOUT_US</b>&#160;&#160;&#160;64</td></tr>
 <tr class="memdesc:ga26e7ebcd25e8c5ffabf856df2a3ced6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Timeout for waiting for a reply from a target, in microseconds. <br /></td></tr>
 <tr class="memitem:ga8c9b9633b92365fb0bb147559ef3ea6e" id="r_ga8c9b9633b92365fb0bb147559ef3ea6e"><td class="memItemLeft" align="right" valign="top"><a id="ga8c9b9633b92365fb0bb147559ef3ea6e" name="ga8c9b9633b92365fb0bb147559ef3ea6e"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_BUS_IDLE_US</b>&#160;&#160;&#160;100</td></tr>
@@ -245,6 +249,40 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>joybus_sync</b> (int s
 <div class="ttc" id="astructjoybus_html"><div class="ttname"><a href="structjoybus.html">joybus</a></div><div class="ttdoc">A Joybus instance.</div><div class="ttdef"><b>Definition</b> bus.h:108</div></div>
 </div><!-- fragment -->
 <p>Macro to cast a backend-specific Joybus instance to a generic Joybus instance. </p>
+
+</div>
+</div>
+<a id="gaa0e9a2c10cd9d4e85a03c3977bdcdec4" name="gaa0e9a2c10cd9d4e85a03c3977bdcdec4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaa0e9a2c10cd9d4e85a03c3977bdcdec4">&#9670;&#160;</a></span>JOYBUS_RAM_FUNC</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define JOYBUS_RAM_FUNC</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Attribute for a latency-critical function, such as a target command handler. </p>
+<p>Places it in RAM instead of executing it in place from flash, so a flash fetch or cache miss cannot add latency to the response. A no-op when JOYBUS_USE_RAM_FUNCS is 0, or on platforms that are not yet wired up. </p>
+
+</div>
+</div>
+<a id="ga2f5b2a946448c841b1f042d508876a99" name="ga2f5b2a946448c841b1f042d508876a99"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga2f5b2a946448c841b1f042d508876a99">&#9670;&#160;</a></span>JOYBUS_USE_RAM_FUNCS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define JOYBUS_USE_RAM_FUNCS&#160;&#160;&#160;1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Whether to place latency-critical functions in RAM. </p>
+<p>Enabled by default, for a deterministic command-to-response turnaround. Define as 0 to keep them in flash, saving RAM at the cost of a variable turnaround (a flash fetch or cache miss can slow a reply). </p>
 
 </div>
 </div>

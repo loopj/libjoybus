@@ -2,6 +2,9 @@ var annotated_dup =
 [
     [ "joybus", "structjoybus.html", "structjoybus" ],
     [ "joybus_api", "structjoybus__api.html", null ],
+    [ "joybus_esp32", "structjoybus__esp32.html", null ],
+    [ "joybus_esp32_config", "structjoybus__esp32__config.html", "structjoybus__esp32__config" ],
+    [ "joybus_esp32_data", "structjoybus__esp32__data.html", null ],
     [ "joybus_gcn_controller_state", "structjoybus__gcn__controller__state.html", "structjoybus__gcn__controller__state" ],
     [ "joybus_gecko", "structjoybus__gecko.html", null ],
     [ "joybus_gecko_config", "structjoybus__gecko__config.html", "structjoybus__gecko__config" ],

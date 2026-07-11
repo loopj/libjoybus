@@ -4,6 +4,7 @@ var dir_11bfe2aeffd25593654c3f2cacc8984c =
     [ "common", "dir_a911a896560fe58267b68c80d792d071.html", "dir_a911a896560fe58267b68c80d792d071" ],
     [ "host", "dir_ef1e6d246f9406a5719cc3c95277f05c.html", "dir_ef1e6d246f9406a5719cc3c95277f05c" ],
     [ "target", "dir_b38d5ee79e2e612bee26fb1046f5856e.html", "dir_b38d5ee79e2e612bee26fb1046f5856e" ],
+    [ "attributes.h", "attributes_8h_source.html", null ],
     [ "bus.h", "bus_8h_source.html", null ],
     [ "checksum.h", "checksum_8h_source.html", null ],
     [ "commands.h", "commands_8h.html", "commands_8h" ],

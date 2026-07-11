@@ -127,6 +127,7 @@ Supported Platforms</h1>
 <ul>
 <li>Raspberry Pi Pico and Pico 2 (and other RP2xxx-based boards)</li>
 <li>Silicon Labs EFR32 Series 1 and Series 2 MCUs</li>
+<li>Espressif ESP32 (ESP32-C3, ESP32-C6, ESP32-S3, ESP32-H2)</li>
 </ul>
 <h1 class="doxsection"><a class="anchor" id="autotoc_md3"></a>
 Examples</h1>
@@ -237,7 +238,7 @@ Emulating a Controller</h2>
 <div class="line">  }</div>
 <div class="line">}</div>
 <div class="ttc" id="agroup__joybus__target__gcn__controller_html_gafa34c47426560a79ba14987b64448eeb"><div class="ttname"><a href="group__joybus__target__gcn__controller.html#gafa34c47426560a79ba14987b64448eeb">joybus_target_gcn_controller_init</a></div><div class="ttdeci">static void joybus_target_gcn_controller_init(struct joybus_target_gcn_controller *controller)</div><div class="ttdoc">Initialize a GameCube controller target as a regular wired controller.</div><div class="ttdef"><b>Definition</b> gcn_controller.h:80</div></div>
-<div class="ttc" id="agroup__joybus__target_html_ga261618f4fa23d85cf113ee51f67d4a61"><div class="ttname"><a href="group__joybus__target.html#ga261618f4fa23d85cf113ee51f67d4a61">JOYBUS_TARGET</a></div><div class="ttdeci">#define JOYBUS_TARGET(target)</div><div class="ttdoc">Macro to cast a concrete Joybus target instance to a generic Joybus target instance.</div><div class="ttdef"><b>Definition</b> target.h:39</div></div>
+<div class="ttc" id="agroup__joybus__target_html_ga261618f4fa23d85cf113ee51f67d4a61"><div class="ttname"><a href="group__joybus__target.html#ga261618f4fa23d85cf113ee51f67d4a61">JOYBUS_TARGET</a></div><div class="ttdeci">#define JOYBUS_TARGET(target)</div><div class="ttdoc">Macro to cast a concrete Joybus target instance to a generic Joybus target instance.</div><div class="ttdef"><b>Definition</b> target.h:40</div></div>
 <div class="ttc" id="agroup__joybus_html_gaac8c456ffdda03362b1a75f2c4525f03"><div class="ttname"><a href="group__joybus.html#gaac8c456ffdda03362b1a75f2c4525f03">joybus_attach_target</a></div><div class="ttdeci">static int joybus_attach_target(struct joybus *bus, struct joybus_target *target)</div><div class="ttdoc">Attach a target to handle commands received in target mode.</div><div class="ttdef"><b>Definition</b> bus.h:199</div></div>
 <div class="ttc" id="agroup__joybus_html_gga269224343f9733d075007781871a99a6abff296695cb9bacfdb5342209f4c8507"><div class="ttname"><a href="group__joybus.html#gga269224343f9733d075007781871a99a6abff296695cb9bacfdb5342209f4c8507">JOYBUS_MODE_TARGET</a></div><div class="ttdeci">@ JOYBUS_MODE_TARGET</div><div class="ttdoc">Target mode, listens for commands from a host device and responds accordingly.</div><div class="ttdef"><b>Definition</b> bus.h:74</div></div>
 <div class="ttc" id="astructjoybus__target__gcn__controller_html"><div class="ttname"><a href="structjoybus__target__gcn__controller.html">joybus_target_gcn_controller</a></div><div class="ttdoc">GameCube controller Joybus target.</div><div class="ttdef"><b>Definition</b> gcn_controller.h:41</div></div>
