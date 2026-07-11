@@ -9,9 +9,11 @@
 
 #include <esp_attr.h>
 #include <esp_clk_tree.h>
+#include <esp_cpu.h>
 #include <esp_idf_version.h>
 #include <esp_intr_alloc.h>
 #include <esp_rom_gpio.h>
+#include <esp_rom_sys.h>
 #include <esp_timer.h>
 #include <esp_private/periph_ctrl.h>
 #include <hal/rmt_ll.h>
@@ -66,6 +68,9 @@ enum {
 #if RX_DECODE_HIDE < 0 || RX_DECODE_HIDE >= SYMBOLS_PER_BYTE
 #error "RX_DECODE_HIDE must be between 0 and SYMBOLS_PER_BYTE-1"
 #endif
+
+// Ensure we never start a target reply (much) sooner than an OEM controller
+#define TARGET_REPLY_FLOOR_NS 1500
 
 // 2 blocks, the wrap boundary for the TX refill
 #define TX_MEM_SYMS (2 * SOC_RMT_MEM_WORDS_PER_CHANNEL)
@@ -336,6 +341,7 @@ static inline IRAM_ATTR void target_byte_received(struct joybus *bus)
 
   // Save the received byte in the buffer
   data->read_buf[data->read_count] = decode_byte(data, data->read_count * SYMBOLS_PER_BYTE);
+  uint32_t cmd_end = esp_cpu_get_cycle_count();
   data->read_count++;
 
   // Call the target handler to prepare a response if needed
@@ -345,6 +351,11 @@ static inline IRAM_ATTR void target_byte_received(struct joybus *bus)
     if (data->write_len > 0) {
       // A response is expected - switch to target TX mode and kick off the write
       data->state = BUS_STATE_TARGET_TX;
+
+      // Ensure we never reply (much) faster than an OEM controller
+      while ((int32_t)(esp_cpu_get_cycle_count() - (cmd_end + data->reply_floor_cycles)) < 0)
+        ;
+
       start_write(bus);
 
       // Stop capturing and clear interrupt status
@@ -532,6 +543,9 @@ static int joybus_esp32_enable(struct joybus *bus)
     .intr_type    = GPIO_INTR_DISABLE,
   };
   gpio_config(&io);
+
+  // Resolve the response floor to CPU cycles for the busy-wait in the target reply path
+  data->reply_floor_cycles = (uint32_t)TARGET_REPLY_FLOOR_NS * esp_rom_get_cpu_ticks_per_us() / 1000;
 
   // Enable the RMT bus clock and bring the peripheral out of reset
   PERIPH_RCC_ATOMIC()

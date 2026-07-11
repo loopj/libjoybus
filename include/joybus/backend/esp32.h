@@ -44,6 +44,9 @@ struct joybus_esp32_data {
   uint32_t sym_zero;
   uint32_t sym_stop;
 
+  // TARGET_REPLY_FLOOR_NS in CPU cycles, resolved once at enable
+  uint32_t reply_floor_cycles;
+
   // RX/TX state
   uint8_t *read_buf;
   uint8_t read_len;
