@@ -1,0 +1,4 @@
+dependencies:
+  libjoybus:
+    path: ../../../..
+  espressif/esp_tinyusb: "^2.0.0"
