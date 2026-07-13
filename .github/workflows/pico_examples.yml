@@ -38,6 +38,7 @@ jobs:
     strategy:
       matrix:
         example:
+          - gcn-adapter-ds4
           - gcn-adapter-nintendo
           - gcn-adapter-usb-hid
           - gcn-host

@@ -24,6 +24,10 @@
       "path": "examples/pico-sdk/gcn-adapter-nintendo"
     },
     {
+      "name": "Pico SDK/GCN Adapter (DS4)",
+      "path": "examples/pico-sdk/gcn-adapter-ds4"
+    },
+    {
       "name": "Pico SDK/GCN Adapter (USB HID)",
       "path": "examples/pico-sdk/gcn-adapter-usb-hid"
     },
