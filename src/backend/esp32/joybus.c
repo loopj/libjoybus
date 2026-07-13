@@ -532,6 +532,22 @@ static void enable_tx(struct joybus *bus, uint32_t rmt_clk_freq)
   rmt_ll_enable_interrupt(&RMT, RMT_LL_EVENT_TX_DONE(data->rmt_tx_ch), true);
 }
 
+// De-assert the RMT peripheral reset without first asserting it like
+// rmt_ll_reset_register does. This allows us to coexist with other RMT drivers
+#if SOC_RCC_IS_INDEPENDENT
+#include <soc/pcr_reg.h>
+static inline void rmt_deassert_reset(void)
+{
+  REG_CLR_BIT(PCR_RMT_CONF_REG, PCR_RMT_RST_EN);
+}
+#else
+#include <soc/system_reg.h>
+static inline void rmt_deassert_reset(void)
+{
+  REG_CLR_BIT(SYSTEM_PERIP_RST_EN0_REG, SYSTEM_RMT_RST);
+}
+#endif
+
 static int joybus_esp32_enable(struct joybus *bus)
 {
   struct joybus_esp32_data *data = &JOYBUS_ESP32(bus)->data;
@@ -555,10 +571,10 @@ static int joybus_esp32_enable(struct joybus *bus)
   PERIPH_RCC_ATOMIC()
   {
     rmt_ll_enable_bus_clock(0, true);
-    rmt_ll_reset_register(0);
+    rmt_deassert_reset();
   }
 
-  // Configure memory access
+  // Configure memory access (group-wide, idempotent, matches the IDF RMT driver's own group setup)
   rmt_ll_enable_mem_access_nonfifo(&RMT, true);
   rmt_ll_set_group_clock_src(&RMT, data->rmt_rx_ch, RMT_CLK_SRC_DEFAULT, 1, 1, 0);
   rmt_ll_enable_group_clock(&RMT, true);
@@ -569,12 +585,19 @@ static int joybus_esp32_enable(struct joybus *bus)
                                    &rmt_clk_freq) != ESP_OK)
     return -JOYBUS_ERR_NOT_SUPPORTED;
 
+  // Reset the RMT TX/RX channels we're using
+  rmt_ll_tx_reset_pointer(&RMT, data->rmt_tx_ch);
+  rmt_ll_rx_reset_pointer(&RMT, data->rmt_rx_ch);
+
   // Enable RX/TX channels
   enable_rx(bus, rmt_clk_freq);
   enable_tx(bus, rmt_clk_freq);
 
   // Allocate the RMT interrupt handler
-  if (esp_intr_alloc(JOYBUS_RMT_GROUP0.irq, ESP_INTR_FLAG_LEVEL3, rmt_irq_handler, bus, &data->rmt_intr) != 0)
+  uint32_t intr_mask = RMT_LL_EVENT_TX_MASK(data->rmt_tx_ch) | RMT_LL_EVENT_RX_MASK(data->rmt_rx_ch);
+  if (esp_intr_alloc_intrstatus(JOYBUS_RMT_GROUP0.irq, ESP_INTR_FLAG_SHARED | ESP_INTR_FLAG_LOWMED,
+                                (uint32_t)rmt_ll_get_interrupt_status_reg(&RMT), intr_mask, rmt_irq_handler, bus,
+                                &data->rmt_intr) != 0)
     return -JOYBUS_ERR_NOT_SUPPORTED;
 
   // Setup transfer start timer
@@ -604,9 +627,14 @@ static int joybus_esp32_disable(struct joybus *bus)
   if (data->state == BUS_STATE_DISABLED)
     return 0;
 
-  // Tear down RMT
+  // Disable the RMT TX/RX channels
   rmt_ll_rx_enable(&RMT, data->rmt_rx_ch, false);
-  rmt_ll_enable_interrupt(&RMT, UINT32_MAX, false);
+  rmt_ll_tx_stop(&RMT, data->rmt_tx_ch);
+
+  // Disable interrupts for this bus's channels
+  uint32_t intr_mask = RMT_LL_EVENT_TX_MASK(data->rmt_tx_ch) | RMT_LL_EVENT_RX_MASK(data->rmt_rx_ch);
+  rmt_ll_enable_interrupt(&RMT, intr_mask, false);
+  rmt_ll_clear_interrupt_status(&RMT, intr_mask);
 
   // Free any interrupt resources
   if (data->rmt_intr) {
