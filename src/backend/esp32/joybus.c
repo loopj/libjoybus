@@ -85,6 +85,25 @@ enum {
 // Direct access to RMT memory (linker-provided symbol)
 extern volatile rmt_symbol_word_t RMTMEM[JOYBUS_RMT_CHANNELS_PER_GROUP][SOC_RMT_MEM_WORDS_PER_CHANNEL];
 
+// Absolute RMT channels claimed by enabled joybus buses (bit N = channel N)
+static uint32_t joybus_rmt_claimed_channels;
+
+// De-assert the RMT peripheral reset without first asserting it like
+// rmt_ll_reset_register does. This allows us to coexist with other RMT drivers
+#if SOC_RCC_IS_INDEPENDENT
+#include <soc/pcr_reg.h>
+static inline void rmt_deassert_reset(void)
+{
+  REG_CLR_BIT(PCR_RMT_CONF_REG, PCR_RMT_RST_EN);
+}
+#else
+#include <soc/system_reg.h>
+static inline void rmt_deassert_reset(void)
+{
+  REG_CLR_BIT(SYSTEM_PERIP_RST_EN0_REG, SYSTEM_RMT_RST);
+}
+#endif
+
 // Encode a byte from write_buf into RMT TX memory
 static inline IRAM_ATTR void encode_byte(struct joybus_esp32_data *data, uint16_t byte_idx)
 {
@@ -532,22 +551,6 @@ static void enable_tx(struct joybus *bus, uint32_t rmt_clk_freq)
   rmt_ll_enable_interrupt(&RMT, RMT_LL_EVENT_TX_DONE(data->rmt_tx_ch), true);
 }
 
-// De-assert the RMT peripheral reset without first asserting it like
-// rmt_ll_reset_register does. This allows us to coexist with other RMT drivers
-#if SOC_RCC_IS_INDEPENDENT
-#include <soc/pcr_reg.h>
-static inline void rmt_deassert_reset(void)
-{
-  REG_CLR_BIT(PCR_RMT_CONF_REG, PCR_RMT_RST_EN);
-}
-#else
-#include <soc/system_reg.h>
-static inline void rmt_deassert_reset(void)
-{
-  REG_CLR_BIT(SYSTEM_PERIP_RST_EN0_REG, SYSTEM_RMT_RST);
-}
-#endif
-
 static int joybus_esp32_enable(struct joybus *bus)
 {
   struct joybus_esp32_data *data = &JOYBUS_ESP32(bus)->data;
@@ -567,6 +570,43 @@ static int joybus_esp32_enable(struct joybus *bus)
   // Resolve the response floor to CPU cycles for the busy-wait in the target reply path
   data->reply_floor_cycles = (uint32_t)TARGET_REPLY_FLOOR_NS * esp_rom_get_cpu_ticks_per_us() / 1000;
 
+  // Get the RMT source clock rate (ticks/sec)
+  uint32_t rmt_clk_freq = 0;
+  if (esp_clk_tree_src_get_freq_hz((soc_module_clk_t)RMT_CLK_SRC_DEFAULT, ESP_CLK_TREE_SRC_FREQ_PRECISION_CACHED,
+                                   &rmt_clk_freq) != ESP_OK)
+    return -JOYBUS_ERR_NOT_SUPPORTED;
+
+  // Claim this bus's RMT channels
+  data->rmt_rx_mem_ch = data->rmt_rx_ch + (JOYBUS_RMT_CHANNELS_PER_GROUP - JOYBUS_RMT_TX_CANDIDATES);
+  uint32_t claim_mask = (1u << data->rmt_tx_ch) | (1u << data->rmt_rx_mem_ch);
+  if (joybus_rmt_claimed_channels & claim_mask)
+    return -JOYBUS_ERR_BUSY;
+  joybus_rmt_claimed_channels |= claim_mask;
+
+  // Allocate the RMT interrupt handler
+  uint32_t intr_mask = RMT_LL_EVENT_TX_MASK(data->rmt_tx_ch) | RMT_LL_EVENT_RX_MASK(data->rmt_rx_ch);
+  if (esp_intr_alloc_intrstatus(JOYBUS_RMT_GROUP0.irq, ESP_INTR_FLAG_SHARED | ESP_INTR_FLAG_LOWMED,
+                                (uint32_t)rmt_ll_get_interrupt_status_reg(&RMT), intr_mask, rmt_irq_handler, bus,
+                                &data->rmt_intr) != 0) {
+    joybus_rmt_claimed_channels &= ~claim_mask;
+    return -JOYBUS_ERR_NOT_SUPPORTED;
+  }
+
+  // Setup transfer start timer
+  esp_timer_create_args_t transfer_start_args = {
+    .callback        = transfer_start_timer_cb,
+    .arg             = bus,
+    .dispatch_method = TIMER_DISPATCH,
+    .name            = "joybus_transfer_start",
+  };
+
+  if (esp_timer_create(&transfer_start_args, &data->transfer_start_timer) != 0) {
+    esp_intr_free(data->rmt_intr);
+    data->rmt_intr = NULL;
+    joybus_rmt_claimed_channels &= ~claim_mask;
+    return -JOYBUS_ERR_NOT_SUPPORTED;
+  }
+
   // Enable the RMT bus clock and bring the peripheral out of reset
   PERIPH_RCC_ATOMIC()
   {
@@ -579,37 +619,13 @@ static int joybus_esp32_enable(struct joybus *bus)
   rmt_ll_set_group_clock_src(&RMT, data->rmt_rx_ch, RMT_CLK_SRC_DEFAULT, 1, 1, 0);
   rmt_ll_enable_group_clock(&RMT, true);
 
-  // Get the RMT source clock rate (ticks/sec)
-  uint32_t rmt_clk_freq = 0;
-  if (esp_clk_tree_src_get_freq_hz((soc_module_clk_t)RMT_CLK_SRC_DEFAULT, ESP_CLK_TREE_SRC_FREQ_PRECISION_CACHED,
-                                   &rmt_clk_freq) != ESP_OK)
-    return -JOYBUS_ERR_NOT_SUPPORTED;
-
   // Reset the RMT TX/RX channels we're using
   rmt_ll_tx_reset_pointer(&RMT, data->rmt_tx_ch);
   rmt_ll_rx_reset_pointer(&RMT, data->rmt_rx_ch);
 
-  // Enable RX/TX channels
+  // Enable RX/TX channels (this is where this bus's channel interrupts go live)
   enable_rx(bus, rmt_clk_freq);
   enable_tx(bus, rmt_clk_freq);
-
-  // Allocate the RMT interrupt handler
-  uint32_t intr_mask = RMT_LL_EVENT_TX_MASK(data->rmt_tx_ch) | RMT_LL_EVENT_RX_MASK(data->rmt_rx_ch);
-  if (esp_intr_alloc_intrstatus(JOYBUS_RMT_GROUP0.irq, ESP_INTR_FLAG_SHARED | ESP_INTR_FLAG_LOWMED,
-                                (uint32_t)rmt_ll_get_interrupt_status_reg(&RMT), intr_mask, rmt_irq_handler, bus,
-                                &data->rmt_intr) != 0)
-    return -JOYBUS_ERR_NOT_SUPPORTED;
-
-  // Setup transfer start timer
-  esp_timer_create_args_t transfer_start_args = {
-    .callback        = transfer_start_timer_cb,
-    .arg             = bus,
-    .dispatch_method = TIMER_DISPATCH,
-    .name            = "joybus_transfer_start",
-  };
-
-  if (esp_timer_create(&transfer_start_args, &data->transfer_start_timer) != 0)
-    return -JOYBUS_ERR_NOT_SUPPORTED;
 
   // Enter the appropriate initial state based on the bus mode
   if (bus->mode == JOYBUS_MODE_TARGET) {
@@ -648,6 +664,9 @@ static int joybus_esp32_disable(struct joybus *bus)
     esp_timer_delete(data->transfer_start_timer);
     data->transfer_start_timer = NULL;
   }
+
+  // Release this bus's channels back to the pool
+  joybus_rmt_claimed_channels &= ~((1u << data->rmt_tx_ch) | (1u << data->rmt_rx_mem_ch));
 
   data->state = BUS_STATE_DISABLED;
 
@@ -707,7 +726,6 @@ int joybus_esp32_init(struct joybus_esp32 *esp32_bus, struct joybus_esp32_config
   data->gpio                     = config.gpio;
   data->rmt_tx_ch                = config.rmt_tx_ch;
   data->rmt_rx_ch                = config.rmt_rx_ch;
-  data->rmt_rx_mem_ch            = config.rmt_rx_ch + (JOYBUS_RMT_CHANNELS_PER_GROUP - JOYBUS_RMT_TX_CANDIDATES);
   data->rmt_intr                 = NULL;
   data->transfer_start_timer     = NULL;
   data->last_transfer_us         = 0;
