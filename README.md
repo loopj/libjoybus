@@ -22,9 +22,11 @@ for 32-bit microcontrollers.
 
 ## Examples
 
-The project is used in [WavePhoenix](https://github.com/loopj/wavephoenix), an open source implementation of a GameCube WaveBird receiver.
+libjoybus is a key part of [WavePhoenix](https://github.com/loopj/wavephoenix), my open source implementation of a GameCube WaveBird receiver.
 
-You can find a number of additonal examples in the [`examples/`](examples/) directory, including a [full implementation of the official Nintendo GameCube Controller Adapter for Pi Pico](examples/pico-sdk/gcn-adapter-nintendo).
+libjoybus is also used in my [open-source 4-port USB GameCube controller adapter](https://github.com/loopj/usb-gamecube-controller-adapter) project.
+
+You can find a number of additonal examples in the [`examples/`](examples/) directory.
 
 Please let me know if you build something with `libjoybus`! I love seeing my projects used in the wild, and I'll consider adding it to the examples list!
 
