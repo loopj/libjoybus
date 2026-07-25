@@ -20,8 +20,21 @@
 #include <soc/clk_tree_defs.h>
 #include <soc/soc_caps.h>
 
-#if !SOC_RMT_SUPPORT_RX_PINGPONG
-#error "Joybus ESP32 backend currently requires RMT RX ping-pong"
+// The RX byte clock differs by chip. Ping-pong chips (S3/C3/H2/P4) fire the RX_THRES interrupt over
+// one wrapped block. The classic ESP32 has neither RX_THRES nor RX wrap, so it clocks bytes from a
+// PCNT watchpoint over a linear whole-frame capture. JOYBUS_RMT_CLASSIC also gates the classic's
+// old-silicon register quirks (reset register, no tx-stop, per-channel clock).
+#if SOC_RMT_SUPPORT_RX_PINGPONG
+#define JOYBUS_RMT_BYTECLOCK_RXTHRES 1
+#define RX_BLOCKS                    1 // one memory block, wrapped
+#else
+#define JOYBUS_RMT_BYTECLOCK_PCNT 1
+#define JOYBUS_RMT_CLASSIC        1
+#include <driver/pulse_cnt.h>
+#if !CONFIG_PCNT_CTRL_FUNC_IN_IRAM || !CONFIG_PCNT_ISR_IRAM_SAFE
+#error "Joybus on this chip needs CONFIG_PCNT_CTRL_FUNC_IN_IRAM=y and CONFIG_PCNT_ISR_IRAM_SAFE=y"
+#endif
+#define RX_BLOCKS 6 // linear blocks for the whole-frame capture (48 bytes, TX uses 2 more blocks)
 #endif
 
 // Compatibility macros for ESP-IDF v5 vs v6
@@ -52,8 +65,8 @@ enum {
 // 8 bits = 8 RMT symbols = 1 byte
 #define SYMBOLS_PER_BYTE  8
 
-// RX capture ring buffer size
-#define RX_RING SOC_RMT_MEM_WORDS_PER_CHANNEL
+// RX capture ring buffer size (1 wrapped block on ping-pong chips, the whole linear buffer on classic)
+#define RX_RING (RX_BLOCKS * SOC_RMT_MEM_WORDS_PER_CHANNEL)
 
 // Use lower latency interrupt dispatch method if available
 #if CONFIG_ESP_TIMER_SUPPORTS_ISR_DISPATCH_METHOD
@@ -96,6 +109,12 @@ static inline void rmt_deassert_reset(void)
 {
   REG_CLR_BIT(PCR_RMT_CONF_REG, PCR_RMT_RST_EN);
 }
+#elif CONFIG_IDF_TARGET_ESP32
+#include <soc/dport_reg.h>
+static inline void rmt_deassert_reset(void)
+{
+  DPORT_CLEAR_PERI_REG_MASK(DPORT_PERIP_RST_EN_REG, DPORT_RMT_RST);
+}
 #else
 #include <soc/system_reg.h>
 static inline void rmt_deassert_reset(void)
@@ -103,6 +122,17 @@ static inline void rmt_deassert_reset(void)
   REG_CLR_BIT(SYSTEM_PERIP_RST_EN0_REG, SYSTEM_RMT_RST);
 }
 #endif
+
+// Halt TX. The classic ESP32 has no tx-stop register, so reset the read pointer instead. TX is only
+// stopped here when idle (init or teardown), where that is sufficient.
+static inline IRAM_ATTR void tx_stop(struct joybus_esp32_data *data)
+{
+#if JOYBUS_RMT_CLASSIC
+  rmt_ll_tx_reset_pointer(&RMT, data->rmt_tx_ch);
+#else
+  rmt_ll_tx_stop(&RMT, data->rmt_tx_ch);
+#endif
+}
 
 // Encode a byte from write_buf into RMT TX memory
 static inline IRAM_ATTR void encode_byte(struct joybus_esp32_data *data, uint16_t byte_idx)
@@ -213,8 +243,8 @@ static inline IRAM_ATTR uint8_t decode_byte(struct joybus_esp32_data *data, int 
   // Fill the byte, folding in each bit as its symbol commits. Read the writer offset once and
   // re-read it only when we catch up to it: it barely moves while we read the bits that already
   // landed, and on a slow peripheral bus (the ESP32-H2) re-reading it every bit dominates the decode.
-  uint8_t byte      = 0;
-  int     committed = rx_committed(data, base);
+  uint8_t byte  = 0;
+  int committed = rx_committed(data, base);
   for (int i = 0; i < SYMBOLS_PER_BYTE; i++) {
     while (committed <= i)
       committed = rx_committed(data, base);
@@ -235,11 +265,17 @@ static IRAM_ATTR void enter_target_rx_mode(struct joybus *bus)
   data->write_buf  = NULL;
   data->write_len  = 0;
 
-  // Configure RMT RX for a fresh frame, firing the byte-received interrupt RX_DECODE_HIDE
-  // symbols early so the decode of the already-captured bits overlaps the last bits arriving
+  // Configure RMT RX for a fresh command frame and arm the byte clock
+#if JOYBUS_RMT_BYTECLOCK_RXTHRES
+  // Fire the byte-received interrupt RX_DECODE_HIDE symbols early on the first byte, so its decode
+  // overlaps the last bits still arriving
   rmt_ll_rx_set_limit(&RMT, data->rmt_rx_ch, SYMBOLS_PER_BYTE - RX_DECODE_HIDE);
+#endif
   rmt_ll_rx_set_mem_owner(&RMT, data->rmt_rx_ch, RMT_LL_MEM_OWNER_HW);
   rmt_ll_rx_reset_pointer(&RMT, data->rmt_rx_ch);
+#if JOYBUS_RMT_BYTECLOCK_PCNT
+  pcnt_unit_clear_count(data->rx_pcnt);
+#endif
 
   // Reset the TX read pointer now, while we are idle
   rmt_ll_tx_reset_pointer(&RMT, data->rmt_tx_ch);
@@ -273,10 +309,16 @@ static IRAM_ATTR void transfer_start(struct joybus *bus)
     // reply arrives. RX records our own command, the stop bit, and the reply
     // as one continuous capture, and the reply is decoded afterward from a
     // fixed symbol offset. This is the most reliable way to begin capturing
-    // responses to commands, no matter the MCU clock speed.
+    // responses to commands, no matter the MCU clock speed. The byte clock counts our own command
+    // pulses too. The first write_len ticks are skipped inside host_byte_received.
+#if JOYBUS_RMT_BYTECLOCK_RXTHRES
     rmt_ll_rx_set_limit(&RMT, data->rmt_rx_ch, SYMBOLS_PER_BYTE);
+#endif
     rmt_ll_rx_set_mem_owner(&RMT, data->rmt_rx_ch, RMT_LL_MEM_OWNER_HW);
     rmt_ll_rx_reset_pointer(&RMT, data->rmt_rx_ch);
+#if JOYBUS_RMT_BYTECLOCK_PCNT
+    pcnt_unit_clear_count(data->rx_pcnt);
+#endif
     rmt_ll_rx_enable(&RMT, data->rmt_rx_ch, true);
   }
 
@@ -348,7 +390,7 @@ static inline IRAM_ATTR void host_byte_received(struct joybus *bus)
 
   // Decode the next reply byte. The reply starts one symbol past the command and its stop bit, so
   // every reply byte lands one symbol early, the same interrupt timing decode_byte handles
-  int base_sym = (data->write_len * SYMBOLS_PER_BYTE + 1) + data->read_count * SYMBOLS_PER_BYTE;
+  int base_sym                     = (data->write_len * SYMBOLS_PER_BYTE + 1) + data->read_count * SYMBOLS_PER_BYTE;
   data->read_buf[data->read_count] = decode_byte(data, base_sym);
   data->read_count++;
 
@@ -364,7 +406,7 @@ static inline IRAM_ATTR void target_byte_received(struct joybus *bus)
 
   // Save the received byte in the buffer
   data->read_buf[data->read_count] = decode_byte(data, data->read_count * SYMBOLS_PER_BYTE);
-  uint32_t cmd_end = esp_cpu_get_cycle_count();
+  uint32_t cmd_end                 = esp_cpu_get_cycle_count();
   data->read_count++;
 
   // Call the target handler to prepare a response if needed
@@ -395,19 +437,98 @@ static inline IRAM_ATTR void target_byte_received(struct joybus *bus)
       enter_target_rx_mode(bus);
     }
   } else if (rc > 0) {
-    // More bytes expected
-    // After the first byte, switch to 8-symbol captures
+#if JOYBUS_RMT_BYTECLOCK_RXTHRES
+    // More bytes expected. After the (early) first byte, settle to full 8-symbol captures and re-arm
+    // RX. (The classic's PCNT byte clock ticks uniformly, so it needs nothing here.)
     if (data->read_count == 1) {
       rmt_ll_rx_set_limit(&RMT, data->rmt_rx_ch, SYMBOLS_PER_BYTE);
       rmt_ll_rx_enable(&RMT, data->rmt_rx_ch, true);
       rmt_ll_clear_interrupt_status(&RMT, RMT_LL_EVENT_RX_THRES(data->rmt_rx_ch));
     }
+#endif
   } else {
     // Error handling command, or command not supported
     // RX_DONE will re-enable RX after the bus becomes idle
     data->state = BUS_STATE_TARGET_ERROR;
   }
 }
+
+// Route a freshly-clocked byte to the right handler for the current bus state. Called from whichever
+// byte clock the chip uses: the RX_THRES interrupt (ping-pong) or the PCNT watch callback (classic).
+static inline IRAM_ATTR void dispatch_received_byte(struct joybus *bus)
+{
+  struct joybus_esp32_data *data = &JOYBUS_ESP32(bus)->data;
+
+  // The host counts ticks from the start of capture, during both command TX and the reply, so it
+  // runs in HOST_TX and HOST_RX. The command ticks are skipped inside host_byte_received.
+  if (data->state == BUS_STATE_HOST_TX || data->state == BUS_STATE_HOST_RX) {
+    host_byte_received(bus);
+  } else if (data->state == BUS_STATE_TARGET_RX) {
+    target_byte_received(bus);
+  }
+}
+
+// The RX_THRES byte clock needs no separate object. The classic's PCNT byte clock does.
+#if JOYBUS_RMT_BYTECLOCK_PCNT
+// PCNT watch callback: one event per received byte. Must be IRAM-safe (CONFIG_PCNT_ISR_IRAM_SAFE).
+static bool IRAM_ATTR rx_pcnt_on_reach(pcnt_unit_handle_t unit, const pcnt_watch_event_data_t *ed, void *arg)
+{
+  dispatch_received_byte((struct joybus *)arg);
+  return false;
+}
+
+// Create the PCNT byte clock: one watch event every SYMBOLS_PER_BYTE falling edges on the data line
+static int byte_clock_setup(struct joybus *bus)
+{
+  struct joybus_esp32_data *data = &JOYBUS_ESP32(bus)->data;
+
+  // Allocate the counter unit and its edge channel on the Joybus GPIO
+  pcnt_unit_config_t unit_cfg = {.high_limit = SYMBOLS_PER_BYTE, .low_limit = -1};
+  if (pcnt_new_unit(&unit_cfg, &data->rx_pcnt) != 0)
+    return -JOYBUS_ERR_NOT_SUPPORTED;
+
+  pcnt_chan_config_t chan_cfg = {.edge_gpio_num = data->gpio, .level_gpio_num = -1};
+  if (pcnt_new_channel(data->rx_pcnt, &chan_cfg, &data->rx_pcnt_chan) != 0) {
+    pcnt_del_unit(data->rx_pcnt);
+    data->rx_pcnt = NULL;
+    return -JOYBUS_ERR_NOT_SUPPORTED;
+  }
+
+  // Count one falling edge per bit, and reject glitches like the RMT RX filter so both count the same edges
+  pcnt_glitch_filter_config_t filter_cfg = {.max_glitch_ns = 250};
+  pcnt_unit_set_glitch_filter(data->rx_pcnt, &filter_cfg);
+  pcnt_channel_set_edge_action(data->rx_pcnt_chan, PCNT_CHANNEL_EDGE_ACTION_HOLD, PCNT_CHANNEL_EDGE_ACTION_INCREASE);
+  pcnt_channel_set_level_action(data->rx_pcnt_chan, PCNT_CHANNEL_LEVEL_ACTION_KEEP, PCNT_CHANNEL_LEVEL_ACTION_KEEP);
+  pcnt_unit_add_watch_point(data->rx_pcnt, SYMBOLS_PER_BYTE);
+
+  // Install the per-byte callback and start counting
+  pcnt_event_callbacks_t cbs = {.on_reach = rx_pcnt_on_reach};
+  if (pcnt_unit_register_event_callbacks(data->rx_pcnt, &cbs, bus) != 0 || pcnt_unit_enable(data->rx_pcnt) != 0 ||
+      pcnt_unit_start(data->rx_pcnt) != 0) {
+    pcnt_del_channel(data->rx_pcnt_chan);
+    pcnt_del_unit(data->rx_pcnt);
+    data->rx_pcnt      = NULL;
+    data->rx_pcnt_chan = NULL;
+    return -JOYBUS_ERR_NOT_SUPPORTED;
+  }
+
+  return 0;
+}
+
+// Tear down the PCNT byte clock (reverse of byte_clock_setup)
+static void byte_clock_teardown(struct joybus_esp32_data *data)
+{
+  if (!data->rx_pcnt)
+    return;
+
+  pcnt_unit_stop(data->rx_pcnt);
+  pcnt_unit_disable(data->rx_pcnt);
+  pcnt_del_channel(data->rx_pcnt_chan);
+  pcnt_del_unit(data->rx_pcnt);
+  data->rx_pcnt      = NULL;
+  data->rx_pcnt_chan = NULL;
+}
+#endif
 
 // Transfer start timer callback
 static void IRAM_ATTR transfer_start_timer_cb(void *arg)
@@ -435,18 +556,13 @@ static void IRAM_ATTR rmt_irq_handler(void *arg)
     }
   }
 
-  // Handle RX threshold (byte received) interrupt
+#if JOYBUS_RMT_BYTECLOCK_RXTHRES
+  // RX threshold = one received byte. (The classic drives the same dispatch from its PCNT callback.)
   if (status & RMT_LL_EVENT_RX_THRES(data->rmt_rx_ch)) {
     rmt_ll_clear_interrupt_status(&RMT, RMT_LL_EVENT_RX_THRES(data->rmt_rx_ch));
-
-    // The host counts these ticks from the start of capture, during both command TX and the reply,
-    // so it runs in HOST_TX and HOST_RX. The command ticks are skipped inside host_byte_received.
-    if (data->state == BUS_STATE_HOST_TX || data->state == BUS_STATE_HOST_RX) {
-      host_byte_received(bus);
-    } else if (data->state == BUS_STATE_TARGET_RX) {
-      target_byte_received(bus);
-    }
+    dispatch_received_byte(bus);
   }
+#endif
 
   // Handle TX threshold (ping-pong refill) interrupt
   if (status & RMT_LL_EVENT_TX_THRES(data->rmt_tx_ch)) {
@@ -503,9 +619,13 @@ static void enable_rx(struct joybus *bus, uint32_t rmt_clk_freq)
 
   // Configure RMT RX channel
   rmt_ll_rx_set_channel_clock_div(&RMT, data->rmt_rx_ch, 1);
-  rmt_ll_rx_set_mem_blocks(&RMT, data->rmt_rx_ch, 1);
+  rmt_ll_rx_set_mem_blocks(&RMT, data->rmt_rx_ch, RX_BLOCKS);
+#if JOYBUS_RMT_BYTECLOCK_RXTHRES
+  // Stream the whole frame through one wrapping block, and disable RX carrier demodulation, which
+  // these chips enable at reset.
   rmt_ll_rx_enable_wrap(&RMT, data->rmt_rx_ch, true);
   rmt_ll_rx_enable_carrier_demodulation(&RMT, data->rmt_rx_ch, false);
+#endif
   rmt_ll_rx_set_filter_thres(&RMT, data->rmt_rx_ch, filter_thres);
   rmt_ll_rx_enable_filter(&RMT, data->rmt_rx_ch, true);
   rmt_ll_rx_set_idle_thres(&RMT, data->rmt_rx_ch, idle_thres);
@@ -541,7 +661,7 @@ static void enable_tx(struct joybus *bus, uint32_t rmt_clk_freq)
   rmt_ll_tx_set_limit(&RMT, data->rmt_tx_ch, SYMBOLS_PER_BYTE);
   rmt_ll_tx_enable_carrier_modulation(&RMT, data->rmt_tx_ch, false);
   rmt_ll_tx_fix_idle_level(&RMT, data->rmt_tx_ch, 1, true);
-  rmt_ll_tx_stop(&RMT, data->rmt_tx_ch);
+  tx_stop(data);
 
   // Route the TX output to the Joybus GPIO
   esp_rom_gpio_connect_out_signal(data->gpio, JOYBUS_RMT_GROUP0.channels[data->rmt_tx_ch].tx_sig, false, false);
@@ -578,7 +698,12 @@ static int joybus_esp32_enable(struct joybus *bus)
 
   // Claim this bus's RMT channels
   data->rmt_rx_mem_ch = data->rmt_rx_ch + (JOYBUS_RMT_CHANNELS_PER_GROUP - JOYBUS_RMT_TX_CANDIDATES);
+#if JOYBUS_RMT_CLASSIC
+  // TX uses 2 memory blocks, RX uses RX_BLOCKS linear blocks. Claim the whole footprint.
+  uint32_t claim_mask = (0x3u << data->rmt_tx_ch) | (((1u << RX_BLOCKS) - 1) << data->rmt_rx_mem_ch);
+#else
   uint32_t claim_mask = (1u << data->rmt_tx_ch) | (1u << data->rmt_rx_mem_ch);
+#endif
   if (joybus_rmt_claimed_channels & claim_mask)
     return -JOYBUS_ERR_BUSY;
   joybus_rmt_claimed_channels |= claim_mask;
@@ -607,6 +732,19 @@ static int joybus_esp32_enable(struct joybus *bus)
     return -JOYBUS_ERR_NOT_SUPPORTED;
   }
 
+#if JOYBUS_RMT_BYTECLOCK_PCNT
+  // Set up the PCNT byte clock (chips without RX_THRES)
+  int byteclock_err = byte_clock_setup(bus);
+  if (byteclock_err != 0) {
+    esp_timer_delete(data->transfer_start_timer);
+    data->transfer_start_timer = NULL;
+    esp_intr_free(data->rmt_intr);
+    data->rmt_intr = NULL;
+    joybus_rmt_claimed_channels &= ~claim_mask;
+    return byteclock_err;
+  }
+#endif
+
   // Enable the RMT bus clock and bring the peripheral out of reset
   PERIPH_RCC_ATOMIC()
   {
@@ -617,6 +755,11 @@ static int joybus_esp32_enable(struct joybus *bus)
   // Configure memory access (group-wide, idempotent, matches the IDF RMT driver's own group setup)
   rmt_ll_enable_mem_access_nonfifo(&RMT, true);
   rmt_ll_set_group_clock_src(&RMT, data->rmt_rx_ch, RMT_CLK_SRC_DEFAULT, 1, 1, 0);
+#if JOYBUS_RMT_CLASSIC
+  // The classic selects the RMT clock source per channel, so the TX channel needs it set too.
+  // Otherwise it falls back to the 1 MHz REF_TICK and transmits ~80x too slow.
+  rmt_ll_set_group_clock_src(&RMT, data->rmt_tx_ch, RMT_CLK_SRC_DEFAULT, 1, 1, 0);
+#endif
   rmt_ll_enable_group_clock(&RMT, true);
 
   // Reset the RMT TX/RX channels we're using
@@ -645,12 +788,17 @@ static int joybus_esp32_disable(struct joybus *bus)
 
   // Disable the RMT TX/RX channels
   rmt_ll_rx_enable(&RMT, data->rmt_rx_ch, false);
-  rmt_ll_tx_stop(&RMT, data->rmt_tx_ch);
+  tx_stop(data);
 
   // Disable interrupts for this bus's channels
   uint32_t intr_mask = RMT_LL_EVENT_TX_MASK(data->rmt_tx_ch) | RMT_LL_EVENT_RX_MASK(data->rmt_rx_ch);
   rmt_ll_enable_interrupt(&RMT, intr_mask, false);
   rmt_ll_clear_interrupt_status(&RMT, intr_mask);
+
+#if JOYBUS_RMT_BYTECLOCK_PCNT
+  // Tear down the PCNT byte clock
+  byte_clock_teardown(data);
+#endif
 
   // Free any interrupt resources
   if (data->rmt_intr) {
@@ -665,8 +813,12 @@ static int joybus_esp32_disable(struct joybus *bus)
     data->transfer_start_timer = NULL;
   }
 
-  // Release this bus's channels back to the pool
+  // Release this bus's channels back to the pool (same footprint claimed in enable)
+#if JOYBUS_RMT_CLASSIC
+  joybus_rmt_claimed_channels &= ~((0x3u << data->rmt_tx_ch) | (((1u << RX_BLOCKS) - 1) << data->rmt_rx_mem_ch));
+#else
   joybus_rmt_claimed_channels &= ~((1u << data->rmt_tx_ch) | (1u << data->rmt_rx_mem_ch));
+#endif
 
   data->state = BUS_STATE_DISABLED;
 
