@@ -17,7 +17,7 @@ for 32-bit microcontrollers.
 ## Supported Platforms
 
 - Raspberry Pi Pico and Pico 2 (and other RP2xxx-based boards)
-- Silicon Labs EFR32 Series 1 and Series 2 MCUs
+- Silicon Labs EFM32/EFR32 Series 1 and Series 2 MCUs
 - Espressif ESP32 (ESP32-C3, ESP32-C6, ESP32-S3, ESP32-H2)
 
 ## Examples
@@ -26,9 +26,81 @@ libjoybus is a key part of [WavePhoenix](https://github.com/loopj/wavephoenix), 
 
 libjoybus is also used in my [open-source 4-port USB GameCube controller adapter](https://github.com/loopj/usb-gamecube-controller-adapter) project.
 
-You can find a number of additonal examples in the [`examples/`](examples/) directory.
+You can find a number of additional examples in the [`examples/`](examples/) directory.
 
 Please let me know if you build something with `libjoybus`! I love seeing my projects used in the wild, and I'll consider adding it to the examples list!
+
+## Installation
+
+### CMake Based Projects (Pico SDK, etc)
+
+Copy the library into your project, add it as a git submodule, or fetch it with `FetchContent`. Set your `JOYBUS_BACKEND`, for example `rp2xxx` for the Pico SDK, and link your executable against the `joybus` target:
+
+```cmake
+# Set the backend (after pico_sdk_init() on the Pico SDK)
+set(JOYBUS_BACKEND rp2xxx)
+
+# Download libjoybus as part of a build, using FetchContent
+include(FetchContent)
+FetchContent_Declare(libjoybus GIT_REPOSITORY https://github.com/loopj/libjoybus.git GIT_TAG main)
+FetchContent_MakeAvailable(libjoybus)
+
+# ...or if bundling as a copy or git submodule
+add_subdirectory(libjoybus)
+
+# Link your executable against the joybus target
+target_link_libraries(my_app pico_stdlib joybus)
+```
+
+See the [Pico SDK examples](examples/pico-sdk/) for complete projects.
+
+### ESP32 (ESP-IDF)
+
+For ESP-IDF projects, libjoybus is packaged as a component. From your project directory, add it as a git dependency:
+
+```bash
+idf.py add-dependency --git https://github.com/loopj/libjoybus.git libjoybus
+```
+
+Then add `libjoybus` to the `REQUIRES` list in your `main/CMakeLists.txt`:
+
+```cmake
+idf_component_register(SRCS "main.c" INCLUDE_DIRS "." REQUIRES libjoybus)
+```
+
+The component manager downloads libjoybus on the next `idf.py build`. See the [ESP-IDF examples](examples/esp32/) for complete projects.
+
+### Silicon Labs EFM32/EFR32 (Simplicity SDK)
+
+For Simplicity SDK projects, libjoybus is packaged as a Silicon Labs SDK extension.
+
+#### Via Simplicity Studio
+
+1. Follow the [Silicon Labs Guide](https://docs.silabs.com/simplicity-studio-5-users-guide/latest/ss-5-users-guide-getting-started/install-sdk-extensions) to add this repository as an extension.
+
+2. Open your project's *Software Components* tab and install the `libjoybus` component.
+
+#### Using SLC-CLI
+
+Clone into your SDK's `extension` folder and trust the extension:
+
+```bash
+slc signature trust -extpath <path_to_sdk>/extension/libjoybus
+```
+
+Add to your project's `.slcp` file:
+
+```yaml
+sdk_extension:
+  - id: libjoybus
+    version: 0.9.0
+
+component:
+  - id: libjoybus
+    from: libjoybus
+```
+
+See the [Gecko examples](examples/gecko/) for complete projects.
 
 ## Usage
 
