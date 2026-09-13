@@ -7,7 +7,7 @@ Act as a GameCube controller on EFR32 devices using the Gecko SDK.
 TARGET=brd2710a
 
 # Generate the project files
-slc generate gcn_target.slcp  --with $TARGET --export-destination target/$TARGET --output-type cmake --sdk-extensions=../../..
+slc generate app.slcp  --with $TARGET --export-destination target/$TARGET --output-type cmake --sdk-extensions=../../..
 
 # Build the project
 cd target/$TARGET/gcn-target_cmake
