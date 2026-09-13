@@ -85,7 +85,7 @@ Every device derives its bus frequency from its own clock, so the frequency on t
 | Device | Frequency | Pulse period | Clock source |
 | --- | --- | --- | --- |
 | N64 console (NUS-001) | 244.14 kHz | 4.10 us | PIF-NUS @ 15.625MHz / 64 |
-| N64 cartridge EEPROM/RTC | 244.14 kHz | 4.10 us | SECCLK @ 1.953125MHz / 8 |
+| N64 cartridge EEPROM/RTC | 244.14 kHz | 4.10 us | SECCLK @ 1.953125MHz / 8 (PIF-NUS / 8) |
 | N64 controller (NUS-005) | 250.00 kHz | 4.00 us | CNT-NUS @ 2MHz / 8 |
 | N64 VRU (NUS-020) | 250.00 kHz | 4.00 us | VCI-NUS @ 4MHz / 16 |
 | GameCube console (DOL-001 / DOL-101) | 202.50 kHz | 4.94 us | Flipper @ 162MHz / 800 |
