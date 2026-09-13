@@ -78,6 +78,22 @@ Ideally, your backend should also meet the following criteria:
 
 - [ ] Backend supports 4 simultaneous buses
 
+## Nominal Device Timings
+
+Every device derives its bus frequency from its own clock, so the frequency on the wire varies by device. The nominal Joybus frequency is 250 kHz. These values are defined in [`include/joybus/bus.h`](../../include/joybus/bus.h).
+
+| Device | Frequency | Pulse period | Clock source |
+| --- | --- | --- | --- |
+| N64 console (NUS-001) | 244.14 kHz | 4.10 us | PIF-NUS @ 15.625MHz / 64 |
+| N64 cartridge EEPROM/RTC | 244.14 kHz | 4.10 us | SECCLK @ 1.953125MHz / 8 |
+| N64 controller (NUS-005) | 250.00 kHz | 4.00 us | CNT-NUS @ 2MHz / 8 |
+| N64 VRU (NUS-020) | 250.00 kHz | 4.00 us | VCI-NUS @ 4MHz / 16 |
+| GameCube console (DOL-001 / DOL-101) | 202.50 kHz | 4.94 us | Flipper @ 162MHz / 800 |
+| GameCube controller (DOL-003) | 250.00 kHz | 4.00 us | CNT-DOL @ 4MHz / 16 |
+| WaveBird receiver (DOL-005) | 225.00 kHz | 4.44 us | WCRX-DOL @ 28.8MHz / 128 |
+| Wii console (RVL-001 / RVL-101 / RVL-201) | 202.50 kHz | 4.94 us | Hollywood @ 243MHz / 1200 |
+| GBA cable (DOL-011) | 262.14 kHz | 3.81 us | CPU-AGB @ 16.777216MHz / 64 |
+
 ## Measured Timings
 
 ### OEM N64 Controller
