@@ -1,8 +1,6 @@
 var searchData=
 [
-  ['oem_20gamecube_20controller_0',['OEM GameCube Controller',['..//home/runner/work/libjoybus/libjoybus/src/backend/README.md#autotoc_md23',1,'']]],
-  ['oem_20gba_20to_20gamecube_20cable_1',['OEM GBA to GameCube Cable',['..//home/runner/work/libjoybus/libjoybus/src/backend/README.md#autotoc_md25',1,'']]],
-  ['oem_20n64_20controller_2',['OEM N64 Controller',['..//home/runner/work/libjoybus/libjoybus/src/backend/README.md#autotoc_md22',1,'']]],
-  ['oem_20n64_20vru_3',['OEM N64 VRU',['..//home/runner/work/libjoybus/libjoybus/src/backend/README.md#autotoc_md26',1,'']]],
-  ['oem_20wavebird_20receiver_4',['OEM WaveBird Receiver',['..//home/runner/work/libjoybus/libjoybus/src/backend/README.md#autotoc_md24',1,'']]]
+  ['n64_20controller_0',['OEM N64 Controller',['..//home/runner/work/libjoybus/libjoybus/src/backend/README.md#autotoc_md23',1,'']]],
+  ['n64_20vru_1',['OEM N64 VRU',['..//home/runner/work/libjoybus/libjoybus/src/backend/README.md#autotoc_md27',1,'']]],
+  ['nominal_20device_20timings_2',['Nominal Device Timings',['..//home/runner/work/libjoybus/libjoybus/src/backend/README.md#autotoc_md21',1,'']]]
 ];

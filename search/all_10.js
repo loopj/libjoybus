@@ -1,15 +1,17 @@
 var searchData=
 [
-  ['target_0',['Target',['../group__joybus__target__gcn__controller.html',1,'GameCube Controller Target'],['../group__joybus__target__n64__controller.html',1,'N64 Controller Target']]],
-  ['target_1',['target',['../structjoybus.html#a14578b791dc412c1c9ea7970d998ecf4',1,'joybus']]],
-  ['target_20mode_20command_20reception_2',['Target-mode Command Reception',['..//home/runner/work/libjoybus/libjoybus/src/backend/README.md#autotoc_md19',1,'']]],
-  ['targets_3',['Targets',['../group__joybus__target.html',1,'']]],
-  ['the_20joybus_4',['Initializing the Joybus',['../index.html#autotoc_md11',1,'']]],
-  ['timings_5',['Measured Timings',['..//home/runner/work/libjoybus/libjoybus/src/backend/README.md#autotoc_md21',1,'']]],
-  ['to_20gamecube_20cable_6',['OEM GBA to GameCube Cable',['..//home/runner/work/libjoybus/libjoybus/src/backend/README.md#autotoc_md25',1,'']]],
-  ['transfers_7',['Host-mode Transfers',['..//home/runner/work/libjoybus/libjoybus/src/backend/README.md#autotoc_md18',1,'']]],
-  ['trigger_5fleft_8',['trigger_left',['../structjoybus__gcn__controller__state.html#a92f2b3d07988e075e170ddb43a9aa079',1,'joybus_gcn_controller_state::trigger_left'],['../common_2gcn__controller_8h.html#aa7e5d70f5c304e47581ada1622f3d93f',1,'trigger_left:&#160;gcn_controller.h']]],
-  ['trigger_5fright_9',['trigger_right',['../structjoybus__gcn__controller__state.html#a4f4a1974f5ceccd4e94c472a6be42b63',1,'joybus_gcn_controller_state::trigger_right'],['../common_2gcn__controller_8h.html#a9de0206d5857ae92d3db20a251893a67',1,'trigger_right:&#160;gcn_controller.h']]],
-  ['tx_5fusart_10',['tx_usart',['../structjoybus__gecko__config.html#aaf1f50502c492762c1fa6ded1e7934b6',1,'joybus_gecko_config']]],
-  ['type_11',['type',['../structjoybus__id.html#a58c5ce73f5a3f7b52fe8c77585d8dc37',1,'joybus_id::type'],['../identify_8h.html#acb5cfd209ba75c853d03f701e7f91679',1,'type:&#160;identify.h']]]
+  ['sdk_0',['Silicon Labs EFM32/EFR32 (Simplicity SDK)',['../index.html#autotoc_md7',1,'']]],
+  ['sdk_20etc_1',['CMake Based Projects (Pico SDK, etc)',['../index.html#autotoc_md5',1,'']]],
+  ['silicon_20labs_20efm32_20efr32_20simplicity_20sdk_2',['Silicon Labs EFM32/EFR32 (Simplicity SDK)',['../index.html#autotoc_md7',1,'']]],
+  ['simplicity_20sdk_3',['Silicon Labs EFM32/EFR32 (Simplicity SDK)',['../index.html#autotoc_md7',1,'']]],
+  ['simplicity_20studio_4',['Via Simplicity Studio',['../index.html#autotoc_md8',1,'']]],
+  ['slc_20cli_5',['Using SLC-CLI',['../index.html#autotoc_md9',1,'']]],
+  ['status_6',['status',['../structjoybus__id.html#a12b2aac3439591cbf8985c4939ad28cc',1,'joybus_id::status'],['../identify_8h.html#ade818037fd6c985038ff29656089758d',1,'status:&#160;identify.h']]],
+  ['stick_5fx_7',['stick_x',['../structjoybus__gcn__controller__state.html#a93f06f1aa515e9ce9bda99d555c8c04b',1,'joybus_gcn_controller_state::stick_x'],['../structjoybus__n64__controller__state.html#a4edec4fcd54ef398fc53bc50506a5667',1,'joybus_n64_controller_state::stick_x'],['../common_2gcn__controller_8h.html#aaf671508229593fdb9a287a3ecd0a9dd',1,'stick_x:&#160;gcn_controller.h'],['../common_2n64__controller_8h.html#a8da384e2a04707e09a180c0dc4102a0a',1,'stick_x:&#160;n64_controller.h']]],
+  ['stick_5fy_8',['stick_y',['../structjoybus__gcn__controller__state.html#aff65c088b1b9ba9d17f3637f29f14383',1,'joybus_gcn_controller_state::stick_y'],['../structjoybus__n64__controller__state.html#a5bd549313c9da367fe8bdf7d07f3c8c7',1,'joybus_n64_controller_state::stick_y'],['../common_2gcn__controller_8h.html#af32d98fc87dfd133a7a71bc4d4d4d2b8',1,'stick_y:&#160;gcn_controller.h'],['../common_2n64__controller_8h.html#afdaee7e353daef83f1b21f01cdff8f53',1,'stick_y:&#160;n64_controller.h']]],
+  ['structure_9',['Structure',['..//home/runner/work/libjoybus/libjoybus/src/backend/README.md#autotoc_md16',1,'']]],
+  ['studio_10',['Via Simplicity Studio',['../index.html#autotoc_md8',1,'']]],
+  ['substick_5fx_11',['substick_x',['../structjoybus__gcn__controller__state.html#af847fa6ff23f8040958ff55fe7d3db6a',1,'joybus_gcn_controller_state::substick_x'],['../common_2gcn__controller_8h.html#a2b3da463515deac8332fe8320f414c69',1,'substick_x:&#160;gcn_controller.h']]],
+  ['substick_5fy_12',['substick_y',['../structjoybus__gcn__controller__state.html#a1bbdda5e73854a0568182d6c1dbe4766',1,'joybus_gcn_controller_state::substick_y'],['../common_2gcn__controller_8h.html#a40989423890116b171f5bf1b4b574eac',1,'substick_y:&#160;gcn_controller.h']]],
+  ['supported_20platforms_13',['Supported Platforms',['../index.html#autotoc_md2',1,'']]]
 ];

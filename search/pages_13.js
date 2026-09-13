@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['wavebird_20receiver_0',['OEM WaveBird Receiver',['..//home/runner/work/libjoybus/libjoybus/src/backend/README.md#autotoc_md24',1,'']]],
-  ['with_20controllers_1',['Communicating with Controllers',['../index.html#autotoc_md12',1,'']]]
+  ['via_20simplicity_20studio_0',['Via Simplicity Studio',['../index.html#autotoc_md8',1,'']]],
+  ['vru_1',['OEM N64 VRU',['..//home/runner/work/libjoybus/libjoybus/src/backend/README.md#autotoc_md27',1,'']]]
 ];

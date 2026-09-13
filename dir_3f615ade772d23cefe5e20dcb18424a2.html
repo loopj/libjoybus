@@ -197,8 +197,33 @@ Checklist</h1>
 <li class="unchecked">Backend supports 4 simultaneous buses</li>
 </ul>
 <h1 class="doxsection"><a class="anchor" id="autotoc_md21"></a>
+Nominal Device Timings</h1>
+<p>Every device derives its bus frequency from its own clock, so the frequency on the wire varies by device. The nominal Joybus frequency is 250 kHz. These values are defined in <a href="../../include/joybus/bus.h"><span class="tt">include/joybus/bus.h</span></a>.</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Device  </th><th class="markdownTableHeadNone">Frequency  </th><th class="markdownTableHeadNone">Pulse period  </th><th class="markdownTableHeadNone">Clock source  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">N64 console (NUS-001)  </td><td class="markdownTableBodyNone">244.14 kHz  </td><td class="markdownTableBodyNone">4.10 us  </td><td class="markdownTableBodyNone">PIF-NUS @ 15.625MHz / 64  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">N64 cartridge EEPROM/RTC  </td><td class="markdownTableBodyNone">244.14 kHz  </td><td class="markdownTableBodyNone">4.10 us  </td><td class="markdownTableBodyNone">SECCLK @ 1.953125MHz / 8  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">N64 controller (NUS-005)  </td><td class="markdownTableBodyNone">250.00 kHz  </td><td class="markdownTableBodyNone">4.00 us  </td><td class="markdownTableBodyNone">CNT-NUS @ 2MHz / 8  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">N64 VRU (NUS-020)  </td><td class="markdownTableBodyNone">250.00 kHz  </td><td class="markdownTableBodyNone">4.00 us  </td><td class="markdownTableBodyNone">VCI-NUS @ 4MHz / 16  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">GameCube console (DOL-001 / DOL-101)  </td><td class="markdownTableBodyNone">202.50 kHz  </td><td class="markdownTableBodyNone">4.94 us  </td><td class="markdownTableBodyNone">Flipper @ 162MHz / 800  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">GameCube controller (DOL-003)  </td><td class="markdownTableBodyNone">250.00 kHz  </td><td class="markdownTableBodyNone">4.00 us  </td><td class="markdownTableBodyNone">CNT-DOL @ 4MHz / 16  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">WaveBird receiver (DOL-005)  </td><td class="markdownTableBodyNone">225.00 kHz  </td><td class="markdownTableBodyNone">4.44 us  </td><td class="markdownTableBodyNone">WCRX-DOL @ 28.8MHz / 128  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">Wii console (RVL-001 / RVL-101 / RVL-201)  </td><td class="markdownTableBodyNone">202.50 kHz  </td><td class="markdownTableBodyNone">4.94 us  </td><td class="markdownTableBodyNone">Hollywood @ 243MHz / 1200  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">GBA cable (DOL-011)  </td><td class="markdownTableBodyNone">262.14 kHz  </td><td class="markdownTableBodyNone">3.81 us  </td><td class="markdownTableBodyNone">CPU-AGB @ 16.777216MHz / 64  </td></tr>
+</table>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md22"></a>
 Measured Timings</h1>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md22"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md23"></a>
 OEM N64 Controller</h2>
 <div class="fragment"><div class="line">Device ID:                            05 00 01</div>
 <div class="line">Response frequency:                   253.16 kHz (3.95 us pulse period)</div>
@@ -210,7 +235,7 @@ OEM N64 Controller</h2>
 <div class="line">  identify (0x00)     3.55    3.15    3.23    3.63    0.16</div>
 <div class="line">  reset (0xFF)        3.50    3.15    3.22    3.63    0.16</div>
 <div class="line">  n64 read (0x01)     3.36    3.25    3.27    3.62    0.07</div>
-</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md23"></a>
+</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md24"></a>
 OEM GameCube Controller</h2>
 <div class="fragment"><div class="line">Device ID:                            09 00 03</div>
 <div class="line">Response frequency:                   251.57 kHz (3.98 us pulse period)</div>
@@ -223,7 +248,7 @@ OEM GameCube Controller</h2>
 <div class="line">  reset (0xFF)        3.26    3.26    3.42    3.68    0.06</div>
 <div class="line">  gcn read (0x40)     3.51    3.23    3.50    3.68    0.04</div>
 <div class="line">  gcn origin (0x41)   3.71    3.27    3.53    3.71    0.08</div>
-</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md24"></a>
+</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md25"></a>
 OEM WaveBird Receiver</h2>
 <div class="fragment"><div class="line">Device ID:                            A8 00 00</div>
 <div class="line">Response frequency:                   225.37 kHz (4.44 us pulse period)</div>
@@ -236,7 +261,7 @@ OEM WaveBird Receiver</h2>
 <div class="line">  reset (0xFF)        4.12    3.98    4.06    4.12    0.08</div>
 <div class="line">  gcn read (0x40)     4.02    3.87    3.90    4.32    0.10</div>
 <div class="line">  gcn origin (0x41)   4.06    3.85    3.87    4.06    0.08</div>
-</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md25"></a>
+</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md26"></a>
 OEM GBA to GameCube Cable</h2>
 <div class="fragment"><div class="line">Device ID:                            00 04 28</div>
 <div class="line">Response frequency:                   262.32 kHz (3.81 us pulse period)</div>
@@ -247,7 +272,7 @@ OEM GBA to GameCube Cable</h2>
 <div class="line">  command             first   min     mean    max     stdev</div>
 <div class="line">  identify (0x00)     6.72    6.56    6.58    6.72    0.09</div>
 <div class="line">  reset (0xFF)        6.96    6.55    6.59    6.96    0.12</div>
-</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md26"></a>
+</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md27"></a>
 OEM N64 VRU</h2>
 <div class="fragment"><div class="line">Device ID:                            00 01 00</div>
 <div class="line">Response frequency:                   250.81 kHz (3.99 us pulse period)</div>

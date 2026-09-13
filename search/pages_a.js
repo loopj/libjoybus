@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['measured_20timings_0',['Measured Timings',['..//home/runner/work/libjoybus/libjoybus/src/backend/README.md#autotoc_md21',1,'']]],
-  ['mode_20command_20reception_1',['Target-mode Command Reception',['..//home/runner/work/libjoybus/libjoybus/src/backend/README.md#autotoc_md19',1,'']]],
-  ['mode_20transfers_2',['Host-mode Transfers',['..//home/runner/work/libjoybus/libjoybus/src/backend/README.md#autotoc_md18',1,'']]]
+  ['labs_20efm32_20efr32_20simplicity_20sdk_0',['Silicon Labs EFM32/EFR32 (Simplicity SDK)',['../index.html#autotoc_md7',1,'']]],
+  ['libjoybus_1',['libjoybus',['../index.html',1,'']]],
+  ['license_2',['License',['../index.html#autotoc_md14',1,'']]]
 ];

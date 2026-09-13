@@ -1,8 +1,12 @@
 var searchData=
 [
-  ['target_20mode_20command_20reception_0',['Target-mode Command Reception',['..//home/runner/work/libjoybus/libjoybus/src/backend/README.md#autotoc_md19',1,'']]],
-  ['the_20joybus_1',['Initializing the Joybus',['../index.html#autotoc_md11',1,'']]],
-  ['timings_2',['Measured Timings',['..//home/runner/work/libjoybus/libjoybus/src/backend/README.md#autotoc_md21',1,'']]],
-  ['to_20gamecube_20cable_3',['OEM GBA to GameCube Cable',['..//home/runner/work/libjoybus/libjoybus/src/backend/README.md#autotoc_md25',1,'']]],
-  ['transfers_4',['Host-mode Transfers',['..//home/runner/work/libjoybus/libjoybus/src/backend/README.md#autotoc_md18',1,'']]]
+  ['sdk_0',['Silicon Labs EFM32/EFR32 (Simplicity SDK)',['../index.html#autotoc_md7',1,'']]],
+  ['sdk_20etc_1',['CMake Based Projects (Pico SDK, etc)',['../index.html#autotoc_md5',1,'']]],
+  ['silicon_20labs_20efm32_20efr32_20simplicity_20sdk_2',['Silicon Labs EFM32/EFR32 (Simplicity SDK)',['../index.html#autotoc_md7',1,'']]],
+  ['simplicity_20sdk_3',['Silicon Labs EFM32/EFR32 (Simplicity SDK)',['../index.html#autotoc_md7',1,'']]],
+  ['simplicity_20studio_4',['Via Simplicity Studio',['../index.html#autotoc_md8',1,'']]],
+  ['slc_20cli_5',['Using SLC-CLI',['../index.html#autotoc_md9',1,'']]],
+  ['structure_6',['Structure',['..//home/runner/work/libjoybus/libjoybus/src/backend/README.md#autotoc_md16',1,'']]],
+  ['studio_7',['Via Simplicity Studio',['../index.html#autotoc_md8',1,'']]],
+  ['supported_20platforms_8',['Supported Platforms',['../index.html#autotoc_md2',1,'']]]
 ];

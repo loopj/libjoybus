@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['host_20mode_20transfers_0',['Host-mode Transfers',['..//home/runner/work/libjoybus/libjoybus/src/backend/README.md#autotoc_md18',1,'']]]
+  ['gamecube_20cable_0',['OEM GBA to GameCube Cable',['..//home/runner/work/libjoybus/libjoybus/src/backend/README.md#autotoc_md26',1,'']]],
+  ['gamecube_20controller_1',['OEM GameCube Controller',['..//home/runner/work/libjoybus/libjoybus/src/backend/README.md#autotoc_md24',1,'']]],
+  ['gba_20to_20gamecube_20cable_2',['OEM GBA to GameCube Cable',['..//home/runner/work/libjoybus/libjoybus/src/backend/README.md#autotoc_md26',1,'']]]
 ];

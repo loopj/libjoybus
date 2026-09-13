@@ -1,5 +1,12 @@
 var searchData=
 [
-  ['features_0',['Features',['../index.html#autotoc_md1',1,'']]],
-  ['freq_1',['freq',['../structjoybus__esp32__config.html#af16bc4548a84190b726ad7069f470855',1,'joybus_esp32_config::freq'],['../structjoybus__gecko__config.html#a178345b0613a70cacf29e7ad306ed80a',1,'joybus_gecko_config::freq'],['../structjoybus__rp2xxx__config.html#a6538d4f3341a876ffaee7f73f276739d',1,'joybus_rp2xxx_config::freq'],['../structjoybus.html#a80a2719bf6d4e969f3fd63b9fcd024bd',1,'joybus::freq']]]
+  ['efm32_20efr32_20simplicity_20sdk_0',['Silicon Labs EFM32/EFR32 (Simplicity SDK)',['../index.html#autotoc_md7',1,'']]],
+  ['efr32_20simplicity_20sdk_1',['Silicon Labs EFM32/EFR32 (Simplicity SDK)',['../index.html#autotoc_md7',1,'']]],
+  ['emulating_20a_20controller_2',['Emulating a Controller',['../index.html#autotoc_md13',1,'']]],
+  ['enabled_3',['enabled',['../structjoybus__target__n64__rumble__pak.html#ab0435b31da5431ba15de7523144d9f57',1,'joybus_target_n64_rumble_pak']]],
+  ['esp_20idf_4',['ESP32 (ESP-IDF)',['../index.html#autotoc_md6',1,'']]],
+  ['esp32_20backend_5',['ESP32 Backend',['../group__joybus__backend__esp32.html',1,'']]],
+  ['esp32_20esp_20idf_6',['ESP32 (ESP-IDF)',['../index.html#autotoc_md6',1,'']]],
+  ['etc_7',['CMake Based Projects (Pico SDK, etc)',['../index.html#autotoc_md5',1,'']]],
+  ['examples_8',['Examples',['../index.html#autotoc_md3',1,'']]]
 ];
