@@ -113,7 +113,152 @@ Directories</h2></td></tr>
 <tr class="memitem:gecko_5Fsdk" id="r_gecko_5Fsdk"><td class="memItemLeft" align="right" valign="top"><span class="iconfolder"><div class="folder-icon"></div></span>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dir_e2028abc67123f28fc5bd6877bede8f4.html">gecko_sdk</a></td></tr>
 <tr class="memitem:rp2xxx" id="r_rp2xxx"><td class="memItemLeft" align="right" valign="top"><span class="iconfolder"><div class="folder-icon"></div></span>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dir_a0af1123aa73b425e6696dc25ded3916.html">rp2xxx</a></td></tr>
 </table>
-</div><!-- contents -->
+<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md15"></a>
+Backend Implementations</h1>
+<p>A backend adapts libjoybus to a specific microcontroller family. This document is the source of truth for backend behavior. It covers the structure of a backend, the behavior required in host mode and target mode, and the OEM device timings those requirements are derived from.</p>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md16"></a>
+Structure</h1>
+<p>New backends should follow the structure of the existing backends in this directory.</p>
+<p>Each backend defines a <span class="tt">struct joybus_&lt;backend&gt;</span> holding a <span class="tt">struct joybus base</span> and the backend's own state, a <span class="tt">joybus_&lt;backend&gt;_config</span> struct holding the constant configuration for a bus (peripherals, transmit frequency), a <span class="tt">joybus_&lt;backend&gt;_config_default(...)</span> helper that fills it with sensible defaults, and a <span class="tt">joybus_&lt;backend&gt;_init(bus, config)</span> function. It also provides implementations for each of the functions in the <span class="tt"><a class="el" href="structjoybus__api.html">joybus_api</a></span> struct:</p>
+<div class="fragment"><div class="line"><span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">struct </span><a class="code hl_struct" href="structjoybus__api.html">joybus_api</a> mybackend_api = {</div>
+<div class="line">  .enable   = joybus_mybackend_enable,</div>
+<div class="line">  .disable  = joybus_mybackend_disable,</div>
+<div class="line">  .transfer = joybus_mybackend_transfer,</div>
+<div class="line">};</div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">int</span> joybus_mybackend_init(<span class="keyword">struct</span> joybus_mybackend *mybackend_bus, <span class="keyword">struct</span> joybus_mybackend_config config)</div>
+<div class="line">{</div>
+<div class="line">  <span class="comment">// Save the bus API and common configuration</span></div>
+<div class="line">  <span class="keyword">struct </span><a class="code hl_struct" href="structjoybus.html">joybus</a> *bus = <a class="code hl_define" href="group__joybus.html#gaf06db642865d9aae04c89330d3b9cc25">JOYBUS</a>(mybackend_bus);</div>
+<div class="line">  bus-&gt;<a class="code hl_variable" href="structjoybus.html#a9d285502c40b2dfa382b7c7388cdd30a">api</a>           = &amp;mybackend_api;</div>
+<div class="line">  bus-&gt;<a class="code hl_variable" href="structjoybus.html#a80a2719bf6d4e969f3fd63b9fcd024bd">freq</a>          = config.freq;</div>
+<div class="line">  bus-&gt;<a class="code hl_variable" href="structjoybus.html#a14578b791dc412c1c9ea7970d998ecf4">target</a>        = NULL;</div>
+<div class="line"> </div>
+<div class="line">  <span class="comment">// Rest of initialization code...</span></div>
+<div class="line"> </div>
+<div class="line">  <span class="keywordflow">return</span> 0;</div>
+<div class="line">}</div>
+<div class="ttc" id="agroup__joybus_html_gaf06db642865d9aae04c89330d3b9cc25"><div class="ttname"><a href="group__joybus.html#gaf06db642865d9aae04c89330d3b9cc25">JOYBUS</a></div><div class="ttdeci">#define JOYBUS(bus)</div><div class="ttdoc">Macro to cast a backend-specific Joybus instance to a generic Joybus instance.</div><div class="ttdef"><b>Definition</b> bus.h:64</div></div>
+<div class="ttc" id="astructjoybus__api_html"><div class="ttname"><a href="structjoybus__api.html">joybus_api</a></div><div class="ttdef"><b>Definition</b> bus.h:91</div></div>
+<div class="ttc" id="astructjoybus_html"><div class="ttname"><a href="structjoybus.html">joybus</a></div><div class="ttdoc">A Joybus instance.</div><div class="ttdef"><b>Definition</b> bus.h:108</div></div>
+<div class="ttc" id="astructjoybus_html_a14578b791dc412c1c9ea7970d998ecf4"><div class="ttname"><a href="structjoybus.html#a14578b791dc412c1c9ea7970d998ecf4">joybus::target</a></div><div class="ttdeci">struct joybus_target * target</div><div class="ttdoc">The target device attached to this Joybus instance, if any.</div><div class="ttdef"><b>Definition</b> bus.h:119</div></div>
+<div class="ttc" id="astructjoybus_html_a80a2719bf6d4e969f3fd63b9fcd024bd"><div class="ttname"><a href="structjoybus.html#a80a2719bf6d4e969f3fd63b9fcd024bd">joybus::freq</a></div><div class="ttdeci">uint32_t freq</div><div class="ttdoc">The frequency of the bus, in Hz.</div><div class="ttdef"><b>Definition</b> bus.h:116</div></div>
+<div class="ttc" id="astructjoybus_html_a9d285502c40b2dfa382b7c7388cdd30a"><div class="ttname"><a href="structjoybus.html#a9d285502c40b2dfa382b7c7388cdd30a">joybus::api</a></div><div class="ttdeci">const struct joybus_api * api</div><div class="ttdoc">The backend API implementation for this Joybus instance.</div><div class="ttdef"><b>Definition</b> bus.h:110</div></div>
+</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="autotoc_md17"></a>
+Peripherals</h1>
+<p>Since backends need to clock in and out pulses on the bus with microsecond precision, bit-banging is typically not feasible. Using dedicated hardware peripherals which can capture and generate signals with minimal CPU intervention is recommended.</p>
+<p>Some examples of approaches:</p>
+<ul>
+<li>Use a timer peripheral in capture mode to fill a buffer with edge timings. Once enough data has been collected, measure pulse widths in software.</li>
+<li>Use a timer peripheral in PWM mode to clock out pulses.</li>
+<li>Use a serial communication peripheral (e.g. SPI, USART) to clock out pulses after encoding them into the suitable line coding.</li>
+<li>Some platforms (e.g. RP2040) even have programmable IO peripherals which can "bit-bang" the protocol completely in hardware.</li>
+</ul>
+<p>The turnaround times between transmitting and receiving data are also critical. Your backend must be able to switch from transmit to receive mode immediately in order to capture the response.</p>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md18"></a>
+Host-mode Transfers</h1>
+<ul>
+<li>Transfers must be async / interrupt-driven</li>
+<li>Transfers must return <span class="tt">-JOYBUS_ERR_DISABLED</span> if the bus is not in host mode</li>
+<li>Transfers must return <span class="tt">-JOYBUS_ERR_BUSY</span> if the bus is not idle</li>
+<li>Hosts are assumed to own the bus, so don't wait for bus-idle before initiating a transfer</li>
+<li>Transfer callbacks must be called as soon as last byte of response is received, and the bus must be returned to idle state</li>
+<li>Since users may choose to trigger another transfer from the callback, we must enforce an inter-transfer delay. The minimum is a property of the attached device rather than the protocol - measured devices range from ~7us for a GameCube controller to ~80us for an N64 controller, and a GameCube GBA cable needs ~64us. Use 80us (<span class="tt">JOYBUS_INTER_TRANSFER_DELAY_US</span>) unless the device is known to tolerate less</li>
+<li>The backend must be ready to clock in a response within 3us from sending the falling edge of the last data bit (see measured timings below)</li>
+<li>Enforce that the first byte of a response is received within 64us (<span class="tt">JOYBUS_REPLY_TIMEOUT_US</span>) of the falling edge of the last data bit, otherwise call the callback with an error</li>
+<li>If we are expecting more bytes, they must be contiguous, otherwise call the callback with an error - timeout mechanism can be determined by the backend (per bit, per byte, etc)</li>
+<li>Inter-transfer delay should apply to successful and errored transfers</li>
+</ul>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md19"></a>
+Target-mode Command Reception</h1>
+<ul>
+<li>When enabled, target mode should await bus idle before receiving a command. The bus is idle once the line has been continuously high for 100us (<span class="tt">JOYBUS_BUS_IDLE_US</span>)</li>
+<li>A falling edge on the bus indicates the start of a command</li>
+<li>Received bytes are streamed to the target: <span class="tt">joybus_target_byte_received</span> should be called as soon as possible after each complete byte is received</li>
+<li>After the first byte is received, if more bytes are expected, they should be received contiguously, otherwise wait for the next command (await bus idle) - timeout mechanism can be determined by the backend (per bit, per byte, etc)</li>
+<li>If a byte is received and there is no registered target, ignore it and wait for the next command (await bus idle)</li>
+<li>If the registered target does not recognize the command's opcode, ignore it and wait for the next command (await bus idle)</li>
+<li>The registered target can call the <span class="tt"><a class="el" href="group__joybus__target.html#ga11821ae29c4353ed116ddcec92e0bcc2" title="Callback type for sending responses from target command handlers.">joybus_target_response_cb</a></span> at any time to signal to the backend that response bytes are available</li>
+<li>Since the <span class="tt"><a class="el" href="group__joybus__target.html#ga11821ae29c4353ed116ddcec92e0bcc2" title="Callback type for sending responses from target command handlers.">joybus_target_response_cb</a></span> can be called before the last byte, we can use this as an opportunity to begin pre-encoding the response while waiting for the remaining bytes to be clocked in</li>
+<li>Once the final byte of a command is received, we must begin clocking out the response IMMEDIATELY (OEM devices turn around in 3.1 - 4.4us, or 6.6 - 7.0us for a GBA cable, see below for measured OEM timings)</li>
+</ul>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md20"></a>
+Checklist</h1>
+<p>When implementing a new backend, the following requirements are considered the bare minimum:</p>
+<ul class="check">
+<li class="unchecked">Backend implements all functions in <span class="tt"><a class="el" href="structjoybus__api.html">joybus_api</a></span></li>
+</ul>
+<ul class="check">
+<li class="unchecked">Backend meets every host-mode and target-mode requirement above</li>
+</ul>
+<p>Ideally, your backend should also meet the following criteria:</p>
+<ul class="check">
+<li class="unchecked">Backend supports 4 simultaneous buses</li>
+</ul>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md21"></a>
+Measured Timings</h1>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md22"></a>
+OEM N64 Controller</h2>
+<div class="fragment"><div class="line">Device ID:                            05 00 01</div>
+<div class="line">Response frequency:                   253.16 kHz (3.95 us pulse period)</div>
+<div class="line">Minimum tolerated inter-command gap:  ~79.60 us</div>
+<div class="line">Accepted command frequency range:     10.00 - 485.00 kHz</div>
+<div class="line"> </div>
+<div class="line">Turnaround (us, 100 samples)</div>
+<div class="line">  command             first   min     mean    max     stdev</div>
+<div class="line">  identify (0x00)     3.55    3.15    3.23    3.63    0.16</div>
+<div class="line">  reset (0xFF)        3.50    3.15    3.22    3.63    0.16</div>
+<div class="line">  n64 read (0x01)     3.36    3.25    3.27    3.62    0.07</div>
+</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md23"></a>
+OEM GameCube Controller</h2>
+<div class="fragment"><div class="line">Device ID:                            09 00 03</div>
+<div class="line">Response frequency:                   251.57 kHz (3.98 us pulse period)</div>
+<div class="line">Minimum tolerated inter-command gap:  ~7.27 us</div>
+<div class="line">Accepted command frequency range:     95.00 - 445.00 kHz</div>
+<div class="line"> </div>
+<div class="line">Turnaround (us, 100 samples)</div>
+<div class="line">  command             first   min     mean    max     stdev</div>
+<div class="line">  identify (0x00)     3.55    3.35    3.43    3.71    0.06</div>
+<div class="line">  reset (0xFF)        3.26    3.26    3.42    3.68    0.06</div>
+<div class="line">  gcn read (0x40)     3.51    3.23    3.50    3.68    0.04</div>
+<div class="line">  gcn origin (0x41)   3.71    3.27    3.53    3.71    0.08</div>
+</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md24"></a>
+OEM WaveBird Receiver</h2>
+<div class="fragment"><div class="line">Device ID:                            A8 00 00</div>
+<div class="line">Response frequency:                   225.37 kHz (4.44 us pulse period)</div>
+<div class="line">Minimum tolerated inter-command gap:  ~8.97 us</div>
+<div class="line">Accepted command frequency range:     180.00 - 300.00 kHz</div>
+<div class="line"> </div>
+<div class="line">Turnaround (us, 100 samples)</div>
+<div class="line">  command             first   min     mean    max     stdev</div>
+<div class="line">  identify (0x00)     4.11    4.05    4.07    4.37    0.03</div>
+<div class="line">  reset (0xFF)        4.12    3.98    4.06    4.12    0.08</div>
+<div class="line">  gcn read (0x40)     4.02    3.87    3.90    4.32    0.10</div>
+<div class="line">  gcn origin (0x41)   4.06    3.85    3.87    4.06    0.08</div>
+</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md25"></a>
+OEM GBA to GameCube Cable</h2>
+<div class="fragment"><div class="line">Device ID:                            00 04 28</div>
+<div class="line">Response frequency:                   262.32 kHz (3.81 us pulse period)</div>
+<div class="line">Minimum tolerated inter-command gap:  ~63.95 us</div>
+<div class="line">Accepted command frequency range:     6.00 - 322.00 kHz</div>
+<div class="line"> </div>
+<div class="line">Turnaround (us, 100 samples)</div>
+<div class="line">  command             first   min     mean    max     stdev</div>
+<div class="line">  identify (0x00)     6.72    6.56    6.58    6.72    0.09</div>
+<div class="line">  reset (0xFF)        6.96    6.55    6.59    6.96    0.12</div>
+</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md26"></a>
+OEM N64 VRU</h2>
+<div class="fragment"><div class="line">Device ID:                            00 01 00</div>
+<div class="line">Response frequency:                   250.81 kHz (3.99 us pulse period)</div>
+<div class="line">Minimum tolerated inter-command gap:  ~79.82 us</div>
+<div class="line">Accepted command frequency range:     5.00 - 505.00 kHz</div>
+<div class="line"> </div>
+<div class="line">Turnaround (us, 100 samples)</div>
+<div class="line">  command             first   min     mean    max     stdev</div>
+<div class="line">  identify (0x00)     3.43    3.12    3.14    3.55    0.08</div>
+<div class="line">  reset (0xFF)        3.12    3.12    3.13    3.15    0.04</div>
+</div><!-- fragment --> </div><!-- contents -->
 </div><!-- doc-content -->
 <div id="page-nav" class="page-nav-panel">
 <div id="page-nav-resize-handle"></div>

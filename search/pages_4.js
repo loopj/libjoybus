@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['initializing_20the_20joybus_0',['Initializing the Joybus',['../index.html#autotoc_md5',1,'']]]
+  ['features_0',['Features',['../index.html#autotoc_md1',1,'']]]
 ];

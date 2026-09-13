@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['supported_20platforms_0',['Supported Platforms',['../index.html#autotoc_md2',1,'']]]
+  ['joybus_0',['Initializing the Joybus',['../index.html#autotoc_md11',1,'']]]
 ];

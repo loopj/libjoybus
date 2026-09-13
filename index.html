@@ -126,19 +126,67 @@ Features</h1>
 Supported Platforms</h1>
 <ul>
 <li>Raspberry Pi Pico and Pico 2 (and other RP2xxx-based boards)</li>
-<li>Silicon Labs EFR32 Series 1 and Series 2 MCUs</li>
+<li>Silicon Labs EFM32/EFR32 Series 1 and Series 2 MCUs</li>
 <li>Espressif ESP32 (ESP32-C3, ESP32-C6, ESP32-S3, ESP32-H2)</li>
 </ul>
 <h1 class="doxsection"><a class="anchor" id="autotoc_md3"></a>
 Examples</h1>
 <p>libjoybus is a key part of <a href="https://github.com/loopj/wavephoenix">WavePhoenix</a>, my open source implementation of a GameCube WaveBird receiver.</p>
 <p>libjoybus is also used in my <a href="https://github.com/loopj/usb-gamecube-controller-adapter">open-source 4-port USB GameCube controller adapter</a> project.</p>
-<p>You can find a number of additonal examples in the <a href="examples/"><span class="tt">examples/</span></a> directory.</p>
+<p>You can find a number of additional examples in the <a href="examples/"><span class="tt">examples/</span></a> directory.</p>
 <p>Please let me know if you build something with <span class="tt">libjoybus</span>! I love seeing my projects used in the wild, and I'll consider adding it to the examples list!</p>
 <h1 class="doxsection"><a class="anchor" id="autotoc_md4"></a>
+Installation</h1>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md5"></a>
+CMake Based Projects (Pico SDK, etc)</h2>
+<p>Copy the library into your project, add it as a git submodule, or fetch it with <span class="tt">FetchContent</span>. Set your <span class="tt">JOYBUS_BACKEND</span>, for example <span class="tt">rp2xxx</span> for the Pico SDK, and link your executable against the <span class="tt">joybus</span> target:</p>
+<div class="fragment"><div class="line"># Set the backend (after pico_sdk_init() on the Pico SDK)</div>
+<div class="line">set(JOYBUS_BACKEND rp2xxx)</div>
+<div class="line"> </div>
+<div class="line"># Download libjoybus as part of a build, using FetchContent</div>
+<div class="line">include(FetchContent)</div>
+<div class="line">FetchContent_Declare(libjoybus GIT_REPOSITORY https://github.com/loopj/libjoybus.git GIT_TAG main)</div>
+<div class="line">FetchContent_MakeAvailable(libjoybus)</div>
+<div class="line"> </div>
+<div class="line"># ...or if bundling as a copy or git submodule</div>
+<div class="line">add_subdirectory(libjoybus)</div>
+<div class="line"> </div>
+<div class="line"># Link your executable against the joybus target</div>
+<div class="line">target_link_libraries(my_app pico_stdlib joybus)</div>
+</div><!-- fragment --><p>See the <a href="examples/pico-sdk/">Pico SDK examples</a> for complete projects.</p>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md6"></a>
+ESP32 (ESP-IDF)</h2>
+<p>For ESP-IDF projects, libjoybus is packaged as a component. From your project directory, add it as a git dependency:</p>
+<div class="fragment"><div class="line">idf.py add-dependency --git https://github.com/loopj/libjoybus.git libjoybus</div>
+</div><!-- fragment --><p>Then add <span class="tt">libjoybus</span> to the <span class="tt">REQUIRES</span> list in your <span class="tt">main/CMakeLists.txt</span>:</p>
+<div class="fragment"><div class="line">idf_component_register(SRCS &quot;main.c&quot; INCLUDE_DIRS &quot;.&quot; REQUIRES libjoybus)</div>
+</div><!-- fragment --><p>The component manager downloads libjoybus on the next <span class="tt">idf.py build</span>. See the <a href="examples/esp32/">ESP-IDF examples</a> for complete projects.</p>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md7"></a>
+Silicon Labs EFM32/EFR32 (Simplicity SDK)</h2>
+<p>For Simplicity SDK projects, libjoybus is packaged as a Silicon Labs SDK extension.</p>
+<h3 class="doxsection"><a class="anchor" id="autotoc_md8"></a>
+Via Simplicity Studio</h3>
+<ol type="1">
+<li>Follow the <a href="https://docs.silabs.com/simplicity-studio-5-users-guide/latest/ss-5-users-guide-getting-started/install-sdk-extensions">Silicon Labs Guide</a> to add this repository as an extension.</li>
+<li>Open your project's <em>Software Components</em> tab and install the <span class="tt">libjoybus</span> component.</li>
+</ol>
+<h3 class="doxsection"><a class="anchor" id="autotoc_md9"></a>
+Using SLC-CLI</h3>
+<p>Clone into your SDK's <span class="tt">extension</span> folder and trust the extension:</p>
+<div class="fragment"><div class="line">slc signature trust -extpath &lt;path_to_sdk&gt;/extension/libjoybus</div>
+</div><!-- fragment --><p>Add to your project's <span class="tt">.slcp</span> file:</p>
+<div class="fragment"><div class="line">sdk_extension:</div>
+<div class="line">  - id: libjoybus</div>
+<div class="line">    version: 0.9.0</div>
+<div class="line"> </div>
+<div class="line">component:</div>
+<div class="line">  - id: libjoybus</div>
+<div class="line">    from: libjoybus</div>
+</div><!-- fragment --><p>See the <a href="examples/gecko/">Gecko examples</a> for complete projects.</p>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md10"></a>
 Usage</h1>
 <p>You can find the <a href="https://loopj.com/libjoybus/">full API documentation here</a>, but here are some basic examples to get you started.</p>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md5"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md11"></a>
 Initializing the Joybus</h2>
 <p>Before using <span class="tt">libjoybus</span>, you need to initialize the Joybus interface for your platform. Here's an example for the RP2040:</p>
 <div class="fragment"><div class="line"><span class="preprocessor">#include &lt;joybus/joybus.h&gt;</span></div>
@@ -160,7 +208,7 @@ Initializing the Joybus</h2>
 <div class="ttc" id="agroup__joybus_html_gaf06db642865d9aae04c89330d3b9cc25"><div class="ttname"><a href="group__joybus.html#gaf06db642865d9aae04c89330d3b9cc25">JOYBUS</a></div><div class="ttdeci">#define JOYBUS(bus)</div><div class="ttdoc">Macro to cast a backend-specific Joybus instance to a generic Joybus instance.</div><div class="ttdef"><b>Definition</b> bus.h:64</div></div>
 <div class="ttc" id="astructjoybus__rp2xxx_html"><div class="ttname"><a href="structjoybus__rp2xxx.html">joybus_rp2xxx</a></div><div class="ttdoc">A RP2xxx Joybus instance.</div><div class="ttdef"><b>Definition</b> rp2xxx.h:57</div></div>
 <div class="ttc" id="astructjoybus_html"><div class="ttname"><a href="structjoybus.html">joybus</a></div><div class="ttdoc">A Joybus instance.</div><div class="ttdef"><b>Definition</b> bus.h:108</div></div>
-</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md6"></a>
+</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md12"></a>
 Communicating with Controllers</h2>
 <p>In <em>host mode</em>, <span class="tt">libjoybus</span> allows a microcontroller to communicate with N64 and GameCube controllers. This allows you to use input data from N64 and GameCube controllers in your projects.</p>
 <div class="fragment"><div class="line"><span class="preprocessor">#include &lt;joybus/joybus.h&gt;</span></div>
@@ -201,7 +249,7 @@ Communicating with Controllers</h2>
 <div class="ttc" id="agroup__joybus_html_ga80184b4cebc28a54519656dff67b4755"><div class="ttname"><a href="group__joybus.html#ga80184b4cebc28a54519656dff67b4755">joybus_enable</a></div><div class="ttdeci">static int joybus_enable(struct joybus *bus, enum joybus_mode mode)</div><div class="ttdoc">Enable the Joybus instance in the given mode.</div><div class="ttdef"><b>Definition</b> bus.h:136</div></div>
 <div class="ttc" id="agroup__joybus_html_gga269224343f9733d075007781871a99a6a47334759b78cadcd189b2f88892dfbe6"><div class="ttname"><a href="group__joybus.html#gga269224343f9733d075007781871a99a6a47334759b78cadcd189b2f88892dfbe6">JOYBUS_MODE_HOST</a></div><div class="ttdeci">@ JOYBUS_MODE_HOST</div><div class="ttdoc">Host mode, sends commands and reads responses from a target device.</div><div class="ttdef"><b>Definition</b> bus.h:71</div></div>
 <div class="ttc" id="astructjoybus__gcn__controller__state_html"><div class="ttname"><a href="structjoybus__gcn__controller__state.html">joybus_gcn_controller_state</a></div><div class="ttdoc">GameCube controller input/origin state.</div><div class="ttdef"><b>Definition</b> gcn_controller.h:43</div></div>
-</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md7"></a>
+</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md13"></a>
 Emulating a Controller</h2>
 <p>In <em>target mode</em>, <span class="tt">libjoybus</span> allows a microcontroller to act as an N64 or GameCube controller. This allows you to create custom controllers that can interface with N64, GameCube, and Wii consoles.</p>
 <p>I've provided built-in targets for N64 controllers and GameCube controllers so you can just populate the input state and let <span class="tt">libjoybus</span> handle the rest.</p>
@@ -243,7 +291,7 @@ Emulating a Controller</h2>
 <div class="ttc" id="agroup__joybus_html_gaac8c456ffdda03362b1a75f2c4525f03"><div class="ttname"><a href="group__joybus.html#gaac8c456ffdda03362b1a75f2c4525f03">joybus_attach_target</a></div><div class="ttdeci">static int joybus_attach_target(struct joybus *bus, struct joybus_target *target)</div><div class="ttdoc">Attach a target to handle commands received in target mode.</div><div class="ttdef"><b>Definition</b> bus.h:199</div></div>
 <div class="ttc" id="agroup__joybus_html_gga269224343f9733d075007781871a99a6abff296695cb9bacfdb5342209f4c8507"><div class="ttname"><a href="group__joybus.html#gga269224343f9733d075007781871a99a6abff296695cb9bacfdb5342209f4c8507">JOYBUS_MODE_TARGET</a></div><div class="ttdeci">@ JOYBUS_MODE_TARGET</div><div class="ttdoc">Target mode, listens for commands from a host device and responds accordingly.</div><div class="ttdef"><b>Definition</b> bus.h:74</div></div>
 <div class="ttc" id="astructjoybus__target__gcn__controller_html"><div class="ttname"><a href="structjoybus__target__gcn__controller.html">joybus_target_gcn_controller</a></div><div class="ttdoc">GameCube controller Joybus target.</div><div class="ttdef"><b>Definition</b> gcn_controller.h:41</div></div>
-</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="autotoc_md8"></a>
+</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="autotoc_md14"></a>
 License</h1>
 <p>This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details. </p>
 </div></div><!-- PageDoc -->

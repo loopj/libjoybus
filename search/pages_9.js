@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['the_20joybus_0',['Initializing the Joybus',['../index.html#autotoc_md5',1,'']]]
+  ['labs_20efm32_20efr32_20simplicity_20sdk_0',['Silicon Labs EFM32/EFR32 (Simplicity SDK)',['../index.html#autotoc_md7',1,'']]],
+  ['libjoybus_1',['libjoybus',['../index.html',1,'']]],
+  ['license_2',['License',['../index.html#autotoc_md14',1,'']]]
 ];

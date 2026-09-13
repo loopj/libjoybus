@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['libjoybus_0',['libjoybus',['../index.html',1,'']]],
-  ['license_1',['License',['../index.html#autotoc_md8',1,'']]]
+  ['host_20mode_20transfers_0',['Host-mode Transfers',['..//home/runner/work/libjoybus/libjoybus/src/backend/README.md#autotoc_md18',1,'']]]
 ];

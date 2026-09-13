@@ -28,12 +28,20 @@ var NAVTREE =
     [ "Features", "index.html#autotoc_md1", null ],
     [ "Supported Platforms", "index.html#autotoc_md2", null ],
     [ "Examples", "index.html#autotoc_md3", null ],
-    [ "Usage", "index.html#autotoc_md4", [
-      [ "Initializing the Joybus", "index.html#autotoc_md5", null ],
-      [ "Communicating with Controllers", "index.html#autotoc_md6", null ],
-      [ "Emulating a Controller", "index.html#autotoc_md7", null ]
+    [ "Installation", "index.html#autotoc_md4", [
+      [ "CMake Based Projects (Pico SDK, etc)", "index.html#autotoc_md5", null ],
+      [ "ESP32 (ESP-IDF)", "index.html#autotoc_md6", null ],
+      [ "Silicon Labs EFM32/EFR32 (Simplicity SDK)", "index.html#autotoc_md7", [
+        [ "Via Simplicity Studio", "index.html#autotoc_md8", null ],
+        [ "Using SLC-CLI", "index.html#autotoc_md9", null ]
+      ] ]
     ] ],
-    [ "License", "index.html#autotoc_md8", null ],
+    [ "Usage", "index.html#autotoc_md10", [
+      [ "Initializing the Joybus", "index.html#autotoc_md11", null ],
+      [ "Communicating with Controllers", "index.html#autotoc_md12", null ],
+      [ "Emulating a Controller", "index.html#autotoc_md13", null ]
+    ] ],
+    [ "License", "index.html#autotoc_md14", null ],
     [ "Topics", "topics.html", "topics" ],
     [ "Data Structures", "annotated.html", [
       [ "Data Structures", "annotated.html", "annotated_dup" ],
@@ -60,7 +68,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"identify_8h.html#a422f6671c92d8ab7a530c8668e751a9a"
+"identify_8h.html#a3259dd50637e5a0b9f293141e04ea59a"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';

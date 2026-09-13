@@ -1,7 +1,7 @@
 var searchData=
 [
   ['joybus_0',['JOYBUS',['../group__joybus.html#gaf06db642865d9aae04c89330d3b9cc25',1,'bus.h']]],
-  ['joybus_1',['Joybus',['../index.html#autotoc_md5',1,'Initializing the Joybus'],['../group__joybus.html',1,'Joybus']]],
+  ['joybus_1',['Joybus',['../index.html#autotoc_md11',1,'Initializing the Joybus'],['../group__joybus.html',1,'Joybus']]],
   ['joybus_2',['joybus',['../structjoybus.html',1,'']]],
   ['joybus_5faddress_5fchecksum_3',['joybus_address_checksum',['../group__joybus.html#ga395ca3d9f9844388c1b7372a0ae8bedf',1,'joybus_address_checksum(uint16_t addr):&#160;checksum.c'],['../group__joybus.html#ga395ca3d9f9844388c1b7372a0ae8bedf',1,'joybus_address_checksum(uint16_t addr):&#160;checksum.c']]],
   ['joybus_5fapi_4',['joybus_api',['../structjoybus__api.html',1,'']]],
