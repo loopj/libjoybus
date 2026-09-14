@@ -11,7 +11,7 @@
 #define RUMBLE_PAK_SIGNATURE    0x80
 
 JOYBUS_RAM_FUNC
-static void rumble_pak_read_block(struct joybus_target_n64_pak *pak, uint16_t addr, uint8_t buf[JOYBUS_PAK_BLOCK_SIZE])
+static int rumble_pak_read_block(struct joybus_target_n64_pak *pak, uint16_t addr, uint8_t buf[JOYBUS_PAK_BLOCK_SIZE])
 {
   struct joybus_target_n64_rumble_pak *rumble_pak = JOYBUS_TARGET_N64_RUMBLE_PAK(pak);
 
@@ -22,10 +22,12 @@ static void rumble_pak_read_block(struct joybus_target_n64_pak *pak, uint16_t ad
   } else {
     memset(buf, 0x00, JOYBUS_PAK_BLOCK_SIZE);
   }
+
+  return 0;
 }
 
 JOYBUS_RAM_FUNC
-static void rumble_pak_write_block(struct joybus_target_n64_pak *pak, uint16_t addr,
+static int rumble_pak_write_block(struct joybus_target_n64_pak *pak, uint16_t addr,
                                    const uint8_t buf[JOYBUS_PAK_BLOCK_SIZE])
 {
   struct joybus_target_n64_rumble_pak *rumble_pak = JOYBUS_TARGET_N64_RUMBLE_PAK(pak);
@@ -36,17 +38,17 @@ static void rumble_pak_write_block(struct joybus_target_n64_pak *pak, uint16_t a
   // A probe-region write of exactly 0x80 sets the enable register
   if ((addr & RUMBLE_PAK_REGION_MASK) == RUMBLE_PAK_PROBE_REGION) {
     rumble_pak->enabled = (last == RUMBLE_PAK_SIGNATURE);
-    return;
+    return 0;
   }
 
   // Writes to SRAM address space are ignored
   if ((addr & RUMBLE_PAK_REGION_MASK) != RUMBLE_PAK_MOTOR_REGION)
-    return;
+    return 0;
 
   // The motor state is the low bit of the last byte, and only runs while enabled
   bool active = rumble_pak->enabled && (last & 1);
   if (active == rumble_pak->active)
-    return;
+    return 0;
 
   // Update cached motor state
   rumble_pak->active = active;
@@ -54,6 +56,8 @@ static void rumble_pak_write_block(struct joybus_target_n64_pak *pak, uint16_t a
   // Fire callback if motor state has changed
   if (rumble_pak->on_motor_change)
     rumble_pak->on_motor_change(rumble_pak, active);
+
+  return 0;
 }
 
 static const struct joybus_target_n64_pak_api rumble_pak_api = {

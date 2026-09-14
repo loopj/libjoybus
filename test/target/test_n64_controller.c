@@ -24,31 +24,37 @@ static void on_reset(struct joybus_target_n64_controller *c)
   reset_count++;
 }
 
-// Fake pak that records reads and writes
+// Fake pak that records reads and writes, and returns a configurable status
 static int read_block_count;
 static uint16_t read_block_addr;
+static int read_block_status;
 static int write_block_count;
 static uint16_t write_block_addr;
 static int write_block_seq;
+static int write_block_status;
 static uint8_t write_block_data[JOYBUS_PAK_BLOCK_SIZE];
 
-static void fake_read_block(struct joybus_target_n64_pak *pak, uint16_t addr, uint8_t buf[JOYBUS_PAK_BLOCK_SIZE])
+static int fake_read_block(struct joybus_target_n64_pak *pak, uint16_t addr, uint8_t buf[JOYBUS_PAK_BLOCK_SIZE])
 {
   read_block_count++;
   read_block_addr = addr;
 
-  // Fill the block with a recognizable pattern
+  // Fill the block with a recognizable pattern, even when declining, so a declined read is shown to discard it
   for (uint8_t i = 0; i < JOYBUS_PAK_BLOCK_SIZE; i++) {
     buf[i] = i;
   }
+
+  return read_block_status;
 }
 
-static void fake_write_block(struct joybus_target_n64_pak *pak, uint16_t addr, const uint8_t buf[JOYBUS_PAK_BLOCK_SIZE])
+static int fake_write_block(struct joybus_target_n64_pak *pak, uint16_t addr, const uint8_t buf[JOYBUS_PAK_BLOCK_SIZE])
 {
   write_block_count++;
   write_block_addr = addr;
   write_block_seq  = ++event_seq;
   memcpy(write_block_data, buf, JOYBUS_PAK_BLOCK_SIZE);
+
+  return write_block_status;
 }
 
 static const struct joybus_target_n64_pak_api fake_pak_api = {
@@ -95,11 +101,13 @@ void setUp(void)
 
   // Reset the callback and pak spies
   reset_count       = 0;
-  read_block_count  = 0;
-  read_block_addr   = 0;
-  write_block_count = 0;
-  write_block_addr  = 0;
-  write_block_seq   = 0;
+  read_block_count   = 0;
+  read_block_addr    = 0;
+  read_block_status  = 0;
+  write_block_count  = 0;
+  write_block_addr   = 0;
+  write_block_seq    = 0;
+  write_block_status = 0;
   memset(write_block_data, 0, sizeof(write_block_data));
 }
 
@@ -445,12 +453,71 @@ static void test_pak_read_valid_clears_checksum_error(void)
   TEST_ASSERT_FALSE(controller.id.status & JOYBUS_STATUS_N64_ADDR_CHECKSUM_ERROR);
 }
 
+// Send a valid pak read of block 0x8000 and check the "no pak" response came back
+static void send_pak_read_expect_no_pak(void)
+{
+  uint16_t addr     = valid_pak_addr(0x8000);
+  uint8_t command[] = {JOYBUS_CMD_N64_PAK_READ, addr >> 8, addr & 0xFF};
+  send_command(command, sizeof(command));
+
+  uint8_t expected[JOYBUS_CMD_N64_PAK_READ_RX] = {0};
+  expected[JOYBUS_PAK_BLOCK_SIZE]              = 0xFF;
+  TEST_ASSERT_EQUAL(JOYBUS_CMD_N64_PAK_READ_RX, response.len);
+  TEST_ASSERT_EQUAL_HEX8_ARRAY(expected, response.data, sizeof(expected));
+}
+
+// Test that a pak declining a read with BUSY gets the "no pak" response while the pak stays present
+static void test_pak_read_busy_returns_no_pak_response(void)
+{
+  joybus_target_n64_controller_attach_pak(&controller, &pak);
+  read_block_status = -JOYBUS_ERR_BUSY;
+
+  send_pak_read_expect_no_pak();
+
+  // The pak was consulted, and is still reported present
+  TEST_ASSERT_EQUAL(1, read_block_count);
+  TEST_ASSERT_TRUE(controller.id.status & JOYBUS_STATUS_N64_PAK_PRESENT);
+}
+
+// Test that any other failure from a pak read gets the same "no pak" response
+static void test_pak_read_fault_returns_no_pak_response(void)
+{
+  joybus_target_n64_controller_attach_pak(&controller, &pak);
+  read_block_status = -JOYBUS_ERR_TIMEOUT;
+
+  send_pak_read_expect_no_pak();
+
+  TEST_ASSERT_EQUAL(1, read_block_count);
+  TEST_ASSERT_TRUE(controller.id.status & JOYBUS_STATUS_N64_PAK_PRESENT);
+}
+
+// Test that a read retried after BUSY returns the pak's data once the pak accepts it
+static void test_pak_read_retry_after_busy(void)
+{
+  joybus_target_n64_controller_attach_pak(&controller, &pak);
+  read_block_status = -JOYBUS_ERR_BUSY;
+  send_pak_read_expect_no_pak();
+
+  // The host retries and the pak is now ready
+  read_block_status = 0;
+  uint16_t addr     = valid_pak_addr(0x8000);
+  uint8_t command[] = {JOYBUS_CMD_N64_PAK_READ, addr >> 8, addr & 0xFF};
+  send_command(command, sizeof(command));
+
+  TEST_ASSERT_EQUAL(2, read_block_count);
+  uint8_t expected[JOYBUS_CMD_N64_PAK_READ_RX];
+  for (uint8_t i = 0; i < JOYBUS_PAK_BLOCK_SIZE; i++) {
+    expected[i] = i;
+  }
+  expected[JOYBUS_PAK_BLOCK_SIZE] = joybus_data_checksum(expected, JOYBUS_PAK_BLOCK_SIZE);
+  TEST_ASSERT_EQUAL_HEX8_ARRAY(expected, response.data, sizeof(expected));
+}
+
 // ---------------------------------------------------------------------------
 // Pak write (0x03)
 // ---------------------------------------------------------------------------
 
-// Test that a valid pak write responds at the final byte with the payload CRC, and hands the payload to the pak only
-// after the response is sent
+// Test that a valid pak write hands the payload to the pak and then responds at the final byte with the payload CRC
 static void test_pak_write_commits_to_pak(void)
 {
   joybus_target_n64_controller_attach_pak(&controller, &pak);
@@ -467,11 +534,72 @@ static void test_pak_write_commits_to_pak(void)
   TEST_ASSERT_EQUAL(JOYBUS_CMD_N64_PAK_WRITE_RX, response.len);
   TEST_ASSERT_EQUAL_HEX8(joybus_data_checksum(payload, sizeof(payload)), response.data[0]);
 
-  // The payload reached the pak at the aligned address, after the response
+  // The payload reached the pak at the aligned address, before the response
   TEST_ASSERT_EQUAL(1, write_block_count);
   TEST_ASSERT_EQUAL_HEX16(0x8000, write_block_addr);
   TEST_ASSERT_EQUAL_HEX8_ARRAY(payload, write_block_data, sizeof(payload));
-  TEST_ASSERT_TRUE(response.seq < write_block_seq);
+  TEST_ASSERT_TRUE(write_block_seq < response.seq);
+}
+
+// Send a valid pak write of the payload to block 0x8000
+static void send_pak_write(const uint8_t payload[JOYBUS_PAK_BLOCK_SIZE])
+{
+  uint8_t command[JOYBUS_CMD_N64_PAK_WRITE_TX];
+  build_pak_write(command, valid_pak_addr(0x8000), payload);
+  send_command(command, sizeof(command));
+}
+
+// Test that a pak declining a write with BUSY gets the inverted CRC while the pak stays present
+static void test_pak_write_busy_returns_inverted_crc(void)
+{
+  joybus_target_n64_controller_attach_pak(&controller, &pak);
+  write_block_status = -JOYBUS_ERR_BUSY;
+
+  uint8_t payload[JOYBUS_PAK_BLOCK_SIZE];
+  fill_payload(payload);
+  send_pak_write(payload);
+
+  // The pak was offered the block, and is still reported present
+  TEST_ASSERT_EQUAL(1, write_block_count);
+  TEST_ASSERT_EQUAL_HEX8(joybus_data_checksum(payload, sizeof(payload)) ^ 0xFF, response.data[0]);
+  TEST_ASSERT_TRUE(controller.id.status & JOYBUS_STATUS_N64_PAK_PRESENT);
+}
+
+// Test that any other failure from a pak write gets the same inverted CRC
+static void test_pak_write_fault_returns_inverted_crc(void)
+{
+  joybus_target_n64_controller_attach_pak(&controller, &pak);
+  write_block_status = -JOYBUS_ERR_TIMEOUT;
+
+  uint8_t payload[JOYBUS_PAK_BLOCK_SIZE];
+  fill_payload(payload);
+  send_pak_write(payload);
+
+  TEST_ASSERT_EQUAL(1, write_block_count);
+  TEST_ASSERT_EQUAL_HEX8(joybus_data_checksum(payload, sizeof(payload)) ^ 0xFF, response.data[0]);
+  TEST_ASSERT_TRUE(controller.id.status & JOYBUS_STATUS_N64_PAK_PRESENT);
+}
+
+// Test that a write retried after BUSY is offered whole again and commits once the pak accepts it
+static void test_pak_write_retry_after_busy(void)
+{
+  joybus_target_n64_controller_attach_pak(&controller, &pak);
+
+  uint8_t payload[JOYBUS_PAK_BLOCK_SIZE];
+  fill_payload(payload);
+
+  write_block_status = -JOYBUS_ERR_BUSY;
+  send_pak_write(payload);
+  TEST_ASSERT_EQUAL_HEX8(joybus_data_checksum(payload, sizeof(payload)) ^ 0xFF, response.data[0]);
+
+  // The host retries with the same block and the pak is now ready
+  write_block_status = 0;
+  send_pak_write(payload);
+
+  TEST_ASSERT_EQUAL(2, write_block_count);
+  TEST_ASSERT_EQUAL_HEX16(0x8000, write_block_addr);
+  TEST_ASSERT_EQUAL_HEX8_ARRAY(payload, write_block_data, sizeof(payload));
+  TEST_ASSERT_EQUAL_HEX8(joybus_data_checksum(payload, sizeof(payload)), response.data[0]);
 }
 
 // Test that a pak write with no pak attached responds with the inverted "no pak" CRC and never reaches a pak
@@ -623,12 +751,18 @@ int main(void)
   RUN_TEST(test_pak_read_refused_while_pak_changed);
   RUN_TEST(test_pak_read_bad_checksum);
   RUN_TEST(test_pak_read_valid_clears_checksum_error);
+  RUN_TEST(test_pak_read_busy_returns_no_pak_response);
+  RUN_TEST(test_pak_read_fault_returns_no_pak_response);
+  RUN_TEST(test_pak_read_retry_after_busy);
 
   // Pak write
   RUN_TEST(test_pak_write_commits_to_pak);
   RUN_TEST(test_pak_write_no_pak);
   RUN_TEST(test_pak_write_refused_while_pak_changed);
   RUN_TEST(test_pak_write_bad_checksum);
+  RUN_TEST(test_pak_write_busy_returns_inverted_crc);
+  RUN_TEST(test_pak_write_fault_returns_inverted_crc);
+  RUN_TEST(test_pak_write_retry_after_busy);
 
   // Unsupported commands
   RUN_TEST(test_unknown_command_not_supported);
