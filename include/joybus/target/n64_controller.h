@@ -23,6 +23,9 @@ struct joybus_target_n64_controller;
 /**
  * Callback type for N64 controller reset events.
  *
+ * Runs in interrupt context, on the response critical path, so it must return
+ * quickly. Mark the implementation with ::JOYBUS_RAM_FUNC.
+ *
  * @param controller the controller that was reset
  */
 typedef void (*joybus_target_n64_controller_reset_cb)(struct joybus_target_n64_controller *controller);

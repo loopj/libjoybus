@@ -212,6 +212,34 @@ void main() {
 }
 ```
 
+### Placing Code in RAM
+
+Target replies are timing critical. A flash fetch or cache miss inside a
+command handler can delay the reply, so `libjoybus` places its latency-critical
+functions in RAM on every supported platform. A single-controller build uses
+under 1 KB of RAM for this.
+
+Define `JOYBUS_USE_RAM_FUNCS=0` in your build to keep everything in flash and
+save the RAM.
+
+Application code that runs inside the reply path should be placed in RAM too,
+or a flash fetch there will undo the library's placement. Mark these functions
+with `JOYBUS_RAM_FUNC`:
+
+- `byte_received` on a custom target
+- Reset and motor callbacks on the built-in N64 and GameCube controllers
+- `read_block` and `write_block` on a custom N64 pak
+
+```c
+#include <joybus/attributes.h>
+
+JOYBUS_RAM_FUNC
+static void on_motor_change(struct joybus_target_gcn_controller *controller, uint8_t state)
+{
+  gpio_put(MOTOR_PIN, state);
+}
+```
+
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.

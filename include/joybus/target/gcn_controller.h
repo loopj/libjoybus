@@ -23,12 +23,18 @@ struct joybus_target_gcn_controller;
 /**
  * Callback type for GameCube controller reset events.
  *
+ * Runs in interrupt context, on the response critical path, so it must return
+ * quickly. Mark the implementation with ::JOYBUS_RAM_FUNC.
+ *
  * @param controller the controller that was reset
  */
 typedef void (*joybus_target_gcn_controller_reset_cb)(struct joybus_target_gcn_controller *controller);
 
 /**
  * Callback type for GameCube controller motor state change events.
+ *
+ * Runs in interrupt context, on the response critical path, so it must return
+ * quickly. Mark the implementation with ::JOYBUS_RAM_FUNC.
  *
  * @param controller the controller whose motor state changed
  * @param state the new motor state

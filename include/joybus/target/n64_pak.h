@@ -48,7 +48,7 @@ struct joybus_target_n64_pak_api {
    * Called when a host requests to read a 32-byte block from the pak.
    *
    * Runs in interrupt context, on the response critical path, so it must
-   * return quickly.
+   * return quickly. Mark the implementation with ::JOYBUS_RAM_FUNC.
    *
    * @param pak  the pak being read from
    * @param addr block-aligned address (low 5 bits are zero)
@@ -61,7 +61,7 @@ struct joybus_target_n64_pak_api {
    *
    * Runs in interrupt context, AFTER the CRC response has been sent, but
    * still on the command handling path, so must return before the next command
-   * byte is received.
+   * byte is received. Mark the implementation with ::JOYBUS_RAM_FUNC.
    *
    * @param pak  the pak being written to
    * @param addr block-aligned address (low 5 bits are zero)

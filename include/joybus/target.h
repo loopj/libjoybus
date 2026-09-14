@@ -18,6 +18,9 @@
  * allows the backend to start transmitting the response *immediately* after
  * the last byte is received.
  *
+ * Handlers run in interrupt context, on the response critical path. Mark them
+ * with ::JOYBUS_RAM_FUNC so a flash fetch cannot delay the reply.
+ *
  * To create your own target, define a struct whose first member is a
  * ::joybus_target (so it can be cast through ::JOYBUS_TARGET), point its api
  * at a ::joybus_target_api table, and attach it to a bus with

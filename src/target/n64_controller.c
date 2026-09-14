@@ -12,6 +12,7 @@
 
 // Helper to check if an pak is currently read for pak read/write commands
 // An pak is "ready" when it is present and pak changed flag has been cleared
+JOYBUS_RAM_FUNC
 static inline bool pak_ready(struct joybus_target_n64_controller *controller)
 {
   return controller->pak && !joybus_id_n64_pak_changed(&controller->id);
@@ -127,6 +128,7 @@ static int handle_read(struct joybus_target_n64_controller *controller, const ui
  * Response:        32 bytes of pak data, and a 1-byte CRC8
  *
  */
+JOYBUS_RAM_FUNC
 static int handle_pak_read(struct joybus_target_n64_controller *controller, const uint8_t *command, uint8_t bytes_read,
                            joybus_target_response_cb send_response, void *user_data)
 {
@@ -178,6 +180,7 @@ static int handle_pak_read(struct joybus_target_n64_controller *controller, cons
  * Response:        A 1-byte CRC8 of the written data
  *
  */
+JOYBUS_RAM_FUNC
 static int handle_pak_write(struct joybus_target_n64_controller *controller, const uint8_t *command, uint8_t bytes_read,
                             joybus_target_response_cb send_response, void *user_data)
 {
