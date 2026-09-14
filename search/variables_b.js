@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['read_5fblock_0',['read_block',['../structjoybus__target__n64__pak__api.html#a5b9f14e476c04d577e5c6753afffaa64',1,'joybus_target_n64_pak_api']]],
+  ['read_5fblock_0',['read_block',['../structjoybus__target__n64__pak__api.html#a75e28126281b196764f736da75f3c567',1,'joybus_target_n64_pak_api']]],
   ['response_1',['response',['../structjoybus__target__n64__controller.html#a74657bd58787eb7f0f1dc364416b7950',1,'joybus_target_n64_controller']]],
   ['rmt_5frx_5fch_2',['rmt_rx_ch',['../structjoybus__esp32__config.html#a1e174284ba03133ba4e78c9a378ec9bd',1,'joybus_esp32_config']]],
   ['rmt_5ftx_5fch_3',['rmt_tx_ch',['../structjoybus__esp32__config.html#a975651f033ebe5814afc6baf9f239991',1,'joybus_esp32_config']]],

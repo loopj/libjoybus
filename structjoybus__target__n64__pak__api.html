@@ -114,28 +114,29 @@ $(function(){initNavTree('structjoybus__target__n64__pak__api.html','',''); });
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-attribs" class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Data Fields</h2></td></tr>
-<tr class="memitem:a5b9f14e476c04d577e5c6753afffaa64" id="r_a5b9f14e476c04d577e5c6753afffaa64"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5b9f14e476c04d577e5c6753afffaa64">read_block</a> )(struct <a class="el" href="structjoybus__target__n64__pak.html">joybus_target_n64_pak</a> *pak, uint16_t addr, uint8_t buf[<a class="el" href="group__joybus.html#ga272b8f55fa8c16bac1524dda78c5ecef">JOYBUS_PAK_BLOCK_SIZE</a>])</td></tr>
-<tr class="memdesc:a5b9f14e476c04d577e5c6753afffaa64"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called when a host requests to read a 32-byte block from the pak.  <br /></td></tr>
-<tr class="memitem:a05d8a1fe1d70223b9e8b84fa7799c817" id="r_a05d8a1fe1d70223b9e8b84fa7799c817"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a05d8a1fe1d70223b9e8b84fa7799c817">write_block</a> )(struct <a class="el" href="structjoybus__target__n64__pak.html">joybus_target_n64_pak</a> *pak, uint16_t addr, const uint8_t buf[<a class="el" href="group__joybus.html#ga272b8f55fa8c16bac1524dda78c5ecef">JOYBUS_PAK_BLOCK_SIZE</a>])</td></tr>
-<tr class="memdesc:a05d8a1fe1d70223b9e8b84fa7799c817"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called when a host requests to write a 32-byte block to the pak.  <br /></td></tr>
+<tr class="memitem:a75e28126281b196764f736da75f3c567" id="r_a75e28126281b196764f736da75f3c567"><td class="memItemLeft" align="right" valign="top">int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a75e28126281b196764f736da75f3c567">read_block</a> )(struct <a class="el" href="structjoybus__target__n64__pak.html">joybus_target_n64_pak</a> *pak, uint16_t addr, uint8_t buf[<a class="el" href="group__joybus.html#ga272b8f55fa8c16bac1524dda78c5ecef">JOYBUS_PAK_BLOCK_SIZE</a>])</td></tr>
+<tr class="memdesc:a75e28126281b196764f736da75f3c567"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called when a host requests to read a 32-byte block from the pak.  <br /></td></tr>
+<tr class="memitem:a589d1d5cc4900c3b33f24381394d1d43" id="r_a589d1d5cc4900c3b33f24381394d1d43"><td class="memItemLeft" align="right" valign="top">int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a589d1d5cc4900c3b33f24381394d1d43">write_block</a> )(struct <a class="el" href="structjoybus__target__n64__pak.html">joybus_target_n64_pak</a> *pak, uint16_t addr, const uint8_t buf[<a class="el" href="group__joybus.html#ga272b8f55fa8c16bac1524dda78c5ecef">JOYBUS_PAK_BLOCK_SIZE</a>])</td></tr>
+<tr class="memdesc:a589d1d5cc4900c3b33f24381394d1d43"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called when a host requests to write a 32-byte block to the pak.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>API for implementing an N64 pak. </p>
 </div><a name="doc-variable-members" id="doc-variable-members"></a><h2 id="header-doc-variable-members" class="groupheader">Field Documentation</h2>
-<a id="a5b9f14e476c04d577e5c6753afffaa64" name="a5b9f14e476c04d577e5c6753afffaa64"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5b9f14e476c04d577e5c6753afffaa64">&#9670;&#160;</a></span>read_block</h2>
+<a id="a75e28126281b196764f736da75f3c567" name="a75e28126281b196764f736da75f3c567"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a75e28126281b196764f736da75f3c567">&#9670;&#160;</a></span>read_block</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void(* joybus_target_n64_pak_api::read_block) (struct <a class="el" href="structjoybus__target__n64__pak.html">joybus_target_n64_pak</a> *pak, uint16_t addr, uint8_t buf[<a class="el" href="group__joybus.html#ga272b8f55fa8c16bac1524dda78c5ecef">JOYBUS_PAK_BLOCK_SIZE</a>])</td>
+          <td class="memname">int(* joybus_target_n64_pak_api::read_block) (struct <a class="el" href="structjoybus__target__n64__pak.html">joybus_target_n64_pak</a> *pak, uint16_t addr, uint8_t buf[<a class="el" href="group__joybus.html#ga272b8f55fa8c16bac1524dda78c5ecef">JOYBUS_PAK_BLOCK_SIZE</a>])</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Called when a host requests to read a 32-byte block from the pak. </p>
 <p>Runs in interrupt context, on the response critical path, so it must return quickly. Mark the implementation with <a class="el" href="group__joybus.html#gaa0e9a2c10cd9d4e85a03c3977bdcdec4" title="Attributes for a latency-critical function, such as a target command handler.">JOYBUS_RAM_FUNC</a>.</p>
+<p>A pak that cannot serve the read yet returns -JOYBUS_ERR_BUSY. The controller then answers as it does for a missing pak, zeros with an inverted CRC, which the host treats as a transfer error and retries, while the pak stays reported as present. Any other negative return gets the same response, but it is a fault rather than a stall: the host will give up after its retries.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">pak</td><td>the pak being read from </td></tr>
@@ -144,23 +145,25 @@ Data Fields</h2></td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>0 on success, -JOYBUS_ERR_BUSY to decline the read for now, another negative <a class="el" href="group__joybus.html#ga47435eba4c98726f93fdae3c8bb9fd76" title="Joybus error codes.">joybus_error</a> on failure </dd></dl>
 
 </div>
 </div>
-<a id="a05d8a1fe1d70223b9e8b84fa7799c817" name="a05d8a1fe1d70223b9e8b84fa7799c817"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a05d8a1fe1d70223b9e8b84fa7799c817">&#9670;&#160;</a></span>write_block</h2>
+<a id="a589d1d5cc4900c3b33f24381394d1d43" name="a589d1d5cc4900c3b33f24381394d1d43"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a589d1d5cc4900c3b33f24381394d1d43">&#9670;&#160;</a></span>write_block</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void(* joybus_target_n64_pak_api::write_block) (struct <a class="el" href="structjoybus__target__n64__pak.html">joybus_target_n64_pak</a> *pak, uint16_t addr, const uint8_t buf[<a class="el" href="group__joybus.html#ga272b8f55fa8c16bac1524dda78c5ecef">JOYBUS_PAK_BLOCK_SIZE</a>])</td>
+          <td class="memname">int(* joybus_target_n64_pak_api::write_block) (struct <a class="el" href="structjoybus__target__n64__pak.html">joybus_target_n64_pak</a> *pak, uint16_t addr, const uint8_t buf[<a class="el" href="group__joybus.html#ga272b8f55fa8c16bac1524dda78c5ecef">JOYBUS_PAK_BLOCK_SIZE</a>])</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Called when a host requests to write a 32-byte block to the pak. </p>
-<p>Runs in interrupt context, AFTER the CRC response has been sent, but still on the command handling path, so must return before the next command byte is received. Mark the implementation with <a class="el" href="group__joybus.html#gaa0e9a2c10cd9d4e85a03c3977bdcdec4" title="Attributes for a latency-critical function, such as a target command handler.">JOYBUS_RAM_FUNC</a>.</p>
+<p>Runs in interrupt context, on the response critical path, since the return value decides the CRC sent in reply. It must return quickly. Mark the implementation with <a class="el" href="group__joybus.html#gaa0e9a2c10cd9d4e85a03c3977bdcdec4" title="Attributes for a latency-critical function, such as a target command handler.">JOYBUS_RAM_FUNC</a>.</p>
+<p>A pak that cannot accept the write yet returns -JOYBUS_ERR_BUSY. The controller then answers with the inverted payload CRC, as it does for a missing pak, which the host treats as a transfer error and retries, while the pak stays reported as present. The retry offers the whole block again, so a pak must not act on a block it declines. Any other negative return gets the same response, but it is a fault rather than a stall: the host will give up after its retries.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">pak</td><td>the pak being written to </td></tr>
@@ -169,6 +172,7 @@ Data Fields</h2></td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>0 on success, -JOYBUS_ERR_BUSY to decline the write for now, another negative <a class="el" href="group__joybus.html#ga47435eba4c98726f93fdae3c8bb9fd76" title="Joybus error codes.">joybus_error</a> on failure </dd></dl>
 
 </div>
 </div>
