@@ -27,3 +27,4 @@ source:
   - path: src/target/gcn_controller.c
   - path: src/target/n64_controller.c
   - path: src/target/n64_rumble_pak.c
+  - path: src/target/pixelfx_gameid.c

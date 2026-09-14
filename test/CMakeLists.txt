@@ -34,3 +34,6 @@ add_libjoybus_test(test_n64_controller target/test_n64_controller.c)
 
 # N64 rumble pak tests
 add_libjoybus_test(test_n64_rumble_pak target/test_n64_rumble_pak.c)
+
+# PixelFX game ID target tests
+add_libjoybus_test(test_pixelfx_gameid target/test_pixelfx_gameid.c)
