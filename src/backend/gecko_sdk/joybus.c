@@ -294,7 +294,7 @@ static bool ldma_rx_handler(unsigned int chan, unsigned int iteration, void *use
     data->rx_current_buffer ^= 1;
 
     // Handle the received byte
-    int rc = joybus_target_byte_received(bus->target, data->read_buf, iteration, handle_command_response, bus);
+    int rc = joybus_byte_received(bus, data->read_buf, iteration, handle_command_response, bus);
     if (rc == 0) {
       // No more bytes expected
       // Start the response transfer if there is one
@@ -697,7 +697,8 @@ int joybus_gecko_init(struct joybus_gecko *gecko_bus, struct joybus_gecko_config
   struct joybus *bus = JOYBUS(gecko_bus);
   bus->api           = &gecko_api;
   bus->freq          = config.freq;
-  bus->target        = NULL;
+  bus->targets       = NULL;
+  bus->active_target = NULL;
 
   // Save the joybus configuration
   struct joybus_gecko_data *data = &gecko_bus->data;

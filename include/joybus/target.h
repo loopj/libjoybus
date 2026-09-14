@@ -26,6 +26,22 @@
  * at a ::joybus_target_api table, and attach it to a bus with
  * joybus_attach_target().
  *
+ * A bus accepts more than one target. Each command is offered to the attached
+ * targets in attachment order, and the first one that accepts it handles that
+ * command to the end. This places the following contract on a target:
+ *
+ * - A target decides on the first byte of a command. Returning
+ *   -JOYBUS_ERR_NOT_SUPPORTED from the handler for the first byte declines the
+ *   command, and the byte is then offered to the next target. Any other return
+ *   claims the command, and the target receives every later byte of it. A
+ *   target cannot claim a command later.
+ * - Declining has no side effects. A declined first byte must store nothing
+ *   and send nothing, since another target may go on to handle the command.
+ * - Once a command is claimed, -JOYBUS_ERR_NOT_SUPPORTED from a later byte is
+ *   an error in a command the target owns, and the bus returns to idle.
+ * - On the first byte, "not my opcode" and "my opcode, refused" are the same
+ *   return, so a target cannot distinguish them.
+ *
  * @{
  */
 
@@ -63,7 +79,8 @@ struct joybus_target_api {
    * @param byte_idx the index of the byte that was just received
    * @param send_response a callback function to send the response
    * @param user_data user data to pass to the response callback
-   * @return positive number of bytes still expected, 0 if no more bytes expected, a negative joybus_error on failure
+   * @return positive number of bytes still expected, 0 if no more bytes expected, a negative joybus_error on failure.
+   *   -JOYBUS_ERR_NOT_SUPPORTED on the first byte declines the command, see the target contract above
    */
   int (*byte_received)(struct joybus_target *target, const uint8_t *command, uint8_t byte_idx,
                        joybus_target_response_cb send_response, void *user_data);
@@ -78,10 +95,16 @@ struct joybus_target {
 
   /// Whether the target is currently attached to a bus
   bool attached;
+
+  /// The next target attached to the same bus, in attachment order
+  struct joybus_target *next;
 };
 
 /**
- * Handle a received command byte for a Joybus target.
+ * Handle a received command byte for a single Joybus target.
+ *
+ * Backends do not call this directly. They call joybus_byte_received(), which
+ * offers the command to each target attached to the bus.
  *
  * @param target the target to handle the command
  * @param command the command buffer

@@ -21,7 +21,8 @@ int joybus_mybackend_init(struct joybus_mybackend *mybackend_bus, struct joybus_
   struct joybus *bus = JOYBUS(mybackend_bus);
   bus->api           = &mybackend_api;
   bus->freq          = config.freq;
-  bus->target        = NULL;
+  bus->targets       = NULL;
+  bus->active_target = NULL;
 
   // Rest of initialization code...
 
@@ -59,13 +60,28 @@ The turnaround times between transmitting and receiving data are also critical. 
 
 - When enabled, target mode should await bus idle before receiving a command. The bus is idle once the line has been continuously high for 100us (`JOYBUS_BUS_IDLE_US`)
 - A falling edge on the bus indicates the start of a command
-- Received bytes are streamed to the target: `joybus_target_byte_received` should be called as soon as possible after each complete byte is received
+- Received bytes are streamed to the targets: `joybus_byte_received` should be called as soon as possible after each complete byte is received. It offers the first byte of a command to each attached target in attachment order, and routes every later byte to the target that claimed the command
 - After the first byte is received, if more bytes are expected, they should be received contiguously, otherwise wait for the next command (await bus idle) - timeout mechanism can be determined by the backend (per bit, per byte, etc)
-- If a byte is received and there is no registered target, ignore it and wait for the next command (await bus idle)
-- If the registered target does not recognize the command's opcode, ignore it and wait for the next command (await bus idle)
-- The registered target can call the `joybus_target_response_cb` at any time to signal to the backend that response bytes are available
+- If `joybus_byte_received` returns an error, including when no target is attached or no attached target recognizes the command's opcode, ignore the command and wait for the next command (await bus idle)
+- The target handling a command can call the `joybus_target_response_cb` at any time to signal to the backend that response bytes are available
 - Since the `joybus_target_response_cb` can be called before the last byte, we can use this as an opportunity to begin pre-encoding the response while waiting for the remaining bytes to be clocked in
 - Once the final byte of a command is received, we must begin clocking out the response IMMEDIATELY (OEM devices turn around in 3.1 - 4.4us, or 6.6 - 7.0us for a GBA cable, see below for measured OEM timings)
+
+## Reducing Turnaround
+
+The hard deadline in both modes is the turnaround between the last bit of a command and the first bit of the reply. These are the techniques the existing backends use to meet it.
+
+- Stream command bytes to the target as they arrive. `joybus_byte_received` is called once per byte rather than once per command, so a target can recognize a command from its opcode and call `joybus_target_response_cb` before the final byte has been clocked in. Every technique below depends on the backend holding the response before the command ends.
+- Pre-encode the response into the wire format while the remaining bits arrive. The gecko backend encodes the first one or two bytes in `prepare_write` and encodes each later byte from the transmit DMA interrupt, so encoding never blocks the wire.
+- Arm the transmitter early and gate it, so starting the reply costs a single write. The gecko backend starts its transmit DMA with the peripheral request disabled (`REQDIS_SET`) and releases it with `REQDIS_CLR` once the last byte lands. The rp2xxx backend starts its transmit DMA as soon as the response arrives, which fills the PIO transmit FIFO while the state machine is still in its receive loop, then switches with a single `jmp`.
+- Start transmitting before the whole response is encoded. The esp32 backend writes the first symbol of the first byte, starts the transmitter immediately, and fills the remaining symbols behind the hardware as it reads them.
+- Arm the receiver before the reply can arrive, never in response to a transmit-complete interrupt. The esp32 backend arms RX before it transmits and captures the command, the stop bit, and the reply as one continuous capture, then decodes the reply from a fixed symbol offset. This removes interrupt latency from the path and works regardless of MCU clock speed.
+- Let the hardware perform the turnaround where the peripheral allows it. The rp2xxx host PIO program sends the stop bit, fires its interrupt, and falls straight into its receive loop, so no CPU work sits between the end of the command and being ready to sample the reply.
+- Fire the byte-received interrupt early and decode underneath the bits still arriving. The esp32 backend sets the RMT receive limit a symbol or two short of a full byte, folds in each bit as its symbol commits, and busy-waits only for the last one. Interrupt latency is hidden behind the tail of the byte instead of being added after it.
+- Do setup work while the bus is idle. The esp32 backend resets its transmit pointer when it enters receive mode, keeping that work off the critical path.
+- Keep the hot path out of flash. The esp32 backend marks its encode, decode, and interrupt handlers `IRAM_ATTR`. Running the target handler and checksum from flash measurably slows the reply on parts that fetch instructions from external flash.
+
+Replying faster than an OEM device has no known benefit. The esp32 backend enforces a floor (`TARGET_REPLY_FLOOR_NS`) so it never replies much sooner than the measured OEM turnaround below.
 
 ## Checklist
 

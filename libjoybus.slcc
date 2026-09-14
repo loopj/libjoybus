@@ -18,6 +18,7 @@ include:
   - path: include
 
 source:
+  - path: src/bus.c
   - path: src/checksum.c
   - path: src/backend/gecko_sdk/joybus.c
   - path: src/host/common.c

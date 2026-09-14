@@ -368,7 +368,7 @@ static inline IRAM_ATTR void target_byte_received(struct joybus *bus)
   data->read_count++;
 
   // Call the target handler to prepare a response if needed
-  int rc = joybus_target_byte_received(bus->target, data->read_buf, data->read_count, handle_command_response, bus);
+  int rc = joybus_byte_received(bus, data->read_buf, data->read_count, handle_command_response, bus);
   if (rc == 0) {
     // No more bytes expected
     if (data->write_len > 0) {
@@ -717,7 +717,8 @@ int joybus_esp32_init(struct joybus_esp32 *esp32_bus, struct joybus_esp32_config
   // Save the bus API and common configuration
   struct joybus *bus = JOYBUS(esp32_bus);
   bus->api           = &esp32_api;
-  bus->target        = NULL;
+  bus->targets       = NULL;
+  bus->active_target = NULL;
   bus->freq          = config.freq;
 
   // Save the ESP32-specific configuration and initialize state

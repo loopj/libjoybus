@@ -115,8 +115,11 @@ struct joybus {
   /** The frequency of the bus, in Hz. */
   uint32_t freq;
 
-  /** The target device attached to this Joybus instance, if any. */
-  struct joybus_target *target;
+  /** The targets attached to this Joybus instance, in attachment order. */
+  struct joybus_target *targets;
+
+  /** The target that claimed the command being received, if any. */
+  struct joybus_target *active_target;
 
   uint8_t command_buffer[JOYBUS_BLOCK_SIZE];
   uint8_t response_buffer[JOYBUS_BLOCK_SIZE];
@@ -192,17 +195,16 @@ int joybus_transfer_sync(struct joybus *bus, const uint8_t *write_buf, uint8_t w
 /**
  * Attach a target to handle commands received in target mode.
  *
+ * A bus accepts more than one target. Each command is offered to the attached
+ * targets in attachment order, so a target attached earlier takes priority
+ * over those attached after it. Attaching a target that is already attached
+ * has no effect.
+ *
  * @param bus the Joybus instance to use
  * @param target the target to attach
  * @return 0 on success, a negative joybus_error on failure
  */
-static inline int joybus_attach_target(struct joybus *bus, struct joybus_target *target)
-{
-  bus->target      = target;
-  target->attached = true;
-
-  return 0;
-}
+int joybus_attach_target(struct joybus *bus, struct joybus_target *target);
 
 /**
  * Detach a target from the bus.
@@ -211,12 +213,44 @@ static inline int joybus_attach_target(struct joybus *bus, struct joybus_target 
  * @param target the target to detach
  * @return 0 on success, a negative joybus_error on failure
  */
-static inline int joybus_detach_target(struct joybus *bus, struct joybus_target *target)
-{
-  bus->target      = NULL;
-  target->attached = false;
+int joybus_detach_target(struct joybus *bus, struct joybus_target *target);
 
-  return 0;
+/**
+ * Offer a received command byte to the targets attached to the bus.
+ *
+ * Called by backends in target mode as each command byte arrives. The first
+ * byte of a command is offered to each attached target in attachment order
+ * until one claims it by returning anything other than -JOYBUS_ERR_NOT_SUPPORTED.
+ * Every later byte of the command goes to that target alone.
+ *
+ * @param bus the Joybus instance that received the byte
+ * @param command the command buffer
+ * @param byte_idx the index of the byte that was just received
+ * @param send_response a callback function to send the response
+ * @param user_data user data to pass to the response callback
+ * @return positive number of bytes still expected, 0 if no more bytes expected, a negative joybus_error on failure.
+ *   -JOYBUS_ERR_NOT_SUPPORTED if no target claimed the command
+ */
+static inline int joybus_byte_received(struct joybus *bus, const uint8_t *command, uint8_t byte_idx,
+                                       joybus_target_response_cb send_response, void *user_data)
+{
+  // Later bytes go straight to the target that claimed the command
+  if (byte_idx > 1)
+    return joybus_target_byte_received(bus->active_target, command, byte_idx, send_response, user_data);
+
+  // Offer the first byte to each target in attachment order until one claims the command
+  for (struct joybus_target *target = bus->targets; target; target = target->next) {
+    int rc = joybus_target_byte_received(target, command, byte_idx, send_response, user_data);
+    if (rc == -JOYBUS_ERR_NOT_SUPPORTED)
+      continue;
+
+    bus->active_target = target;
+    return rc;
+  }
+
+  // No target claimed the command
+  bus->active_target = NULL;
+  return -JOYBUS_ERR_NOT_SUPPORTED;
 }
 
 // Context for a blocking Joybus operation

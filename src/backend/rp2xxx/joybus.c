@@ -219,7 +219,7 @@ static inline void target_byte_received(struct joybus *bus)
   data->read_count++;
 
   // Call the target handler to prepare a response if needed
-  int rc = joybus_target_byte_received(bus->target, data->read_buf, data->read_count, handle_command_response, bus);
+  int rc = joybus_byte_received(bus, data->read_buf, data->read_count, handle_command_response, bus);
   if (rc == 0) {
     // No more bytes expected, start transmitting the response
     pio_sm_exec(data->pio, data->pio_sm,
@@ -402,7 +402,8 @@ int joybus_rp2xxx_init(struct joybus_rp2xxx *rp2xxx_bus, struct joybus_rp2xxx_co
   struct joybus *bus = JOYBUS(rp2xxx_bus);
   bus->api           = &rp2xxx_api;
   bus->freq          = config.freq;
-  bus->target        = NULL;
+  bus->targets       = NULL;
+  bus->active_target = NULL;
 
   // Save the joybus configuration
   struct joybus_rp2xxx_data *data = &rp2xxx_bus->data;
