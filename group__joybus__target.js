@@ -7,7 +7,8 @@ var group__joybus__target =
     ] ],
     [ "joybus_target", "structjoybus__target.html", [
       [ "api", "structjoybus__target.html#a9c72fdae0b234df5d18f22f4a853d898", null ],
-      [ "attached", "structjoybus__target.html#a6ea0b67c0032f49b0086696654373664", null ]
+      [ "attached", "structjoybus__target.html#a6ea0b67c0032f49b0086696654373664", null ],
+      [ "next", "structjoybus__target.html#af83e4ffa450a9ffd888b7721ae27c05b", null ]
     ] ],
     [ "JOYBUS_TARGET", "group__joybus__target.html#ga261618f4fa23d85cf113ee51f67d4a61", null ],
     [ "joybus_target_response_cb", "group__joybus__target.html#ga11821ae29c4353ed116ddcec92e0bcc2", null ],

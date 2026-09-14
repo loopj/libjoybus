@@ -3,10 +3,11 @@ var group__joybus =
     [ "joybus_api", "structjoybus__api.html", null ],
     [ "joybus_host_op", "structjoybus__host__op.html", null ],
     [ "joybus", "structjoybus.html", [
+      [ "active_target", "structjoybus.html#ab61a3c67bf46597d9f6c24ad6e0eba4f", null ],
       [ "api", "structjoybus.html#a9d285502c40b2dfa382b7c7388cdd30a", null ],
       [ "freq", "structjoybus.html#a80a2719bf6d4e969f3fd63b9fcd024bd", null ],
       [ "mode", "structjoybus.html#a1a1a20d7331501113ff4e94f5ba00e4b", null ],
-      [ "target", "structjoybus.html#a14578b791dc412c1c9ea7970d998ecf4", null ]
+      [ "targets", "structjoybus.html#aa1a88f293492c7e3f587a3abea102bd5", null ]
     ] ],
     [ "joybus_sync_ctx", "structjoybus__sync__ctx.html", null ],
     [ "JOYBUS", "group__joybus.html#gaf06db642865d9aae04c89330d3b9cc25", null ],
@@ -41,10 +42,11 @@ var group__joybus =
       [ "JOYBUS_MODE_TARGET", "group__joybus.html#gga269224343f9733d075007781871a99a6abff296695cb9bacfdb5342209f4c8507", null ]
     ] ],
     [ "joybus_address_checksum", "group__joybus.html#ga395ca3d9f9844388c1b7372a0ae8bedf", null ],
-    [ "joybus_attach_target", "group__joybus.html#gaac8c456ffdda03362b1a75f2c4525f03", null ],
+    [ "joybus_attach_target", "group__joybus.html#gab58b05f197180a016dc14be3b9d7feeb", null ],
+    [ "joybus_byte_received", "group__joybus.html#ga664df10488758a4cda34f6d090ed3d64", null ],
     [ "joybus_data_checksum", "group__joybus.html#gad4e8d62b15102d8e6c580fb3730eb2b5", null ],
     [ "joybus_data_checksum_update", "group__joybus.html#gaf0fb19213a219d0ec14fd0103f9b733e", null ],
-    [ "joybus_detach_target", "group__joybus.html#ga49ad2998eaa04560c7331d6e0e858b0c", null ],
+    [ "joybus_detach_target", "group__joybus.html#gad1d0508e27f710aae59802aef5f7648d", null ],
     [ "joybus_disable", "group__joybus.html#gaabcba7cb477ed6aff47bc7db467f348b", null ],
     [ "joybus_enable", "group__joybus.html#ga80184b4cebc28a54519656dff67b4755", null ],
     [ "joybus_transfer", "group__joybus.html#gaa7d3786d5ed4f67c42ed0fb6718cdae5", null ],

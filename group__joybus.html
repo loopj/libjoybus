@@ -214,10 +214,12 @@ Functions</h2></td></tr>
 <tr class="memdesc:gaa7d3786d5ed4f67c42ed0fb6718cdae5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform a Joybus "write then read" transfer.  <br /></td></tr>
 <tr class="memitem:gaa23c09a3db2e9880ab6dda70b0239061" id="r_gaa23c09a3db2e9880ab6dda70b0239061"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#gaa23c09a3db2e9880ab6dda70b0239061">joybus_transfer_sync</a> (struct <a class="el" href="structjoybus.html">joybus</a> *bus, const uint8_t *write_buf, uint8_t write_len, uint8_t *read_buf, uint8_t read_len)</td></tr>
 <tr class="memdesc:gaa23c09a3db2e9880ab6dda70b0239061"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform a synchronous "write then read" Joybus transfer.  <br /></td></tr>
-<tr class="memitem:gaac8c456ffdda03362b1a75f2c4525f03" id="r_gaac8c456ffdda03362b1a75f2c4525f03"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#gaac8c456ffdda03362b1a75f2c4525f03">joybus_attach_target</a> (struct <a class="el" href="structjoybus.html">joybus</a> *bus, struct <a class="el" href="structjoybus__target.html">joybus_target</a> *target)</td></tr>
-<tr class="memdesc:gaac8c456ffdda03362b1a75f2c4525f03"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attach a target to handle commands received in target mode.  <br /></td></tr>
-<tr class="memitem:ga49ad2998eaa04560c7331d6e0e858b0c" id="r_ga49ad2998eaa04560c7331d6e0e858b0c"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga49ad2998eaa04560c7331d6e0e858b0c">joybus_detach_target</a> (struct <a class="el" href="structjoybus.html">joybus</a> *bus, struct <a class="el" href="structjoybus__target.html">joybus_target</a> *target)</td></tr>
-<tr class="memdesc:ga49ad2998eaa04560c7331d6e0e858b0c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Detach a target from the bus.  <br /></td></tr>
+<tr class="memitem:gab58b05f197180a016dc14be3b9d7feeb" id="r_gab58b05f197180a016dc14be3b9d7feeb"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#gab58b05f197180a016dc14be3b9d7feeb">joybus_attach_target</a> (struct <a class="el" href="structjoybus.html">joybus</a> *bus, struct <a class="el" href="structjoybus__target.html">joybus_target</a> *target)</td></tr>
+<tr class="memdesc:gab58b05f197180a016dc14be3b9d7feeb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attach a target to handle commands received in target mode.  <br /></td></tr>
+<tr class="memitem:gad1d0508e27f710aae59802aef5f7648d" id="r_gad1d0508e27f710aae59802aef5f7648d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#gad1d0508e27f710aae59802aef5f7648d">joybus_detach_target</a> (struct <a class="el" href="structjoybus.html">joybus</a> *bus, struct <a class="el" href="structjoybus__target.html">joybus_target</a> *target)</td></tr>
+<tr class="memdesc:gad1d0508e27f710aae59802aef5f7648d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Detach a target from the bus.  <br /></td></tr>
+<tr class="memitem:ga664df10488758a4cda34f6d090ed3d64" id="r_ga664df10488758a4cda34f6d090ed3d64"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga664df10488758a4cda34f6d090ed3d64">joybus_byte_received</a> (struct <a class="el" href="structjoybus.html">joybus</a> *bus, const uint8_t *command, uint8_t byte_idx, <a class="el" href="group__joybus__target.html#ga11821ae29c4353ed116ddcec92e0bcc2">joybus_target_response_cb</a> send_response, void *user_data)</td></tr>
+<tr class="memdesc:ga664df10488758a4cda34f6d090ed3d64"><td class="mdescLeft">&#160;</td><td class="mdescRight">Offer a received command byte to the targets attached to the bus.  <br /></td></tr>
 <tr class="memitem:ga907fb6719a85f40e70b0ba0e488f97c3" id="r_ga907fb6719a85f40e70b0ba0e488f97c3"><td class="memItemLeft" align="right" valign="top"><a id="ga907fb6719a85f40e70b0ba0e488f97c3" name="ga907fb6719a85f40e70b0ba0e488f97c3"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>joybus_sync_cb</b> (struct <a class="el" href="structjoybus.html">joybus</a> *bus, int <a class="el" href="identify_8h.html#ade818037fd6c985038ff29656089758d">status</a>, void *user_data)</td></tr>
 <tr class="memitem:gabf5f610ca3e4d1015c1220362dcc51d1" id="r_gabf5f610ca3e4d1015c1220362dcc51d1"><td class="memItemLeft" align="right" valign="top"><a id="gabf5f610ca3e4d1015c1220362dcc51d1" name="gabf5f610ca3e4d1015c1220362dcc51d1"></a>
@@ -395,14 +397,11 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>joybus_sync</b> (int s
 
 </div>
 </div>
-<a id="gaac8c456ffdda03362b1a75f2c4525f03" name="gaac8c456ffdda03362b1a75f2c4525f03"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaac8c456ffdda03362b1a75f2c4525f03">&#9670;&#160;</a></span>joybus_attach_target()</h2>
+<a id="gab58b05f197180a016dc14be3b9d7feeb" name="gab58b05f197180a016dc14be3b9d7feeb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gab58b05f197180a016dc14be3b9d7feeb">&#9670;&#160;</a></span>joybus_attach_target()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">int joybus_attach_target </td>
@@ -415,14 +414,10 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>joybus_sync</b> (int s
           <td class="paramtype">struct <a class="el" href="structjoybus__target.html">joybus_target</a> *</td>          <td class="paramname"><span class="paramname"><em>target</em></span>&#160;)</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel static">static</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Attach a target to handle commands received in target mode. </p>
+<p>A bus accepts more than one target. Each command is offered to the attached targets in attachment order, so a target attached earlier takes priority over those attached after it. Attaching a target that is already attached has no effect.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">bus</td><td>the Joybus instance to use </td></tr>
@@ -431,6 +426,64 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>joybus_sync</b> (int s
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>0 on success, a negative <a class="el" href="#ga47435eba4c98726f93fdae3c8bb9fd76" title="Joybus error codes.">joybus_error</a> on failure </dd></dl>
+
+</div>
+</div>
+<a id="ga664df10488758a4cda34f6d090ed3d64" name="ga664df10488758a4cda34f6d090ed3d64"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga664df10488758a4cda34f6d090ed3d64">&#9670;&#160;</a></span>joybus_byte_received()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int joybus_byte_received </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structjoybus.html">joybus</a> *</td>          <td class="paramname"><span class="paramname"><em>bus</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const uint8_t *</td>          <td class="paramname"><span class="paramname"><em>command</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>byte_idx</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__joybus__target.html#ga11821ae29c4353ed116ddcec92e0bcc2">joybus_target_response_cb</a></td>          <td class="paramname"><span class="paramname"><em>send_response</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *</td>          <td class="paramname"><span class="paramname"><em>user_data</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel static">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Offer a received command byte to the targets attached to the bus. </p>
+<p>Called by backends in target mode as each command byte arrives. The first byte of a command is offered to each attached target in attachment order until one claims it by returning anything other than -JOYBUS_ERR_NOT_SUPPORTED. Every later byte of the command goes to that target alone.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">bus</td><td>the Joybus instance that received the byte </td></tr>
+    <tr><td class="paramname">command</td><td>the command buffer </td></tr>
+    <tr><td class="paramname">byte_idx</td><td>the index of the byte that was just received </td></tr>
+    <tr><td class="paramname">send_response</td><td>a callback function to send the response </td></tr>
+    <tr><td class="paramname">user_data</td><td>user data to pass to the response callback </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>positive number of bytes still expected, 0 if no more bytes expected, a negative <a class="el" href="#ga47435eba4c98726f93fdae3c8bb9fd76" title="Joybus error codes.">joybus_error</a> on failure. -JOYBUS_ERR_NOT_SUPPORTED if no target claimed the command </dd></dl>
 
 </div>
 </div>
@@ -497,14 +550,11 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>joybus_sync</b> (int s
 
 </div>
 </div>
-<a id="ga49ad2998eaa04560c7331d6e0e858b0c" name="ga49ad2998eaa04560c7331d6e0e858b0c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga49ad2998eaa04560c7331d6e0e858b0c">&#9670;&#160;</a></span>joybus_detach_target()</h2>
+<a id="gad1d0508e27f710aae59802aef5f7648d" name="gad1d0508e27f710aae59802aef5f7648d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gad1d0508e27f710aae59802aef5f7648d">&#9670;&#160;</a></span>joybus_detach_target()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">int joybus_detach_target </td>
@@ -517,11 +567,6 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>joybus_sync</b> (int s
           <td class="paramtype">struct <a class="el" href="structjoybus__target.html">joybus_target</a> *</td>          <td class="paramname"><span class="paramname"><em>target</em></span>&#160;)</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel static">static</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Detach a target from the bus. </p>
