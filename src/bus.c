@@ -1,5 +1,42 @@
 #include <joybus/bus.h>
 
+int joybus_attach_target(struct joybus *bus, struct joybus_target *target)
+{
+  if (target->attached)
+    return 0;
+
+  // Append the target after those already attached, so earlier targets keep priority
+  struct joybus_target **tail = &bus->targets;
+  while (*tail)
+    tail = &(*tail)->next;
+
+  target->next     = NULL;
+  *tail            = target;
+  target->attached = true;
+
+  return 0;
+}
+
+int joybus_detach_target(struct joybus *bus, struct joybus_target *target)
+{
+  // Unlink the target from the list of attached targets
+  for (struct joybus_target **link = &bus->targets; *link; link = &(*link)->next) {
+    if (*link != target)
+      continue;
+
+    *link            = target->next;
+    target->next     = NULL;
+    target->attached = false;
+    break;
+  }
+
+  // Stop delivering the command in progress to a target that is no longer attached
+  if (bus->active_target == target)
+    bus->active_target = NULL;
+
+  return 0;
+}
+
 void joybus_sync_cb(struct joybus *bus, int status, void *user_data)
 {
   struct joybus_sync_ctx *ctx = (struct joybus_sync_ctx *)user_data;

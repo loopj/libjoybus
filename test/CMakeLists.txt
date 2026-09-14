@@ -23,6 +23,9 @@ endfunction()
 # Checksum tests
 add_libjoybus_test(test_checksum test_checksum.c)
 
+# Bus target attachment and command dispatch tests
+add_libjoybus_test(test_bus test_bus.c)
+
 # GameCube controller target tests
 add_libjoybus_test(test_gcn_controller target/test_gcn_controller.c)
 
