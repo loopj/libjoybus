@@ -170,7 +170,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line">((<span class="keyword">struct </span><a class="code hl_struct" href="structjoybus__target__gcn__controller.html">joybus_target_gcn_controller</a> *)(target))</div>
-<div class="ttc" id="astructjoybus__target__gcn__controller_html"><div class="ttname"><a href="structjoybus__target__gcn__controller.html">joybus_target_gcn_controller</a></div><div class="ttdoc">GameCube controller Joybus target.</div><div class="ttdef"><b>Definition</b> gcn_controller.h:41</div></div>
+<div class="ttc" id="astructjoybus__target__gcn__controller_html"><div class="ttname"><a href="structjoybus__target__gcn__controller.html">joybus_target_gcn_controller</a></div><div class="ttdoc">GameCube controller Joybus target.</div><div class="ttdef"><b>Definition</b> gcn_controller.h:47</div></div>
 </div><!-- fragment -->
 <p>Macro to cast from a generic Joybus target to a GameCube controller target. </p>
 
@@ -190,6 +190,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Callback type for GameCube controller motor state change events. </p>
+<p>Runs in interrupt context, on the response critical path, so it must return quickly. Mark the implementation with <a class="el" href="group__joybus.html#gaa0e9a2c10cd9d4e85a03c3977bdcdec4" title="Attributes for a latency-critical function, such as a target command handler.">JOYBUS_RAM_FUNC</a>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">controller</td><td>the controller whose motor state changed </td></tr>
@@ -213,6 +214,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Callback type for GameCube controller reset events. </p>
+<p>Runs in interrupt context, on the response critical path, so it must return quickly. Mark the implementation with <a class="el" href="group__joybus.html#gaa0e9a2c10cd9d4e85a03c3977bdcdec4" title="Attributes for a latency-critical function, such as a target command handler.">JOYBUS_RAM_FUNC</a>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">controller</td><td>the controller that was reset </td></tr>

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['device_20timings_0',['Nominal Device Timings',['..//home/runner/work/libjoybus/libjoybus/src/backend/README.md#autotoc_md21',1,'']]]
+  ['device_20timings_0',['Nominal Device Timings',['..//home/runner/work/libjoybus/libjoybus/src/backend/README.md#autotoc_md22',1,'']]]
 ];

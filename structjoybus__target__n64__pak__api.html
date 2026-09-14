@@ -135,7 +135,7 @@ Data Fields</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Called when a host requests to read a 32-byte block from the pak. </p>
-<p>Runs in interrupt context, on the response critical path, so it must return quickly.</p>
+<p>Runs in interrupt context, on the response critical path, so it must return quickly. Mark the implementation with <a class="el" href="group__joybus.html#gaa0e9a2c10cd9d4e85a03c3977bdcdec4" title="Attributes for a latency-critical function, such as a target command handler.">JOYBUS_RAM_FUNC</a>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">pak</td><td>the pak being read from </td></tr>
@@ -160,7 +160,7 @@ Data Fields</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Called when a host requests to write a 32-byte block to the pak. </p>
-<p>Runs in interrupt context, AFTER the CRC response has been sent, but still on the command handling path, so must return before the next command byte is received.</p>
+<p>Runs in interrupt context, AFTER the CRC response has been sent, but still on the command handling path, so must return before the next command byte is received. Mark the implementation with <a class="el" href="group__joybus.html#gaa0e9a2c10cd9d4e85a03c3977bdcdec4" title="Attributes for a latency-critical function, such as a target command handler.">JOYBUS_RAM_FUNC</a>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">pak</td><td>the pak being written to </td></tr>

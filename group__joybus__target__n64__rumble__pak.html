@@ -150,7 +150,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line">((<span class="keyword">struct </span><a class="code hl_struct" href="structjoybus__target__n64__rumble__pak.html">joybus_target_n64_rumble_pak</a> *)(pak))</div>
-<div class="ttc" id="astructjoybus__target__n64__rumble__pak_html"><div class="ttname"><a href="structjoybus__target__n64__rumble__pak.html">joybus_target_n64_rumble_pak</a></div><div class="ttdoc">N64 Rumble Pak pak.</div><div class="ttdef"><b>Definition</b> n64_rumble_pak.h:33</div></div>
+<div class="ttc" id="astructjoybus__target__n64__rumble__pak_html"><div class="ttname"><a href="structjoybus__target__n64__rumble__pak.html">joybus_target_n64_rumble_pak</a></div><div class="ttdoc">N64 Rumble Pak pak.</div><div class="ttdef"><b>Definition</b> n64_rumble_pak.h:36</div></div>
 </div><!-- fragment -->
 <p>Macro to cast from a generic N64 pak to a rumble pak. </p>
 
@@ -170,6 +170,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Callback type for rumble pak motor state change events. </p>
+<p>Runs in interrupt context, on the response critical path, so it must return quickly. Mark the implementation with <a class="el" href="group__joybus.html#gaa0e9a2c10cd9d4e85a03c3977bdcdec4" title="Attributes for a latency-critical function, such as a target command handler.">JOYBUS_RAM_FUNC</a>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">pak</td><td>the rumble pak whose motor state changed </td></tr>

@@ -123,7 +123,9 @@ Macros</h2></td></tr>
 <tr class="memitem:ga2f5b2a946448c841b1f042d508876a99" id="r_ga2f5b2a946448c841b1f042d508876a99"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga2f5b2a946448c841b1f042d508876a99">JOYBUS_USE_RAM_FUNCS</a>&#160;&#160;&#160;1</td></tr>
 <tr class="memdesc:ga2f5b2a946448c841b1f042d508876a99"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether to place latency-critical functions in RAM.  <br /></td></tr>
 <tr class="memitem:gaa0e9a2c10cd9d4e85a03c3977bdcdec4" id="r_gaa0e9a2c10cd9d4e85a03c3977bdcdec4"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#gaa0e9a2c10cd9d4e85a03c3977bdcdec4">JOYBUS_RAM_FUNC</a></td></tr>
-<tr class="memdesc:gaa0e9a2c10cd9d4e85a03c3977bdcdec4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attribute for a latency-critical function, such as a target command handler.  <br /></td></tr>
+<tr class="memdesc:gaa0e9a2c10cd9d4e85a03c3977bdcdec4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attributes for a latency-critical function, such as a target command handler.  <br /></td></tr>
+<tr class="memitem:ga29f699922ed73ff0bc0e9f0bcaa90363" id="r_ga29f699922ed73ff0bc0e9f0bcaa90363"><td class="memItemLeft" align="right" valign="top"><a id="ga29f699922ed73ff0bc0e9f0bcaa90363" name="ga29f699922ed73ff0bc0e9f0bcaa90363"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_RAM_DATA</b></td></tr>
 <tr class="memitem:ga8605997a75f0f98d3372733222706dec" id="r_ga8605997a75f0f98d3372733222706dec"><td class="memItemLeft" align="right" valign="top"><a id="ga8605997a75f0f98d3372733222706dec" name="ga8605997a75f0f98d3372733222706dec"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_FREQ_NOMINAL</b>&#160;&#160;&#160;250000</td></tr>
 <tr class="memdesc:ga8605997a75f0f98d3372733222706dec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Nominal Joybus frequency, matching an OEM N64/GameCube controller. <br /></td></tr>
@@ -264,7 +266,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>joybus_sync</b> (int s
       </table>
 </div><div class="memdoc">
 
-<p>Attribute for a latency-critical function, such as a target command handler. </p>
+<p>Attributes for a latency-critical function, such as a target command handler. </p>
 <p>Places it in RAM instead of executing it in place from flash, so a flash fetch or cache miss cannot add latency to the response. A no-op when JOYBUS_USE_RAM_FUNCS is 0, or on platforms that are not yet wired up. </p>
 
 </div>

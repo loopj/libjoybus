@@ -1,7 +1,7 @@
 var searchData=
 [
   ['backend_0',['Backend',['../group__joybus__backend__esp32.html',1,'ESP32 Backend'],['../group__joybus__backend__gecko.html',1,'Gecko Backend'],['../group__joybus__backend__rp2xxx.html',1,'RP2xxx Backend']]],
-  ['backend_20implementations_1',['Backend Implementations',['..//home/runner/work/libjoybus/libjoybus/src/backend/README.md#autotoc_md15',1,'']]],
+  ['backend_20implementations_1',['Backend Implementations',['..//home/runner/work/libjoybus/libjoybus/src/backend/README.md#autotoc_md16',1,'']]],
   ['backends_2',['Backends',['../group__joybus__backends.html',1,'']]],
   ['base_3',['base',['../structjoybus__target__gcn__controller.html#a23b00a3ef5ece79085493b87b0bef059',1,'joybus_target_gcn_controller::base'],['../structjoybus__target__n64__controller.html#a7a91ec400b17a67bcfcea99533cc7445',1,'joybus_target_n64_controller::base'],['../structjoybus__target__n64__rumble__pak.html#abd5dccbbe6f48079178d62f42d00e688',1,'joybus_target_n64_rumble_pak::base']]],
   ['based_20projects_20pico_20sdk_20etc_4',['CMake Based Projects (Pico SDK, etc)',['../index.html#autotoc_md5',1,'']]],

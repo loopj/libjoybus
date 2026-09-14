@@ -39,9 +39,10 @@ var NAVTREE =
     [ "Usage", "index.html#autotoc_md10", [
       [ "Initializing the Joybus", "index.html#autotoc_md11", null ],
       [ "Communicating with Controllers", "index.html#autotoc_md12", null ],
-      [ "Emulating a Controller", "index.html#autotoc_md13", null ]
+      [ "Emulating a Controller", "index.html#autotoc_md13", null ],
+      [ "Placing Code in RAM", "index.html#autotoc_md14", null ]
     ] ],
-    [ "License", "index.html#autotoc_md14", null ],
+    [ "License", "index.html#autotoc_md15", null ],
     [ "Topics", "topics.html", "topics" ],
     [ "Data Structures", "annotated.html", [
       [ "Data Structures", "annotated.html", "annotated_dup" ],
