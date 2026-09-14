@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['joybus_0',['Joybus',['../group__joybus.html',1,'']]]
+  ['id_20target_0',['PixelFX Game ID Target',['../group__joybus__target__pixelfx__gameid.html',1,'']]]
 ];

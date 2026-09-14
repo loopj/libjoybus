@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['target_0',['Target',['../group__joybus__target__gcn__controller.html',1,'GameCube Controller Target'],['../group__joybus__target__n64__controller.html',1,'N64 Controller Target']]],
+  ['target_0',['Target',['../group__joybus__target__gcn__controller.html',1,'GameCube Controller Target'],['../group__joybus__target__n64__controller.html',1,'N64 Controller Target'],['../group__joybus__target__pixelfx__gameid.html',1,'PixelFX Game ID Target']]],
   ['target_20mode_20command_20reception_1',['Target-mode Command Reception',['..//home/runner/work/libjoybus/libjoybus/src/backend/README.md#autotoc_md20',1,'']]],
   ['targets_2',['Targets',['../group__joybus__target.html',1,'']]],
   ['targets_3',['targets',['../structjoybus.html#aa1a88f293492c7e3f587a3abea102bd5',1,'joybus']]],

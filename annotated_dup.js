@@ -22,5 +22,6 @@ var annotated_dup =
     [ "joybus_target_n64_controller", "structjoybus__target__n64__controller.html", "structjoybus__target__n64__controller" ],
     [ "joybus_target_n64_pak", "structjoybus__target__n64__pak.html", "structjoybus__target__n64__pak" ],
     [ "joybus_target_n64_pak_api", "structjoybus__target__n64__pak__api.html", "structjoybus__target__n64__pak__api" ],
-    [ "joybus_target_n64_rumble_pak", "structjoybus__target__n64__rumble__pak.html", "structjoybus__target__n64__rumble__pak" ]
+    [ "joybus_target_n64_rumble_pak", "structjoybus__target__n64__rumble__pak.html", "structjoybus__target__n64__rumble__pak" ],
+    [ "joybus_target_pixelfx_gameid", "structjoybus__target__pixelfx__gameid.html", "structjoybus__target__pixelfx__gameid" ]
 ];

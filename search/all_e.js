@@ -7,7 +7,8 @@ var searchData=
   ['peripherals_4',['Peripherals',['..//home/runner/work/libjoybus/libjoybus/src/backend/README.md#autotoc_md18',1,'']]],
   ['pico_20sdk_20etc_5',['CMake Based Projects (Pico SDK, etc)',['../index.html#autotoc_md5',1,'']]],
   ['pio_6',['pio',['../structjoybus__rp2xxx__config.html#adfd23b3b8ce09d849f3bac03dbae5664',1,'joybus_rp2xxx_config']]],
-  ['placing_20code_20in_20ram_7',['Placing Code in RAM',['../index.html#autotoc_md14',1,'']]],
-  ['platforms_8',['Supported Platforms',['../index.html#autotoc_md2',1,'']]],
-  ['projects_20pico_20sdk_20etc_9',['CMake Based Projects (Pico SDK, etc)',['../index.html#autotoc_md5',1,'']]]
+  ['pixelfx_20game_20id_20target_7',['PixelFX Game ID Target',['../group__joybus__target__pixelfx__gameid.html',1,'']]],
+  ['placing_20code_20in_20ram_8',['Placing Code in RAM',['../index.html#autotoc_md14',1,'']]],
+  ['platforms_9',['Supported Platforms',['../index.html#autotoc_md2',1,'']]],
+  ['projects_20pico_20sdk_20etc_10',['CMake Based Projects (Pico SDK, etc)',['../index.html#autotoc_md5',1,'']]]
 ];

@@ -2,6 +2,7 @@ var group__joybus__target =
 [
     [ "GameCube Controller Target", "group__joybus__target__gcn__controller.html", "group__joybus__target__gcn__controller" ],
     [ "N64 Controller Target", "group__joybus__target__n64__controller.html", "group__joybus__target__n64__controller" ],
+    [ "PixelFX Game ID Target", "group__joybus__target__pixelfx__gameid.html", "group__joybus__target__pixelfx__gameid" ],
     [ "joybus_target_api", "structjoybus__target__api.html", [
       [ "byte_received", "structjoybus__target__api.html#a7dfc9d4a13ae3907c7325fc7993d2cf8", null ]
     ] ],
