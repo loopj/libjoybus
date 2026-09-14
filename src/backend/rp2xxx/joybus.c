@@ -70,10 +70,11 @@ static inline void enter_idle_mode(struct joybus *bus, bool await_idle)
       }
     }
 
-    // Reset read state
+    // Reset read state, and forget any response from the last command
     data->read_buf   = bus->command_buffer;
     data->read_len   = JOYBUS_BLOCK_SIZE;
     data->read_count = 0;
+    data->write_len  = 0;
 
     // Make sure the PIO program is loaded
     configure_state_machine(bus);
@@ -113,6 +114,7 @@ static inline void handle_command_response(const uint8_t *buffer, uint8_t length
   struct joybus_rp2xxx_data *data = &JOYBUS_RP2XXX(bus)->data;
 
   // Arm the DMA transfer as soon as we have a response
+  data->write_len = length;
   dma_channel_set_read_addr(data->dma_chan_tx, (const void *)buffer, false);
   dma_channel_set_transfer_count(data->dma_chan_tx, length, false);
   dma_channel_start(data->dma_chan_tx);
@@ -220,12 +222,15 @@ static inline void target_byte_received(struct joybus *bus)
 
   // Call the target handler to prepare a response if needed
   int rc = joybus_byte_received(bus, data->read_buf, data->read_count, handle_command_response, bus);
-  if (rc == 0) {
+  if (rc == 0 && data->write_len > 0) {
     // No more bytes expected, start transmitting the response
     pio_sm_exec(data->pio, data->pio_sm,
                 pio_encode_jmp(pio_state[PIO_NUM(data->pio)].target_offset + joybus_target_offset_transmit));
 
     data->state = BUS_STATE_TARGET_TX;
+  } else if (rc == 0) {
+    // No more bytes expected and no response to send, switch back to idle/read mode
+    enter_idle_mode(bus, true);
   } else if (rc > 0) {
     // More bytes expected
     // Set a timeout for the next byte

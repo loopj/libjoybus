@@ -64,6 +64,7 @@ The turnaround times between transmitting and receiving data are also critical. 
 - After the first byte is received, if more bytes are expected, they should be received contiguously, otherwise wait for the next command (await bus idle) - timeout mechanism can be determined by the backend (per bit, per byte, etc)
 - If `joybus_byte_received` returns an error, including when no target is attached or no attached target recognizes the command's opcode, ignore the command and wait for the next command (await bus idle)
 - The target handling a command can call the `joybus_target_response_cb` at any time to signal to the backend that response bytes are available
+- A target may accept a command and send nothing, such as the PixelFX game ID. If `joybus_byte_received` returns 0 and no response was signalled, wait for the next command (await bus idle) instead of transmitting
 - Since the `joybus_target_response_cb` can be called before the last byte, we can use this as an opportunity to begin pre-encoding the response while waiting for the remaining bytes to be clocked in
 - Once the final byte of a command is received, we must begin clocking out the response IMMEDIATELY (OEM devices turn around in 3.1 - 4.4us, or 6.6 - 7.0us for a GBA cable, see below for measured OEM timings)
 
