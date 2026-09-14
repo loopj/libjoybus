@@ -1,5 +1,6 @@
 #include <string.h>
 
+#include <joybus/attributes.h>
 #include <joybus/bus.h>
 #include <joybus/target/n64_pak.h>
 #include <joybus/target/n64_rumble_pak.h>
@@ -9,6 +10,7 @@
 #define RUMBLE_PAK_MOTOR_REGION 0xC000
 #define RUMBLE_PAK_SIGNATURE    0x80
 
+JOYBUS_RAM_FUNC
 static void rumble_pak_read_block(struct joybus_target_n64_pak *pak, uint16_t addr, uint8_t buf[JOYBUS_PAK_BLOCK_SIZE])
 {
   struct joybus_target_n64_rumble_pak *rumble_pak = JOYBUS_TARGET_N64_RUMBLE_PAK(pak);
@@ -22,6 +24,7 @@ static void rumble_pak_read_block(struct joybus_target_n64_pak *pak, uint16_t ad
   }
 }
 
+JOYBUS_RAM_FUNC
 static void rumble_pak_write_block(struct joybus_target_n64_pak *pak, uint16_t addr,
                                    const uint8_t buf[JOYBUS_PAK_BLOCK_SIZE])
 {
@@ -65,7 +68,7 @@ void joybus_target_n64_rumble_pak_init(struct joybus_target_n64_rumble_pak *rumb
 
   // Set the base pak API implementation
   struct joybus_target_n64_pak *pak = JOYBUS_TARGET_N64_PAK(rumble_pak);
-  pak->api = &rumble_pak_api;
+  pak->api                          = &rumble_pak_api;
 }
 
 void joybus_target_n64_rumble_pak_set_motor_cb(struct joybus_target_n64_rumble_pak *rumble_pak,

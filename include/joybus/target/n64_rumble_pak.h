@@ -22,6 +22,9 @@ struct joybus_target_n64_rumble_pak;
 /**
  * Callback type for rumble pak motor state change events.
  *
+ * Runs in interrupt context, on the response critical path, so it must return
+ * quickly. Mark the implementation with ::JOYBUS_RAM_FUNC.
+ *
  * @param pak    the rumble pak whose motor state changed
  * @param active true if the motor should be on, false if off
  */
