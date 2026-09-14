@@ -149,26 +149,25 @@ static int handle_pak_read(struct joybus_target_n64_controller *controller, cons
     joybus_id_set_status_flags(&controller->id, JOYBUS_STATUS_N64_ADDR_CHECKSUM_ERROR);
   }
 
-  // Prepare and send the response
-  if (pak_ready(controller) && checksum_valid) {
-    // Ask the pak to fill the response buffer
+  // Offer the read to the pak
+  bool ready = pak_ready(controller) && checksum_valid;
+  if (ready) {
     uint16_t block_addr               = addr & 0xFFE0;
     struct joybus_target_n64_pak *acc = controller->pak;
-    acc->api->read_block(acc, block_addr, controller->response);
+    ready                             = acc->api->read_block(acc, block_addr, controller->response) == 0;
+  }
 
+  if (ready) {
     // Calculate and append the data checksum
     controller->response[JOYBUS_PAK_BLOCK_SIZE] = joybus_data_checksum(controller->response, JOYBUS_PAK_BLOCK_SIZE);
-
-    // Send the response
-    send_response(controller->response, JOYBUS_CMD_N64_PAK_READ_RX, user_data);
   } else {
-    // Prepare a zero response with the "no pak" CRC
+    // Prepare a zero response with the "no pak" CRC, which the host treats as a transfer error
     memset(controller->response, 0, JOYBUS_CMD_N64_PAK_READ_RX);
     controller->response[JOYBUS_PAK_BLOCK_SIZE] = 0xFF;
-
-    // Send the response
-    send_response(controller->response, JOYBUS_CMD_N64_PAK_READ_RX, user_data);
   }
+
+  // Send the response
+  send_response(controller->response, JOYBUS_CMD_N64_PAK_READ_RX, user_data);
 
   return 0;
 }
@@ -210,21 +209,20 @@ static int handle_pak_write(struct joybus_target_n64_controller *controller, con
     bool checksum_valid = (controller->id.status & JOYBUS_STATUS_N64_ADDR_CHECKSUM_ERROR) == 0;
     bool ready          = pak_ready(controller) && checksum_valid;
 
-    // Mark the CRC as "no pak" if we're not ready to commit the write
-    if (!ready) {
-      controller->crc ^= 0xFF;
-    }
-
-    // Send the CRC response first to keep the storage write off the response critical path
-    send_response(&controller->crc, JOYBUS_CMD_N64_PAK_WRITE_RX, user_data);
-
-    // Hand the payload to the pak after the host has its response
+    // Offer the write to the pak
     if (ready) {
       uint16_t addr                     = ((uint16_t)command[1] << 8) | command[2];
       uint16_t block_addr               = addr & 0xFFE0;
       struct joybus_target_n64_pak *acc = controller->pak;
-      acc->api->write_block(acc, block_addr, &command[3]);
+      ready                             = acc->api->write_block(acc, block_addr, &command[3]) == 0;
     }
+
+    // Mark the CRC as "no pak" if the write was not committed, which the host treats as a transfer error
+    if (!ready)
+      controller->crc ^= 0xFF;
+
+    // Send the CRC response
+    send_response(&controller->crc, JOYBUS_CMD_N64_PAK_WRITE_RX, user_data);
   }
 
   return JOYBUS_CMD_N64_PAK_WRITE_TX - bytes_read;

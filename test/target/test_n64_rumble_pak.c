@@ -32,13 +32,13 @@ static void on_motor_change(struct joybus_target_n64_rumble_pak *pak, bool activ
 // Read a block directly through the pak API
 static void pak_read(uint16_t addr, uint8_t buf[JOYBUS_PAK_BLOCK_SIZE])
 {
-  rumble.base.api->read_block(&rumble.base, addr, buf);
+  TEST_ASSERT_EQUAL(0, rumble.base.api->read_block(&rumble.base, addr, buf));
 }
 
 // Write a block directly through the pak API
 static void pak_write(uint16_t addr, const uint8_t buf[JOYBUS_PAK_BLOCK_SIZE])
 {
-  rumble.base.api->write_block(&rumble.base, addr, buf);
+  TEST_ASSERT_EQUAL(0, rumble.base.api->write_block(&rumble.base, addr, buf));
 }
 
 // ---------------------------------------------------------------------------

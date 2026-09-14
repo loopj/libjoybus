@@ -50,24 +50,41 @@ struct joybus_target_n64_pak_api {
    * Runs in interrupt context, on the response critical path, so it must
    * return quickly. Mark the implementation with ::JOYBUS_RAM_FUNC.
    *
+   * A pak that cannot serve the read yet returns -JOYBUS_ERR_BUSY. The
+   * controller then answers as it does for a missing pak, zeros with an
+   * inverted CRC, which the host treats as a transfer error and retries,
+   * while the pak stays reported as present. Any other negative return gets
+   * the same response, but it is a fault rather than a stall: the host will
+   * give up after its retries.
+   *
    * @param pak  the pak being read from
    * @param addr block-aligned address (low 5 bits are zero)
    * @param buf  destination buffer, exactly 32 bytes
+   * @return 0 on success, -JOYBUS_ERR_BUSY to decline the read for now, another negative joybus_error on failure
    */
-  void (*read_block)(struct joybus_target_n64_pak *pak, uint16_t addr, uint8_t buf[JOYBUS_PAK_BLOCK_SIZE]);
+  int (*read_block)(struct joybus_target_n64_pak *pak, uint16_t addr, uint8_t buf[JOYBUS_PAK_BLOCK_SIZE]);
 
   /**
    * Called when a host requests to write a 32-byte block to the pak.
    *
-   * Runs in interrupt context, AFTER the CRC response has been sent, but
-   * still on the command handling path, so must return before the next command
-   * byte is received. Mark the implementation with ::JOYBUS_RAM_FUNC.
+   * Runs in interrupt context, on the response critical path, since the
+   * return value decides the CRC sent in reply. It must return quickly. Mark
+   * the implementation with ::JOYBUS_RAM_FUNC.
+   *
+   * A pak that cannot accept the write yet returns -JOYBUS_ERR_BUSY. The
+   * controller then answers with the inverted payload CRC, as it does for a
+   * missing pak, which the host treats as a transfer error and retries, while
+   * the pak stays reported as present. The retry offers the whole block
+   * again, so a pak must not act on a block it declines. Any other negative
+   * return gets the same response, but it is a fault rather than a stall: the
+   * host will give up after its retries.
    *
    * @param pak  the pak being written to
    * @param addr block-aligned address (low 5 bits are zero)
    * @param buf  source buffer, exactly 32 bytes
+   * @return 0 on success, -JOYBUS_ERR_BUSY to decline the write for now, another negative joybus_error on failure
    */
-  void (*write_block)(struct joybus_target_n64_pak *pak, uint16_t addr, const uint8_t buf[JOYBUS_PAK_BLOCK_SIZE]);
+  int (*write_block)(struct joybus_target_n64_pak *pak, uint16_t addr, const uint8_t buf[JOYBUS_PAK_BLOCK_SIZE]);
 };
 
 /**
