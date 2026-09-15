@@ -20,6 +20,7 @@ include:
 source:
   - path: src/bus.c
   - path: src/checksum.c
+  - path: src/n64_pak_fs.c
   - path: src/backend/gecko_sdk/joybus.c
   - path: src/host/common.c
   - path: src/host/gcn.c

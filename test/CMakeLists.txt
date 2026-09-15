@@ -23,6 +23,9 @@ endfunction()
 # Checksum tests
 add_libjoybus_test(test_checksum test_checksum.c)
 
+# N64 Controller Pak filesystem tests
+add_libjoybus_test(test_n64_pak_fs test_n64_pak_fs.c)
+
 # Bus target attachment and command dispatch tests
 add_libjoybus_test(test_bus test_bus.c)
 
