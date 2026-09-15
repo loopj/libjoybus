@@ -31,6 +31,9 @@ enum joybus_error {
 
   /// Expected device not detected
   JOYBUS_ERR_NO_DEVICE,
+
+  /// Invalid argument
+  JOYBUS_ERR_INVALID_ARG,
 };
 
 /** @} */
