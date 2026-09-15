@@ -173,6 +173,17 @@ Macros</h2></td></tr>
 <tr class="memdesc:ga272b8f55fa8c16bac1524dda78c5ecef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Size of a Joybus N64 pak read/write block. <br /></td></tr>
 <tr class="memitem:gaf06db642865d9aae04c89330d3b9cc25" id="r_gaf06db642865d9aae04c89330d3b9cc25"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#gaf06db642865d9aae04c89330d3b9cc25">JOYBUS</a>(bus)</td></tr>
 <tr class="memdesc:gaf06db642865d9aae04c89330d3b9cc25"><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro to cast a backend-specific Joybus instance to a generic Joybus instance.  <br /></td></tr>
+<tr class="memitem:ga0a0ac6c10e850c92146c703b19050691" id="r_ga0a0ac6c10e850c92146c703b19050691"><td class="memItemLeft" align="right" valign="top"><a id="ga0a0ac6c10e850c92146c703b19050691" name="ga0a0ac6c10e850c92146c703b19050691"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_N64_PAK_BANK_SIZE</b>&#160;&#160;&#160;32768</td></tr>
+<tr class="memdesc:ga0a0ac6c10e850c92146c703b19050691"><td class="mdescLeft">&#160;</td><td class="mdescRight">Size of one bank in bytes, the storage of an original pak. <br /></td></tr>
+<tr class="memitem:ga33c7b2e31941a8f52ecbba7938234abe" id="r_ga33c7b2e31941a8f52ecbba7938234abe"><td class="memItemLeft" align="right" valign="top"><a id="ga33c7b2e31941a8f52ecbba7938234abe" name="ga33c7b2e31941a8f52ecbba7938234abe"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_N64_PAK_FS_PAGE_SIZE</b>&#160;&#160;&#160;256</td></tr>
+<tr class="memdesc:ga33c7b2e31941a8f52ecbba7938234abe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Size of one page in bytes, the unit the filesystem allocates in. <br /></td></tr>
+<tr class="memitem:ga0639362b7f5fcb03456d5b45b07cd033" id="r_ga0639362b7f5fcb03456d5b45b07cd033"><td class="memItemLeft" align="right" valign="top"><a id="ga0639362b7f5fcb03456d5b45b07cd033" name="ga0639362b7f5fcb03456d5b45b07cd033"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_N64_PAK_FS_MAX_BANKS</b>&#160;&#160;&#160;62</td></tr>
+<tr class="memdesc:ga0639362b7f5fcb03456d5b45b07cd033"><td class="mdescLeft">&#160;</td><td class="mdescRight">The most banks whose system area fits in the first bank. <br /></td></tr>
+<tr class="memitem:ga178a8e4493278b1bb1142b936ab7e72d" id="r_ga178a8e4493278b1bb1142b936ab7e72d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga178a8e4493278b1bb1142b936ab7e72d">JOYBUS_N64_PAK_FS_SYSTEM_PAGES</a>(banks)</td></tr>
+<tr class="memdesc:ga178a8e4493278b1bb1142b936ab7e72d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of system pages in the first bank for a given bank count.  <br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-typedef-members" class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
@@ -200,6 +211,8 @@ Enumerations</h2></td></tr>
 &#160;&#160;<a class="el" href="#gga47435eba4c98726f93fdae3c8bb9fd76adc97e17cb4f7168b0f71926a6d357aac">JOYBUS_ERR_CHECKSUM</a>
 , <br />
 &#160;&#160;<a class="el" href="#gga47435eba4c98726f93fdae3c8bb9fd76a8c483cd1d2d0f43c85fbc5f2124c14c8">JOYBUS_ERR_NO_DEVICE</a>
+, <br />
+&#160;&#160;<a class="el" href="#gga47435eba4c98726f93fdae3c8bb9fd76a467079556e5b894b4fb83ab32f1ee926">JOYBUS_ERR_INVALID_ARG</a>
 <br />
  }</td></tr>
 <tr class="memdesc:ga47435eba4c98726f93fdae3c8bb9fd76"><td class="mdescLeft">&#160;</td><td class="mdescRight">Joybus error codes.  <a href="#ga47435eba4c98726f93fdae3c8bb9fd76">More...</a><br /></td></tr>
@@ -230,10 +243,16 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>joybus_sync</b> (int s
 <tr class="memdesc:gad4e8d62b15102d8e6c580fb3730eb2b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the CRC-8 checksum of a Joybus data buffer.  <br /></td></tr>
 <tr class="memitem:ga395ca3d9f9844388c1b7372a0ae8bedf" id="r_ga395ca3d9f9844388c1b7372a0ae8bedf"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga395ca3d9f9844388c1b7372a0ae8bedf">joybus_address_checksum</a> (uint16_t addr)</td></tr>
 <tr class="memdesc:ga395ca3d9f9844388c1b7372a0ae8bedf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the CRC-5 address checksum for data transfer commands.  <br /></td></tr>
+<tr class="memitem:ga622aff839f92695e38bfe9987a01c0a7" id="r_ga622aff839f92695e38bfe9987a01c0a7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga622aff839f92695e38bfe9987a01c0a7">joybus_n64_pak_fs_valid</a> (const uint8_t *bank0, uint8_t banks)</td></tr>
+<tr class="memdesc:ga622aff839f92695e38bfe9987a01c0a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether a bank holds a filesystem for the given bank count.  <br /></td></tr>
+<tr class="memitem:ga35b44fca7870ff7f7e8b97717e10eda5" id="r_ga35b44fca7870ff7f7e8b97717e10eda5"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga35b44fca7870ff7f7e8b97717e10eda5">joybus_n64_pak_fs_format</a> (uint8_t *bank0, uint8_t banks, uint32_t random)</td></tr>
+<tr class="memdesc:ga35b44fca7870ff7f7e8b97717e10eda5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write a fresh filesystem for the given bank count into a bank.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <p>Joybus library core functionality. </p>
-<p>Checksum routines used by various Joybus data transfer commands. </p>
+<p>Checksum routines used by various Joybus data transfer commands.</p>
+<p>N64 Controller Pak filesystem helpers.</p>
+<p>A Controller Pak keeps its system area in the first bank: four copies of an ID block in page 0, an inode table and a mirror of it per bank, then two pages of note table. These routines write that area for a given bank count and check whether one is present, so an emulated pak can present itself as formatted. They work on a bank held in memory and do not touch the bus. </p>
 <a name="doc-define-members" id="doc-define-members"></a><h2 id="header-doc-define-members" class="groupheader">Macro Definition Documentation</h2>
 <a id="gaf06db642865d9aae04c89330d3b9cc25" name="gaf06db642865d9aae04c89330d3b9cc25"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#gaf06db642865d9aae04c89330d3b9cc25">&#9670;&#160;</a></span>JOYBUS</h2>
@@ -253,6 +272,26 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>joybus_sync</b> (int s
 <div class="ttc" id="astructjoybus_html"><div class="ttname"><a href="structjoybus.html">joybus</a></div><div class="ttdoc">A Joybus instance.</div><div class="ttdef"><b>Definition</b> bus.h:108</div></div>
 </div><!-- fragment -->
 <p>Macro to cast a backend-specific Joybus instance to a generic Joybus instance. </p>
+
+</div>
+</div>
+<a id="ga178a8e4493278b1bb1142b936ab7e72d" name="ga178a8e4493278b1bb1142b936ab7e72d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga178a8e4493278b1bb1142b936ab7e72d">&#9670;&#160;</a></span>JOYBUS_N64_PAK_FS_SYSTEM_PAGES</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define JOYBUS_N64_PAK_FS_SYSTEM_PAGES</td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>banks</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">(3 + 2 * (banks))</div>
+</div><!-- fragment -->
+<p>Number of system pages in the first bank for a given bank count. </p>
 
 </div>
 </div>
@@ -343,6 +382,8 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>joybus_sync</b> (int s
 <tr><td class="fieldname"><a id="gga47435eba4c98726f93fdae3c8bb9fd76adc97e17cb4f7168b0f71926a6d357aac" name="gga47435eba4c98726f93fdae3c8bb9fd76adc97e17cb4f7168b0f71926a6d357aac"></a>JOYBUS_ERR_CHECKSUM&#160;</td><td class="fielddoc"><p>Checksum error. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="gga47435eba4c98726f93fdae3c8bb9fd76a8c483cd1d2d0f43c85fbc5f2124c14c8" name="gga47435eba4c98726f93fdae3c8bb9fd76a8c483cd1d2d0f43c85fbc5f2124c14c8"></a>JOYBUS_ERR_NO_DEVICE&#160;</td><td class="fielddoc"><p>Expected device not detected. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="gga47435eba4c98726f93fdae3c8bb9fd76a467079556e5b894b4fb83ab32f1ee926" name="gga47435eba4c98726f93fdae3c8bb9fd76a467079556e5b894b4fb83ab32f1ee926"></a>JOYBUS_ERR_INVALID_ARG&#160;</td><td class="fielddoc"><p>Invalid argument. </p>
 </td></tr>
 </table>
 
@@ -650,6 +691,75 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>joybus_sync</b> (int s
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="ga35b44fca7870ff7f7e8b97717e10eda5" name="ga35b44fca7870ff7f7e8b97717e10eda5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga35b44fca7870ff7f7e8b97717e10eda5">&#9670;&#160;</a></span>joybus_n64_pak_fs_format()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int joybus_n64_pak_fs_format </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t *</td>          <td class="paramname"><span class="paramname"><em>bank0</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>banks</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t</td>          <td class="paramname"><span class="paramname"><em>random</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Write a fresh filesystem for the given bank count into a bank. </p>
+<p>Only the system area is written. The data pages keep their contents but are all marked free, so a console sees an empty pak.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">bank0</td><td>the first bank of the pak, <a class="el" href="#ga0a0ac6c10e850c92146c703b19050691" title="Size of one bank in bytes, the storage of an original pak.">JOYBUS_N64_PAK_BANK_SIZE</a> bytes </td></tr>
+    <tr><td class="paramname">banks</td><td>how many banks the pak presents, 1 to <a class="el" href="#ga0639362b7f5fcb03456d5b45b07cd033" title="The most banks whose system area fits in the first bank.">JOYBUS_N64_PAK_FS_MAX_BANKS</a> </td></tr>
+    <tr><td class="paramname">random</td><td>value stored in the ID to tell this pak apart from others </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>positive number of bytes written from the start of the bank, a negative <a class="el" href="#ga47435eba4c98726f93fdae3c8bb9fd76" title="Joybus error codes.">joybus_error</a> on failure </dd></dl>
+
+</div>
+</div>
+<a id="ga622aff839f92695e38bfe9987a01c0a7" name="ga622aff839f92695e38bfe9987a01c0a7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga622aff839f92695e38bfe9987a01c0a7">&#9670;&#160;</a></span>joybus_n64_pak_fs_valid()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool joybus_n64_pak_fs_valid </td>
+          <td>(</td>
+          <td class="paramtype">const uint8_t *</td>          <td class="paramname"><span class="paramname"><em>bank0</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>banks</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Check whether a bank holds a filesystem for the given bank count. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">bank0</td><td>the first bank of the pak, <a class="el" href="#ga0a0ac6c10e850c92146c703b19050691" title="Size of one bank in bytes, the storage of an original pak.">JOYBUS_N64_PAK_BANK_SIZE</a> bytes </td></tr>
+    <tr><td class="paramname">banks</td><td>how many banks the pak presents </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if an intact ID names that many banks, false otherwise </dd></dl>
 
 </div>
 </div>

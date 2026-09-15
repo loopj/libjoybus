@@ -1,5 +1,12 @@
 var NAVTREEINDEX1 =
 {
+"group__joybus__target__pixelfx__gameid.html#ga32b24dabefed131e73323352620a1251":[6,2,2,5],
+"group__joybus__target__pixelfx__gameid.html#ga8ec22411d21a8daf31524675a84f28f6":[6,2,2,2],
+"group__joybus__target__pixelfx__gameid.html#gaba8f94c5af03d0832cb6f415e8ebce1f":[6,2,2,1],
+"group__joybus__target__pixelfx__gameid.html#gafced570308c1d458a20a7363805d95c7":[6,2,2,4],
+"host_2n64__rumble__pak_8h_source.html":[8,0,0,0,2,3],
+"identify_8h.html":[8,0,0,0,9],
+"identify_8h.html#a10fc8d11dc1d73c07580f95a124e5189":[8,0,0,0,9,33],
 "identify_8h.html#a12c7453ef870c9dfbe2175d536cd3eff":[8,0,0,0,9,17],
 "identify_8h.html#a16970e43472f9ffe41e4f56c73ec13ea":[8,0,0,0,9,11],
 "identify_8h.html#a2271b6d31f067bd80991cf5b3c8b737f":[8,0,0,0,9,2],
@@ -63,6 +70,7 @@ var NAVTREEINDEX1 =
 "joybus_8h_source.html":[8,0,0,0,10],
 "n64_8h_source.html":[8,0,0,0,2,2],
 "n64__pak_8h_source.html":[8,0,0,0,3,2],
+"n64__pak__fs_8h_source.html":[8,0,0,0,1,2],
 "pages.html":[],
 "pixelfx__gameid_8h_source.html":[8,0,0,0,3,4],
 "rp2xxx_8h_source.html":[8,0,0,0,0,2],
