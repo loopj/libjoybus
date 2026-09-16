@@ -24,7 +24,7 @@ static struct {
   int writes;
   uint8_t bank;
   uint16_t addr;
-  uint8_t data[JOYBUS_PAK_BLOCK_SIZE];
+  uint8_t data[JOYBUS_N64_PAK_BLOCK_SIZE];
   uint8_t fill;
   int result;
 } storage;
@@ -42,24 +42,24 @@ static struct {
 } written;
 
 static int spy_read_block(struct joybus_target_n64_pak_controller *pak, uint8_t bank, uint16_t addr,
-                          uint8_t buf[JOYBUS_PAK_BLOCK_SIZE])
+                          uint8_t buf[JOYBUS_N64_PAK_BLOCK_SIZE])
 {
   TEST_ASSERT_EQUAL_PTR(&storage, pak->user_data);
   storage.reads++;
   storage.bank = bank;
   storage.addr = addr;
-  memset(buf, storage.fill, JOYBUS_PAK_BLOCK_SIZE);
+  memset(buf, storage.fill, JOYBUS_N64_PAK_BLOCK_SIZE);
   return storage.result;
 }
 
 static int spy_write_block(struct joybus_target_n64_pak_controller *pak, uint8_t bank, uint16_t addr,
-                           const uint8_t buf[JOYBUS_PAK_BLOCK_SIZE])
+                           const uint8_t buf[JOYBUS_N64_PAK_BLOCK_SIZE])
 {
   TEST_ASSERT_EQUAL_PTR(&storage, pak->user_data);
   storage.writes++;
   storage.bank = bank;
   storage.addr = addr;
-  memcpy(storage.data, buf, JOYBUS_PAK_BLOCK_SIZE);
+  memcpy(storage.data, buf, JOYBUS_N64_PAK_BLOCK_SIZE);
   return storage.result;
 }
 
@@ -81,7 +81,7 @@ static void on_written(struct joybus_target_n64_pak_controller *pak, uint8_t ban
 // ---------------------------------------------------------------------------
 
 // Read a block directly through the pak API
-static int pak_read(uint16_t addr, uint8_t buf[JOYBUS_PAK_BLOCK_SIZE])
+static int pak_read(uint16_t addr, uint8_t buf[JOYBUS_N64_PAK_BLOCK_SIZE])
 {
   return pak_controller.base.api->read_block(&pak_controller.base, addr, buf);
 }
@@ -89,7 +89,7 @@ static int pak_read(uint16_t addr, uint8_t buf[JOYBUS_PAK_BLOCK_SIZE])
 // Write a block of 32 x `fill` directly through the pak API
 static int pak_write_fill(uint16_t addr, uint8_t fill)
 {
-  uint8_t buf[JOYBUS_PAK_BLOCK_SIZE];
+  uint8_t buf[JOYBUS_N64_PAK_BLOCK_SIZE];
   memset(buf, fill, sizeof(buf));
   return pak_controller.base.api->write_block(&pak_controller.base, addr, buf);
 }
@@ -97,8 +97,8 @@ static int pak_write_fill(uint16_t addr, uint8_t fill)
 // Write a block whose ID bank count byte is `banks` directly through the pak API
 static int pak_write_id(uint16_t addr, uint8_t banks)
 {
-  uint8_t buf[JOYBUS_PAK_BLOCK_SIZE] = {0};
-  buf[JOYBUS_N64_PAK_FS_ID_BANKS]    = banks;
+  uint8_t buf[JOYBUS_N64_PAK_BLOCK_SIZE] = {0};
+  buf[0x1A]                              = banks;
   return pak_controller.base.api->write_block(&pak_controller.base, addr, buf);
 }
 
@@ -153,7 +153,7 @@ void tearDown(void)
 static void test_one_bank_aliases_probe_area()
 {
   make_pak(1);
-  uint8_t buf[JOYBUS_PAK_BLOCK_SIZE];
+  uint8_t buf[JOYBUS_N64_PAK_BLOCK_SIZE];
 
   TEST_ASSERT_EQUAL(0, pak_read(0x8000, buf));
   TEST_ASSERT_EQUAL(1, storage.reads);
@@ -182,7 +182,7 @@ static void test_one_bank_probe_write_is_storage()
 // Test that a banked pak answers zeros in the probe area without touching storage
 static void test_banked_probe_area_reads_zero()
 {
-  uint8_t buf[JOYBUS_PAK_BLOCK_SIZE];
+  uint8_t buf[JOYBUS_N64_PAK_BLOCK_SIZE];
   memset(buf, 0xAA, sizeof(buf));
   storage.fill = 0x55;
 
@@ -197,7 +197,7 @@ static void test_banked_probe_area_reads_zero()
 // Test that a bank select in range switches the bank reads and writes go to
 static void test_banked_select_in_range()
 {
-  uint8_t buf[JOYBUS_PAK_BLOCK_SIZE];
+  uint8_t buf[JOYBUS_N64_PAK_BLOCK_SIZE];
 
   TEST_ASSERT_EQUAL(0, pak_write_fill(0x8000, 5));
   TEST_ASSERT_EQUAL(5, pak_controller.selected);
@@ -300,7 +300,7 @@ static void test_id_guard_on_one_bank_alias()
 // Test that a pak with no storage set answers busy
 static void test_no_storage_is_busy()
 {
-  uint8_t buf[JOYBUS_PAK_BLOCK_SIZE];
+  uint8_t buf[JOYBUS_N64_PAK_BLOCK_SIZE];
   joybus_target_n64_pak_controller_init(&pak_controller, 16);
 
   TEST_ASSERT_EQUAL(-JOYBUS_ERR_BUSY, pak_read(0x0100, buf));
@@ -310,7 +310,7 @@ static void test_no_storage_is_busy()
 // Test that a busy backend is reported as busy, with no written event
 static void test_storage_busy_propagates()
 {
-  uint8_t buf[JOYBUS_PAK_BLOCK_SIZE];
+  uint8_t buf[JOYBUS_N64_PAK_BLOCK_SIZE];
   storage.result = -JOYBUS_ERR_BUSY;
 
   TEST_ASSERT_EQUAL(-JOYBUS_ERR_BUSY, pak_read(0x0100, buf));
@@ -333,10 +333,10 @@ static void test_written_callback_after_store()
 static void test_memory_storage()
 {
   static uint8_t memory[2 * JOYBUS_N64_PAK_BANK_SIZE];
-  uint8_t buf[JOYBUS_PAK_BLOCK_SIZE];
+  uint8_t buf[JOYBUS_N64_PAK_BLOCK_SIZE];
 
   memset(memory, 0, sizeof(memory));
-  memset(&memory[JOYBUS_N64_PAK_BANK_SIZE + 0x0100], 0x77, JOYBUS_PAK_BLOCK_SIZE);
+  memset(&memory[JOYBUS_N64_PAK_BANK_SIZE + 0x0100], 0x77, JOYBUS_N64_PAK_BLOCK_SIZE);
 
   joybus_target_n64_pak_controller_init(&pak_controller, 2);
   joybus_target_n64_pak_controller_set_memory(&pak_controller, memory);
@@ -350,7 +350,7 @@ static void test_memory_storage()
   // A write to bank 0 lands in the buffer and is reported
   TEST_ASSERT_EQUAL(0, pak_write_fill(0x8000, 0));
   TEST_ASSERT_EQUAL(0, pak_write_fill(0x7FE0, 0x99));
-  TEST_ASSERT_EACH_EQUAL_HEX8(0x99, &memory[0x7FE0], JOYBUS_PAK_BLOCK_SIZE);
+  TEST_ASSERT_EACH_EQUAL_HEX8(0x99, &memory[0x7FE0], JOYBUS_N64_PAK_BLOCK_SIZE);
   TEST_ASSERT_EQUAL(1, written.count);
   TEST_ASSERT_EQUAL(0, written.bank);
   TEST_ASSERT_EQUAL_HEX16(0x7FE0, written.addr);
@@ -369,9 +369,9 @@ static void test_wire_read_carries_storage_data()
 
   TEST_ASSERT_EQUAL(1, response.count);
   TEST_ASSERT_EQUAL(JOYBUS_CMD_N64_PAK_READ_RX, response.len);
-  TEST_ASSERT_EACH_EQUAL_HEX8(0x5A, response.data, JOYBUS_PAK_BLOCK_SIZE);
-  TEST_ASSERT_EQUAL_HEX8(joybus_data_checksum(response.data, JOYBUS_PAK_BLOCK_SIZE),
-                         response.data[JOYBUS_PAK_BLOCK_SIZE]);
+  TEST_ASSERT_EACH_EQUAL_HEX8(0x5A, response.data, JOYBUS_N64_PAK_BLOCK_SIZE);
+  TEST_ASSERT_EQUAL_HEX8(joybus_data_checksum(response.data, JOYBUS_N64_PAK_BLOCK_SIZE),
+                         response.data[JOYBUS_N64_PAK_BLOCK_SIZE]);
 }
 
 // Test that a busy backend reaches the console as the no-pak checksum
@@ -382,8 +382,8 @@ static void test_wire_read_busy_inverts_checksum()
   wire_pak_read(0x0100);
 
   TEST_ASSERT_EQUAL(1, response.count);
-  TEST_ASSERT_EACH_EQUAL_HEX8(0x00, response.data, JOYBUS_PAK_BLOCK_SIZE);
-  TEST_ASSERT_EQUAL_HEX8(0xFF, response.data[JOYBUS_PAK_BLOCK_SIZE]);
+  TEST_ASSERT_EACH_EQUAL_HEX8(0x00, response.data, JOYBUS_N64_PAK_BLOCK_SIZE);
+  TEST_ASSERT_EQUAL_HEX8(0xFF, response.data[JOYBUS_N64_PAK_BLOCK_SIZE]);
 }
 
 int main(int argc, char **argv)

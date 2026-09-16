@@ -32,27 +32,27 @@ static int write_block_count;
 static uint16_t write_block_addr;
 static int write_block_seq;
 static int write_block_status;
-static uint8_t write_block_data[JOYBUS_PAK_BLOCK_SIZE];
+static uint8_t write_block_data[JOYBUS_N64_PAK_BLOCK_SIZE];
 
-static int fake_read_block(struct joybus_target_n64_pak *pak, uint16_t addr, uint8_t buf[JOYBUS_PAK_BLOCK_SIZE])
+static int fake_read_block(struct joybus_target_n64_pak *pak, uint16_t addr, uint8_t buf[JOYBUS_N64_PAK_BLOCK_SIZE])
 {
   read_block_count++;
   read_block_addr = addr;
 
   // Fill the block with a recognizable pattern, even when declining, so a declined read is shown to discard it
-  for (uint8_t i = 0; i < JOYBUS_PAK_BLOCK_SIZE; i++) {
+  for (uint8_t i = 0; i < JOYBUS_N64_PAK_BLOCK_SIZE; i++) {
     buf[i] = i;
   }
 
   return read_block_status;
 }
 
-static int fake_write_block(struct joybus_target_n64_pak *pak, uint16_t addr, const uint8_t buf[JOYBUS_PAK_BLOCK_SIZE])
+static int fake_write_block(struct joybus_target_n64_pak *pak, uint16_t addr, const uint8_t buf[JOYBUS_N64_PAK_BLOCK_SIZE])
 {
   write_block_count++;
   write_block_addr = addr;
   write_block_seq  = ++event_seq;
-  memcpy(write_block_data, buf, JOYBUS_PAK_BLOCK_SIZE);
+  memcpy(write_block_data, buf, JOYBUS_N64_PAK_BLOCK_SIZE);
 
   return write_block_status;
 }
@@ -72,18 +72,18 @@ static uint16_t valid_pak_addr(uint16_t block_addr)
 
 // Build a full pak write command for the given wire address and payload
 static void build_pak_write(uint8_t command[JOYBUS_CMD_N64_PAK_WRITE_TX], uint16_t addr,
-                            const uint8_t payload[JOYBUS_PAK_BLOCK_SIZE])
+                            const uint8_t payload[JOYBUS_N64_PAK_BLOCK_SIZE])
 {
   command[0] = JOYBUS_CMD_N64_PAK_WRITE;
   command[1] = addr >> 8;
   command[2] = addr & 0xFF;
-  memcpy(&command[3], payload, JOYBUS_PAK_BLOCK_SIZE);
+  memcpy(&command[3], payload, JOYBUS_N64_PAK_BLOCK_SIZE);
 }
 
 // A payload of distinct bytes for write tests
-static void fill_payload(uint8_t payload[JOYBUS_PAK_BLOCK_SIZE])
+static void fill_payload(uint8_t payload[JOYBUS_N64_PAK_BLOCK_SIZE])
 {
-  for (uint8_t i = 0; i < JOYBUS_PAK_BLOCK_SIZE; i++) {
+  for (uint8_t i = 0; i < JOYBUS_N64_PAK_BLOCK_SIZE; i++) {
     payload[i] = 0x10 + i;
   }
 }
@@ -384,10 +384,10 @@ static void test_pak_read_returns_pak_data(void)
 
   // The response is the pak's pattern followed by its data checksum
   uint8_t expected[JOYBUS_CMD_N64_PAK_READ_RX];
-  for (uint8_t i = 0; i < JOYBUS_PAK_BLOCK_SIZE; i++) {
+  for (uint8_t i = 0; i < JOYBUS_N64_PAK_BLOCK_SIZE; i++) {
     expected[i] = i;
   }
-  expected[JOYBUS_PAK_BLOCK_SIZE] = joybus_data_checksum(expected, JOYBUS_PAK_BLOCK_SIZE);
+  expected[JOYBUS_N64_PAK_BLOCK_SIZE] = joybus_data_checksum(expected, JOYBUS_N64_PAK_BLOCK_SIZE);
   TEST_ASSERT_EQUAL_HEX8_ARRAY(expected, response.data, sizeof(expected));
 }
 
@@ -399,7 +399,7 @@ static void test_pak_read_no_pak(void)
   send_command(command, sizeof(command));
 
   uint8_t expected[JOYBUS_CMD_N64_PAK_READ_RX] = {0};
-  expected[JOYBUS_PAK_BLOCK_SIZE]              = 0xFF;
+  expected[JOYBUS_N64_PAK_BLOCK_SIZE]              = 0xFF;
   TEST_ASSERT_EQUAL(JOYBUS_CMD_N64_PAK_READ_RX, response.len);
   TEST_ASSERT_EQUAL_HEX8_ARRAY(expected, response.data, sizeof(expected));
 }
@@ -417,7 +417,7 @@ static void test_pak_read_refused_while_pak_changed(void)
   // The pak is never consulted; the "no pak" response is returned
   TEST_ASSERT_EQUAL(0, read_block_count);
   uint8_t expected[JOYBUS_CMD_N64_PAK_READ_RX] = {0};
-  expected[JOYBUS_PAK_BLOCK_SIZE]              = 0xFF;
+  expected[JOYBUS_N64_PAK_BLOCK_SIZE]              = 0xFF;
   TEST_ASSERT_EQUAL_HEX8_ARRAY(expected, response.data, sizeof(expected));
 }
 
@@ -434,7 +434,7 @@ static void test_pak_read_bad_checksum(void)
   TEST_ASSERT_TRUE(controller.id.status & JOYBUS_STATUS_N64_ADDR_CHECKSUM_ERROR);
 
   uint8_t expected[JOYBUS_CMD_N64_PAK_READ_RX] = {0};
-  expected[JOYBUS_PAK_BLOCK_SIZE]              = 0xFF;
+  expected[JOYBUS_N64_PAK_BLOCK_SIZE]              = 0xFF;
   TEST_ASSERT_EQUAL_HEX8_ARRAY(expected, response.data, sizeof(expected));
 }
 
@@ -461,7 +461,7 @@ static void send_pak_read_expect_no_pak(void)
   send_command(command, sizeof(command));
 
   uint8_t expected[JOYBUS_CMD_N64_PAK_READ_RX] = {0};
-  expected[JOYBUS_PAK_BLOCK_SIZE]              = 0xFF;
+  expected[JOYBUS_N64_PAK_BLOCK_SIZE]              = 0xFF;
   TEST_ASSERT_EQUAL(JOYBUS_CMD_N64_PAK_READ_RX, response.len);
   TEST_ASSERT_EQUAL_HEX8_ARRAY(expected, response.data, sizeof(expected));
 }
@@ -506,10 +506,10 @@ static void test_pak_read_retry_after_busy(void)
 
   TEST_ASSERT_EQUAL(2, read_block_count);
   uint8_t expected[JOYBUS_CMD_N64_PAK_READ_RX];
-  for (uint8_t i = 0; i < JOYBUS_PAK_BLOCK_SIZE; i++) {
+  for (uint8_t i = 0; i < JOYBUS_N64_PAK_BLOCK_SIZE; i++) {
     expected[i] = i;
   }
-  expected[JOYBUS_PAK_BLOCK_SIZE] = joybus_data_checksum(expected, JOYBUS_PAK_BLOCK_SIZE);
+  expected[JOYBUS_N64_PAK_BLOCK_SIZE] = joybus_data_checksum(expected, JOYBUS_N64_PAK_BLOCK_SIZE);
   TEST_ASSERT_EQUAL_HEX8_ARRAY(expected, response.data, sizeof(expected));
 }
 
@@ -522,7 +522,7 @@ static void test_pak_write_commits_to_pak(void)
 {
   joybus_target_n64_controller_attach_pak(&controller, &pak);
 
-  uint8_t payload[JOYBUS_PAK_BLOCK_SIZE];
+  uint8_t payload[JOYBUS_N64_PAK_BLOCK_SIZE];
   fill_payload(payload);
 
   uint8_t command[JOYBUS_CMD_N64_PAK_WRITE_TX];
@@ -542,7 +542,7 @@ static void test_pak_write_commits_to_pak(void)
 }
 
 // Send a valid pak write of the payload to block 0x8000
-static void send_pak_write(const uint8_t payload[JOYBUS_PAK_BLOCK_SIZE])
+static void send_pak_write(const uint8_t payload[JOYBUS_N64_PAK_BLOCK_SIZE])
 {
   uint8_t command[JOYBUS_CMD_N64_PAK_WRITE_TX];
   build_pak_write(command, valid_pak_addr(0x8000), payload);
@@ -555,7 +555,7 @@ static void test_pak_write_busy_returns_inverted_crc(void)
   joybus_target_n64_controller_attach_pak(&controller, &pak);
   write_block_status = -JOYBUS_ERR_BUSY;
 
-  uint8_t payload[JOYBUS_PAK_BLOCK_SIZE];
+  uint8_t payload[JOYBUS_N64_PAK_BLOCK_SIZE];
   fill_payload(payload);
   send_pak_write(payload);
 
@@ -571,7 +571,7 @@ static void test_pak_write_fault_returns_inverted_crc(void)
   joybus_target_n64_controller_attach_pak(&controller, &pak);
   write_block_status = -JOYBUS_ERR_TIMEOUT;
 
-  uint8_t payload[JOYBUS_PAK_BLOCK_SIZE];
+  uint8_t payload[JOYBUS_N64_PAK_BLOCK_SIZE];
   fill_payload(payload);
   send_pak_write(payload);
 
@@ -585,7 +585,7 @@ static void test_pak_write_retry_after_busy(void)
 {
   joybus_target_n64_controller_attach_pak(&controller, &pak);
 
-  uint8_t payload[JOYBUS_PAK_BLOCK_SIZE];
+  uint8_t payload[JOYBUS_N64_PAK_BLOCK_SIZE];
   fill_payload(payload);
 
   write_block_status = -JOYBUS_ERR_BUSY;
@@ -605,7 +605,7 @@ static void test_pak_write_retry_after_busy(void)
 // Test that a pak write with no pak attached responds with the inverted "no pak" CRC and never reaches a pak
 static void test_pak_write_no_pak(void)
 {
-  uint8_t payload[JOYBUS_PAK_BLOCK_SIZE];
+  uint8_t payload[JOYBUS_N64_PAK_BLOCK_SIZE];
   fill_payload(payload);
 
   uint8_t command[JOYBUS_CMD_N64_PAK_WRITE_TX];
@@ -623,7 +623,7 @@ static void test_pak_write_refused_while_pak_changed(void)
   controller.base.attached = true;
   joybus_target_n64_controller_attach_pak(&controller, &pak);
 
-  uint8_t payload[JOYBUS_PAK_BLOCK_SIZE];
+  uint8_t payload[JOYBUS_N64_PAK_BLOCK_SIZE];
   fill_payload(payload);
 
   uint8_t command[JOYBUS_CMD_N64_PAK_WRITE_TX];
@@ -639,7 +639,7 @@ static void test_pak_write_bad_checksum(void)
 {
   joybus_target_n64_controller_attach_pak(&controller, &pak);
 
-  uint8_t payload[JOYBUS_PAK_BLOCK_SIZE];
+  uint8_t payload[JOYBUS_N64_PAK_BLOCK_SIZE];
   fill_payload(payload);
 
   // 0x8000 has its checksum bits zeroed, which is not the checksum of 0x400

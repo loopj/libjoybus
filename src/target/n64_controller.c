@@ -159,11 +159,11 @@ static int handle_pak_read(struct joybus_target_n64_controller *controller, cons
 
   if (ready) {
     // Calculate and append the data checksum
-    controller->response[JOYBUS_PAK_BLOCK_SIZE] = joybus_data_checksum(controller->response, JOYBUS_PAK_BLOCK_SIZE);
+    controller->response[JOYBUS_N64_PAK_BLOCK_SIZE] = joybus_data_checksum(controller->response, JOYBUS_N64_PAK_BLOCK_SIZE);
   } else {
     // Prepare a zero response with the "no pak" CRC, which the host treats as a transfer error
     memset(controller->response, 0, JOYBUS_CMD_N64_PAK_READ_RX);
-    controller->response[JOYBUS_PAK_BLOCK_SIZE] = 0xFF;
+    controller->response[JOYBUS_N64_PAK_BLOCK_SIZE] = 0xFF;
   }
 
   // Send the response

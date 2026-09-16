@@ -17,8 +17,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-/// Size of one bank in bytes, the storage of an original pak
-#define JOYBUS_N64_PAK_BANK_SIZE 32768
+#include <joybus/common/n64_pak.h>
 
 /// Size of one page in bytes, the unit the filesystem allocates in
 #define JOYBUS_N64_PAK_FS_PAGE_SIZE 256
@@ -29,9 +28,6 @@
 /// Number of system pages in the first bank for a given bank count
 #define JOYBUS_N64_PAK_FS_SYSTEM_PAGES(banks) (3 + 2 * (banks))
 
-/// Offset within an ID block of the byte naming the bank count
-#define JOYBUS_N64_PAK_FS_ID_BANKS 0x1A
-
 /**
  * Check whether a block address in the first bank holds a copy of the ID.
  *
@@ -39,6 +35,14 @@
  * @return true if the block is one of the four ID copies, false otherwise
  */
 bool joybus_n64_pak_fs_is_id_block(uint16_t addr);
+
+/**
+ * Read the bank count an ID block names.
+ *
+ * @param block an ID block, ::JOYBUS_N64_PAK_BLOCK_SIZE bytes
+ * @return the bank count in the block
+ */
+uint8_t joybus_n64_pak_fs_id_banks(const uint8_t block[JOYBUS_N64_PAK_BLOCK_SIZE]);
 
 /**
  * Check whether a bank holds a filesystem for the given bank count.

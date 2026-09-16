@@ -11,7 +11,7 @@
  * to the controller, which forwards them to whatever pak is attached.
  *
  * Every pak presents a flat 16-bit address space, read and written 32 bytes
- * at a time (::JOYBUS_PAK_BLOCK_SIZE). It is up to the pak how it manages
+ * at a time (::JOYBUS_N64_PAK_BLOCK_SIZE). It is up to the pak how it manages
  * the address space, and what reads and writes to each address do. For
  * example, a Controller Pak uses the address space to map to 32 KB of
  * storage, but a Rumble Pak treats the addresses as control registers for
@@ -34,6 +34,7 @@
 #include <stdint.h>
 
 #include <joybus/bus.h>
+#include <joybus/common/n64_pak.h>
 
 struct joybus_target_n64_pak;
 
@@ -62,7 +63,7 @@ struct joybus_target_n64_pak_api {
    * @param buf  destination buffer, exactly 32 bytes
    * @return 0 on success, -JOYBUS_ERR_BUSY to decline the read for now, another negative joybus_error on failure
    */
-  int (*read_block)(struct joybus_target_n64_pak *pak, uint16_t addr, uint8_t buf[JOYBUS_PAK_BLOCK_SIZE]);
+  int (*read_block)(struct joybus_target_n64_pak *pak, uint16_t addr, uint8_t buf[JOYBUS_N64_PAK_BLOCK_SIZE]);
 
   /**
    * Called when a host requests to write a 32-byte block to the pak.
@@ -84,7 +85,7 @@ struct joybus_target_n64_pak_api {
    * @param buf  source buffer, exactly 32 bytes
    * @return 0 on success, -JOYBUS_ERR_BUSY to decline the write for now, another negative joybus_error on failure
    */
-  int (*write_block)(struct joybus_target_n64_pak *pak, uint16_t addr, const uint8_t buf[JOYBUS_PAK_BLOCK_SIZE]);
+  int (*write_block)(struct joybus_target_n64_pak *pak, uint16_t addr, const uint8_t buf[JOYBUS_N64_PAK_BLOCK_SIZE]);
 };
 
 /**
