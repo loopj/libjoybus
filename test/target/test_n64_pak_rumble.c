@@ -30,13 +30,13 @@ static void on_motor_change(struct joybus_target_n64_pak_rumble *pak, bool activ
 // ---------------------------------------------------------------------------
 
 // Read a block directly through the pak API
-static void pak_read(uint16_t addr, uint8_t buf[JOYBUS_PAK_BLOCK_SIZE])
+static void pak_read(uint16_t addr, uint8_t buf[JOYBUS_N64_PAK_BLOCK_SIZE])
 {
   TEST_ASSERT_EQUAL(0, rumble.base.api->read_block(&rumble.base, addr, buf));
 }
 
 // Write a block directly through the pak API
-static void pak_write(uint16_t addr, const uint8_t buf[JOYBUS_PAK_BLOCK_SIZE])
+static void pak_write(uint16_t addr, const uint8_t buf[JOYBUS_N64_PAK_BLOCK_SIZE])
 {
   TEST_ASSERT_EQUAL(0, rumble.base.api->write_block(&rumble.base, addr, buf));
 }
@@ -67,7 +67,7 @@ static void wire_pak_write(uint16_t block_addr, uint8_t fill)
   command[0] = JOYBUS_CMD_N64_PAK_WRITE;
   command[1] = addr >> 8;
   command[2] = addr & 0xFF;
-  memset(&command[3], fill, JOYBUS_PAK_BLOCK_SIZE);
+  memset(&command[3], fill, JOYBUS_N64_PAK_BLOCK_SIZE);
   send_command(command, sizeof(command));
 }
 
@@ -113,8 +113,8 @@ static void test_init_defaults(void)
 // Test that a fresh pak is disabled: the probe region reads zeros until the host writes the 0x80 signature
 static void test_probe_disabled_by_default(void)
 {
-  uint8_t buf[JOYBUS_PAK_BLOCK_SIZE];
-  uint8_t zeros[JOYBUS_PAK_BLOCK_SIZE] = {0};
+  uint8_t buf[JOYBUS_N64_PAK_BLOCK_SIZE];
+  uint8_t zeros[JOYBUS_N64_PAK_BLOCK_SIZE] = {0};
 
   pak_read(0x8000, buf);
   TEST_ASSERT_EQUAL_HEX8_ARRAY(zeros, buf, sizeof(buf));
@@ -123,8 +123,8 @@ static void test_probe_disabled_by_default(void)
 // Test that writing the 0x80 signature enables the probe region, which then reads back 0x80 x 32
 static void test_probe_enable_with_signature(void)
 {
-  uint8_t buf[JOYBUS_PAK_BLOCK_SIZE];
-  uint8_t signature[JOYBUS_PAK_BLOCK_SIZE];
+  uint8_t buf[JOYBUS_N64_PAK_BLOCK_SIZE];
+  uint8_t signature[JOYBUS_N64_PAK_BLOCK_SIZE];
   memset(signature, 0x80, sizeof(signature));
 
   memset(buf, 0x80, sizeof(buf));
@@ -138,21 +138,21 @@ static void test_probe_enable_with_signature(void)
 // signature in any other byte does not
 static void test_probe_enable_latches_last_byte(void)
 {
-  uint8_t buf[JOYBUS_PAK_BLOCK_SIZE];
-  uint8_t signature[JOYBUS_PAK_BLOCK_SIZE];
-  uint8_t zeros[JOYBUS_PAK_BLOCK_SIZE] = {0};
+  uint8_t buf[JOYBUS_N64_PAK_BLOCK_SIZE];
+  uint8_t signature[JOYBUS_N64_PAK_BLOCK_SIZE];
+  uint8_t zeros[JOYBUS_N64_PAK_BLOCK_SIZE] = {0};
   memset(signature, 0x80, sizeof(signature));
 
   // 0x80 only in the last byte -> enabled
   memset(buf, 0x00, sizeof(buf));
-  buf[JOYBUS_PAK_BLOCK_SIZE - 1] = 0x80;
+  buf[JOYBUS_N64_PAK_BLOCK_SIZE - 1] = 0x80;
   pak_write(0x8000, buf);
   pak_read(0x8000, buf);
   TEST_ASSERT_EQUAL_HEX8_ARRAY(signature, buf, sizeof(buf));
 
   // 0x80 everywhere except the last byte -> disabled
   memset(buf, 0x80, sizeof(buf));
-  buf[JOYBUS_PAK_BLOCK_SIZE - 1] = 0x00;
+  buf[JOYBUS_N64_PAK_BLOCK_SIZE - 1] = 0x00;
   pak_write(0x8000, buf);
   pak_read(0x8000, buf);
   TEST_ASSERT_EQUAL_HEX8_ARRAY(zeros, buf, sizeof(buf));
@@ -162,8 +162,8 @@ static void test_probe_enable_latches_last_byte(void)
 // bits set do not
 static void test_probe_enable_requires_exact_signature(void)
 {
-  uint8_t buf[JOYBUS_PAK_BLOCK_SIZE];
-  uint8_t zeros[JOYBUS_PAK_BLOCK_SIZE] = {0};
+  uint8_t buf[JOYBUS_N64_PAK_BLOCK_SIZE];
+  uint8_t zeros[JOYBUS_N64_PAK_BLOCK_SIZE] = {0};
   const uint8_t non_signatures[]       = {0x81, 0xC0, 0x40, 0xFF, 0x01, 0x7F, 0x08, 0x00};
 
   for (size_t i = 0; i < sizeof(non_signatures); i++) {
@@ -182,9 +182,9 @@ static void test_probe_enable_requires_exact_signature(void)
 // signature, and the motor region reads zeros
 static void test_probe_region_extent(void)
 {
-  uint8_t buf[JOYBUS_PAK_BLOCK_SIZE];
-  uint8_t signature[JOYBUS_PAK_BLOCK_SIZE];
-  uint8_t zeros[JOYBUS_PAK_BLOCK_SIZE] = {0};
+  uint8_t buf[JOYBUS_N64_PAK_BLOCK_SIZE];
+  uint8_t signature[JOYBUS_N64_PAK_BLOCK_SIZE];
+  uint8_t zeros[JOYBUS_N64_PAK_BLOCK_SIZE] = {0};
   memset(signature, 0x80, sizeof(signature));
 
   memset(buf, 0x80, sizeof(buf));
@@ -213,9 +213,9 @@ static void test_probe_region_extent(void)
 // block read the signature, and disabling via a third block clears the whole region
 static void test_probe_is_single_register(void)
 {
-  uint8_t buf[JOYBUS_PAK_BLOCK_SIZE];
-  uint8_t signature[JOYBUS_PAK_BLOCK_SIZE];
-  uint8_t zeros[JOYBUS_PAK_BLOCK_SIZE] = {0};
+  uint8_t buf[JOYBUS_N64_PAK_BLOCK_SIZE];
+  uint8_t signature[JOYBUS_N64_PAK_BLOCK_SIZE];
+  uint8_t zeros[JOYBUS_N64_PAK_BLOCK_SIZE] = {0};
   memset(signature, 0x80, sizeof(signature));
 
   // Enable via 0x8000, observe at 0xA000
@@ -234,8 +234,8 @@ static void test_probe_is_single_register(void)
 // Test that writing to the SRAM space is ignored: it does not enable the signature or change the motor state
 static void test_write_sram_ignored(void)
 {
-  uint8_t buf[JOYBUS_PAK_BLOCK_SIZE];
-  uint8_t signature[JOYBUS_PAK_BLOCK_SIZE];
+  uint8_t buf[JOYBUS_N64_PAK_BLOCK_SIZE];
+  uint8_t signature[JOYBUS_N64_PAK_BLOCK_SIZE];
   memset(signature, 0x80, sizeof(signature));
 
   memset(buf, 0x80, sizeof(buf));
@@ -258,7 +258,7 @@ static void test_write_sram_ignored(void)
 // canonical motor-start write
 static void test_motor_requires_signature_enabled(void)
 {
-  uint8_t buf[JOYBUS_PAK_BLOCK_SIZE];
+  uint8_t buf[JOYBUS_N64_PAK_BLOCK_SIZE];
 
   memset(buf, 0x01, sizeof(buf));
   pak_write(0xC000, buf);
@@ -271,7 +271,7 @@ static void test_motor_requires_signature_enabled(void)
 // the callback
 static void test_motor_start_fires_callback(void)
 {
-  uint8_t buf[JOYBUS_PAK_BLOCK_SIZE];
+  uint8_t buf[JOYBUS_N64_PAK_BLOCK_SIZE];
 
   memset(buf, 0x80, sizeof(buf));
   pak_write(0x8000, buf);
@@ -286,7 +286,7 @@ static void test_motor_start_fires_callback(void)
 // Test that a motor stop write after a start deactivates the motor
 static void test_motor_stop_fires_callback(void)
 {
-  uint8_t buf[JOYBUS_PAK_BLOCK_SIZE];
+  uint8_t buf[JOYBUS_N64_PAK_BLOCK_SIZE];
 
   memset(buf, 0x80, sizeof(buf));
   pak_write(0x8000, buf);
@@ -304,7 +304,7 @@ static void test_motor_stop_fires_callback(void)
 // off, unlike a naive "any nonzero" rule)
 static void test_motor_follows_low_bit_of_last_byte(void)
 {
-  uint8_t buf[JOYBUS_PAK_BLOCK_SIZE];
+  uint8_t buf[JOYBUS_N64_PAK_BLOCK_SIZE];
 
   memset(buf, 0x80, sizeof(buf));
   pak_write(0x8000, buf);
@@ -334,20 +334,20 @@ static void test_motor_follows_low_bit_of_last_byte(void)
 // an even last byte stops it
 static void test_motor_uses_last_byte_not_first(void)
 {
-  uint8_t buf[JOYBUS_PAK_BLOCK_SIZE];
+  uint8_t buf[JOYBUS_N64_PAK_BLOCK_SIZE];
 
   memset(buf, 0x80, sizeof(buf));
   pak_write(0x8000, buf);
 
   // First byte even, last byte odd -> motor on
   memset(buf, 0x00, sizeof(buf));
-  buf[JOYBUS_PAK_BLOCK_SIZE - 1] = 0x01;
+  buf[JOYBUS_N64_PAK_BLOCK_SIZE - 1] = 0x01;
   pak_write(0xC000, buf);
   TEST_ASSERT_TRUE(rumble.active);
 
   // First byte odd, last byte even -> motor off
   memset(buf, 0x01, sizeof(buf));
-  buf[JOYBUS_PAK_BLOCK_SIZE - 1] = 0x00;
+  buf[JOYBUS_N64_PAK_BLOCK_SIZE - 1] = 0x00;
   pak_write(0xC000, buf);
   TEST_ASSERT_FALSE(rumble.active);
 }
@@ -355,7 +355,7 @@ static void test_motor_uses_last_byte_not_first(void)
 // Test that the callback fires only when the motor state changes
 static void test_motor_callback_edge_triggered(void)
 {
-  uint8_t buf[JOYBUS_PAK_BLOCK_SIZE];
+  uint8_t buf[JOYBUS_N64_PAK_BLOCK_SIZE];
 
   memset(buf, 0x80, sizeof(buf));
   pak_write(0x8000, buf);
@@ -375,7 +375,7 @@ static void test_motor_callback_edge_triggered(void)
 // Test that a stop write with the motor already off does nothing
 static void test_motor_stop_when_already_off(void)
 {
-  uint8_t buf[JOYBUS_PAK_BLOCK_SIZE];
+  uint8_t buf[JOYBUS_N64_PAK_BLOCK_SIZE];
 
   memset(buf, 0x80, sizeof(buf));
   pak_write(0x8000, buf);
@@ -390,7 +390,7 @@ static void test_motor_stop_when_already_off(void)
 // address space) all drive the motor
 static void test_motor_region_extent(void)
 {
-  uint8_t buf[JOYBUS_PAK_BLOCK_SIZE];
+  uint8_t buf[JOYBUS_N64_PAK_BLOCK_SIZE];
 
   memset(buf, 0x80, sizeof(buf));
   pak_write(0x8000, buf);
@@ -415,7 +415,7 @@ static void test_motor_region_extent(void)
 // Test that motor state still updates when no callback is registered
 static void test_motor_write_without_callback(void)
 {
-  uint8_t buf[JOYBUS_PAK_BLOCK_SIZE];
+  uint8_t buf[JOYBUS_N64_PAK_BLOCK_SIZE];
 
   joybus_target_n64_pak_rumble_set_motor_cb(&rumble, NULL);
 
@@ -438,7 +438,7 @@ static void test_wire_probe_read_before_enable_returns_zeros(void)
   wire_pak_read(0x8000);
 
   uint8_t expected[JOYBUS_CMD_N64_PAK_READ_RX] = {0};
-  expected[JOYBUS_PAK_BLOCK_SIZE]              = joybus_data_checksum(expected, JOYBUS_PAK_BLOCK_SIZE);
+  expected[JOYBUS_N64_PAK_BLOCK_SIZE]              = joybus_data_checksum(expected, JOYBUS_N64_PAK_BLOCK_SIZE);
 
   TEST_ASSERT_EQUAL(JOYBUS_CMD_N64_PAK_READ_RX, response.len);
   TEST_ASSERT_EQUAL_HEX8_ARRAY(expected, response.data, sizeof(expected));
@@ -456,8 +456,8 @@ static void test_wire_probe_enable_then_read_returns_signature(void)
 
   // Verify the signature matches what we expect
   uint8_t expected[JOYBUS_CMD_N64_PAK_READ_RX];
-  memset(expected, 0x80, JOYBUS_PAK_BLOCK_SIZE);
-  expected[JOYBUS_PAK_BLOCK_SIZE] = joybus_data_checksum(expected, JOYBUS_PAK_BLOCK_SIZE);
+  memset(expected, 0x80, JOYBUS_N64_PAK_BLOCK_SIZE);
+  expected[JOYBUS_N64_PAK_BLOCK_SIZE] = joybus_data_checksum(expected, JOYBUS_N64_PAK_BLOCK_SIZE);
 
   TEST_ASSERT_EQUAL(JOYBUS_CMD_N64_PAK_READ_RX, response.len);
   TEST_ASSERT_EQUAL_HEX8_ARRAY(expected, response.data, sizeof(expected));

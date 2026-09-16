@@ -116,6 +116,11 @@ bool joybus_n64_pak_fs_is_id_block(uint16_t addr)
   return false;
 }
 
+uint8_t joybus_n64_pak_fs_id_banks(const uint8_t block[JOYBUS_N64_PAK_BLOCK_SIZE])
+{
+  return block[ID_BANKS];
+}
+
 int joybus_n64_pak_fs_format(uint8_t *bank0, uint8_t banks, uint32_t random)
 {
   if (banks == 0 || banks > JOYBUS_N64_PAK_FS_MAX_BANKS)

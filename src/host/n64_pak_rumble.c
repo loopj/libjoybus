@@ -10,7 +10,7 @@
 // Probe values
 #define PAK_RUMBLE_SIGNATURE      0x80
 #define PAK_RUMBLE_ANTI_SIGNATURE 0xFE
-#define PAK_RUMBLE_PROBE_BYTE     (JOYBUS_PAK_BLOCK_SIZE - 1)
+#define PAK_RUMBLE_PROBE_BYTE     (JOYBUS_N64_PAK_BLOCK_SIZE - 1)
 
 // Motor values
 #define PAK_RUMBLE_MOTOR_ON  0x01
@@ -36,7 +36,7 @@ static void probe_finish(struct joybus *bus, int status)
 // Write a uniform block to the probe register and continue the chain
 static int probe_write(struct joybus *bus, uint8_t value)
 {
-  uint8_t block[JOYBUS_PAK_BLOCK_SIZE];
+  uint8_t block[JOYBUS_N64_PAK_BLOCK_SIZE];
   memset(block, value, sizeof(block));
 
   return joybus_n64_pak_write_async(bus, JOYBUS_N64_PAK_PROBE_ADDR, block, bus->response_buffer, probe_cb, NULL);
@@ -108,7 +108,7 @@ static void motor_write_cb(struct joybus *bus, int status, void *user_data)
 static int motor_write(struct joybus *bus, uint8_t value, joybus_transfer_cb callback, void *user_data)
 {
   // Fill a block with bytes
-  uint8_t block[JOYBUS_PAK_BLOCK_SIZE];
+  uint8_t block[JOYBUS_N64_PAK_BLOCK_SIZE];
   memset(block, value, sizeof(block));
 
   // Save the callback, user data, and expected checksum for later

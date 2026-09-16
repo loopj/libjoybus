@@ -13,7 +13,7 @@
 
 JOYBUS_RAM_FUNC
 static int pak_controller_read_block(struct joybus_target_n64_pak *pak, uint16_t addr,
-                                     uint8_t buf[JOYBUS_PAK_BLOCK_SIZE])
+                                     uint8_t buf[JOYBUS_N64_PAK_BLOCK_SIZE])
 {
   struct joybus_target_n64_pak_controller *pak_controller = JOYBUS_TARGET_N64_PAK_CONTROLLER(pak);
 
@@ -22,7 +22,7 @@ static int pak_controller_read_block(struct joybus_target_n64_pak *pak, uint16_t
     addr &= PAK_CONTROLLER_BANK_MASK;
   } else if (addr >= JOYBUS_N64_PAK_PROBE_ADDR) {
     // A banked pak reads zeros above the bank
-    memset(buf, 0x00, JOYBUS_PAK_BLOCK_SIZE);
+    memset(buf, 0x00, JOYBUS_N64_PAK_BLOCK_SIZE);
     return 0;
   }
 
@@ -35,7 +35,7 @@ static int pak_controller_read_block(struct joybus_target_n64_pak *pak, uint16_t
 
 JOYBUS_RAM_FUNC
 static int pak_controller_write_block(struct joybus_target_n64_pak *pak, uint16_t addr,
-                                      const uint8_t buf[JOYBUS_PAK_BLOCK_SIZE])
+                                      const uint8_t buf[JOYBUS_N64_PAK_BLOCK_SIZE])
 {
   struct joybus_target_n64_pak_controller *pak_controller = JOYBUS_TARGET_N64_PAK_CONTROLLER(pak);
 
@@ -45,7 +45,7 @@ static int pak_controller_write_block(struct joybus_target_n64_pak *pak, uint16_
   } else if (addr >= JOYBUS_N64_PAK_PROBE_ADDR) {
     // A write to the probe area selects a bank, latched from the last byte
     if (addr < JOYBUS_N64_PAK_MOTOR_ADDR) {
-      uint8_t requested = buf[JOYBUS_PAK_BLOCK_SIZE - 1];
+      uint8_t requested = buf[JOYBUS_N64_PAK_BLOCK_SIZE - 1];
 
       // A select past the last bank is ignored, so an accessory type probe moves nothing
       if (requested < pak_controller->banks) {
@@ -61,7 +61,7 @@ static int pak_controller_write_block(struct joybus_target_n64_pak *pak, uint16_
 
   // Refuse an ID write naming another bank count, so the pak cannot be reformatted to a different shape
   if (pak_controller->selected == 0 && joybus_n64_pak_fs_is_id_block(addr) &&
-      buf[JOYBUS_N64_PAK_FS_ID_BANKS] != pak_controller->banks)
+      joybus_n64_pak_fs_id_banks(buf) != pak_controller->banks)
     return -JOYBUS_ERR_INVALID_ARG;
 
   // No storage yet reads as a pak that is not ready
@@ -82,19 +82,19 @@ static int pak_controller_write_block(struct joybus_target_n64_pak *pak, uint16_
 // Storage over a buffer of whole banks, laid out back to back
 JOYBUS_RAM_FUNC
 static int memory_read_block(struct joybus_target_n64_pak_controller *pak_controller, uint8_t bank, uint16_t addr,
-                             uint8_t buf[JOYBUS_PAK_BLOCK_SIZE])
+                             uint8_t buf[JOYBUS_N64_PAK_BLOCK_SIZE])
 {
   const uint8_t *memory = pak_controller->user_data;
-  memcpy(buf, &memory[bank * JOYBUS_N64_PAK_BANK_SIZE + addr], JOYBUS_PAK_BLOCK_SIZE);
+  memcpy(buf, &memory[bank * JOYBUS_N64_PAK_BANK_SIZE + addr], JOYBUS_N64_PAK_BLOCK_SIZE);
   return 0;
 }
 
 JOYBUS_RAM_FUNC
 static int memory_write_block(struct joybus_target_n64_pak_controller *pak_controller, uint8_t bank, uint16_t addr,
-                              const uint8_t buf[JOYBUS_PAK_BLOCK_SIZE])
+                              const uint8_t buf[JOYBUS_N64_PAK_BLOCK_SIZE])
 {
   uint8_t *memory = pak_controller->user_data;
-  memcpy(&memory[bank * JOYBUS_N64_PAK_BANK_SIZE + addr], buf, JOYBUS_PAK_BLOCK_SIZE);
+  memcpy(&memory[bank * JOYBUS_N64_PAK_BANK_SIZE + addr], buf, JOYBUS_N64_PAK_BLOCK_SIZE);
   return 0;
 }
 

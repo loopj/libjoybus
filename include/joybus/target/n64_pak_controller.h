@@ -46,7 +46,7 @@ struct joybus_target_n64_pak_controller;
  * @return 0 on success, -JOYBUS_ERR_BUSY to have the console retry, another negative joybus_error on failure
  */
 typedef int (*joybus_target_n64_pak_controller_read_cb)(struct joybus_target_n64_pak_controller *pak, uint8_t bank,
-                                                        uint16_t addr, uint8_t buf[JOYBUS_PAK_BLOCK_SIZE]);
+                                                        uint16_t addr, uint8_t buf[JOYBUS_N64_PAK_BLOCK_SIZE]);
 
 /**
  * Callback type for writing a block of a bank.
@@ -63,7 +63,7 @@ typedef int (*joybus_target_n64_pak_controller_read_cb)(struct joybus_target_n64
  * @return 0 on success, -JOYBUS_ERR_BUSY to have the console retry, another negative joybus_error on failure
  */
 typedef int (*joybus_target_n64_pak_controller_write_cb)(struct joybus_target_n64_pak_controller *pak, uint8_t bank,
-                                                         uint16_t addr, const uint8_t buf[JOYBUS_PAK_BLOCK_SIZE]);
+                                                         uint16_t addr, const uint8_t buf[JOYBUS_N64_PAK_BLOCK_SIZE]);
 
 /**
  * Callback type for bank select events.

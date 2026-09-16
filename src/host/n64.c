@@ -34,7 +34,7 @@ int joybus_n64_pak_write(struct joybus *bus, uint16_t addr, const void *data,
   return joybus_sync(joybus_n64_pak_write_async(bus, addr, data, response, joybus_sync_cb, &ctx), &ctx);
 }
 
-int joybus_n64_pak_write_async(struct joybus *bus, uint16_t addr, const uint8_t data[JOYBUS_PAK_BLOCK_SIZE],
+int joybus_n64_pak_write_async(struct joybus *bus, uint16_t addr, const uint8_t data[JOYBUS_N64_PAK_BLOCK_SIZE],
                                uint8_t response[JOYBUS_CMD_N64_PAK_WRITE_RX], joybus_transfer_cb callback,
                                void *user_data)
 {

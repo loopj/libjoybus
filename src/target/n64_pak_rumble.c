@@ -10,16 +10,16 @@
 #define PAK_RUMBLE_SIGNATURE   0x80
 
 JOYBUS_RAM_FUNC
-static int pak_rumble_read_block(struct joybus_target_n64_pak *pak, uint16_t addr, uint8_t buf[JOYBUS_PAK_BLOCK_SIZE])
+static int pak_rumble_read_block(struct joybus_target_n64_pak *pak, uint16_t addr, uint8_t buf[JOYBUS_N64_PAK_BLOCK_SIZE])
 {
   struct joybus_target_n64_pak_rumble *pak_rumble = JOYBUS_TARGET_N64_PAK_RUMBLE(pak);
 
   // The entire probe region returns the signature while enabled; the rest
   // of the address space (SRAM space, motor region) reads as zeros.
   if ((addr & PAK_RUMBLE_REGION_MASK) == JOYBUS_N64_PAK_PROBE_ADDR && pak_rumble->enabled) {
-    memset(buf, PAK_RUMBLE_SIGNATURE, JOYBUS_PAK_BLOCK_SIZE);
+    memset(buf, PAK_RUMBLE_SIGNATURE, JOYBUS_N64_PAK_BLOCK_SIZE);
   } else {
-    memset(buf, 0x00, JOYBUS_PAK_BLOCK_SIZE);
+    memset(buf, 0x00, JOYBUS_N64_PAK_BLOCK_SIZE);
   }
 
   return 0;
@@ -27,12 +27,12 @@ static int pak_rumble_read_block(struct joybus_target_n64_pak *pak, uint16_t add
 
 JOYBUS_RAM_FUNC
 static int pak_rumble_write_block(struct joybus_target_n64_pak *pak, uint16_t addr,
-                                  const uint8_t buf[JOYBUS_PAK_BLOCK_SIZE])
+                                  const uint8_t buf[JOYBUS_N64_PAK_BLOCK_SIZE])
 {
   struct joybus_target_n64_pak_rumble *pak_rumble = JOYBUS_TARGET_N64_PAK_RUMBLE(pak);
 
   // Both the probe register and the motor latch the last byte of the write
-  uint8_t last = buf[JOYBUS_PAK_BLOCK_SIZE - 1];
+  uint8_t last = buf[JOYBUS_N64_PAK_BLOCK_SIZE - 1];
 
   // A probe-region write of exactly 0x80 sets the enable register
   if ((addr & PAK_RUMBLE_REGION_MASK) == JOYBUS_N64_PAK_PROBE_ADDR) {
