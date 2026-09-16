@@ -29,6 +29,17 @@
 /// Number of system pages in the first bank for a given bank count
 #define JOYBUS_N64_PAK_FS_SYSTEM_PAGES(banks) (3 + 2 * (banks))
 
+/// Offset within an ID block of the byte naming the bank count
+#define JOYBUS_N64_PAK_FS_ID_BANKS 0x1A
+
+/**
+ * Check whether a block address in the first bank holds a copy of the ID.
+ *
+ * @param addr block-aligned address within the first bank
+ * @return true if the block is one of the four ID copies, false otherwise
+ */
+bool joybus_n64_pak_fs_is_id_block(uint16_t addr);
+
 /**
  * Check whether a bank holds a filesystem for the given bank count.
  *

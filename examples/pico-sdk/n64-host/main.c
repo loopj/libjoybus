@@ -4,7 +4,7 @@
 #include "pico/stdlib.h"
 
 #include <joybus/joybus.h>
-#include "joybus/host/n64_rumble_pak.h"
+#include "joybus/host/n64_pak_rumble.h"
 #include <joybus/backend/rp2xxx.h>
 
 #define JOYBUS_GPIO           12
@@ -38,7 +38,7 @@ static void poll_controller(void)
       bool pak = controller_present && (id.status & JOYBUS_STATUS_N64_PAK_PRESENT);
       if (pak && (!rumble_available || joybus_id_n64_pak_changed(&id))) {
         // Initialize on first sight, and again whenever the pak was swapped
-        rumble_available = joybus_n64_rumble_pak_init(bus) >= 0;
+        rumble_available = joybus_n64_pak_rumble_init(bus) >= 0;
         rumble_on        = false;
       } else if (!pak) {
         rumble_available = false;
@@ -63,8 +63,8 @@ static void set_rumble(bool on)
 
   // Set rumble state
   if (on) {
-    rumble_on = joybus_n64_rumble_pak_start(bus) >= 0;
-  } else if (joybus_n64_rumble_pak_stop(bus) >= 0) {
+    rumble_on = joybus_n64_pak_rumble_start(bus) >= 0;
+  } else if (joybus_n64_pak_rumble_stop(bus) >= 0) {
     rumble_on = false;
   }
 }

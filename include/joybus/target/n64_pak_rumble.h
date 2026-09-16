@@ -1,5 +1,5 @@
 /**
- * @defgroup joybus_target_n64_rumble_pak N64 Rumble Pak
+ * @defgroup joybus_target_n64_pak_rumble N64 Rumble Pak
  * @ingroup joybus_target_n64_pak
  *
  * N64 pak implementation which emulates a Rumble Pak, providing a callback for motor state changes.
@@ -14,10 +14,10 @@
 
 #include <joybus/target/n64_pak.h>
 
-struct joybus_target_n64_rumble_pak;
+struct joybus_target_n64_pak_rumble;
 
 /// Macro to cast from a generic N64 pak to a rumble pak
-#define JOYBUS_TARGET_N64_RUMBLE_PAK(pak) ((struct joybus_target_n64_rumble_pak *)(pak))
+#define JOYBUS_TARGET_N64_PAK_RUMBLE(pak) ((struct joybus_target_n64_pak_rumble *)(pak))
 
 /**
  * Callback type for rumble pak motor state change events.
@@ -28,12 +28,12 @@ struct joybus_target_n64_rumble_pak;
  * @param pak    the rumble pak whose motor state changed
  * @param active true if the motor should be on, false if off
  */
-typedef void (*joybus_target_n64_rumble_pak_motor_cb)(struct joybus_target_n64_rumble_pak *pak, bool active);
+typedef void (*joybus_target_n64_pak_rumble_motor_cb)(struct joybus_target_n64_pak_rumble *pak, bool active);
 
 /**
  * N64 Rumble Pak pak.
  */
-struct joybus_target_n64_rumble_pak {
+struct joybus_target_n64_pak_rumble {
   /// Base pak interface
   struct joybus_target_n64_pak base;
 
@@ -44,7 +44,7 @@ struct joybus_target_n64_rumble_pak {
   bool active;
 
   /// Callback for motor state change events
-  joybus_target_n64_rumble_pak_motor_cb on_motor_change;
+  joybus_target_n64_pak_rumble_motor_cb on_motor_change;
 };
 
 /**
@@ -52,7 +52,7 @@ struct joybus_target_n64_rumble_pak {
  *
  * @param pak the rumble pak to initialize
  */
-void joybus_target_n64_rumble_pak_init(struct joybus_target_n64_rumble_pak *pak);
+void joybus_target_n64_pak_rumble_init(struct joybus_target_n64_pak_rumble *pak);
 
 /**
  * Set the motor state change callback for the rumble pak.
@@ -63,6 +63,6 @@ void joybus_target_n64_rumble_pak_init(struct joybus_target_n64_rumble_pak *pak)
  * @param pak      the rumble pak to set the callback for
  * @param callback the callback function
  */
-void joybus_target_n64_rumble_pak_set_motor_cb(struct joybus_target_n64_rumble_pak *pak,
-                                               joybus_target_n64_rumble_pak_motor_cb callback);
+void joybus_target_n64_pak_rumble_set_motor_cb(struct joybus_target_n64_pak_rumble *pak,
+                                               joybus_target_n64_pak_rumble_motor_cb callback);
 /** @} */

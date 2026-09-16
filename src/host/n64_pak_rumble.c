@@ -3,19 +3,18 @@
 #include <joybus/bus.h>
 #include <joybus/checksum.h>
 #include <joybus/errors.h>
+#include <joybus/common/n64_pak.h>
 #include <joybus/host/n64.h>
-#include <joybus/host/n64_rumble_pak.h>
+#include <joybus/host/n64_pak_rumble.h>
 
-// Probe address and values
-#define RUMBLE_PAK_PROBE_ADDR     0x8000
-#define RUMBLE_PAK_SIGNATURE      0x80
-#define RUMBLE_PAK_ANTI_SIGNATURE 0xFE
-#define RUMBLE_PAK_PROBE_BYTE     (JOYBUS_PAK_BLOCK_SIZE - 1)
+// Probe values
+#define PAK_RUMBLE_SIGNATURE      0x80
+#define PAK_RUMBLE_ANTI_SIGNATURE 0xFE
+#define PAK_RUMBLE_PROBE_BYTE     (JOYBUS_PAK_BLOCK_SIZE - 1)
 
-// Motor address and values
-#define RUMBLE_PAK_MOTOR_ADDR     0xC000
-#define RUMBLE_PAK_MOTOR_ON       0x01
-#define RUMBLE_PAK_MOTOR_OFF      0x00
+// Motor values
+#define PAK_RUMBLE_MOTOR_ON  0x01
+#define PAK_RUMBLE_MOTOR_OFF 0x00
 
 // Probe steps
 enum {
@@ -40,13 +39,13 @@ static int probe_write(struct joybus *bus, uint8_t value)
   uint8_t block[JOYBUS_PAK_BLOCK_SIZE];
   memset(block, value, sizeof(block));
 
-  return joybus_n64_pak_write_async(bus, RUMBLE_PAK_PROBE_ADDR, block, bus->response_buffer, probe_cb, NULL);
+  return joybus_n64_pak_write_async(bus, JOYBUS_N64_PAK_PROBE_ADDR, block, bus->response_buffer, probe_cb, NULL);
 }
 
 // Read the probe register back and continue the chain
 static int probe_read(struct joybus *bus)
 {
-  return joybus_n64_pak_read_async(bus, RUMBLE_PAK_PROBE_ADDR, bus->response_buffer, probe_cb, NULL);
+  return joybus_n64_pak_read_async(bus, JOYBUS_N64_PAK_PROBE_ADDR, bus->response_buffer, probe_cb, NULL);
 }
 
 // Advance the probe one step each time a transfer completes
@@ -67,12 +66,12 @@ static void probe_cb(struct joybus *bus, int status, void *user_data)
 
     case PROBE_READ_ANTI_SIGNATURE:
       // A controller pak reads the non-signature back, a rumble pak does not
-      if (bus->response_buffer[RUMBLE_PAK_PROBE_BYTE] == RUMBLE_PAK_ANTI_SIGNATURE) {
+      if (bus->response_buffer[PAK_RUMBLE_PROBE_BYTE] == PAK_RUMBLE_ANTI_SIGNATURE) {
         probe_finish(bus, -JOYBUS_ERR_NO_DEVICE);
         return;
       }
       bus->host_op.arg = PROBE_WROTE_SIGNATURE;
-      status           = probe_write(bus, RUMBLE_PAK_SIGNATURE);
+      status           = probe_write(bus, PAK_RUMBLE_SIGNATURE);
       break;
 
     case PROBE_WROTE_SIGNATURE:
@@ -83,7 +82,7 @@ static void probe_cb(struct joybus *bus, int status, void *user_data)
 
     case PROBE_READ_SIGNATURE:
       // A rumble pak reads the signature back once enabled
-      if (bus->response_buffer[RUMBLE_PAK_PROBE_BYTE] != RUMBLE_PAK_SIGNATURE)
+      if (bus->response_buffer[PAK_RUMBLE_PROBE_BYTE] != PAK_RUMBLE_SIGNATURE)
         status = -JOYBUS_ERR_NO_DEVICE;
 
       probe_finish(bus, status >= 0 ? 0 : status);
@@ -106,7 +105,8 @@ static void motor_write_cb(struct joybus *bus, int status, void *user_data)
     bus->host_op.callback(bus, status, bus->host_op.user_data);
 }
 
-static int motor_write(struct joybus *bus, uint8_t value, joybus_transfer_cb callback, void *user_data) {
+static int motor_write(struct joybus *bus, uint8_t value, joybus_transfer_cb callback, void *user_data)
+{
   // Fill a block with bytes
   uint8_t block[JOYBUS_PAK_BLOCK_SIZE];
   memset(block, value, sizeof(block));
@@ -116,44 +116,44 @@ static int motor_write(struct joybus *bus, uint8_t value, joybus_transfer_cb cal
   bus->host_op.user_data = user_data;
   bus->host_op.arg       = joybus_data_checksum(block, sizeof(block));
 
-  return joybus_n64_pak_write_async(bus, RUMBLE_PAK_MOTOR_ADDR, block, bus->response_buffer, motor_write_cb, NULL);
+  return joybus_n64_pak_write_async(bus, JOYBUS_N64_PAK_MOTOR_ADDR, block, bus->response_buffer, motor_write_cb, NULL);
 }
 
-int joybus_n64_rumble_pak_init(struct joybus *bus)
+int joybus_n64_pak_rumble_init(struct joybus *bus)
 {
   struct joybus_sync_ctx ctx = {0};
-  return joybus_sync(joybus_n64_rumble_pak_init_async(bus, joybus_sync_cb, &ctx), &ctx);
+  return joybus_sync(joybus_n64_pak_rumble_init_async(bus, joybus_sync_cb, &ctx), &ctx);
 }
 
-int joybus_n64_rumble_pak_init_async(struct joybus *bus, joybus_transfer_cb callback, void *user_data)
+int joybus_n64_pak_rumble_init_async(struct joybus *bus, joybus_transfer_cb callback, void *user_data)
 {
   // Save the user callback for the end of the probe chain
   bus->host_op.callback  = callback;
   bus->host_op.user_data = user_data;
 
   // Save the initial probe state and start the chain
-  bus->host_op.arg       = PROBE_WROTE_ANTI_SIGNATURE;
-  return probe_write(bus, RUMBLE_PAK_ANTI_SIGNATURE);
+  bus->host_op.arg = PROBE_WROTE_ANTI_SIGNATURE;
+  return probe_write(bus, PAK_RUMBLE_ANTI_SIGNATURE);
 }
 
-int joybus_n64_rumble_pak_start(struct joybus *bus)
+int joybus_n64_pak_rumble_start(struct joybus *bus)
 {
   struct joybus_sync_ctx ctx = {0};
-  return joybus_sync(joybus_n64_rumble_pak_start_async(bus, joybus_sync_cb, &ctx), &ctx);
+  return joybus_sync(joybus_n64_pak_rumble_start_async(bus, joybus_sync_cb, &ctx), &ctx);
 }
 
-int joybus_n64_rumble_pak_start_async(struct joybus *bus, joybus_transfer_cb callback, void *user_data)
+int joybus_n64_pak_rumble_start_async(struct joybus *bus, joybus_transfer_cb callback, void *user_data)
 {
-  return motor_write(bus, RUMBLE_PAK_MOTOR_ON, callback, user_data);
+  return motor_write(bus, PAK_RUMBLE_MOTOR_ON, callback, user_data);
 }
 
-int joybus_n64_rumble_pak_stop(struct joybus *bus)
+int joybus_n64_pak_rumble_stop(struct joybus *bus)
 {
   struct joybus_sync_ctx ctx = {0};
-  return joybus_sync(joybus_n64_rumble_pak_stop_async(bus, joybus_sync_cb, &ctx), &ctx);
+  return joybus_sync(joybus_n64_pak_rumble_stop_async(bus, joybus_sync_cb, &ctx), &ctx);
 }
 
-int joybus_n64_rumble_pak_stop_async(struct joybus *bus, joybus_transfer_cb callback, void *user_data)
+int joybus_n64_pak_rumble_stop_async(struct joybus *bus, joybus_transfer_cb callback, void *user_data)
 {
-  return motor_write(bus, RUMBLE_PAK_MOTOR_OFF, callback, user_data);
+  return motor_write(bus, PAK_RUMBLE_MOTOR_OFF, callback, user_data);
 }
