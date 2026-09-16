@@ -25,6 +25,7 @@ var group__joybus =
     [ "JOYBUS_FREQ_WII_CONSOLE", "group__joybus.html#ga64e876071c5e4190a1af1542f758db91", null ],
     [ "JOYBUS_INTER_TRANSFER_DELAY_US", "group__joybus.html#gac5ab3e6873e93e3f6c2ba0759f227912", null ],
     [ "JOYBUS_N64_PAK_BANK_SIZE", "group__joybus.html#ga0a0ac6c10e850c92146c703b19050691", null ],
+    [ "JOYBUS_N64_PAK_FS_ID_BANKS", "group__joybus.html#ga87292b15c334bc601e4ba11d3e30d605", null ],
     [ "JOYBUS_N64_PAK_FS_MAX_BANKS", "group__joybus.html#ga0639362b7f5fcb03456d5b45b07cd033", null ],
     [ "JOYBUS_N64_PAK_FS_PAGE_SIZE", "group__joybus.html#ga33c7b2e31941a8f52ecbba7938234abe", null ],
     [ "JOYBUS_N64_PAK_FS_SYSTEM_PAGES", "group__joybus.html#ga178a8e4493278b1bb1142b936ab7e72d", null ],
@@ -55,6 +56,7 @@ var group__joybus =
     [ "joybus_disable", "group__joybus.html#gaabcba7cb477ed6aff47bc7db467f348b", null ],
     [ "joybus_enable", "group__joybus.html#ga80184b4cebc28a54519656dff67b4755", null ],
     [ "joybus_n64_pak_fs_format", "group__joybus.html#ga35b44fca7870ff7f7e8b97717e10eda5", null ],
+    [ "joybus_n64_pak_fs_is_id_block", "group__joybus.html#ga1a61bb6a4df9c981f60867f6f10094e8", null ],
     [ "joybus_n64_pak_fs_valid", "group__joybus.html#ga622aff839f92695e38bfe9987a01c0a7", null ],
     [ "joybus_transfer", "group__joybus.html#gaa7d3786d5ed4f67c42ed0fb6718cdae5", null ],
     [ "joybus_transfer_sync", "group__joybus.html#gaa23c09a3db2e9880ab6dda70b0239061", null ]

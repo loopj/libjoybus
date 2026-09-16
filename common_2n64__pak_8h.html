@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.14.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>libjoybus: include/joybus/common Directory Reference</title>
+<title>libjoybus: include/joybus/common/n64_pak.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -77,7 +77,7 @@ $(function() {
   </div>
 </div>
 <script type="text/javascript">
-$(function(){initNavTree('dir_a911a896560fe58267b68c80d792d071.html','',''); });
+$(function(){initNavTree('common_2n64__pak_8h.html','',''); });
 </script>
 <div id="container">
 <div id="doc-content">
@@ -103,21 +103,27 @@ $(function(){initNavTree('dir_a911a896560fe58267b68c80d792d071.html','',''); });
 </div>
 
 <div class="header">
-  <div class="headertitle"><div class="title">common Directory Reference</div></div>
+  <div class="headertitle"><div class="title">n64_pak.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Common definitions for N64 paks.  
+<a href="#details">More...</a></p>
+
+<p><a href="common_2n64__pak_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 id="header-files" class="groupheader"><a id="files" name="files"></a>
-Files</h2></td></tr>
-<tr class="memitem:gcn_5Fcontroller_2Eh" id="r_gcn_5Fcontroller_2Eh"><td class="memItemLeft" align="right" valign="top"><a href="common_2gcn__controller_8h_source.html"><span class="icondoc"><div class="doc-icon"></div></span></a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="common_2gcn__controller_8h.html">gcn_controller.h</a></td></tr>
-<tr class="memdesc:common_2gcn__controller_8h"><td class="mdescLeft">&#160;</td><td class="mdescRight">Common definitions for GameCube controllers. <br /></td></tr>
-<tr class="memitem:n64_5Fcontroller_2Eh" id="r_n64_5Fcontroller_2Eh"><td class="memItemLeft" align="right" valign="top"><a href="common_2n64__controller_8h_source.html"><span class="icondoc"><div class="doc-icon"></div></span></a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="common_2n64__controller_8h.html">n64_controller.h</a></td></tr>
-<tr class="memdesc:common_2n64__controller_8h"><td class="mdescLeft">&#160;</td><td class="mdescRight">Common definitions for N64 controllers. <br /></td></tr>
-<tr class="memitem:n64_5Fpak_2Eh" id="r_n64_5Fpak_2Eh"><td class="memItemLeft" align="right" valign="top"><a href="common_2n64__pak_8h_source.html"><span class="icondoc"><div class="doc-icon"></div></span></a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="common_2n64__pak_8h.html">n64_pak.h</a></td></tr>
-<tr class="memdesc:common_2n64__pak_8h"><td class="mdescLeft">&#160;</td><td class="mdescRight">Common definitions for N64 paks. <br /></td></tr>
-<tr class="memitem:n64_5Fpak_5Ffs_2Eh" id="r_n64_5Fpak_5Ffs_2Eh"><td class="memItemLeft" align="right" valign="top"><a href="n64__pak__fs_8h_source.html"><span class="icondoc"><div class="doc-icon"></div></span></a>&#160;</td><td class="memItemRight" valign="bottom"><b>n64_pak_fs.h</b></td></tr>
+<tr class="heading"><td colspan="2"><h2 id="header-define-members" class="groupheader"><a id="define-members" name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:ae83b2b1f795db184a77e0c7cd2be81dc" id="r_ae83b2b1f795db184a77e0c7cd2be81dc"><td class="memItemLeft" align="right" valign="top"><a id="ae83b2b1f795db184a77e0c7cd2be81dc" name="ae83b2b1f795db184a77e0c7cd2be81dc"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_N64_PAK_PROBE_ADDR</b>&#160;&#160;&#160;0x8000</td></tr>
+<tr class="memdesc:ae83b2b1f795db184a77e0c7cd2be81dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Start of the probe area, where a console detects a pak's type and selects a bank. <br /></td></tr>
+<tr class="memitem:a9463759e7063583335b9c2b3f22bebd5" id="r_a9463759e7063583335b9c2b3f22bebd5"><td class="memItemLeft" align="right" valign="top"><a id="a9463759e7063583335b9c2b3f22bebd5" name="a9463759e7063583335b9c2b3f22bebd5"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_N64_PAK_MOTOR_ADDR</b>&#160;&#160;&#160;0xC000</td></tr>
+<tr class="memdesc:a9463759e7063583335b9c2b3f22bebd5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Start of the motor area of a Rumble Pak. <br /></td></tr>
 </table>
-</div><!-- contents -->
+<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Common definitions for N64 paks. </p>
+</div></div><!-- contents -->
 </div><!-- doc-content -->
 <div id="page-nav" class="page-nav-panel">
 <div id="page-nav-resize-handle"></div>
@@ -130,7 +136,7 @@ Files</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a href="dir_11bfe2aeffd25593654c3f2cacc8984c.html">joybus</a></li><li class="navelem"><a href="dir_a911a896560fe58267b68c80d792d071.html">common</a></li>
+    <li class="navelem"><a href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a href="dir_11bfe2aeffd25593654c3f2cacc8984c.html">joybus</a></li><li class="navelem"><a href="dir_a911a896560fe58267b68c80d792d071.html">common</a></li><li class="navelem"><a href="common_2n64__pak_8h.html">n64_pak.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.14.0 </li>
   </ul>
 </div>

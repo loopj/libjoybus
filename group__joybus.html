@@ -184,6 +184,9 @@ Macros</h2></td></tr>
 <tr class="memdesc:ga0639362b7f5fcb03456d5b45b07cd033"><td class="mdescLeft">&#160;</td><td class="mdescRight">The most banks whose system area fits in the first bank. <br /></td></tr>
 <tr class="memitem:ga178a8e4493278b1bb1142b936ab7e72d" id="r_ga178a8e4493278b1bb1142b936ab7e72d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga178a8e4493278b1bb1142b936ab7e72d">JOYBUS_N64_PAK_FS_SYSTEM_PAGES</a>(banks)</td></tr>
 <tr class="memdesc:ga178a8e4493278b1bb1142b936ab7e72d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of system pages in the first bank for a given bank count.  <br /></td></tr>
+<tr class="memitem:ga87292b15c334bc601e4ba11d3e30d605" id="r_ga87292b15c334bc601e4ba11d3e30d605"><td class="memItemLeft" align="right" valign="top"><a id="ga87292b15c334bc601e4ba11d3e30d605" name="ga87292b15c334bc601e4ba11d3e30d605"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_N64_PAK_FS_ID_BANKS</b>&#160;&#160;&#160;0x1A</td></tr>
+<tr class="memdesc:ga87292b15c334bc601e4ba11d3e30d605"><td class="mdescLeft">&#160;</td><td class="mdescRight">Offset within an ID block of the byte naming the bank count. <br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-typedef-members" class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
@@ -243,6 +246,8 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>joybus_sync</b> (int s
 <tr class="memdesc:gad4e8d62b15102d8e6c580fb3730eb2b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the CRC-8 checksum of a Joybus data buffer.  <br /></td></tr>
 <tr class="memitem:ga395ca3d9f9844388c1b7372a0ae8bedf" id="r_ga395ca3d9f9844388c1b7372a0ae8bedf"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga395ca3d9f9844388c1b7372a0ae8bedf">joybus_address_checksum</a> (uint16_t addr)</td></tr>
 <tr class="memdesc:ga395ca3d9f9844388c1b7372a0ae8bedf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the CRC-5 address checksum for data transfer commands.  <br /></td></tr>
+<tr class="memitem:ga1a61bb6a4df9c981f60867f6f10094e8" id="r_ga1a61bb6a4df9c981f60867f6f10094e8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga1a61bb6a4df9c981f60867f6f10094e8">joybus_n64_pak_fs_is_id_block</a> (uint16_t addr)</td></tr>
+<tr class="memdesc:ga1a61bb6a4df9c981f60867f6f10094e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether a block address in the first bank holds a copy of the ID.  <br /></td></tr>
 <tr class="memitem:ga622aff839f92695e38bfe9987a01c0a7" id="r_ga622aff839f92695e38bfe9987a01c0a7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga622aff839f92695e38bfe9987a01c0a7">joybus_n64_pak_fs_valid</a> (const uint8_t *bank0, uint8_t banks)</td></tr>
 <tr class="memdesc:ga622aff839f92695e38bfe9987a01c0a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether a bank holds a filesystem for the given bank count.  <br /></td></tr>
 <tr class="memitem:ga35b44fca7870ff7f7e8b97717e10eda5" id="r_ga35b44fca7870ff7f7e8b97717e10eda5"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga35b44fca7870ff7f7e8b97717e10eda5">joybus_n64_pak_fs_format</a> (uint8_t *bank0, uint8_t banks, uint32_t random)</td></tr>
@@ -729,6 +734,32 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>joybus_sync</b> (int s
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>positive number of bytes written from the start of the bank, a negative <a class="el" href="#ga47435eba4c98726f93fdae3c8bb9fd76" title="Joybus error codes.">joybus_error</a> on failure </dd></dl>
+
+</div>
+</div>
+<a id="ga1a61bb6a4df9c981f60867f6f10094e8" name="ga1a61bb6a4df9c981f60867f6f10094e8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga1a61bb6a4df9c981f60867f6f10094e8">&#9670;&#160;</a></span>joybus_n64_pak_fs_is_id_block()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool joybus_n64_pak_fs_is_id_block </td>
+          <td>(</td>
+          <td class="paramtype">uint16_t</td>          <td class="paramname"><span class="paramname"><em>addr</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Check whether a block address in the first bank holds a copy of the ID. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">addr</td><td>block-aligned address within the first bank </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if the block is one of the four ID copies, false otherwise </dd></dl>
 
 </div>
 </div>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.14.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>libjoybus: joybus_target_n64_pak Struct Reference</title>
+<title>libjoybus: joybus_target_n64_pak_controller Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -77,7 +77,7 @@ $(function() {
   </div>
 </div>
 <script type="text/javascript">
-$(function(){initNavTree('structjoybus__target__n64__pak.html','',''); });
+$(function(){initNavTree('structjoybus__target__n64__pak__controller.html','',''); });
 </script>
 <div id="container">
 <div id="doc-content">
@@ -103,25 +103,46 @@ $(function(){initNavTree('structjoybus__target__n64__pak.html','',''); });
 </div>
 
 <div class="header">
-  <div class="headertitle"><div class="title">joybus_target_n64_pak Struct Reference<div class="ingroups"><a class="el" href="group__joybus__target.html">Targets</a> &raquo; <a class="el" href="group__joybus__target__n64__controller.html">N64 Controller Target</a> &raquo; <a class="el" href="group__joybus__target__n64__pak.html">N64 Pak</a></div></div></div>
+  <div class="headertitle"><div class="title">joybus_target_n64_pak_controller Struct Reference<div class="ingroups"><a class="el" href="group__joybus__target.html">Targets</a> &raquo; <a class="el" href="group__joybus__target__n64__controller.html">N64 Controller Target</a> &raquo; <a class="el" href="group__joybus__target__n64__pak.html">N64 Pak</a> &raquo; <a class="el" href="group__joybus__target__n64__pak__controller.html">N64 Controller Pak</a></div></div></div>
 </div><!--header-->
 <div class="contents">
 
-<p>An N64 pak, such as a Rumble Pak or Controller Pak.  
+<p>N64 Controller Pak pak.  
  <a href="#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="target_2n64__pak_8h_source.html">n64_pak.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="n64__pak__controller_8h_source.html">n64_pak_controller.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-attribs" class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Data Fields</h2></td></tr>
-<tr class="memitem:a7b5323b90aa6e177195cb5f77f56513e" id="r_a7b5323b90aa6e177195cb5f77f56513e"><td class="memItemLeft" align="right" valign="top"><a id="a7b5323b90aa6e177195cb5f77f56513e" name="a7b5323b90aa6e177195cb5f77f56513e"></a>
-const struct <a class="el" href="structjoybus__target__n64__pak__api.html">joybus_target_n64_pak_api</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>api</b></td></tr>
-<tr class="memdesc:a7b5323b90aa6e177195cb5f77f56513e"><td class="mdescLeft">&#160;</td><td class="mdescRight">API for handling reads and writes to the pak. <br /></td></tr>
+<tr class="memitem:a6b7a0bec6b7e74dfcbb0c10eb2f6b33e" id="r_a6b7a0bec6b7e74dfcbb0c10eb2f6b33e"><td class="memItemLeft" align="right" valign="top"><a id="a6b7a0bec6b7e74dfcbb0c10eb2f6b33e" name="a6b7a0bec6b7e74dfcbb0c10eb2f6b33e"></a>
+struct <a class="el" href="structjoybus__target__n64__pak.html">joybus_target_n64_pak</a>&#160;</td><td class="memItemRight" valign="bottom"><b>base</b></td></tr>
+<tr class="memdesc:a6b7a0bec6b7e74dfcbb0c10eb2f6b33e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base pak interface. <br /></td></tr>
+<tr class="memitem:a889e1ea0531e97c87d3fd8856cafc33f" id="r_a889e1ea0531e97c87d3fd8856cafc33f"><td class="memItemLeft" align="right" valign="top"><a id="a889e1ea0531e97c87d3fd8856cafc33f" name="a889e1ea0531e97c87d3fd8856cafc33f"></a>
+<a class="el" href="group__joybus__target__n64__pak__controller.html#gaf231e841efe9b70f46c8ffda8918800a">joybus_target_n64_pak_controller_read_cb</a>&#160;</td><td class="memItemRight" valign="bottom"><b>read</b></td></tr>
+<tr class="memdesc:a889e1ea0531e97c87d3fd8856cafc33f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback that reads a block from storage, the pak answers busy until set. <br /></td></tr>
+<tr class="memitem:a26b01f2268634ceeffb864c813e5a819" id="r_a26b01f2268634ceeffb864c813e5a819"><td class="memItemLeft" align="right" valign="top"><a id="a26b01f2268634ceeffb864c813e5a819" name="a26b01f2268634ceeffb864c813e5a819"></a>
+<a class="el" href="group__joybus__target__n64__pak__controller.html#gaa3ccb2dba99402c3dcf4783afc447b73">joybus_target_n64_pak_controller_write_cb</a>&#160;</td><td class="memItemRight" valign="bottom"><b>write</b></td></tr>
+<tr class="memdesc:a26b01f2268634ceeffb864c813e5a819"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback that writes a block to storage, the pak answers busy until set. <br /></td></tr>
+<tr class="memitem:a326c4eb60c1b33119a1b870f8526e621" id="r_a326c4eb60c1b33119a1b870f8526e621"><td class="memItemLeft" align="right" valign="top"><a id="a326c4eb60c1b33119a1b870f8526e621" name="a326c4eb60c1b33119a1b870f8526e621"></a>
+void *&#160;</td><td class="memItemRight" valign="bottom"><b>user_data</b></td></tr>
+<tr class="memdesc:a326c4eb60c1b33119a1b870f8526e621"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer handed to the storage callbacks. <br /></td></tr>
+<tr class="memitem:a95321ab753aa9ee041bfa36d0e0dfe39" id="r_a95321ab753aa9ee041bfa36d0e0dfe39"><td class="memItemLeft" align="right" valign="top"><a id="a95321ab753aa9ee041bfa36d0e0dfe39" name="a95321ab753aa9ee041bfa36d0e0dfe39"></a>
+<a class="el" href="group__joybus__target__n64__pak__controller.html#gae4b908babd3c3394dd7525b236a902b1">joybus_target_n64_pak_controller_select_cb</a>&#160;</td><td class="memItemRight" valign="bottom"><b>on_select</b></td></tr>
+<tr class="memdesc:a95321ab753aa9ee041bfa36d0e0dfe39"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback for bank select events. <br /></td></tr>
+<tr class="memitem:a08e8dbcaebe21da5f47e838db8993d99" id="r_a08e8dbcaebe21da5f47e838db8993d99"><td class="memItemLeft" align="right" valign="top"><a id="a08e8dbcaebe21da5f47e838db8993d99" name="a08e8dbcaebe21da5f47e838db8993d99"></a>
+<a class="el" href="group__joybus__target__n64__pak__controller.html#ga7c58df2f61550e37492909bd94aeb8e1">joybus_target_n64_pak_controller_written_cb</a>&#160;</td><td class="memItemRight" valign="bottom"><b>on_written</b></td></tr>
+<tr class="memdesc:a08e8dbcaebe21da5f47e838db8993d99"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback for block written events. <br /></td></tr>
+<tr class="memitem:ae9b2325c54b8a34a121af7be4df5e990" id="r_ae9b2325c54b8a34a121af7be4df5e990"><td class="memItemLeft" align="right" valign="top"><a id="ae9b2325c54b8a34a121af7be4df5e990" name="ae9b2325c54b8a34a121af7be4df5e990"></a>
+uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>banks</b></td></tr>
+<tr class="memdesc:ae9b2325c54b8a34a121af7be4df5e990"><td class="mdescLeft">&#160;</td><td class="mdescRight">Banks the pak presents, 1 for an original pak. <br /></td></tr>
+<tr class="memitem:a718a1fc7353114abc32c6184eb3590d3" id="r_a718a1fc7353114abc32c6184eb3590d3"><td class="memItemLeft" align="right" valign="top"><a id="a718a1fc7353114abc32c6184eb3590d3" name="a718a1fc7353114abc32c6184eb3590d3"></a>
+uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>selected</b></td></tr>
+<tr class="memdesc:a718a1fc7353114abc32c6184eb3590d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bank the console has selected, always 0 on a one bank pak. <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>An N64 pak, such as a Rumble Pak or Controller Pak. </p>
+<div class="textblock"><p>N64 Controller Pak pak. </p>
 </div><hr/>The documentation for this struct was generated from the following file:<ul>
-<li>include/joybus/target/<a class="el" href="target_2n64__pak_8h_source.html">n64_pak.h</a></li>
+<li>include/joybus/target/<a class="el" href="n64__pak__controller_8h_source.html">n64_pak_controller.h</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -136,7 +157,7 @@ const struct <a class="el" href="structjoybus__target__n64__pak__api.html">joybu
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a href="structjoybus__target__n64__pak.html">joybus_target_n64_pak</a></li>
+    <li class="navelem"><a href="structjoybus__target__n64__pak__controller.html">joybus_target_n64_pak_controller</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.14.0 </li>
   </ul>
 </div>

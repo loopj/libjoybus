@@ -22,6 +22,7 @@ var searchData=
   ['joybus_5ftarget_5fn64_5fcontroller_19',['joybus_target_n64_controller',['../structjoybus__target__n64__controller.html',1,'']]],
   ['joybus_5ftarget_5fn64_5fpak_20',['joybus_target_n64_pak',['../structjoybus__target__n64__pak.html',1,'']]],
   ['joybus_5ftarget_5fn64_5fpak_5fapi_21',['joybus_target_n64_pak_api',['../structjoybus__target__n64__pak__api.html',1,'']]],
-  ['joybus_5ftarget_5fn64_5frumble_5fpak_22',['joybus_target_n64_rumble_pak',['../structjoybus__target__n64__rumble__pak.html',1,'']]],
-  ['joybus_5ftarget_5fpixelfx_5fgameid_23',['joybus_target_pixelfx_gameid',['../structjoybus__target__pixelfx__gameid.html',1,'']]]
+  ['joybus_5ftarget_5fn64_5fpak_5fcontroller_22',['joybus_target_n64_pak_controller',['../structjoybus__target__n64__pak__controller.html',1,'']]],
+  ['joybus_5ftarget_5fn64_5fpak_5frumble_23',['joybus_target_n64_pak_rumble',['../structjoybus__target__n64__pak__rumble.html',1,'']]],
+  ['joybus_5ftarget_5fpixelfx_5fgameid_24',['joybus_target_pixelfx_gameid',['../structjoybus__target__pixelfx__gameid.html',1,'']]]
 ];
