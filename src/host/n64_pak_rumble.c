@@ -3,19 +3,18 @@
 #include <joybus/bus.h>
 #include <joybus/checksum.h>
 #include <joybus/errors.h>
+#include <joybus/common/n64_pak.h>
 #include <joybus/host/n64.h>
 #include <joybus/host/n64_pak_rumble.h>
 
-// Probe address and values
-#define PAK_RUMBLE_PROBE_ADDR     0x8000
+// Probe values
 #define PAK_RUMBLE_SIGNATURE      0x80
 #define PAK_RUMBLE_ANTI_SIGNATURE 0xFE
 #define PAK_RUMBLE_PROBE_BYTE     (JOYBUS_PAK_BLOCK_SIZE - 1)
 
-// Motor address and values
-#define PAK_RUMBLE_MOTOR_ADDR     0xC000
-#define PAK_RUMBLE_MOTOR_ON       0x01
-#define PAK_RUMBLE_MOTOR_OFF      0x00
+// Motor values
+#define PAK_RUMBLE_MOTOR_ON  0x01
+#define PAK_RUMBLE_MOTOR_OFF 0x00
 
 // Probe steps
 enum {
@@ -40,13 +39,13 @@ static int probe_write(struct joybus *bus, uint8_t value)
   uint8_t block[JOYBUS_PAK_BLOCK_SIZE];
   memset(block, value, sizeof(block));
 
-  return joybus_n64_pak_write_async(bus, PAK_RUMBLE_PROBE_ADDR, block, bus->response_buffer, probe_cb, NULL);
+  return joybus_n64_pak_write_async(bus, JOYBUS_N64_PAK_PROBE_ADDR, block, bus->response_buffer, probe_cb, NULL);
 }
 
 // Read the probe register back and continue the chain
 static int probe_read(struct joybus *bus)
 {
-  return joybus_n64_pak_read_async(bus, PAK_RUMBLE_PROBE_ADDR, bus->response_buffer, probe_cb, NULL);
+  return joybus_n64_pak_read_async(bus, JOYBUS_N64_PAK_PROBE_ADDR, bus->response_buffer, probe_cb, NULL);
 }
 
 // Advance the probe one step each time a transfer completes
@@ -106,7 +105,8 @@ static void motor_write_cb(struct joybus *bus, int status, void *user_data)
     bus->host_op.callback(bus, status, bus->host_op.user_data);
 }
 
-static int motor_write(struct joybus *bus, uint8_t value, joybus_transfer_cb callback, void *user_data) {
+static int motor_write(struct joybus *bus, uint8_t value, joybus_transfer_cb callback, void *user_data)
+{
   // Fill a block with bytes
   uint8_t block[JOYBUS_PAK_BLOCK_SIZE];
   memset(block, value, sizeof(block));
@@ -116,7 +116,7 @@ static int motor_write(struct joybus *bus, uint8_t value, joybus_transfer_cb cal
   bus->host_op.user_data = user_data;
   bus->host_op.arg       = joybus_data_checksum(block, sizeof(block));
 
-  return joybus_n64_pak_write_async(bus, PAK_RUMBLE_MOTOR_ADDR, block, bus->response_buffer, motor_write_cb, NULL);
+  return joybus_n64_pak_write_async(bus, JOYBUS_N64_PAK_MOTOR_ADDR, block, bus->response_buffer, motor_write_cb, NULL);
 }
 
 int joybus_n64_pak_rumble_init(struct joybus *bus)
@@ -132,7 +132,7 @@ int joybus_n64_pak_rumble_init_async(struct joybus *bus, joybus_transfer_cb call
   bus->host_op.user_data = user_data;
 
   // Save the initial probe state and start the chain
-  bus->host_op.arg       = PROBE_WROTE_ANTI_SIGNATURE;
+  bus->host_op.arg = PROBE_WROTE_ANTI_SIGNATURE;
   return probe_write(bus, PAK_RUMBLE_ANTI_SIGNATURE);
 }
 

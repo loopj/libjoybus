@@ -7,6 +7,7 @@
 #include <joybus/identify.h>
 #include <joybus/common/gcn_controller.h>
 #include <joybus/common/n64_controller.h>
+#include <joybus/common/n64_pak.h>
 #include <joybus/common/n64_pak_fs.h>
 #include <joybus/target.h>
 #include <joybus/host/common.h>
@@ -15,4 +16,5 @@
 #include <joybus/host/n64_pak_rumble.h>
 #include <joybus/target/gcn_controller.h>
 #include <joybus/target/n64_controller.h>
+#include <joybus/target/n64_pak_controller.h>
 #include <joybus/target/pixelfx_gameid.h>

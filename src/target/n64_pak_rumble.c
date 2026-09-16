@@ -2,13 +2,12 @@
 
 #include <joybus/attributes.h>
 #include <joybus/bus.h>
+#include <joybus/common/n64_pak.h>
 #include <joybus/target/n64_pak.h>
 #include <joybus/target/n64_pak_rumble.h>
 
-#define PAK_RUMBLE_REGION_MASK  0xC000
-#define PAK_RUMBLE_PROBE_REGION 0x8000
-#define PAK_RUMBLE_MOTOR_REGION 0xC000
-#define PAK_RUMBLE_SIGNATURE    0x80
+#define PAK_RUMBLE_REGION_MASK 0xC000
+#define PAK_RUMBLE_SIGNATURE   0x80
 
 JOYBUS_RAM_FUNC
 static int pak_rumble_read_block(struct joybus_target_n64_pak *pak, uint16_t addr, uint8_t buf[JOYBUS_PAK_BLOCK_SIZE])
@@ -17,7 +16,7 @@ static int pak_rumble_read_block(struct joybus_target_n64_pak *pak, uint16_t add
 
   // The entire probe region returns the signature while enabled; the rest
   // of the address space (SRAM space, motor region) reads as zeros.
-  if ((addr & PAK_RUMBLE_REGION_MASK) == PAK_RUMBLE_PROBE_REGION && pak_rumble->enabled) {
+  if ((addr & PAK_RUMBLE_REGION_MASK) == JOYBUS_N64_PAK_PROBE_ADDR && pak_rumble->enabled) {
     memset(buf, PAK_RUMBLE_SIGNATURE, JOYBUS_PAK_BLOCK_SIZE);
   } else {
     memset(buf, 0x00, JOYBUS_PAK_BLOCK_SIZE);
@@ -36,13 +35,13 @@ static int pak_rumble_write_block(struct joybus_target_n64_pak *pak, uint16_t ad
   uint8_t last = buf[JOYBUS_PAK_BLOCK_SIZE - 1];
 
   // A probe-region write of exactly 0x80 sets the enable register
-  if ((addr & PAK_RUMBLE_REGION_MASK) == PAK_RUMBLE_PROBE_REGION) {
+  if ((addr & PAK_RUMBLE_REGION_MASK) == JOYBUS_N64_PAK_PROBE_ADDR) {
     pak_rumble->enabled = (last == PAK_RUMBLE_SIGNATURE);
     return 0;
   }
 
   // Writes to SRAM address space are ignored
-  if ((addr & PAK_RUMBLE_REGION_MASK) != PAK_RUMBLE_MOTOR_REGION)
+  if ((addr & PAK_RUMBLE_REGION_MASK) != JOYBUS_N64_PAK_MOTOR_ADDR)
     return 0;
 
   // The motor state is the low bit of the last byte, and only runs while enabled
