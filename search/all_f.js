@@ -2,7 +2,7 @@ var searchData=
 [
   ['ram_0',['Placing Code in RAM',['../index.html#autotoc_md14',1,'']]],
   ['read_1',['read',['../structjoybus__target__n64__pak__controller.html#a889e1ea0531e97c87d3fd8856cafc33f',1,'joybus_target_n64_pak_controller']]],
-  ['read_5fblock_2',['read_block',['../structjoybus__target__n64__pak__api.html#a75e28126281b196764f736da75f3c567',1,'joybus_target_n64_pak_api']]],
+  ['read_5fblock_2',['read_block',['../structjoybus__target__n64__pak__api.html#af1c77df93296ed5adc3f912067915206',1,'joybus_target_n64_pak_api']]],
   ['receiver_3',['OEM WaveBird Receiver',['..//home/runner/work/libjoybus/libjoybus/src/backend/README.md#autotoc_md27',1,'']]],
   ['reception_4',['Target-mode Command Reception',['..//home/runner/work/libjoybus/libjoybus/src/backend/README.md#autotoc_md20',1,'']]],
   ['reducing_20turnaround_5',['Reducing Turnaround',['..//home/runner/work/libjoybus/libjoybus/src/backend/README.md#autotoc_md21',1,'']]],

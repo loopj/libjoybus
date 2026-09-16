@@ -114,22 +114,22 @@ $(function(){initNavTree('structjoybus__target__n64__pak__api.html','',''); });
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-attribs" class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Data Fields</h2></td></tr>
-<tr class="memitem:a75e28126281b196764f736da75f3c567" id="r_a75e28126281b196764f736da75f3c567"><td class="memItemLeft" align="right" valign="top">int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a75e28126281b196764f736da75f3c567">read_block</a> )(struct <a class="el" href="structjoybus__target__n64__pak.html">joybus_target_n64_pak</a> *pak, uint16_t addr, uint8_t buf[<a class="el" href="group__joybus.html#ga272b8f55fa8c16bac1524dda78c5ecef">JOYBUS_PAK_BLOCK_SIZE</a>])</td></tr>
-<tr class="memdesc:a75e28126281b196764f736da75f3c567"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called when a host requests to read a 32-byte block from the pak.  <br /></td></tr>
-<tr class="memitem:a589d1d5cc4900c3b33f24381394d1d43" id="r_a589d1d5cc4900c3b33f24381394d1d43"><td class="memItemLeft" align="right" valign="top">int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a589d1d5cc4900c3b33f24381394d1d43">write_block</a> )(struct <a class="el" href="structjoybus__target__n64__pak.html">joybus_target_n64_pak</a> *pak, uint16_t addr, const uint8_t buf[<a class="el" href="group__joybus.html#ga272b8f55fa8c16bac1524dda78c5ecef">JOYBUS_PAK_BLOCK_SIZE</a>])</td></tr>
-<tr class="memdesc:a589d1d5cc4900c3b33f24381394d1d43"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called when a host requests to write a 32-byte block to the pak.  <br /></td></tr>
+<tr class="memitem:af1c77df93296ed5adc3f912067915206" id="r_af1c77df93296ed5adc3f912067915206"><td class="memItemLeft" align="right" valign="top">int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af1c77df93296ed5adc3f912067915206">read_block</a> )(struct <a class="el" href="structjoybus__target__n64__pak.html">joybus_target_n64_pak</a> *pak, uint16_t addr, uint8_t buf[<a class="el" href="common_2n64__pak_8h.html#a08964a465da65cf3f766d66a7b55547b">JOYBUS_N64_PAK_BLOCK_SIZE</a>])</td></tr>
+<tr class="memdesc:af1c77df93296ed5adc3f912067915206"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called when a host requests to read a 32-byte block from the pak.  <br /></td></tr>
+<tr class="memitem:a468e8389f226089f6ac112bf0c7387e7" id="r_a468e8389f226089f6ac112bf0c7387e7"><td class="memItemLeft" align="right" valign="top">int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a468e8389f226089f6ac112bf0c7387e7">write_block</a> )(struct <a class="el" href="structjoybus__target__n64__pak.html">joybus_target_n64_pak</a> *pak, uint16_t addr, const uint8_t buf[<a class="el" href="common_2n64__pak_8h.html#a08964a465da65cf3f766d66a7b55547b">JOYBUS_N64_PAK_BLOCK_SIZE</a>])</td></tr>
+<tr class="memdesc:a468e8389f226089f6ac112bf0c7387e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called when a host requests to write a 32-byte block to the pak.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>API for implementing an N64 pak. </p>
 </div><a name="doc-variable-members" id="doc-variable-members"></a><h2 id="header-doc-variable-members" class="groupheader">Field Documentation</h2>
-<a id="a75e28126281b196764f736da75f3c567" name="a75e28126281b196764f736da75f3c567"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a75e28126281b196764f736da75f3c567">&#9670;&#160;</a></span>read_block</h2>
+<a id="af1c77df93296ed5adc3f912067915206" name="af1c77df93296ed5adc3f912067915206"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af1c77df93296ed5adc3f912067915206">&#9670;&#160;</a></span>read_block</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int(* joybus_target_n64_pak_api::read_block) (struct <a class="el" href="structjoybus__target__n64__pak.html">joybus_target_n64_pak</a> *pak, uint16_t addr, uint8_t buf[<a class="el" href="group__joybus.html#ga272b8f55fa8c16bac1524dda78c5ecef">JOYBUS_PAK_BLOCK_SIZE</a>])</td>
+          <td class="memname">int(* joybus_target_n64_pak_api::read_block) (struct <a class="el" href="structjoybus__target__n64__pak.html">joybus_target_n64_pak</a> *pak, uint16_t addr, uint8_t buf[<a class="el" href="common_2n64__pak_8h.html#a08964a465da65cf3f766d66a7b55547b">JOYBUS_N64_PAK_BLOCK_SIZE</a>])</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -149,14 +149,14 @@ Data Fields</h2></td></tr>
 
 </div>
 </div>
-<a id="a589d1d5cc4900c3b33f24381394d1d43" name="a589d1d5cc4900c3b33f24381394d1d43"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a589d1d5cc4900c3b33f24381394d1d43">&#9670;&#160;</a></span>write_block</h2>
+<a id="a468e8389f226089f6ac112bf0c7387e7" name="a468e8389f226089f6ac112bf0c7387e7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a468e8389f226089f6ac112bf0c7387e7">&#9670;&#160;</a></span>write_block</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int(* joybus_target_n64_pak_api::write_block) (struct <a class="el" href="structjoybus__target__n64__pak.html">joybus_target_n64_pak</a> *pak, uint16_t addr, const uint8_t buf[<a class="el" href="group__joybus.html#ga272b8f55fa8c16bac1524dda78c5ecef">JOYBUS_PAK_BLOCK_SIZE</a>])</td>
+          <td class="memname">int(* joybus_target_n64_pak_api::write_block) (struct <a class="el" href="structjoybus__target__n64__pak.html">joybus_target_n64_pak</a> *pak, uint16_t addr, const uint8_t buf[<a class="el" href="common_2n64__pak_8h.html#a08964a465da65cf3f766d66a7b55547b">JOYBUS_N64_PAK_BLOCK_SIZE</a>])</td>
         </tr>
       </table>
 </div><div class="memdoc">

@@ -119,8 +119,8 @@ Functions</h2></td></tr>
 <tr class="memdesc:ga601d941e540fbd156af1c6c5b77efa57"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read the current input state of an N64 controller or mouse, asynchronously.  <br /></td></tr>
 <tr class="memitem:ga9553fcb8e325eb4bbc5b5f38a62541bd" id="r_ga9553fcb8e325eb4bbc5b5f38a62541bd"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga9553fcb8e325eb4bbc5b5f38a62541bd">joybus_n64_pak_write</a> (struct <a class="el" href="structjoybus.html">joybus</a> *bus, uint16_t addr, const void *data, uint8_t response[<a class="el" href="commands_8h.html#a97b74c27a3d91a3039aea44f381a9ae3">JOYBUS_CMD_N64_PAK_WRITE_RX</a>])</td></tr>
 <tr class="memdesc:ga9553fcb8e325eb4bbc5b5f38a62541bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write a block of data to the pak attached to an N64 controller.  <br /></td></tr>
-<tr class="memitem:gaa1215f696e6adf31974290262421311b" id="r_gaa1215f696e6adf31974290262421311b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#gaa1215f696e6adf31974290262421311b">joybus_n64_pak_write_async</a> (struct <a class="el" href="structjoybus.html">joybus</a> *bus, uint16_t addr, const uint8_t data[<a class="el" href="group__joybus.html#ga272b8f55fa8c16bac1524dda78c5ecef">JOYBUS_PAK_BLOCK_SIZE</a>], uint8_t response[<a class="el" href="commands_8h.html#a97b74c27a3d91a3039aea44f381a9ae3">JOYBUS_CMD_N64_PAK_WRITE_RX</a>], <a class="el" href="group__joybus.html#ga3a369b3d9cde58960068a67ee3d3c092">joybus_transfer_cb</a> callback, void *user_data)</td></tr>
-<tr class="memdesc:gaa1215f696e6adf31974290262421311b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write a block of data to the pak attached to an N64 controller, asynchronously.  <br /></td></tr>
+<tr class="memitem:ga43249a82fda178a207b6aca22ee56ee1" id="r_ga43249a82fda178a207b6aca22ee56ee1"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga43249a82fda178a207b6aca22ee56ee1">joybus_n64_pak_write_async</a> (struct <a class="el" href="structjoybus.html">joybus</a> *bus, uint16_t addr, const uint8_t data[<a class="el" href="common_2n64__pak_8h.html#a08964a465da65cf3f766d66a7b55547b">JOYBUS_N64_PAK_BLOCK_SIZE</a>], uint8_t response[<a class="el" href="commands_8h.html#a97b74c27a3d91a3039aea44f381a9ae3">JOYBUS_CMD_N64_PAK_WRITE_RX</a>], <a class="el" href="group__joybus.html#ga3a369b3d9cde58960068a67ee3d3c092">joybus_transfer_cb</a> callback, void *user_data)</td></tr>
+<tr class="memdesc:ga43249a82fda178a207b6aca22ee56ee1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write a block of data to the pak attached to an N64 controller, asynchronously.  <br /></td></tr>
 <tr class="memitem:gaae68a07499384bcb3345c0b69f14576f" id="r_gaae68a07499384bcb3345c0b69f14576f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#gaae68a07499384bcb3345c0b69f14576f">joybus_n64_pak_read</a> (struct <a class="el" href="structjoybus.html">joybus</a> *bus, uint16_t addr, uint8_t response[<a class="el" href="commands_8h.html#acf6593053a3704cf8c5a5a77c3490601">JOYBUS_CMD_N64_PAK_READ_RX</a>])</td></tr>
 <tr class="memdesc:gaae68a07499384bcb3345c0b69f14576f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read a block of data from the pak attached to an N64 controller.  <br /></td></tr>
 <tr class="memitem:gaf10e46e01687e0ca698d27a1fdfe8f40" id="r_gaf10e46e01687e0ca698d27a1fdfe8f40"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#gaf10e46e01687e0ca698d27a1fdfe8f40">joybus_n64_pak_read_async</a> (struct <a class="el" href="structjoybus.html">joybus</a> *bus, uint16_t addr, uint8_t response[<a class="el" href="commands_8h.html#acf6593053a3704cf8c5a5a77c3490601">JOYBUS_CMD_N64_PAK_READ_RX</a>], <a class="el" href="group__joybus.html#ga3a369b3d9cde58960068a67ee3d3c092">joybus_transfer_cb</a> callback, void *user_data)</td></tr>
@@ -260,8 +260,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="gaa1215f696e6adf31974290262421311b" name="gaa1215f696e6adf31974290262421311b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaa1215f696e6adf31974290262421311b">&#9670;&#160;</a></span>joybus_n64_pak_write_async()</h2>
+<a id="ga43249a82fda178a207b6aca22ee56ee1" name="ga43249a82fda178a207b6aca22ee56ee1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga43249a82fda178a207b6aca22ee56ee1">&#9670;&#160;</a></span>joybus_n64_pak_write_async()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -279,7 +279,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const uint8_t</td>          <td class="paramname"><span class="paramname"><em>data</em></span>[JOYBUS_PAK_BLOCK_SIZE], </td>
+          <td class="paramtype">const uint8_t</td>          <td class="paramname"><span class="paramname"><em>data</em></span>[JOYBUS_N64_PAK_BLOCK_SIZE], </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
