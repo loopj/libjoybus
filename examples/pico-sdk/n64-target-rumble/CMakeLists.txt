@@ -1,0 +1,23 @@
+cmake_minimum_required(VERSION 3.20)
+
+include($ENV{PICO_SDK_PATH}/external/pico_sdk_import.cmake)
+
+project(n64-target-rumble C CXX ASM)
+
+pico_sdk_init()
+
+# Define platform for libjoybus
+set(JOYBUS_BACKEND rp2xxx)
+
+# Add libjoybus as a subdirectory
+set(LIBJOYBUS_ROOT ${CMAKE_CURRENT_LIST_DIR}/../../..)
+add_subdirectory(${LIBJOYBUS_ROOT} ${CMAKE_BINARY_DIR}/_deps/libjoybus-build)
+
+# Create the executable
+add_executable(n64-target-rumble main.c)
+
+# Link with the standard library and libjoybus
+target_link_libraries(n64-target-rumble pico_stdlib joybus)
+
+# Generate additional binary outputs
+pico_add_extra_outputs(n64-target-rumble)

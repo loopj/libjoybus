@@ -17,4 +17,5 @@
 #include <joybus/target/gcn_controller.h>
 #include <joybus/target/n64_controller.h>
 #include <joybus/target/n64_pak_controller.h>
+#include <joybus/target/n64_pak_rumble.h>
 #include <joybus/target/pixelfx_gameid.h>
