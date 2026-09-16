@@ -1,5 +1,5 @@
 /**
- * @defgroup joybus_host_n64_rumble_pak N64 Rumble Pak Commands
+ * @defgroup joybus_host_n64_pak_rumble N64 Rumble Pak Commands
  * @ingroup joybus_host_n64
  *
  * @{
@@ -15,7 +15,7 @@
  * @param bus the bus with a controller with a rumble pak attached
  * @return 0 on success, a negative joybus_error on failure
  */
-int joybus_n64_rumble_pak_init(struct joybus *bus);
+int joybus_n64_pak_rumble_init(struct joybus *bus);
 
 /**
  * Initialize a rumble pak, asynchronously.
@@ -25,7 +25,7 @@ int joybus_n64_rumble_pak_init(struct joybus *bus);
  * @param user_data user data to pass to the callback function
  * @return 0 if the transfer was started, a negative joybus_error otherwise
  */
-int joybus_n64_rumble_pak_init_async(struct joybus *bus, joybus_transfer_cb callback, void *user_data);
+int joybus_n64_pak_rumble_init_async(struct joybus *bus, joybus_transfer_cb callback, void *user_data);
 
 /**
  * Start the motor on a rumble pak.
@@ -33,7 +33,7 @@ int joybus_n64_rumble_pak_init_async(struct joybus *bus, joybus_transfer_cb call
  * @param bus the bus with a controller with a rumble pak attached
  * @return 0 on success, a negative joybus_error on failure
  */
-int joybus_n64_rumble_pak_start(struct joybus *bus);
+int joybus_n64_pak_rumble_start(struct joybus *bus);
 
 /**
  * Start the motor on a rumble pak, asynchronously.
@@ -43,7 +43,7 @@ int joybus_n64_rumble_pak_start(struct joybus *bus);
  * @param user_data user data to pass to the callback function
  * @return 0 if the transfer was started, a negative joybus_error otherwise
  */
-int joybus_n64_rumble_pak_start_async(struct joybus *bus, joybus_transfer_cb callback, void *user_data);
+int joybus_n64_pak_rumble_start_async(struct joybus *bus, joybus_transfer_cb callback, void *user_data);
 
 /**
  * Stop the motor on a rumble pak.
@@ -51,7 +51,7 @@ int joybus_n64_rumble_pak_start_async(struct joybus *bus, joybus_transfer_cb cal
  * @param bus the bus with a controller with a rumble pak attached
  * @return 0 on success, a negative joybus_error on failure
  */
-int joybus_n64_rumble_pak_stop(struct joybus *bus);
+int joybus_n64_pak_rumble_stop(struct joybus *bus);
 
 /**
  * Stop the motor on a rumble pak, asynchronously.
@@ -61,6 +61,6 @@ int joybus_n64_rumble_pak_stop(struct joybus *bus);
  * @param user_data user data to pass to the callback function
  * @return 0 if the transfer was started, a negative joybus_error otherwise
  */
-int joybus_n64_rumble_pak_stop_async(struct joybus *bus, joybus_transfer_cb callback, void *user_data);
+int joybus_n64_pak_rumble_stop_async(struct joybus *bus, joybus_transfer_cb callback, void *user_data);
 
 /** @} */

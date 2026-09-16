@@ -12,7 +12,7 @@
 #include <joybus/host/common.h>
 #include <joybus/host/gcn.h>
 #include <joybus/host/n64.h>
-#include <joybus/host/n64_rumble_pak.h>
+#include <joybus/host/n64_pak_rumble.h>
 #include <joybus/target/gcn_controller.h>
 #include <joybus/target/n64_controller.h>
 #include <joybus/target/pixelfx_gameid.h>

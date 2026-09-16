@@ -6,20 +6,20 @@
 #include <joybus/target.h>
 #include <joybus/target/n64_controller.h>
 #include <joybus/target/n64_pak.h>
-#include <joybus/target/n64_rumble_pak.h>
+#include <joybus/target/n64_pak_rumble.h>
 
 #include "unity.h"
 
 #include "harness.h"
 
 // The rumble pak under test, and a controller to host it for the wire tests
-static struct joybus_target_n64_rumble_pak rumble;
+static struct joybus_target_n64_pak_rumble rumble;
 static struct joybus_target_n64_controller controller;
 
 // Spy for the motor state change callback
 static int motor_count;
 static bool motor_last_state;
-static void on_motor_change(struct joybus_target_n64_rumble_pak *pak, bool active)
+static void on_motor_change(struct joybus_target_n64_pak_rumble *pak, bool active)
 {
   motor_count++;
   motor_last_state = active;
@@ -74,8 +74,8 @@ static void wire_pak_write(uint16_t block_addr, uint8_t fill)
 void setUp(void)
 {
   // Recreate the pak from scratch and wire up the motor spy
-  joybus_target_n64_rumble_pak_init(&rumble);
-  joybus_target_n64_rumble_pak_set_motor_cb(&rumble, on_motor_change);
+  joybus_target_n64_pak_rumble_init(&rumble);
+  joybus_target_n64_pak_rumble_set_motor_cb(&rumble, on_motor_change);
 
   // Host the pak in a controller for the wire-level tests; attaching before
   // registration reports it present with no change flag to acknowledge
@@ -417,7 +417,7 @@ static void test_motor_write_without_callback(void)
 {
   uint8_t buf[JOYBUS_PAK_BLOCK_SIZE];
 
-  joybus_target_n64_rumble_pak_set_motor_cb(&rumble, NULL);
+  joybus_target_n64_pak_rumble_set_motor_cb(&rumble, NULL);
 
   memset(buf, 0x80, sizeof(buf));
   pak_write(0x8000, buf);
