@@ -583,9 +583,9 @@ static int joybus_esp32_enable(struct joybus *bus)
     return -JOYBUS_ERR_BUSY;
   joybus_rmt_claimed_channels |= claim_mask;
 
-  // Allocate the RMT interrupt handler
+  // Level 3 stops a lower level handler, such as the ESP32-H2 BLE PHY interrupt, delaying a byte
   uint32_t intr_mask = RMT_LL_EVENT_TX_MASK(data->rmt_tx_ch) | RMT_LL_EVENT_RX_MASK(data->rmt_rx_ch);
-  if (esp_intr_alloc_intrstatus(JOYBUS_RMT_GROUP0.irq, ESP_INTR_FLAG_SHARED | ESP_INTR_FLAG_LOWMED,
+  if (esp_intr_alloc_intrstatus(JOYBUS_RMT_GROUP0.irq, ESP_INTR_FLAG_SHARED | ESP_INTR_FLAG_LEVEL3,
                                 (uint32_t)rmt_ll_get_interrupt_status_reg(&RMT), intr_mask, rmt_irq_handler, bus,
                                 &data->rmt_intr) != 0) {
     joybus_rmt_claimed_channels &= ~claim_mask;
