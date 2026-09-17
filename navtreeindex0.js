@@ -175,8 +175,9 @@ var NAVTREEINDEX0 =
 "group__joybus.html#gga47435eba4c98726f93fdae3c8bb9fd76adc97e17cb4f7168b0f71926a6d357aac":[6,0,25,4],
 "group__joybus__backend__esp32.html":[6,3,0],
 "group__joybus__backend__esp32.html#ga45f78ac26c56fb7282b35aba499605c1":[6,3,0,3],
-"group__joybus__backend__esp32.html#ga81b32b09c9d5308fb2117c0793ce1a6e":[6,3,0,4],
-"group__joybus__backend__esp32.html#ga9fde6e8147c1ac2f9ed6ee4e077afc20":[6,3,0,5],
+"group__joybus__backend__esp32.html#ga7b07ce146ec942aa1a5194ba15a09a5f":[6,3,0,4],
+"group__joybus__backend__esp32.html#ga81b32b09c9d5308fb2117c0793ce1a6e":[6,3,0,5],
+"group__joybus__backend__esp32.html#ga9fde6e8147c1ac2f9ed6ee4e077afc20":[6,3,0,6],
 "group__joybus__backend__gecko.html":[6,3,1],
 "group__joybus__backend__gecko.html#ga36d5bebe9674f1d99933a9561eba8c8b":[6,3,1,5],
 "group__joybus__backend__gecko.html#ga9f354a31f6221e2ccad2a803a899da42":[6,3,1,3],
@@ -248,6 +249,5 @@ var NAVTREEINDEX0 =
 "group__joybus__target__n64__controller.html#gad33495e7ca669aa18745ef1074353624":[6,2,1,3],
 "group__joybus__target__n64__controller.html#gadae4e8dc29793918a7e9834726e7113f":[6,2,1,4],
 "group__joybus__target__n64__pak.html":[6,2,1,0],
-"group__joybus__target__n64__pak.html#ga0673982f1d0e2879e6ac81021580a1f1":[6,2,1,0,4],
-"group__joybus__target__n64__pak__controller.html":[6,2,1,0,0]
+"group__joybus__target__n64__pak.html#ga0673982f1d0e2879e6ac81021580a1f1":[6,2,1,0,4]
 };

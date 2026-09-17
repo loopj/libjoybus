@@ -309,7 +309,11 @@ Placing Code in RAM</h2>
 <div class="line">  gpio_put(MOTOR_PIN, state);</div>
 <div class="line">}</div>
 <div class="ttc" id="agroup__joybus_html_gaa0e9a2c10cd9d4e85a03c3977bdcdec4"><div class="ttname"><a href="group__joybus.html#gaa0e9a2c10cd9d4e85a03c3977bdcdec4">JOYBUS_RAM_FUNC</a></div><div class="ttdeci">#define JOYBUS_RAM_FUNC</div><div class="ttdoc">Attributes for a latency-critical function, such as a target command handler.</div><div class="ttdef"><b>Definition</b> attributes.h:40</div></div>
-</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="autotoc_md15"></a>
+</div><!-- fragment --><h3 class="doxsection"><a class="anchor" id="autotoc_md15"></a>
+Flash Writes on ESP32</h3>
+<p>On ESP32 devices, writing to flash while the bus is active will cause missed commands in target mode and transfer timeouts in host mode. ESP-IDF disables the cache for the whole operation and masks every interrupt that is not marked cache-safe, so the bus receives nothing until the write finishes. This includes NVS writes, such as storing Bluetooth pairing keys.</p>
+<p>Disable the bus around the write where you can. When you cannot, define <span class="tt">JOYBUS_ESP32_ISR_IRAM_SAFE=1</span> to keep the interrupt running through a flash write. Every callback the bus invokes must then be marked <span class="tt">JOYBUS_RAM_FUNC</span>, including the transfer callback passed to host functions.</p>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md16"></a>
 License</h1>
 <p>This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details. </p>
 </div></div><!-- PageDoc -->

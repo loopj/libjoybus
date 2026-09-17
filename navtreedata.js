@@ -40,9 +40,11 @@ var NAVTREE =
       [ "Initializing the Joybus", "index.html#autotoc_md11", null ],
       [ "Communicating with Controllers", "index.html#autotoc_md12", null ],
       [ "Emulating a Controller", "index.html#autotoc_md13", null ],
-      [ "Placing Code in RAM", "index.html#autotoc_md14", null ]
+      [ "Placing Code in RAM", "index.html#autotoc_md14", [
+        [ "Flash Writes on ESP32", "index.html#autotoc_md15", null ]
+      ] ]
     ] ],
-    [ "License", "index.html#autotoc_md15", null ],
+    [ "License", "index.html#autotoc_md16", null ],
     [ "Topics", "topics.html", "topics" ],
     [ "Data Structures", "annotated.html", [
       [ "Data Structures", "annotated.html", "annotated_dup" ],
@@ -69,7 +71,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"group__joybus__target__n64__pak__controller.html#ga10dc4b0723f71e851296b5163c0bda58"
+"group__joybus__target__n64__pak__controller.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';

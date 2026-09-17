@@ -1,5 +1,6 @@
 var NAVTREEINDEX1 =
 {
+"group__joybus__target__n64__pak__controller.html":[6,2,1,0,0],
 "group__joybus__target__n64__pak__controller.html#ga10dc4b0723f71e851296b5163c0bda58":[6,2,1,0,0,10],
 "group__joybus__target__n64__pak__controller.html#ga429e4eec9f26a74c2c3d5b94e5538687":[6,2,1,0,0,1],
 "group__joybus__target__n64__pak__controller.html#ga4916224a0e147a2e28199d360fa005dc":[6,2,1,0,0,6],
@@ -75,7 +76,8 @@ var NAVTREEINDEX1 =
 "index.html#autotoc_md12":[4,1],
 "index.html#autotoc_md13":[4,2],
 "index.html#autotoc_md14":[4,3],
-"index.html#autotoc_md15":[5],
+"index.html#autotoc_md15":[4,3,0],
+"index.html#autotoc_md16":[5],
 "index.html#autotoc_md2":[1],
 "index.html#autotoc_md3":[2],
 "index.html#autotoc_md4":[3],

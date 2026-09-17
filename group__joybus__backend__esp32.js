@@ -9,6 +9,7 @@ var group__joybus__backend__esp32 =
       [ "rmt_tx_ch", "structjoybus__esp32__config.html#a975651f033ebe5814afc6baf9f239991", null ]
     ] ],
     [ "JOYBUS_ESP32", "group__joybus__backend__esp32.html#ga45f78ac26c56fb7282b35aba499605c1", null ],
+    [ "JOYBUS_ESP32_ISR_IRAM_SAFE", "group__joybus__backend__esp32.html#ga7b07ce146ec942aa1a5194ba15a09a5f", null ],
     [ "joybus_esp32_config_default", "group__joybus__backend__esp32.html#ga81b32b09c9d5308fb2117c0793ce1a6e", null ],
     [ "joybus_esp32_init", "group__joybus__backend__esp32.html#ga9fde6e8147c1ac2f9ed6ee4e077afc20", null ]
 ];

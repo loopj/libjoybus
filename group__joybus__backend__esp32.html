@@ -122,6 +122,8 @@ Data Structures</h2></td></tr>
 Macros</h2></td></tr>
 <tr class="memitem:ga45f78ac26c56fb7282b35aba499605c1" id="r_ga45f78ac26c56fb7282b35aba499605c1"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga45f78ac26c56fb7282b35aba499605c1">JOYBUS_ESP32</a>(bus)</td></tr>
 <tr class="memdesc:ga45f78ac26c56fb7282b35aba499605c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro to cast a generic Joybus instance to an ESP32 Joybus instance.  <br /></td></tr>
+<tr class="memitem:ga7b07ce146ec942aa1a5194ba15a09a5f" id="r_ga7b07ce146ec942aa1a5194ba15a09a5f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga7b07ce146ec942aa1a5194ba15a09a5f">JOYBUS_ESP32_ISR_IRAM_SAFE</a>&#160;&#160;&#160;0</td></tr>
+<tr class="memdesc:ga7b07ce146ec942aa1a5194ba15a09a5f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether the application's Joybus callbacks are safe to run with the cache disabled.  <br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
@@ -148,9 +150,26 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line">((<span class="keyword">struct </span><a class="code hl_struct" href="structjoybus__esp32.html">joybus_esp32</a> *)(bus))</div>
-<div class="ttc" id="astructjoybus__esp32_html"><div class="ttname"><a href="structjoybus__esp32.html">joybus_esp32</a></div><div class="ttdoc">An ESP32 Joybus instance.</div><div class="ttdef"><b>Definition</b> esp32.h:71</div></div>
+<div class="ttc" id="astructjoybus__esp32_html"><div class="ttname"><a href="structjoybus__esp32.html">joybus_esp32</a></div><div class="ttdoc">An ESP32 Joybus instance.</div><div class="ttdef"><b>Definition</b> esp32.h:86</div></div>
 </div><!-- fragment -->
 <p>Macro to cast a generic Joybus instance to an ESP32 Joybus instance. </p>
+
+</div>
+</div>
+<a id="ga7b07ce146ec942aa1a5194ba15a09a5f" name="ga7b07ce146ec942aa1a5194ba15a09a5f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga7b07ce146ec942aa1a5194ba15a09a5f">&#9670;&#160;</a></span>JOYBUS_ESP32_ISR_IRAM_SAFE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define JOYBUS_ESP32_ISR_IRAM_SAFE&#160;&#160;&#160;0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Whether the application's Joybus callbacks are safe to run with the cache disabled. </p>
+<p>Disabled by default. Define as 1 to keep the Joybus interrupt live during a flash write, which otherwise masks it for the whole operation. Every callback the bus invokes must then be marked <a class="el" href="group__joybus.html#gaa0e9a2c10cd9d4e85a03c3977bdcdec4" title="Attributes for a latency-critical function, such as a target command handler.">JOYBUS_RAM_FUNC</a>, or it faults the first time one runs with the cache off. </p>
 
 </div>
 </div>
