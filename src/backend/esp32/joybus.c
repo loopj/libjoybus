@@ -229,6 +229,9 @@ static IRAM_ATTR void enter_target_rx_mode(struct joybus *bus)
 {
   struct joybus_esp32_data *data = &JOYBUS_ESP32(bus)->data;
 
+  // Re-resolve the floor here, off the reply path, since frequency scaling changes the cycle rate
+  data->reply_floor_cycles = (uint32_t)TARGET_REPLY_FLOOR_NS * esp_rom_get_cpu_ticks_per_us() / 1000;
+
   data->read_buf   = bus->command_buffer;
   data->read_len   = JOYBUS_BLOCK_SIZE;
   data->read_count = 0;
@@ -566,9 +569,6 @@ static int joybus_esp32_enable(struct joybus *bus)
     .intr_type    = GPIO_INTR_DISABLE,
   };
   gpio_config(&io);
-
-  // Resolve the response floor to CPU cycles for the busy-wait in the target reply path
-  data->reply_floor_cycles = (uint32_t)TARGET_REPLY_FLOOR_NS * esp_rom_get_cpu_ticks_per_us() / 1000;
 
   // Get the RMT source clock rate (ticks/sec)
   uint32_t rmt_clk_freq = 0;
