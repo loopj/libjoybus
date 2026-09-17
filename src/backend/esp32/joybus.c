@@ -256,6 +256,9 @@ static IRAM_ATTR void transfer_start(struct joybus *bus)
 {
   struct joybus_esp32_data *data = &JOYBUS_ESP32(bus)->data;
 
+  // Transition state before starting the write, so the handler never sees a transfer in progress as idle
+  data->state = BUS_STATE_HOST_TX;
+
   // Disable RX and clear interrupt status
   rmt_ll_rx_enable(&RMT, data->rmt_rx_ch, false);
   rmt_ll_clear_interrupt_status(&RMT, RMT_LL_EVENT_RX_THRES(data->rmt_rx_ch) | RMT_LL_EVENT_RX_DONE(data->rmt_rx_ch) |
@@ -285,9 +288,6 @@ static IRAM_ATTR void transfer_start(struct joybus *bus)
 
   // Start the write
   start_write(bus);
-
-  // Transition state
-  data->state = BUS_STATE_HOST_TX;
 }
 
 // Finish a host transfer and return to host idle state
