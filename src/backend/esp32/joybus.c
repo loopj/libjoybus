@@ -76,6 +76,16 @@ enum {
 // Ensure we never start a target reply (much) sooner than an OEM controller
 #define TARGET_REPLY_FLOOR_NS 1500
 
+// Level 3 stops a lower level handler, such as the ESP32-H2 BLE PHY interrupt, delaying a byte
+#define INTR_FLAGS_BASE (ESP_INTR_FLAG_SHARED | ESP_INTR_FLAG_LEVEL3)
+
+// Keep the handler live while the cache is disabled, which the app opts into for its own callbacks
+#if JOYBUS_ESP32_ISR_IRAM_SAFE
+#define INTR_FLAGS (INTR_FLAGS_BASE | ESP_INTR_FLAG_IRAM)
+#else
+#define INTR_FLAGS INTR_FLAGS_BASE
+#endif
+
 // 2 blocks, the wrap boundary for the TX refill
 #define TX_MEM_SYMS (2 * SOC_RMT_MEM_WORDS_PER_CHANNEL)
 #if TX_MEM_SYMS % SYMBOLS_PER_BYTE != 0
@@ -229,6 +239,9 @@ static IRAM_ATTR void enter_target_rx_mode(struct joybus *bus)
 {
   struct joybus_esp32_data *data = &JOYBUS_ESP32(bus)->data;
 
+  // Re-resolve the floor here, off the reply path, since frequency scaling changes the cycle rate
+  data->reply_floor_cycles = (uint32_t)TARGET_REPLY_FLOOR_NS * esp_rom_get_cpu_ticks_per_us() / 1000;
+
   data->read_buf   = bus->command_buffer;
   data->read_len   = JOYBUS_BLOCK_SIZE;
   data->read_count = 0;
@@ -255,6 +268,9 @@ static IRAM_ATTR void enter_target_rx_mode(struct joybus *bus)
 static IRAM_ATTR void transfer_start(struct joybus *bus)
 {
   struct joybus_esp32_data *data = &JOYBUS_ESP32(bus)->data;
+
+  // Transition state before starting the write, so the handler never sees a transfer in progress as idle
+  data->state = BUS_STATE_HOST_TX;
 
   // Disable RX and clear interrupt status
   rmt_ll_rx_enable(&RMT, data->rmt_rx_ch, false);
@@ -285,9 +301,6 @@ static IRAM_ATTR void transfer_start(struct joybus *bus)
 
   // Start the write
   start_write(bus);
-
-  // Transition state
-  data->state = BUS_STATE_HOST_TX;
 }
 
 // Finish a host transfer and return to host idle state
@@ -567,9 +580,6 @@ static int joybus_esp32_enable(struct joybus *bus)
   };
   gpio_config(&io);
 
-  // Resolve the response floor to CPU cycles for the busy-wait in the target reply path
-  data->reply_floor_cycles = (uint32_t)TARGET_REPLY_FLOOR_NS * esp_rom_get_cpu_ticks_per_us() / 1000;
-
   // Get the RMT source clock rate (ticks/sec)
   uint32_t rmt_clk_freq = 0;
   if (esp_clk_tree_src_get_freq_hz((soc_module_clk_t)RMT_CLK_SRC_DEFAULT, ESP_CLK_TREE_SRC_FREQ_PRECISION_CACHED,
@@ -585,9 +595,8 @@ static int joybus_esp32_enable(struct joybus *bus)
 
   // Allocate the RMT interrupt handler
   uint32_t intr_mask = RMT_LL_EVENT_TX_MASK(data->rmt_tx_ch) | RMT_LL_EVENT_RX_MASK(data->rmt_rx_ch);
-  if (esp_intr_alloc_intrstatus(JOYBUS_RMT_GROUP0.irq, ESP_INTR_FLAG_SHARED | ESP_INTR_FLAG_LOWMED,
-                                (uint32_t)rmt_ll_get_interrupt_status_reg(&RMT), intr_mask, rmt_irq_handler, bus,
-                                &data->rmt_intr) != 0) {
+  if (esp_intr_alloc_intrstatus(JOYBUS_RMT_GROUP0.irq, INTR_FLAGS, (uint32_t)rmt_ll_get_interrupt_status_reg(&RMT),
+                                intr_mask, rmt_irq_handler, bus, &data->rmt_intr) != 0) {
     joybus_rmt_claimed_channels &= ~claim_mask;
     return -JOYBUS_ERR_NOT_SUPPORTED;
   }

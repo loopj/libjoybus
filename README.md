@@ -240,6 +240,19 @@ static void on_motor_change(struct joybus_target_gcn_controller *controller, uin
 }
 ```
 
+#### Flash Writes on ESP32
+
+On ESP32 devices, writing to flash while the bus is active will cause missed
+commands in target mode and transfer timeouts in host mode. ESP-IDF disables the
+cache for the whole operation and masks every interrupt that is not marked
+cache-safe, so the bus receives nothing until the write finishes. This includes
+NVS writes, such as storing Bluetooth pairing keys.
+
+Disable the bus around the write where you can. When you cannot, define
+`JOYBUS_ESP32_ISR_IRAM_SAFE=1` to keep the interrupt running through a flash
+write. Every callback the bus invokes must then be marked `JOYBUS_RAM_FUNC`,
+including the transfer callback passed to host functions.
+
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
