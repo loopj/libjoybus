@@ -23,6 +23,21 @@
  */
 #define JOYBUS_ESP32(bus) ((struct joybus_esp32 *)(bus))
 
+/**
+ * Whether the application's Joybus callbacks are safe to run with the cache
+ * disabled. Disabled by default. Define as 1 to keep the Joybus interrupt live
+ * during a flash write, which otherwise masks it for the whole operation. Every
+ * callback the bus invokes must then be marked ::JOYBUS_RAM_FUNC, or it faults
+ * the first time one runs with the cache off.
+ */
+#ifndef JOYBUS_ESP32_ISR_IRAM_SAFE
+#define JOYBUS_ESP32_ISR_IRAM_SAFE 0
+#endif
+
+#if JOYBUS_ESP32_ISR_IRAM_SAFE && !JOYBUS_USE_RAM_FUNCS
+#error "JOYBUS_ESP32_ISR_IRAM_SAFE requires JOYBUS_USE_RAM_FUNCS"
+#endif
+
 // Private implementation details - do not access directly
 struct joybus_esp32_data {
   // Bus state
