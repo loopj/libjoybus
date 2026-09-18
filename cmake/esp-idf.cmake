@@ -8,13 +8,15 @@ file(
 # ESP-IDF v5 vs v6 compatibility
 if(IDF_VERSION_MAJOR GREATER_EQUAL 6)
   set(JOYBUS_RMT_HAL_COMPONENT esp_hal_rmt)
+  set(JOYBUS_GPIO_HAL_COMPONENT esp_hal_gpio)
 else()
   set(JOYBUS_RMT_HAL_COMPONENT hal)
+  set(JOYBUS_GPIO_HAL_COMPONENT hal)
 endif()
 
 idf_component_register(
   SRCS ${SOURCES} ${LIBJOYBUS_ROOT_DIR}/src/backend/esp32/joybus.c
   INCLUDE_DIRS ${LIBJOYBUS_ROOT_DIR}/include
-  REQUIRES esp_driver_gpio esp_timer esp_hw_support
-  PRIV_REQUIRES soc esp_rom ${JOYBUS_RMT_HAL_COMPONENT}
+  REQUIRES esp_timer esp_hw_support soc ${JOYBUS_GPIO_HAL_COMPONENT}
+  PRIV_REQUIRES esp_rom ${JOYBUS_RMT_HAL_COMPONENT}
 )

@@ -1,10 +1,20 @@
 name: Build Gecko Examples
 
+# Build only when the shared code, the gecko backend, or the Gecko examples change
 on:
-  push:
-    branches: [main]
   pull_request:
     branches: [main]
+    paths:
+      - "src/*.c"
+      - "src/host/**"
+      - "src/target/**"
+      - "src/backend/gecko_sdk/**"
+      - "include/joybus/**"
+      - "CMakeLists.txt"
+      - "libjoybus.slcc"
+      - "libjoybus.slce"
+      - "examples/gecko/**"
+      - ".github/workflows/gecko_examples.yml"
   workflow_dispatch:
 
 env:

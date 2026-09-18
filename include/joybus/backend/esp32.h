@@ -14,7 +14,7 @@
 
 #include <esp_intr_alloc.h>
 #include <esp_timer.h>
-#include <driver/gpio.h>
+#include <soc/gpio_num.h>
 
 #include <joybus/bus.h>
 
