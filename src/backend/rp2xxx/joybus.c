@@ -176,8 +176,14 @@ static inline void enter_idle_mode(struct joybus *bus, bool await_idle)
     // Restart the state machine
     // TODO: Consider performing the state machine reset only when strictly needed
     pio_sm_set_enabled(data->pio, data->pio_sm, false);
-    pio_sm_clear_fifos(data->pio, data->pio_sm);
+
+    // Stop the response transfer before draining, so it cannot refill the FIFO it is feeding
     dma_channel_abort(data->dma_chan_tx);
+    pio_sm_clear_fifos(data->pio, data->pio_sm);
+
+    // Drop the byte interrupt for anything received while waiting, since its data has been discarded
+    pio_interrupt_clear(data->pio, data->pio_sm);
+
     pio_sm_restart(data->pio, data->pio_sm);
     pio_sm_exec(data->pio, data->pio_sm, pio_encode_jmp(pio_state[PIO_NUM(data->pio)].target_offset));
     pio_sm_set_enabled(data->pio, data->pio_sm, true);
@@ -298,6 +304,10 @@ static inline void host_byte_received(struct joybus *bus)
 static inline void target_byte_received(struct joybus *bus)
 {
   struct joybus_rp2xxx_data *data = &JOYBUS_RP2XXX(bus)->data;
+
+  // Reading an empty FIFO returns undefined data, so never treat it as a received byte
+  if (pio_sm_is_rx_fifo_empty(data->pio, data->pio_sm))
+    return;
 
   // Cancel the transfer timeout (only armed after the first byte)
   if (data->read_count > 0)
