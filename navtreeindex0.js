@@ -184,6 +184,7 @@ var NAVTREEINDEX0 =
 "group__joybus__backend__gecko.html#gacf277c10513cdda2d0e4440472893aa2":[6,3,1,4],
 "group__joybus__backend__rp2xxx.html":[6,3,2],
 "group__joybus__backend__rp2xxx.html#ga1d61948754428d35bb965c8a00dfa9c4":[6,3,2,5],
+"group__joybus__backend__rp2xxx.html#ga3cad1882206891892486fd20ccdc7832":[6,3,2,6],
 "group__joybus__backend__rp2xxx.html#gab1758068d3e969e95a8e5a0cc1db4f3a":[6,3,2,3],
 "group__joybus__backend__rp2xxx.html#gaee0cd8ab837f829a59e11e70d4db487b":[6,3,2,4],
 "group__joybus__backends.html":[6,3],
@@ -248,6 +249,5 @@ var NAVTREEINDEX0 =
 "group__joybus__target__n64__controller.html#gac6bb359d4fa66931efa6aea8dbd483d2":[6,2,1,7],
 "group__joybus__target__n64__controller.html#gad33495e7ca669aa18745ef1074353624":[6,2,1,3],
 "group__joybus__target__n64__controller.html#gadae4e8dc29793918a7e9834726e7113f":[6,2,1,4],
-"group__joybus__target__n64__pak.html":[6,2,1,0],
-"group__joybus__target__n64__pak.html#ga0673982f1d0e2879e6ac81021580a1f1":[6,2,1,0,4]
+"group__joybus__target__n64__pak.html":[6,2,1,0]
 };

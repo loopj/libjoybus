@@ -125,6 +125,8 @@ Macros</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:ga3cad1882206891892486fd20ccdc7832" id="r_ga3cad1882206891892486fd20ccdc7832"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga3cad1882206891892486fd20ccdc7832">joybus_rp2xxx_set_irq_handler_sdk</a> (uint irq_num, irq_handler_t handler)</td></tr>
+<tr class="memdesc:ga3cad1882206891892486fd20ccdc7832"><td class="mdescLeft">&#160;</td><td class="mdescRight">Install an interrupt handler through the pico-sdk.  <br /></td></tr>
 <tr class="memitem:gaee0cd8ab837f829a59e11e70d4db487b" id="r_gaee0cd8ab837f829a59e11e70d4db487b"><td class="memItemLeft" align="right" valign="top">static struct <a class="el" href="structjoybus__rp2xxx__config.html">joybus_rp2xxx_config</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#gaee0cd8ab837f829a59e11e70d4db487b">joybus_rp2xxx_config_default</a> (uint8_t gpio)</td></tr>
 <tr class="memdesc:gaee0cd8ab837f829a59e11e70d4db487b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build a RP2xxx config with default values.  <br /></td></tr>
 <tr class="memitem:ga1d61948754428d35bb965c8a00dfa9c4" id="r_ga1d61948754428d35bb965c8a00dfa9c4"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga1d61948754428d35bb965c8a00dfa9c4">joybus_rp2xxx_init</a> (struct <a class="el" href="structjoybus__rp2xxx.html">joybus_rp2xxx</a> *rp2xxx_bus, struct <a class="el" href="structjoybus__rp2xxx__config.html">joybus_rp2xxx_config</a> config)</td></tr>
@@ -148,7 +150,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line">((<span class="keyword">struct </span><a class="code hl_struct" href="structjoybus__rp2xxx.html">joybus_rp2xxx</a> *)(bus))</div>
-<div class="ttc" id="astructjoybus__rp2xxx_html"><div class="ttname"><a href="structjoybus__rp2xxx.html">joybus_rp2xxx</a></div><div class="ttdoc">A RP2xxx Joybus instance.</div><div class="ttdef"><b>Definition</b> rp2xxx.h:63</div></div>
+<div class="ttc" id="astructjoybus__rp2xxx_html"><div class="ttname"><a href="structjoybus__rp2xxx.html">joybus_rp2xxx</a></div><div class="ttdoc">A RP2xxx Joybus instance.</div><div class="ttdef"><b>Definition</b> rp2xxx.h:67</div></div>
 </div><!-- fragment -->
 <p>Macro to cast a generic Joybus instance to a RP2xxx Joybus instance. </p>
 
@@ -179,6 +181,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Build a RP2xxx config with default values. </p>
+<p>An RTOS that builds its own vector table has to replace set_irq_handler.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">gpio</td><td>the GPIO pin to use for the Joybus data line </td></tr>
@@ -217,6 +220,44 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>0 on success, a negative <a class="el" href="group__joybus.html#ga47435eba4c98726f93fdae3c8bb9fd76" title="Joybus error codes.">joybus_error</a> on failure </dd></dl>
+
+</div>
+</div>
+<a id="ga3cad1882206891892486fd20ccdc7832" name="ga3cad1882206891892486fd20ccdc7832"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga3cad1882206891892486fd20ccdc7832">&#9670;&#160;</a></span>joybus_rp2xxx_set_irq_handler_sdk()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void joybus_rp2xxx_set_irq_handler_sdk </td>
+          <td>(</td>
+          <td class="paramtype">uint</td>          <td class="paramname"><span class="paramname"><em>irq_num</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">irq_handler_t</td>          <td class="paramname"><span class="paramname"><em>handler</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel static">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Install an interrupt handler through the pico-sdk. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">irq_num</td><td>the interrupt to take </td></tr>
+    <tr><td class="paramname">handler</td><td>what to call, which runs in interrupt context </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

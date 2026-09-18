@@ -1,5 +1,6 @@
 var NAVTREEINDEX1 =
 {
+"group__joybus__target__n64__pak.html#ga0673982f1d0e2879e6ac81021580a1f1":[6,2,1,0,4],
 "group__joybus__target__n64__pak__controller.html":[6,2,1,0,0],
 "group__joybus__target__n64__pak__controller.html#ga10dc4b0723f71e851296b5163c0bda58":[6,2,1,0,0,10],
 "group__joybus__target__n64__pak__controller.html#ga429e4eec9f26a74c2c3d5b94e5538687":[6,2,1,0,0,1],
@@ -138,7 +139,8 @@ var NAVTREEINDEX1 =
 "structjoybus__rp2xxx__config.html#a192756400328edba0c4bac8054943704":[6,3,2,2,2],
 "structjoybus__rp2xxx__config.html#a422647c05d336dc6cb9c7811f3319a8c":[6,3,2,2,0],
 "structjoybus__rp2xxx__config.html#a6538d4f3341a876ffaee7f73f276739d":[6,3,2,2,1],
-"structjoybus__rp2xxx__config.html#acbffe1f540a2dc138d4c137407249311":[6,3,2,2,4],
+"structjoybus__rp2xxx__config.html#a98ed9905098e33a90677429e1c290d9c":[6,3,2,2,4],
+"structjoybus__rp2xxx__config.html#acbffe1f540a2dc138d4c137407249311":[6,3,2,2,5],
 "structjoybus__rp2xxx__config.html#adfd23b3b8ce09d849f3bac03dbae5664":[6,3,2,2,3],
 "structjoybus__rp2xxx__data.html":[6,3,2,0],
 "structjoybus__sync__ctx.html":[6,0,3],
