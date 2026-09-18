@@ -2,6 +2,8 @@
 
 #include "hardware/adc.h"
 
+#include <pico/stdlib.h>
+
 #include <joybus/joybus.h>
 #include <joybus/backend/rp2xxx.h>
 

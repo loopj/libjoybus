@@ -10,7 +10,7 @@
 #pragma once
 
 #include <hardware/pio.h>
-#include <pico/time.h>
+#include <hardware/timer.h>
 
 #include <joybus/bus.h>
 
@@ -42,13 +42,19 @@ struct joybus_rp2xxx_data {
   uint8_t read_count;
   uint8_t *write_buf;
   uint8_t write_len;
-  alarm_id_t rx_timeout_alarm;
+  // Hardware alarm the timeouts run on, shared with any other bus on it
+  timer_hw_t *timer;
+  uint alarm_num;
+  struct joybus *alarm_next;
+
+  // What this bus is waiting for, if anything
+  uint64_t alarm_target_us;
+  void (*alarm_callback)(void *user_data);
 
   // Transfer state
   joybus_transfer_cb done_callback;
   void *done_user_data;
-  absolute_time_t last_transfer_time;
-  alarm_id_t transfer_start_alarm;
+  uint64_t last_transfer_us;
 };
 
 /**
@@ -69,6 +75,12 @@ struct joybus_rp2xxx_config {
   /// PIO instance to use (eg. pio0 or pio1)
   PIO pio;
 
+  /// Timer instance the reply timeouts run on
+  timer_hw_t *timer;
+
+  /// Which of that timer's alarms to claim
+  uint alarm_num;
+
   /// Transmit frequency, in Hz
   uint32_t freq;
 };
@@ -82,9 +94,11 @@ struct joybus_rp2xxx_config {
 static inline struct joybus_rp2xxx_config joybus_rp2xxx_config_default(uint8_t gpio)
 {
   return (struct joybus_rp2xxx_config){
-    .gpio = gpio,
-    .pio  = pio0,
-    .freq = JOYBUS_FREQ_NOMINAL,
+    .gpio      = gpio,
+    .pio       = pio0,
+    .timer     = PICO_DEFAULT_TIMER_INSTANCE(),
+    .alarm_num = 0,
+    .freq      = JOYBUS_FREQ_NOMINAL,
   };
 }
 
