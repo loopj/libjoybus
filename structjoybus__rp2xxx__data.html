@@ -133,16 +133,22 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>read_count</b></td
 uint8_t *&#160;</td><td class="memItemRight" valign="bottom"><b>write_buf</b></td></tr>
 <tr class="memitem:a964b8a9c0c6ed59e9655efec5eb1184d" id="r_a964b8a9c0c6ed59e9655efec5eb1184d"><td class="memItemLeft" align="right" valign="top"><a id="a964b8a9c0c6ed59e9655efec5eb1184d" name="a964b8a9c0c6ed59e9655efec5eb1184d"></a>
 uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>write_len</b></td></tr>
-<tr class="memitem:a4922cc966cb620d1e6340399b3e52964" id="r_a4922cc966cb620d1e6340399b3e52964"><td class="memItemLeft" align="right" valign="top"><a id="a4922cc966cb620d1e6340399b3e52964" name="a4922cc966cb620d1e6340399b3e52964"></a>
-alarm_id_t&#160;</td><td class="memItemRight" valign="bottom"><b>rx_timeout_alarm</b></td></tr>
+<tr class="memitem:a69ecc7996c67c6c9649e42ff397f75d9" id="r_a69ecc7996c67c6c9649e42ff397f75d9"><td class="memItemLeft" align="right" valign="top"><a id="a69ecc7996c67c6c9649e42ff397f75d9" name="a69ecc7996c67c6c9649e42ff397f75d9"></a>
+timer_hw_t *&#160;</td><td class="memItemRight" valign="bottom"><b>timer</b></td></tr>
+<tr class="memitem:acc6b83474b9486f8ee91cd9519991cdc" id="r_acc6b83474b9486f8ee91cd9519991cdc"><td class="memItemLeft" align="right" valign="top"><a id="acc6b83474b9486f8ee91cd9519991cdc" name="acc6b83474b9486f8ee91cd9519991cdc"></a>
+uint&#160;</td><td class="memItemRight" valign="bottom"><b>alarm_num</b></td></tr>
+<tr class="memitem:aae7db896b013cf849d51029bf5246756" id="r_aae7db896b013cf849d51029bf5246756"><td class="memItemLeft" align="right" valign="top"><a id="aae7db896b013cf849d51029bf5246756" name="aae7db896b013cf849d51029bf5246756"></a>
+struct <a class="el" href="structjoybus.html">joybus</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>alarm_next</b></td></tr>
+<tr class="memitem:ae976577d5c3419b57324a4cb5d6824df" id="r_ae976577d5c3419b57324a4cb5d6824df"><td class="memItemLeft" align="right" valign="top"><a id="ae976577d5c3419b57324a4cb5d6824df" name="ae976577d5c3419b57324a4cb5d6824df"></a>
+uint64_t&#160;</td><td class="memItemRight" valign="bottom"><b>alarm_target_us</b></td></tr>
+<tr class="memitem:a46b3194bd324475812e756189dd3ae8e" id="r_a46b3194bd324475812e756189dd3ae8e"><td class="memItemLeft" align="right" valign="top"><a id="a46b3194bd324475812e756189dd3ae8e" name="a46b3194bd324475812e756189dd3ae8e"></a>
+void(*&#160;</td><td class="memItemRight" valign="bottom"><b>alarm_callback</b> )(void *user_data)</td></tr>
 <tr class="memitem:a91ddede0c687e13d8212dc29856ee19d" id="r_a91ddede0c687e13d8212dc29856ee19d"><td class="memItemLeft" align="right" valign="top"><a id="a91ddede0c687e13d8212dc29856ee19d" name="a91ddede0c687e13d8212dc29856ee19d"></a>
 <a class="el" href="group__joybus.html#ga3a369b3d9cde58960068a67ee3d3c092">joybus_transfer_cb</a>&#160;</td><td class="memItemRight" valign="bottom"><b>done_callback</b></td></tr>
 <tr class="memitem:aff0904b1ec8cb18551e97a08341f7a25" id="r_aff0904b1ec8cb18551e97a08341f7a25"><td class="memItemLeft" align="right" valign="top"><a id="aff0904b1ec8cb18551e97a08341f7a25" name="aff0904b1ec8cb18551e97a08341f7a25"></a>
 void *&#160;</td><td class="memItemRight" valign="bottom"><b>done_user_data</b></td></tr>
-<tr class="memitem:ab2b40226e4792eee2ef6fefcdb6738ce" id="r_ab2b40226e4792eee2ef6fefcdb6738ce"><td class="memItemLeft" align="right" valign="top"><a id="ab2b40226e4792eee2ef6fefcdb6738ce" name="ab2b40226e4792eee2ef6fefcdb6738ce"></a>
-absolute_time_t&#160;</td><td class="memItemRight" valign="bottom"><b>last_transfer_time</b></td></tr>
-<tr class="memitem:a0166b8c5acacaa04ca3e94885a61aba8" id="r_a0166b8c5acacaa04ca3e94885a61aba8"><td class="memItemLeft" align="right" valign="top"><a id="a0166b8c5acacaa04ca3e94885a61aba8" name="a0166b8c5acacaa04ca3e94885a61aba8"></a>
-alarm_id_t&#160;</td><td class="memItemRight" valign="bottom"><b>transfer_start_alarm</b></td></tr>
+<tr class="memitem:a123b3660afd984ff3c7ac47c50ca69f1" id="r_a123b3660afd984ff3c7ac47c50ca69f1"><td class="memItemLeft" align="right" valign="top"><a id="a123b3660afd984ff3c7ac47c50ca69f1" name="a123b3660afd984ff3c7ac47c50ca69f1"></a>
+uint64_t&#160;</td><td class="memItemRight" valign="bottom"><b>last_transfer_us</b></td></tr>
 </table>
 <hr/>The documentation for this struct was generated from the following file:<ul>
 <li>include/joybus/backend/<a class="el" href="rp2xxx_8h_source.html">rp2xxx.h</a></li>

@@ -5,12 +5,13 @@ var searchData=
   ['targets_2',['Targets',['../group__joybus__target.html',1,'']]],
   ['targets_3',['targets',['../structjoybus.html#aa1a88f293492c7e3f587a3abea102bd5',1,'joybus']]],
   ['the_20joybus_4',['Initializing the Joybus',['../index.html#autotoc_md11',1,'']]],
-  ['timings_5',['Timings',['..//home/runner/work/libjoybus/libjoybus/src/backend/README.md#autotoc_md25',1,'Measured Timings'],['..//home/runner/work/libjoybus/libjoybus/src/backend/README.md#autotoc_md24',1,'Nominal Device Timings']]],
-  ['to_20gamecube_20cable_6',['OEM GBA to GameCube Cable',['..//home/runner/work/libjoybus/libjoybus/src/backend/README.md#autotoc_md29',1,'']]],
-  ['transfers_7',['Host-mode Transfers',['..//home/runner/work/libjoybus/libjoybus/src/backend/README.md#autotoc_md20',1,'']]],
-  ['trigger_5fleft_8',['trigger_left',['../structjoybus__gcn__controller__state.html#a92f2b3d07988e075e170ddb43a9aa079',1,'joybus_gcn_controller_state::trigger_left'],['../common_2gcn__controller_8h.html#aa7e5d70f5c304e47581ada1622f3d93f',1,'trigger_left:&#160;gcn_controller.h']]],
-  ['trigger_5fright_9',['trigger_right',['../structjoybus__gcn__controller__state.html#a4f4a1974f5ceccd4e94c472a6be42b63',1,'joybus_gcn_controller_state::trigger_right'],['../common_2gcn__controller_8h.html#a9de0206d5857ae92d3db20a251893a67',1,'trigger_right:&#160;gcn_controller.h']]],
-  ['turnaround_10',['Reducing Turnaround',['..//home/runner/work/libjoybus/libjoybus/src/backend/README.md#autotoc_md22',1,'']]],
-  ['tx_5fusart_11',['tx_usart',['../structjoybus__gecko__config.html#aaf1f50502c492762c1fa6ded1e7934b6',1,'joybus_gecko_config']]],
-  ['type_12',['type',['../structjoybus__id.html#a58c5ce73f5a3f7b52fe8c77585d8dc37',1,'joybus_id::type'],['../identify_8h.html#acb5cfd209ba75c853d03f701e7f91679',1,'type:&#160;identify.h']]]
+  ['timer_5',['timer',['../structjoybus__rp2xxx__config.html#acbffe1f540a2dc138d4c137407249311',1,'joybus_rp2xxx_config']]],
+  ['timings_6',['Timings',['..//home/runner/work/libjoybus/libjoybus/src/backend/README.md#autotoc_md25',1,'Measured Timings'],['..//home/runner/work/libjoybus/libjoybus/src/backend/README.md#autotoc_md24',1,'Nominal Device Timings']]],
+  ['to_20gamecube_20cable_7',['OEM GBA to GameCube Cable',['..//home/runner/work/libjoybus/libjoybus/src/backend/README.md#autotoc_md29',1,'']]],
+  ['transfers_8',['Host-mode Transfers',['..//home/runner/work/libjoybus/libjoybus/src/backend/README.md#autotoc_md20',1,'']]],
+  ['trigger_5fleft_9',['trigger_left',['../structjoybus__gcn__controller__state.html#a92f2b3d07988e075e170ddb43a9aa079',1,'joybus_gcn_controller_state::trigger_left'],['../common_2gcn__controller_8h.html#aa7e5d70f5c304e47581ada1622f3d93f',1,'trigger_left:&#160;gcn_controller.h']]],
+  ['trigger_5fright_10',['trigger_right',['../structjoybus__gcn__controller__state.html#a4f4a1974f5ceccd4e94c472a6be42b63',1,'joybus_gcn_controller_state::trigger_right'],['../common_2gcn__controller_8h.html#a9de0206d5857ae92d3db20a251893a67',1,'trigger_right:&#160;gcn_controller.h']]],
+  ['turnaround_11',['Reducing Turnaround',['..//home/runner/work/libjoybus/libjoybus/src/backend/README.md#autotoc_md22',1,'']]],
+  ['tx_5fusart_12',['tx_usart',['../structjoybus__gecko__config.html#aaf1f50502c492762c1fa6ded1e7934b6',1,'joybus_gecko_config']]],
+  ['type_13',['type',['../structjoybus__id.html#a58c5ce73f5a3f7b52fe8c77585d8dc37',1,'joybus_id::type'],['../identify_8h.html#acb5cfd209ba75c853d03f701e7f91679',1,'type:&#160;identify.h']]]
 ];
