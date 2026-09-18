@@ -26,7 +26,7 @@
 #include <esp_attr.h>
 #define JOYBUS_RAM_FUNC IRAM_ATTR
 #define JOYBUS_RAM_DATA DRAM_ATTR
-#elif defined(PICO_ON_DEVICE) && PICO_ON_DEVICE
+#elif defined(PICO_RP2040) || defined(PICO_RP2350)
 #include <pico.h>
 #define JOYBUS_RAM_FUNC __not_in_flash("joybus")
 #define JOYBUS_RAM_DATA __not_in_flash("joybus_data")
