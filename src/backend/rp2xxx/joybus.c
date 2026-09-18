@@ -24,7 +24,7 @@ enum {
 };
 
 // The first bus waiting on each alarm, with the rest chained behind it
-static struct joybus *alarm_buses[NUM_GENERIC_TIMERS][NUM_ALARMS];
+static struct joybus_rp2xxx *alarm_buses[NUM_GENERIC_TIMERS][NUM_ALARMS];
 
 // Arm an alarm for the earliest deadline its buses are still waiting on
 static void alarm_rearm(timer_hw_t *timer, uint alarm_num)
@@ -36,13 +36,9 @@ static void alarm_rearm(timer_hw_t *timer, uint alarm_num)
   uint32_t save = save_and_disable_interrupts();
 
   // Find the soonest deadline any bus on this alarm is still waiting for
-  for (struct joybus *bus = alarm_buses[timer_num][alarm_num]; bus != NULL;) {
-    struct joybus_rp2xxx_data *data = &JOYBUS_RP2XXX(bus)->data;
-
-    if (data->alarm_callback != NULL && data->alarm_target_us <= earliest)
-      earliest = data->alarm_target_us;
-
-    bus = data->alarm_next;
+  for (struct joybus_rp2xxx *bus = alarm_buses[timer_num][alarm_num]; bus != NULL; bus = bus->data.alarm_next) {
+    if (bus->data.alarm_callback != NULL && bus->data.alarm_target_us <= earliest)
+      earliest = bus->data.alarm_target_us;
   }
 
   // Nothing is waiting, so leave the alarm free
@@ -69,16 +65,14 @@ static inline void alarm_dispatch(uint timer_num, uint alarm_num)
   uint64_t now = time_us_64();
 
   // Call back every bus on this alarm whose deadline has passed
-  for (struct joybus *bus = alarm_buses[timer_num][alarm_num]; bus != NULL;) {
-    struct joybus_rp2xxx_data *data = &JOYBUS_RP2XXX(bus)->data;
-
+  for (struct joybus_rp2xxx *bus = alarm_buses[timer_num][alarm_num]; bus != NULL;) {
     // Taken before the callback runs, since it may schedule the next timeout
-    struct joybus *next = data->alarm_next;
+    struct joybus_rp2xxx *next = bus->data.alarm_next;
 
-    if (data->alarm_callback != NULL && data->alarm_target_us <= now) {
-      void (*callback)(void *user_data) = data->alarm_callback;
-      data->alarm_callback              = NULL;
-      callback(bus);
+    if (bus->data.alarm_callback != NULL && bus->data.alarm_target_us <= now) {
+      void (*callback)(void *user_data) = bus->data.alarm_callback;
+      bus->data.alarm_callback          = NULL;
+      callback(JOYBUS(bus));
     }
 
     bus = next;
@@ -431,7 +425,7 @@ static int joybus_rp2xxx_enable(struct joybus *bus)
     data->set_irq_handler(TIMER_ALARM_IRQ_NUM(data->timer, data->alarm_num), alarm_irq_handler);
   }
   data->alarm_next                        = alarm_buses[timer_num][data->alarm_num];
-  alarm_buses[timer_num][data->alarm_num] = bus;
+  alarm_buses[timer_num][data->alarm_num] = JOYBUS_RP2XXX(bus);
 
   // Allocate DMA channels
   data->dma_chan_tx = dma_claim_unused_channel(true);
@@ -470,6 +464,26 @@ static int joybus_rp2xxx_disable(struct joybus *bus)
   if (data->state == BUS_STATE_DISABLED)
     return 0;
 
+  // Cancel any active timeouts for this bus
+  alarm_cancel(bus);
+
+  // Remove this bus from the alarm chain
+  struct joybus_rp2xxx **head = &alarm_buses[timer_get_index(data->timer)][data->alarm_num];
+  for (struct joybus_rp2xxx **link = head; *link; link = &(*link)->data.alarm_next) {
+    if (*link != JOYBUS_RP2XXX(bus))
+      continue;
+
+    *link            = data->alarm_next;
+    data->alarm_next = NULL;
+    break;
+  }
+
+  // Release the alarm once its last bus has gone
+  if (*head == NULL) {
+    hw_clear_bits(&data->timer->inte, 1u << data->alarm_num);
+    timer_hardware_alarm_unclaim(data->timer, data->alarm_num);
+  }
+
   // Stop the state machine and give it back
   pio_sm_set_enabled(data->pio, data->pio_sm, false);
   pio_set_irq0_source_enabled(data->pio, pis_interrupt0 + data->pio_sm, false);
@@ -489,25 +503,6 @@ static int joybus_rp2xxx_disable(struct joybus *bus)
   dma_channel_abort(data->dma_chan_rx);
   dma_channel_unclaim(data->dma_chan_tx);
   dma_channel_unclaim(data->dma_chan_rx);
-
-  // Leave the alarm's buses, releasing it with the last one
-  alarm_cancel(bus);
-
-  uint timer_num       = timer_get_index(data->timer);
-  struct joybus **link = &alarm_buses[timer_num][data->alarm_num];
-  while (*link != NULL) {
-    if (*link == bus) {
-      *link = data->alarm_next;
-      break;
-    }
-
-    link = &JOYBUS_RP2XXX(*link)->data.alarm_next;
-  }
-
-  if (alarm_buses[timer_num][data->alarm_num] == NULL) {
-    hw_clear_bits(&data->timer->inte, 1u << data->alarm_num);
-    timer_hardware_alarm_unclaim(data->timer, data->alarm_num);
-  }
 
   data->state = BUS_STATE_DISABLED;
 

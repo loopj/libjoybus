@@ -20,6 +20,8 @@
  */
 #define JOYBUS_RP2XXX(bus) ((struct joybus_rp2xxx *)(bus))
 
+struct joybus_rp2xxx;
+
 // Private implementation details - do not access directly
 struct joybus_rp2xxx_data {
   // Bus state
@@ -46,7 +48,7 @@ struct joybus_rp2xxx_data {
   // Hardware alarm the timeouts run on, shared with any other bus on it
   timer_hw_t *timer;
   uint alarm_num;
-  struct joybus *alarm_next;
+  struct joybus_rp2xxx *alarm_next;
 
   // How the PIO and alarm handlers reach their vectors
   void (*set_irq_handler)(uint irq_num, irq_handler_t handler);
