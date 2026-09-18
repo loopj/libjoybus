@@ -1,10 +1,20 @@
 name: Build ESP32 Examples
 
+# Build only when the shared code, the esp32 backend, or the ESP32 examples change
 on:
-  push:
-    branches: [main]
   pull_request:
     branches: [main]
+    paths:
+      - "src/*.c"
+      - "src/host/**"
+      - "src/target/**"
+      - "src/backend/esp32/**"
+      - "include/joybus/**"
+      - "CMakeLists.txt"
+      - "cmake/esp-idf.cmake"
+      - "idf_component.yml"
+      - "examples/esp32/**"
+      - ".github/workflows/esp32_examples.yml"
   workflow_dispatch:
 
 jobs:

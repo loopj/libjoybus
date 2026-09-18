@@ -1,10 +1,18 @@
 name: Build Pico Examples
 
+# Build only when the shared code, the rp2xxx backend, or the Pico examples change
 on:
-  push:
-    branches: [main]
   pull_request:
     branches: [main]
+    paths:
+      - "src/*.c"
+      - "src/host/**"
+      - "src/target/**"
+      - "src/backend/rp2xxx/**"
+      - "include/joybus/**"
+      - "CMakeLists.txt"
+      - "examples/pico-sdk/**"
+      - ".github/workflows/pico_examples.yml"
   workflow_dispatch:
 
 env:
