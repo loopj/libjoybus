@@ -16,6 +16,7 @@
 #include <esp_rom_sys.h>
 #include <esp_timer.h>
 #include <esp_private/periph_ctrl.h>
+#include <hal/gpio_ll.h>
 #include <hal/rmt_ll.h>
 #include <soc/clk_tree_defs.h>
 #include <soc/soc_caps.h>
@@ -571,14 +572,12 @@ static int joybus_esp32_enable(struct joybus *bus)
     return 0;
 
   // Configure Joybus GPIO as a single bidirectional open-drain pin
-  gpio_config_t io = {
-    .pin_bit_mask = 1ULL << data->gpio,
-    .mode         = GPIO_MODE_INPUT_OUTPUT_OD,
-    .pull_up_en   = GPIO_PULLUP_ENABLE,
-    .pull_down_en = GPIO_PULLDOWN_DISABLE,
-    .intr_type    = GPIO_INTR_DISABLE,
-  };
-  gpio_config(&io);
+  gpio_ll_func_sel(&GPIO, data->gpio, PIN_FUNC_GPIO);
+  gpio_ll_input_enable(&GPIO, data->gpio);
+  gpio_ll_output_enable(&GPIO, data->gpio);
+  gpio_ll_od_enable(&GPIO, data->gpio);
+  gpio_ll_pullup_en(&GPIO, data->gpio);
+  gpio_ll_pulldown_dis(&GPIO, data->gpio);
 
   // Get the RMT source clock rate (ticks/sec)
   uint32_t rmt_clk_freq = 0;
