@@ -118,110 +118,112 @@ $(function(){initNavTree('rp2xxx_8h_source.html','',''); });
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span></div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno"><a class="line" href="group__joybus__backend__rp2xxx.html#gab1758068d3e969e95a8e5a0cc1db4f3a">   21</a></span><span class="preprocessor">#define JOYBUS_RP2XXX(bus) ((struct joybus_rp2xxx *)(bus))</span></div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="comment">// Private implementation details - do not access directly</span></div>
-<div class="foldopen" id="foldopen00024" data-start="{" data-end="};">
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno"><a class="line" href="structjoybus__rp2xxx__data.html">   24</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structjoybus__rp2xxx__data.html">joybus_rp2xxx_data</a> {</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>  <span class="comment">// Bus state</span></div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>  uint8_t state;</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>  <span class="comment">// GPIO configuration</span></div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>  uint gpio;</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>  <span class="comment">// PIO instance and state machine</span></div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  PIO pio;</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>  uint pio_sm;</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  <span class="keywordtype">bool</span> pio_configured;</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  <span class="comment">// DMA configuration</span></div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  uint dma_chan_tx;</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  uint dma_chan_rx;</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  <span class="comment">// RX/TX state</span></div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  uint8_t *read_buf;</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  uint8_t read_len;</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  uint8_t read_count;</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  uint8_t *write_buf;</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  uint8_t write_len;</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  <span class="comment">// Hardware alarm the timeouts run on, shared with any other bus on it</span></div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  timer_hw_t *timer;</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  uint alarm_num;</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  <span class="keyword">struct </span><a class="code hl_struct" href="structjoybus.html">joybus</a> *alarm_next;</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  <span class="comment">// How the PIO and alarm handlers reach their vectors</span></div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  void (*set_irq_handler)(uint irq_num, irq_handler_t handler);</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  <span class="comment">// What this bus is waiting for, if anything</span></div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  uint64_t alarm_target_us;</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  void (*alarm_callback)(<span class="keywordtype">void</span> *user_data);</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  <span class="comment">// Transfer state</span></div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  <a class="code hl_typedef" href="group__joybus.html#ga3a369b3d9cde58960068a67ee3d3c092">joybus_transfer_cb</a> done_callback;</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  <span class="keywordtype">void</span> *done_user_data;</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  uint64_t last_transfer_us;</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>};</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="keyword">struct </span><a class="code hl_struct" href="structjoybus__rp2xxx.html">joybus_rp2xxx</a>;</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="comment">// Private implementation details - do not access directly</span></div>
+<div class="foldopen" id="foldopen00026" data-start="{" data-end="};">
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno"><a class="line" href="structjoybus__rp2xxx__data.html">   26</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structjoybus__rp2xxx__data.html">joybus_rp2xxx_data</a> {</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>  <span class="comment">// Bus state</span></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>  uint8_t state;</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>  <span class="comment">// GPIO configuration</span></div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>  uint gpio;</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>  <span class="comment">// PIO instance and state machine</span></div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  PIO pio;</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  uint pio_sm;</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  <span class="keywordtype">bool</span> pio_configured;</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  <span class="comment">// DMA configuration</span></div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  uint dma_chan_tx;</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  uint dma_chan_rx;</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  <span class="comment">// RX/TX state</span></div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  uint8_t *read_buf;</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  uint8_t read_len;</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  uint8_t read_count;</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  uint8_t *write_buf;</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  uint8_t write_len;</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  <span class="comment">// Hardware alarm the timeouts run on, shared with any other bus on it</span></div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  timer_hw_t *timer;</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  uint alarm_num;</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  <span class="keyword">struct </span><a class="code hl_struct" href="structjoybus__rp2xxx.html">joybus_rp2xxx</a> *alarm_next;</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  <span class="comment">// How the PIO and alarm handlers reach their vectors</span></div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  void (*set_irq_handler)(uint irq_num, irq_handler_t handler);</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  <span class="comment">// What this bus is waiting for, if anything</span></div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  uint64_t alarm_target_us;</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  void (*alarm_callback)(<span class="keywordtype">void</span> *user_data);</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  <span class="comment">// Transfer state</span></div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  <a class="code hl_typedef" href="group__joybus.html#ga3a369b3d9cde58960068a67ee3d3c092">joybus_transfer_cb</a> done_callback;</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  <span class="keywordtype">void</span> *done_user_data;</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  uint64_t last_transfer_us;</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>};</div>
 </div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span></div>
-<div class="foldopen" id="foldopen00067" data-start="{" data-end="};">
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno"><a class="line" href="structjoybus__rp2xxx.html">   67</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structjoybus__rp2xxx.html">joybus_rp2xxx</a> {</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  <span class="keyword">struct </span><a class="code hl_struct" href="structjoybus.html">joybus</a> base;</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>  <span class="keyword">struct </span><a class="code hl_struct" href="structjoybus__rp2xxx__data.html">joybus_rp2xxx_data</a> data;</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>};</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span></div>
+<div class="foldopen" id="foldopen00069" data-start="{" data-end="};">
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno"><a class="line" href="structjoybus__rp2xxx.html">   69</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structjoybus__rp2xxx.html">joybus_rp2xxx</a> {</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  <span class="keyword">struct </span><a class="code hl_struct" href="structjoybus.html">joybus</a> base;</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  <span class="keyword">struct </span><a class="code hl_struct" href="structjoybus__rp2xxx__data.html">joybus_rp2xxx_data</a> data;</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>};</div>
 </div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span></div>
-<div class="foldopen" id="foldopen00075" data-start="{" data-end="};">
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno"><a class="line" href="structjoybus__rp2xxx__config.html">   75</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structjoybus__rp2xxx__config.html">joybus_rp2xxx_config</a> {</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno"><a class="line" href="structjoybus__rp2xxx__config.html#a192756400328edba0c4bac8054943704">   77</a></span>  uint8_t <a class="code hl_variable" href="structjoybus__rp2xxx__config.html#a192756400328edba0c4bac8054943704">gpio</a>;</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span></div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno"><a class="line" href="structjoybus__rp2xxx__config.html#adfd23b3b8ce09d849f3bac03dbae5664">   80</a></span>  PIO <a class="code hl_variable" href="structjoybus__rp2xxx__config.html#adfd23b3b8ce09d849f3bac03dbae5664">pio</a>;</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span></div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno"><a class="line" href="structjoybus__rp2xxx__config.html#acbffe1f540a2dc138d4c137407249311">   83</a></span>  timer_hw_t *<a class="code hl_variable" href="structjoybus__rp2xxx__config.html#acbffe1f540a2dc138d4c137407249311">timer</a>;</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span></div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno"><a class="line" href="structjoybus__rp2xxx__config.html#a422647c05d336dc6cb9c7811f3319a8c">   86</a></span>  uint <a class="code hl_variable" href="structjoybus__rp2xxx__config.html#a422647c05d336dc6cb9c7811f3319a8c">alarm_num</a>;</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span></div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno"><a class="line" href="structjoybus__rp2xxx__config.html#a6538d4f3341a876ffaee7f73f276739d">   89</a></span>  uint32_t <a class="code hl_variable" href="structjoybus__rp2xxx__config.html#a6538d4f3341a876ffaee7f73f276739d">freq</a>;</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span></div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno"><a class="line" href="structjoybus__rp2xxx__config.html#a98ed9905098e33a90677429e1c290d9c">   92</a></span>  void (*<a class="code hl_variable" href="structjoybus__rp2xxx__config.html#a98ed9905098e33a90677429e1c290d9c">set_irq_handler</a>)(uint irq_num, irq_handler_t handler);</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>};</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span></div>
+<div class="foldopen" id="foldopen00077" data-start="{" data-end="};">
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno"><a class="line" href="structjoybus__rp2xxx__config.html">   77</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structjoybus__rp2xxx__config.html">joybus_rp2xxx_config</a> {</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno"><a class="line" href="structjoybus__rp2xxx__config.html#a192756400328edba0c4bac8054943704">   79</a></span>  uint8_t <a class="code hl_variable" href="structjoybus__rp2xxx__config.html#a192756400328edba0c4bac8054943704">gpio</a>;</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span></div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno"><a class="line" href="structjoybus__rp2xxx__config.html#adfd23b3b8ce09d849f3bac03dbae5664">   82</a></span>  PIO <a class="code hl_variable" href="structjoybus__rp2xxx__config.html#adfd23b3b8ce09d849f3bac03dbae5664">pio</a>;</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span></div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno"><a class="line" href="structjoybus__rp2xxx__config.html#acbffe1f540a2dc138d4c137407249311">   85</a></span>  timer_hw_t *<a class="code hl_variable" href="structjoybus__rp2xxx__config.html#acbffe1f540a2dc138d4c137407249311">timer</a>;</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span></div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno"><a class="line" href="structjoybus__rp2xxx__config.html#a422647c05d336dc6cb9c7811f3319a8c">   88</a></span>  uint <a class="code hl_variable" href="structjoybus__rp2xxx__config.html#a422647c05d336dc6cb9c7811f3319a8c">alarm_num</a>;</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span></div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno"><a class="line" href="structjoybus__rp2xxx__config.html#a6538d4f3341a876ffaee7f73f276739d">   91</a></span>  uint32_t <a class="code hl_variable" href="structjoybus__rp2xxx__config.html#a6538d4f3341a876ffaee7f73f276739d">freq</a>;</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span></div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno"><a class="line" href="structjoybus__rp2xxx__config.html#a98ed9905098e33a90677429e1c290d9c">   94</a></span>  void (*<a class="code hl_variable" href="structjoybus__rp2xxx__config.html#a98ed9905098e33a90677429e1c290d9c">set_irq_handler</a>)(uint irq_num, irq_handler_t handler);</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>};</div>
 </div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span></div>
-<div class="foldopen" id="foldopen00101" data-start="{" data-end="}">
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno"><a class="line" href="group__joybus__backend__rp2xxx.html#ga3cad1882206891892486fd20ccdc7832">  101</a></span><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="group__joybus__backend__rp2xxx.html#ga3cad1882206891892486fd20ccdc7832">joybus_rp2xxx_set_irq_handler_sdk</a>(uint irq_num, irq_handler_t handler)</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>{</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>  irq_set_exclusive_handler(irq_num, handler);</div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>  irq_set_enabled(irq_num, <span class="keyword">true</span>);</div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>}</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span></div>
+<div class="foldopen" id="foldopen00103" data-start="{" data-end="}">
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno"><a class="line" href="group__joybus__backend__rp2xxx.html#ga3cad1882206891892486fd20ccdc7832">  103</a></span><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="group__joybus__backend__rp2xxx.html#ga3cad1882206891892486fd20ccdc7832">joybus_rp2xxx_set_irq_handler_sdk</a>(uint irq_num, irq_handler_t handler)</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>{</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>  irq_set_exclusive_handler(irq_num, handler);</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>  irq_set_enabled(irq_num, <span class="keyword">true</span>);</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>}</div>
 </div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span></div>
-<div class="foldopen" id="foldopen00115" data-start="{" data-end="}">
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno"><a class="line" href="group__joybus__backend__rp2xxx.html#gaee0cd8ab837f829a59e11e70d4db487b">  115</a></span><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keyword">struct </span><a class="code hl_struct" href="structjoybus__rp2xxx__config.html">joybus_rp2xxx_config</a> <a class="code hl_function" href="group__joybus__backend__rp2xxx.html#gaee0cd8ab837f829a59e11e70d4db487b">joybus_rp2xxx_config_default</a>(uint8_t <a class="code hl_variable" href="structjoybus__rp2xxx__config.html#a192756400328edba0c4bac8054943704">gpio</a>)</div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>{</div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>  <span class="keywordflow">return</span> (<span class="keyword">struct</span> <a class="code hl_struct" href="structjoybus__rp2xxx__config.html">joybus_rp2xxx_config</a>){</div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>    .gpio            = <a class="code hl_variable" href="structjoybus__rp2xxx__config.html#a192756400328edba0c4bac8054943704">gpio</a>,</div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>    .pio             = pio0,</div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>    .timer           = PICO_DEFAULT_TIMER_INSTANCE(),</div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>    .alarm_num       = 0,</div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>    .freq            = <a class="code hl_define" href="group__joybus.html#ga8605997a75f0f98d3372733222706dec">JOYBUS_FREQ_NOMINAL</a>,</div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>    .set_irq_handler = <a class="code hl_function" href="group__joybus__backend__rp2xxx.html#ga3cad1882206891892486fd20ccdc7832">joybus_rp2xxx_set_irq_handler_sdk</a>,</div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>  };</div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>}</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span></div>
+<div class="foldopen" id="foldopen00117" data-start="{" data-end="}">
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno"><a class="line" href="group__joybus__backend__rp2xxx.html#gaee0cd8ab837f829a59e11e70d4db487b">  117</a></span><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keyword">struct </span><a class="code hl_struct" href="structjoybus__rp2xxx__config.html">joybus_rp2xxx_config</a> <a class="code hl_function" href="group__joybus__backend__rp2xxx.html#gaee0cd8ab837f829a59e11e70d4db487b">joybus_rp2xxx_config_default</a>(uint8_t <a class="code hl_variable" href="structjoybus__rp2xxx__config.html#a192756400328edba0c4bac8054943704">gpio</a>)</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>{</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>  <span class="keywordflow">return</span> (<span class="keyword">struct</span> <a class="code hl_struct" href="structjoybus__rp2xxx__config.html">joybus_rp2xxx_config</a>){</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>    .gpio            = <a class="code hl_variable" href="structjoybus__rp2xxx__config.html#a192756400328edba0c4bac8054943704">gpio</a>,</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>    .pio             = pio0,</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>    .timer           = PICO_DEFAULT_TIMER_INSTANCE(),</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>    .alarm_num       = 0,</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>    .freq            = <a class="code hl_define" href="group__joybus.html#ga8605997a75f0f98d3372733222706dec">JOYBUS_FREQ_NOMINAL</a>,</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>    .set_irq_handler = <a class="code hl_function" href="group__joybus__backend__rp2xxx.html#ga3cad1882206891892486fd20ccdc7832">joybus_rp2xxx_set_irq_handler_sdk</a>,</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>  };</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>}</div>
 </div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span></div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span><span class="keywordtype">int</span> <a class="code hl_function" href="group__joybus__backend__rp2xxx.html#ga1d61948754428d35bb965c8a00dfa9c4">joybus_rp2xxx_init</a>(<span class="keyword">struct</span> <a class="code hl_struct" href="structjoybus__rp2xxx.html">joybus_rp2xxx</a> *rp2xxx_bus, <span class="keyword">struct</span> <a class="code hl_struct" href="structjoybus__rp2xxx__config.html">joybus_rp2xxx_config</a> config);</div>
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span></div>
-<div class="ttc" id="agroup__joybus__backend__rp2xxx_html_ga1d61948754428d35bb965c8a00dfa9c4"><div class="ttname"><a href="group__joybus__backend__rp2xxx.html#ga1d61948754428d35bb965c8a00dfa9c4">joybus_rp2xxx_init</a></div><div class="ttdeci">int joybus_rp2xxx_init(struct joybus_rp2xxx *rp2xxx_bus, struct joybus_rp2xxx_config config)</div><div class="ttdoc">Initialize a RP2xxx Joybus instance.</div><div class="ttdef"><b>Definition</b> joybus.c:556</div></div>
-<div class="ttc" id="agroup__joybus__backend__rp2xxx_html_ga3cad1882206891892486fd20ccdc7832"><div class="ttname"><a href="group__joybus__backend__rp2xxx.html#ga3cad1882206891892486fd20ccdc7832">joybus_rp2xxx_set_irq_handler_sdk</a></div><div class="ttdeci">static void joybus_rp2xxx_set_irq_handler_sdk(uint irq_num, irq_handler_t handler)</div><div class="ttdoc">Install an interrupt handler through the pico-sdk.</div><div class="ttdef"><b>Definition</b> rp2xxx.h:101</div></div>
-<div class="ttc" id="agroup__joybus__backend__rp2xxx_html_gaee0cd8ab837f829a59e11e70d4db487b"><div class="ttname"><a href="group__joybus__backend__rp2xxx.html#gaee0cd8ab837f829a59e11e70d4db487b">joybus_rp2xxx_config_default</a></div><div class="ttdeci">static struct joybus_rp2xxx_config joybus_rp2xxx_config_default(uint8_t gpio)</div><div class="ttdoc">Build a RP2xxx config with default values.</div><div class="ttdef"><b>Definition</b> rp2xxx.h:115</div></div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span></div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span><span class="keywordtype">int</span> <a class="code hl_function" href="group__joybus__backend__rp2xxx.html#ga1d61948754428d35bb965c8a00dfa9c4">joybus_rp2xxx_init</a>(<span class="keyword">struct</span> <a class="code hl_struct" href="structjoybus__rp2xxx.html">joybus_rp2xxx</a> *rp2xxx_bus, <span class="keyword">struct</span> <a class="code hl_struct" href="structjoybus__rp2xxx__config.html">joybus_rp2xxx_config</a> config);</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span></div>
+<div class="ttc" id="agroup__joybus__backend__rp2xxx_html_ga1d61948754428d35bb965c8a00dfa9c4"><div class="ttname"><a href="group__joybus__backend__rp2xxx.html#ga1d61948754428d35bb965c8a00dfa9c4">joybus_rp2xxx_init</a></div><div class="ttdeci">int joybus_rp2xxx_init(struct joybus_rp2xxx *rp2xxx_bus, struct joybus_rp2xxx_config config)</div><div class="ttdoc">Initialize a RP2xxx Joybus instance.</div><div class="ttdef"><b>Definition</b> joybus.c:551</div></div>
+<div class="ttc" id="agroup__joybus__backend__rp2xxx_html_ga3cad1882206891892486fd20ccdc7832"><div class="ttname"><a href="group__joybus__backend__rp2xxx.html#ga3cad1882206891892486fd20ccdc7832">joybus_rp2xxx_set_irq_handler_sdk</a></div><div class="ttdeci">static void joybus_rp2xxx_set_irq_handler_sdk(uint irq_num, irq_handler_t handler)</div><div class="ttdoc">Install an interrupt handler through the pico-sdk.</div><div class="ttdef"><b>Definition</b> rp2xxx.h:103</div></div>
+<div class="ttc" id="agroup__joybus__backend__rp2xxx_html_gaee0cd8ab837f829a59e11e70d4db487b"><div class="ttname"><a href="group__joybus__backend__rp2xxx.html#gaee0cd8ab837f829a59e11e70d4db487b">joybus_rp2xxx_config_default</a></div><div class="ttdeci">static struct joybus_rp2xxx_config joybus_rp2xxx_config_default(uint8_t gpio)</div><div class="ttdoc">Build a RP2xxx config with default values.</div><div class="ttdef"><b>Definition</b> rp2xxx.h:117</div></div>
 <div class="ttc" id="agroup__joybus_html_ga3a369b3d9cde58960068a67ee3d3c092"><div class="ttname"><a href="group__joybus.html#ga3a369b3d9cde58960068a67ee3d3c092">joybus_transfer_cb</a></div><div class="ttdeci">void(* joybus_transfer_cb)(struct joybus *bus, int status, void *user_data)</div><div class="ttdoc">Function type for transfer completion callbacks.</div><div class="ttdef"><b>Definition</b> bus.h:85</div></div>
 <div class="ttc" id="agroup__joybus_html_ga8605997a75f0f98d3372733222706dec"><div class="ttname"><a href="group__joybus.html#ga8605997a75f0f98d3372733222706dec">JOYBUS_FREQ_NOMINAL</a></div><div class="ttdeci">#define JOYBUS_FREQ_NOMINAL</div><div class="ttdoc">Nominal Joybus frequency, matching an OEM N64/GameCube controller.</div><div class="ttdef"><b>Definition</b> bus.h:17</div></div>
-<div class="ttc" id="astructjoybus__rp2xxx__config_html"><div class="ttname"><a href="structjoybus__rp2xxx__config.html">joybus_rp2xxx_config</a></div><div class="ttdoc">Configuration for a RP2xxx Joybus instance.</div><div class="ttdef"><b>Definition</b> rp2xxx.h:75</div></div>
-<div class="ttc" id="astructjoybus__rp2xxx__config_html_a192756400328edba0c4bac8054943704"><div class="ttname"><a href="structjoybus__rp2xxx__config.html#a192756400328edba0c4bac8054943704">joybus_rp2xxx_config::gpio</a></div><div class="ttdeci">uint8_t gpio</div><div class="ttdoc">GPIO pin to use for the Joybus data line.</div><div class="ttdef"><b>Definition</b> rp2xxx.h:77</div></div>
-<div class="ttc" id="astructjoybus__rp2xxx__config_html_a422647c05d336dc6cb9c7811f3319a8c"><div class="ttname"><a href="structjoybus__rp2xxx__config.html#a422647c05d336dc6cb9c7811f3319a8c">joybus_rp2xxx_config::alarm_num</a></div><div class="ttdeci">uint alarm_num</div><div class="ttdoc">Which of that timer&#39;s alarms to claim.</div><div class="ttdef"><b>Definition</b> rp2xxx.h:86</div></div>
-<div class="ttc" id="astructjoybus__rp2xxx__config_html_a6538d4f3341a876ffaee7f73f276739d"><div class="ttname"><a href="structjoybus__rp2xxx__config.html#a6538d4f3341a876ffaee7f73f276739d">joybus_rp2xxx_config::freq</a></div><div class="ttdeci">uint32_t freq</div><div class="ttdoc">Transmit frequency, in Hz.</div><div class="ttdef"><b>Definition</b> rp2xxx.h:89</div></div>
-<div class="ttc" id="astructjoybus__rp2xxx__config_html_a98ed9905098e33a90677429e1c290d9c"><div class="ttname"><a href="structjoybus__rp2xxx__config.html#a98ed9905098e33a90677429e1c290d9c">joybus_rp2xxx_config::set_irq_handler</a></div><div class="ttdeci">void(* set_irq_handler)(uint irq_num, irq_handler_t handler)</div><div class="ttdoc">Installs an interrupt handler and enables the line.</div><div class="ttdef"><b>Definition</b> rp2xxx.h:92</div></div>
-<div class="ttc" id="astructjoybus__rp2xxx__config_html_acbffe1f540a2dc138d4c137407249311"><div class="ttname"><a href="structjoybus__rp2xxx__config.html#acbffe1f540a2dc138d4c137407249311">joybus_rp2xxx_config::timer</a></div><div class="ttdeci">timer_hw_t * timer</div><div class="ttdoc">Timer instance the reply timeouts run on.</div><div class="ttdef"><b>Definition</b> rp2xxx.h:83</div></div>
-<div class="ttc" id="astructjoybus__rp2xxx__config_html_adfd23b3b8ce09d849f3bac03dbae5664"><div class="ttname"><a href="structjoybus__rp2xxx__config.html#adfd23b3b8ce09d849f3bac03dbae5664">joybus_rp2xxx_config::pio</a></div><div class="ttdeci">PIO pio</div><div class="ttdoc">PIO instance to use (eg. pio0 or pio1)</div><div class="ttdef"><b>Definition</b> rp2xxx.h:80</div></div>
-<div class="ttc" id="astructjoybus__rp2xxx__data_html"><div class="ttname"><a href="structjoybus__rp2xxx__data.html">joybus_rp2xxx_data</a></div><div class="ttdef"><b>Definition</b> rp2xxx.h:24</div></div>
-<div class="ttc" id="astructjoybus__rp2xxx_html"><div class="ttname"><a href="structjoybus__rp2xxx.html">joybus_rp2xxx</a></div><div class="ttdoc">A RP2xxx Joybus instance.</div><div class="ttdef"><b>Definition</b> rp2xxx.h:67</div></div>
+<div class="ttc" id="astructjoybus__rp2xxx__config_html"><div class="ttname"><a href="structjoybus__rp2xxx__config.html">joybus_rp2xxx_config</a></div><div class="ttdoc">Configuration for a RP2xxx Joybus instance.</div><div class="ttdef"><b>Definition</b> rp2xxx.h:77</div></div>
+<div class="ttc" id="astructjoybus__rp2xxx__config_html_a192756400328edba0c4bac8054943704"><div class="ttname"><a href="structjoybus__rp2xxx__config.html#a192756400328edba0c4bac8054943704">joybus_rp2xxx_config::gpio</a></div><div class="ttdeci">uint8_t gpio</div><div class="ttdoc">GPIO pin to use for the Joybus data line.</div><div class="ttdef"><b>Definition</b> rp2xxx.h:79</div></div>
+<div class="ttc" id="astructjoybus__rp2xxx__config_html_a422647c05d336dc6cb9c7811f3319a8c"><div class="ttname"><a href="structjoybus__rp2xxx__config.html#a422647c05d336dc6cb9c7811f3319a8c">joybus_rp2xxx_config::alarm_num</a></div><div class="ttdeci">uint alarm_num</div><div class="ttdoc">Which of that timer&#39;s alarms to claim.</div><div class="ttdef"><b>Definition</b> rp2xxx.h:88</div></div>
+<div class="ttc" id="astructjoybus__rp2xxx__config_html_a6538d4f3341a876ffaee7f73f276739d"><div class="ttname"><a href="structjoybus__rp2xxx__config.html#a6538d4f3341a876ffaee7f73f276739d">joybus_rp2xxx_config::freq</a></div><div class="ttdeci">uint32_t freq</div><div class="ttdoc">Transmit frequency, in Hz.</div><div class="ttdef"><b>Definition</b> rp2xxx.h:91</div></div>
+<div class="ttc" id="astructjoybus__rp2xxx__config_html_a98ed9905098e33a90677429e1c290d9c"><div class="ttname"><a href="structjoybus__rp2xxx__config.html#a98ed9905098e33a90677429e1c290d9c">joybus_rp2xxx_config::set_irq_handler</a></div><div class="ttdeci">void(* set_irq_handler)(uint irq_num, irq_handler_t handler)</div><div class="ttdoc">Installs an interrupt handler and enables the line.</div><div class="ttdef"><b>Definition</b> rp2xxx.h:94</div></div>
+<div class="ttc" id="astructjoybus__rp2xxx__config_html_acbffe1f540a2dc138d4c137407249311"><div class="ttname"><a href="structjoybus__rp2xxx__config.html#acbffe1f540a2dc138d4c137407249311">joybus_rp2xxx_config::timer</a></div><div class="ttdeci">timer_hw_t * timer</div><div class="ttdoc">Timer instance the reply timeouts run on.</div><div class="ttdef"><b>Definition</b> rp2xxx.h:85</div></div>
+<div class="ttc" id="astructjoybus__rp2xxx__config_html_adfd23b3b8ce09d849f3bac03dbae5664"><div class="ttname"><a href="structjoybus__rp2xxx__config.html#adfd23b3b8ce09d849f3bac03dbae5664">joybus_rp2xxx_config::pio</a></div><div class="ttdeci">PIO pio</div><div class="ttdoc">PIO instance to use (eg. pio0 or pio1)</div><div class="ttdef"><b>Definition</b> rp2xxx.h:82</div></div>
+<div class="ttc" id="astructjoybus__rp2xxx__data_html"><div class="ttname"><a href="structjoybus__rp2xxx__data.html">joybus_rp2xxx_data</a></div><div class="ttdef"><b>Definition</b> rp2xxx.h:26</div></div>
+<div class="ttc" id="astructjoybus__rp2xxx_html"><div class="ttname"><a href="structjoybus__rp2xxx.html">joybus_rp2xxx</a></div><div class="ttdoc">A RP2xxx Joybus instance.</div><div class="ttdef"><b>Definition</b> rp2xxx.h:69</div></div>
 <div class="ttc" id="astructjoybus_html"><div class="ttname"><a href="structjoybus.html">joybus</a></div><div class="ttdoc">A Joybus instance.</div><div class="ttdef"><b>Definition</b> bus.h:105</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
