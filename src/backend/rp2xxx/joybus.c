@@ -87,10 +87,19 @@ static inline void alarm_dispatch(uint timer_num, uint alarm_num)
   alarm_rearm(timer_get_instance(timer_num), alarm_num);
 }
 
-// Alarm callback, which finds its timer from the vector it arrived on
-static void alarm_fired(uint alarm_num)
+// Alarm interrupt, which finds its timer and alarm from the vector it arrived on
+static void __isr __not_in_flash_func(alarm_irq_handler)(void)
 {
-  alarm_dispatch(TIMER_NUM_FROM_IRQ(__get_current_exception() - VTABLE_FIRST_IRQ), alarm_num);
+  uint irq_num      = __get_current_exception() - VTABLE_FIRST_IRQ;
+  uint timer_num    = TIMER_NUM_FROM_IRQ(irq_num);
+  uint alarm_num    = TIMER_ALARM_NUM_FROM_IRQ(irq_num);
+  timer_hw_t *timer = timer_get_instance(timer_num);
+
+  // Acknowledged before dispatch, since that may raise the alarm again
+  timer->intr = 1u << alarm_num;
+  hw_clear_bits(&timer->intf, 1u << alarm_num);
+
+  alarm_dispatch(timer_num, alarm_num);
 }
 
 // Schedule the bus's timeout, replacing anything already scheduled
@@ -411,15 +420,15 @@ static int joybus_rp2xxx_enable(struct joybus *bus)
   pio_gpio_init(data->pio, data->gpio);
 
   // Enable PIO IRQ handler
-  irq_set_exclusive_handler(PIO_IRQ_NUM(data->pio, 0), pio_irq_handler);
-  irq_set_enabled(PIO_IRQ_NUM(data->pio, 0), true);
+  data->set_irq_handler(PIO_IRQ_NUM(data->pio, 0), pio_irq_handler);
   pio_set_irq0_source_enabled(data->pio, pis_interrupt0 + data->pio_sm, true);
 
   // Join the alarm's buses, claiming it if this is the first one on it
   uint timer_num = timer_get_index(data->timer);
   if (alarm_buses[timer_num][data->alarm_num] == NULL) {
     timer_hardware_alarm_claim(data->timer, data->alarm_num);
-    timer_hardware_alarm_set_callback(data->timer, data->alarm_num, alarm_fired);
+    hw_set_bits(&data->timer->inte, 1u << data->alarm_num);
+    data->set_irq_handler(TIMER_ALARM_IRQ_NUM(data->timer, data->alarm_num), alarm_irq_handler);
   }
   data->alarm_next                        = alarm_buses[timer_num][data->alarm_num];
   alarm_buses[timer_num][data->alarm_num] = bus;
@@ -496,7 +505,7 @@ static int joybus_rp2xxx_disable(struct joybus *bus)
   }
 
   if (alarm_buses[timer_num][data->alarm_num] == NULL) {
-    timer_hardware_alarm_set_callback(data->timer, data->alarm_num, NULL);
+    hw_clear_bits(&data->timer->inte, 1u << data->alarm_num);
     timer_hardware_alarm_unclaim(data->timer, data->alarm_num);
   }
 
@@ -546,7 +555,7 @@ static const struct joybus_api rp2xxx_api = {
 
 int joybus_rp2xxx_init(struct joybus_rp2xxx *rp2xxx_bus, struct joybus_rp2xxx_config config)
 {
-  if (config.timer == NULL || config.alarm_num >= NUM_ALARMS)
+  if (config.timer == NULL || config.alarm_num >= NUM_ALARMS || config.set_irq_handler == NULL)
     return -JOYBUS_ERR_INVALID_ARG;
 
   // Save the bus API
@@ -562,6 +571,7 @@ int joybus_rp2xxx_init(struct joybus_rp2xxx *rp2xxx_bus, struct joybus_rp2xxx_co
   data->pio                       = config.pio;
   data->timer                     = config.timer;
   data->alarm_num                 = config.alarm_num;
+  data->set_irq_handler           = config.set_irq_handler;
   data->pio_configured            = false;
   data->state                     = BUS_STATE_DISABLED;
   data->last_transfer_us          = 0;
