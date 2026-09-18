@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include <hardware/irq.h>
 #include <hardware/pio.h>
 #include <hardware/timer.h>
 
@@ -47,6 +48,9 @@ struct joybus_rp2xxx_data {
   uint alarm_num;
   struct joybus *alarm_next;
 
+  // How the PIO and alarm handlers reach their vectors
+  void (*set_irq_handler)(uint irq_num, irq_handler_t handler);
+
   // What this bus is waiting for, if anything
   uint64_t alarm_target_us;
   void (*alarm_callback)(void *user_data);
@@ -83,10 +87,27 @@ struct joybus_rp2xxx_config {
 
   /// Transmit frequency, in Hz
   uint32_t freq;
+
+  /// Installs an interrupt handler and enables the line
+  void (*set_irq_handler)(uint irq_num, irq_handler_t handler);
 };
 
 /**
+ * Install an interrupt handler through the pico-sdk.
+ *
+ * @param irq_num the interrupt to take
+ * @param handler what to call, which runs in interrupt context
+ */
+static inline void joybus_rp2xxx_set_irq_handler_sdk(uint irq_num, irq_handler_t handler)
+{
+  irq_set_exclusive_handler(irq_num, handler);
+  irq_set_enabled(irq_num, true);
+}
+
+/**
  * Build a RP2xxx config with default values.
+ *
+ * An RTOS that builds its own vector table has to replace set_irq_handler.
  *
  * @param gpio the GPIO pin to use for the Joybus data line
  * @return a config with the given GPIO, the pio0 instance, and a nominal frequency
@@ -94,11 +115,12 @@ struct joybus_rp2xxx_config {
 static inline struct joybus_rp2xxx_config joybus_rp2xxx_config_default(uint8_t gpio)
 {
   return (struct joybus_rp2xxx_config){
-    .gpio      = gpio,
-    .pio       = pio0,
-    .timer     = PICO_DEFAULT_TIMER_INSTANCE(),
-    .alarm_num = 0,
-    .freq      = JOYBUS_FREQ_NOMINAL,
+    .gpio            = gpio,
+    .pio             = pio0,
+    .timer           = PICO_DEFAULT_TIMER_INSTANCE(),
+    .alarm_num       = 0,
+    .freq            = JOYBUS_FREQ_NOMINAL,
+    .set_irq_handler = joybus_rp2xxx_set_irq_handler_sdk,
   };
 }
 
