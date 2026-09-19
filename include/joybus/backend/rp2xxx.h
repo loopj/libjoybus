@@ -75,7 +75,7 @@ struct joybus_rp2xxx {
  * Configuration for a RP2xxx Joybus instance.
  */
 struct joybus_rp2xxx_config {
-  /// GPIO pin to use for the Joybus data line
+  /// GPIO pin to use for the Joybus data line, 0 to 31
   uint8_t gpio;
 
   /// PIO instance to use (eg. pio0 or pio1)
