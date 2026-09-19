@@ -1,0 +1,34 @@
+description: |
+  A Joybus instance on an ESP32. Two RMT channels carry the line, one to
+  transmit and one to receive.
+
+compatible: "loopj,joybus-esp32"
+
+include: base.yaml
+
+properties:
+  gpios:
+    type: phandle-array
+    required: true
+    description: |
+      The pin the bus runs on. It is driven open drain and needs a pull up.
+      The driver sets the pad up itself, so the flags cell is ignored.
+
+  clock-frequency:
+    type: int
+    default: 250000
+    description: The bus frequency in Hz. The default is the rate an OEM controller runs at.
+
+  rmt-tx-channel:
+    type: int
+    default: 0
+    description: |
+      Which of the transmit capable RMT channels to claim. The driver takes the
+      channel directly, so leave the RMT node disabled, which is how an SoC
+      ships it. Enabling the node lets Zephyr's pulse-io driver take the whole
+      peripheral.
+
+  rmt-rx-channel:
+    type: int
+    default: 0
+    description: Which of the receive capable RMT channels to claim.
