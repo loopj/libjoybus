@@ -1,5 +1,5 @@
-# Add platform-specific source files
-target_sources(joybus INTERFACE joybus.c)
+# Add backend-specific source files
+target_sources(joybus INTERFACE ${JOYBUS_RP2XXX_SOURCES})
 
 # Link with the necessary pico-sdk libraries
 target_link_libraries(
