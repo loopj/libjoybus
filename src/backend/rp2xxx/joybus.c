@@ -550,6 +550,10 @@ static const struct joybus_api rp2xxx_api = {
 
 int joybus_rp2xxx_init(struct joybus_rp2xxx *rp2xxx_bus, struct joybus_rp2xxx_config config)
 {
+  // A PIO instance reaches 32 pins at a time, so staying below 32 keeps every instance usable
+  if (config.gpio >= 32)
+    return -JOYBUS_ERR_INVALID_ARG;
+
   if (config.timer == NULL || config.alarm_num >= NUM_ALARMS || config.set_irq_handler == NULL)
     return -JOYBUS_ERR_INVALID_ARG;
 

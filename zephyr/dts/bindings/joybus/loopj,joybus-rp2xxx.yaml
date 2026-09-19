@@ -1,0 +1,35 @@
+description: Joybus bus on an RP2040 or RP2350, driven by a PIO state machine
+
+compatible: "loopj,joybus-rp2xxx"
+
+include: base.yaml
+
+properties:
+  gpios:
+    type: phandle-array
+    required: true
+    description: |
+      The pin the bus runs on. It is driven open drain and needs a pull up.
+      Only the pin number is used, flags are ignored.
+
+  pio:
+    type: phandle
+    required: true
+    description: PIO instance to claim a state machine on.
+
+  clock-frequency:
+    type: int
+    default: 250000
+    description: Bus frequency in Hz. The default is the rate an OEM controller runs at.
+
+  timer:
+    type: phandle
+    required: true
+    description: |
+      Timer to claim an alarm on. Leave the timer node disabled, or Zephyr's
+      counter driver claims all four of its alarms.
+
+  alarm:
+    type: int
+    default: 0
+    description: Alarm to claim on the timer.
