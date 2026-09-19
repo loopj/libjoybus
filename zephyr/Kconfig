@@ -1,0 +1,63 @@
+menuconfig JOYBUS
+	bool "Joybus protocol library"
+	help
+	  Enable libjoybus, the protocol library for the Nintendo 64 and
+	  GameCube serial bus.
+
+if JOYBUS
+
+config JOYBUS_RP2XXX
+	bool "RP2xxx Joybus driver"
+	default y
+	depends on DT_HAS_LOOPJ_JOYBUS_RP2XXX_ENABLED
+	depends on PIO_RPI_PICO
+	select DYNAMIC_INTERRUPTS
+	select PICOSDK_USE_CLAIM
+	select PICOSDK_USE_DMA
+	select PICOSDK_USE_FLASH
+	select PICOSDK_USE_GPIO
+	select PICOSDK_USE_PIO
+	select PICOSDK_USE_TIMER
+	help
+	  Drive a bus from an RP2040 or RP2350, with a PIO state machine for
+	  the line timing and two DMA channels for the transfer.
+
+if JOYBUS_RP2XXX
+
+config JOYBUS_RP2XXX_IRQ_PRIORITY
+	int "RP2xxx Joybus interrupt priority"
+	default 1
+	help
+	  Priority of the PIO and timer interrupts the driver takes. A reply
+	  has to start within a few microseconds of the command ending, so
+	  keep this ahead of anything that can preempt it.
+
+config JOYBUS_RP2XXX_INIT_PRIORITY
+	int "RP2xxx Joybus init priority"
+	default 60
+	help
+	  Device init priority, which has to leave the PIO driver initialized
+	  first.
+
+endif # JOYBUS_RP2XXX
+
+config JOYBUS_ESP32
+	bool "ESP32 Joybus driver"
+	default y
+	depends on DT_HAS_LOOPJ_JOYBUS_ESP32_ENABLED
+	help
+	  Drive a bus from an ESP32, with one RMT channel transmitting and
+	  another receiving.
+
+if JOYBUS_ESP32
+
+config JOYBUS_ESP32_INIT_PRIORITY
+	int "ESP32 Joybus init priority"
+	default 60
+	help
+	  Device init priority, which decides where the bus comes up among the
+	  other POST_KERNEL devices. The driver waits on no other device.
+
+endif # JOYBUS_ESP32
+
+endif # JOYBUS
