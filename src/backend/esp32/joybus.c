@@ -224,8 +224,8 @@ static inline IRAM_ATTR uint8_t decode_byte(struct joybus_esp32_data *data, int 
   // Fill the byte, folding in each bit as its symbol commits. Read the writer offset once and
   // re-read it only when we catch up to it: it barely moves while we read the bits that already
   // landed, and on a slow peripheral bus (the ESP32-H2) re-reading it every bit dominates the decode.
-  uint8_t byte      = 0;
-  int     committed = rx_committed(data, base);
+  uint8_t byte  = 0;
+  int committed = rx_committed(data, base);
   for (int i = 0; i < SYMBOLS_PER_BYTE; i++) {
     while (committed <= i)
       committed = rx_committed(data, base);
@@ -362,7 +362,7 @@ static inline IRAM_ATTR void host_byte_received(struct joybus *bus)
 
   // Decode the next reply byte. The reply starts one symbol past the command and its stop bit, so
   // every reply byte lands one symbol early, the same interrupt timing decode_byte handles
-  int base_sym = (data->write_len * SYMBOLS_PER_BYTE + 1) + data->read_count * SYMBOLS_PER_BYTE;
+  int base_sym                     = (data->write_len * SYMBOLS_PER_BYTE + 1) + data->read_count * SYMBOLS_PER_BYTE;
   data->read_buf[data->read_count] = decode_byte(data, base_sym);
   data->read_count++;
 
@@ -378,7 +378,7 @@ static inline IRAM_ATTR void target_byte_received(struct joybus *bus)
 
   // Save the received byte in the buffer
   data->read_buf[data->read_count] = decode_byte(data, data->read_count * SYMBOLS_PER_BYTE);
-  uint32_t cmd_end = esp_cpu_get_cycle_count();
+  uint32_t cmd_end                 = esp_cpu_get_cycle_count();
   data->read_count++;
 
   // Call the target handler to prepare a response if needed
@@ -608,7 +608,12 @@ static int joybus_esp32_enable(struct joybus *bus)
     .name            = "joybus_transfer_start",
   };
 
-  if (esp_timer_create(&transfer_start_args, &data->transfer_start_timer) != 0) {
+  // Create the timer, initializing esp_timer if we need to
+  esp_err_t timer_err = esp_timer_create(&transfer_start_args, &data->transfer_start_timer);
+  if (timer_err == ESP_ERR_INVALID_STATE && esp_timer_init() == ESP_OK)
+    timer_err = esp_timer_create(&transfer_start_args, &data->transfer_start_timer);
+
+  if (timer_err != ESP_OK) {
     esp_intr_free(data->rmt_intr);
     data->rmt_intr = NULL;
     joybus_rmt_claimed_channels &= ~claim_mask;
