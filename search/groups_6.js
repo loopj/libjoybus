@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['joybus_0',['Joybus',['../group__joybus.html',1,'']]]
+  ['host_20commands_0',['Host Commands',['../group__joybus__host.html',1,'']]]
 ];

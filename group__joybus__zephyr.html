@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.14.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>libjoybus: src/backend/rp2xxx Directory Reference</title>
+<title>libjoybus: Zephyr Device API</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -77,7 +77,7 @@ $(function() {
   </div>
 </div>
 <script type="text/javascript">
-$(function(){initNavTree('dir_a0af1123aa73b425e6696dc25ded3916.html','',''); });
+$(function(){initNavTree('group__joybus__zephyr.html','',''); });
 </script>
 <div id="container">
 <div id="doc-content">
@@ -103,15 +103,60 @@ $(function(){initNavTree('dir_a0af1123aa73b425e6696dc25ded3916.html','',''); });
 </div>
 
 <div class="header">
-  <div class="headertitle"><div class="title">rp2xxx Directory Reference</div></div>
+  <div class="headertitle"><div class="title">Zephyr Device API <div class="ingroups"><a class="el" href="group__joybus__backends.html">Backends</a></div></div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Zephyr device binding for a Joybus bus.  
+<a href="#details">More...</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 id="header-files" class="groupheader"><a id="files" name="files"></a>
-Files</h2></td></tr>
-<tr class="memitem:joybus_5Fhost_2Epio_2Eh" id="r_joybus_5Fhost_2Epio_2Eh"><td class="memItemLeft" align="right" valign="top"><a href="joybus__host_8pio_8h_source.html"><span class="icondoc"><div class="doc-icon"></div></span></a>&#160;</td><td class="memItemRight" valign="bottom"><b>joybus_host.pio.h</b></td></tr>
-<tr class="memitem:joybus_5Ftarget_2Epio_2Eh" id="r_joybus_5Ftarget_2Epio_2Eh"><td class="memItemLeft" align="right" valign="top"><a href="joybus__target_8pio_8h_source.html"><span class="icondoc"><div class="doc-icon"></div></span></a>&#160;</td><td class="memItemRight" valign="bottom"><b>joybus_target.pio.h</b></td></tr>
+<tr class="heading"><td colspan="2"><h2 id="header-nested-classes" class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Data Structures</h2></td></tr>
+<tr class="memitem:joybus_5Fdriver_5Fapi" id="r_joybus_5Fdriver_5Fapi"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structjoybus__driver__api.html">joybus_driver_api</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Joybus driver API.  <a href="structjoybus__driver__api.html#details">More...</a><br /></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:ga54ee2f5e8ef1e04e69be4d5ed33fedba" id="r_ga54ee2f5e8ef1e04e69be4d5ed33fedba"><td class="memItemLeft" align="right" valign="top">static struct <a class="el" href="structjoybus.html">joybus</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga54ee2f5e8ef1e04e69be4d5ed33fedba">joybus_zephyr_get_bus</a> (const struct device *dev)</td></tr>
+<tr class="memdesc:ga54ee2f5e8ef1e04e69be4d5ed33fedba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the libjoybus bus for this Zephyr device.  <br /></td></tr>
 </table>
+<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
+<p>Zephyr device binding for a Joybus bus. </p>
+<a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Function Documentation</h2>
+<a id="ga54ee2f5e8ef1e04e69be4d5ed33fedba" name="ga54ee2f5e8ef1e04e69be4d5ed33fedba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga54ee2f5e8ef1e04e69be4d5ed33fedba">&#9670;&#160;</a></span>joybus_zephyr_get_bus()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="structjoybus.html">joybus</a> * joybus_zephyr_get_bus </td>
+          <td>(</td>
+          <td class="paramtype">const struct device *</td>          <td class="paramname"><span class="paramname"><em>dev</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel static">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the libjoybus bus for this Zephyr device. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dev</td><td>the Joybus device </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the libjoybus bus instance </dd></dl>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <div id="page-nav" class="page-nav-panel">
@@ -125,7 +170,6 @@ Files</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a href="dir_3f615ade772d23cefe5e20dcb18424a2.html">backend</a></li><li class="navelem"><a href="dir_a0af1123aa73b425e6696dc25ded3916.html">rp2xxx</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.14.0 </li>
   </ul>
 </div>

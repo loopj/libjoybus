@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.14.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>libjoybus: src/backend/rp2xxx Directory Reference</title>
+<title>libjoybus: include/joybus/zephyr/device.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -77,7 +77,7 @@ $(function() {
   </div>
 </div>
 <script type="text/javascript">
-$(function(){initNavTree('dir_a0af1123aa73b425e6696dc25ded3916.html','',''); });
+$(function(){initNavTree('device_8h_source.html','',''); });
 </script>
 <div id="container">
 <div id="doc-content">
@@ -103,29 +103,40 @@ $(function(){initNavTree('dir_a0af1123aa73b425e6696dc25ded3916.html','',''); });
 </div>
 
 <div class="header">
-  <div class="headertitle"><div class="title">rp2xxx Directory Reference</div></div>
+  <div class="headertitle"><div class="title">device.h</div></div>
 </div><!--header-->
 <div class="contents">
-<table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 id="header-files" class="groupheader"><a id="files" name="files"></a>
-Files</h2></td></tr>
-<tr class="memitem:joybus_5Fhost_2Epio_2Eh" id="r_joybus_5Fhost_2Epio_2Eh"><td class="memItemLeft" align="right" valign="top"><a href="joybus__host_8pio_8h_source.html"><span class="icondoc"><div class="doc-icon"></div></span></a>&#160;</td><td class="memItemRight" valign="bottom"><b>joybus_host.pio.h</b></td></tr>
-<tr class="memitem:joybus_5Ftarget_2Epio_2Eh" id="r_joybus_5Ftarget_2Epio_2Eh"><td class="memItemLeft" align="right" valign="top"><a href="joybus__target_8pio_8h_source.html"><span class="icondoc"><div class="doc-icon"></div></span></a>&#160;</td><td class="memItemRight" valign="bottom"><b>joybus_target.pio.h</b></td></tr>
-</table>
-</div><!-- contents -->
+<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &lt;zephyr/device.h&gt;</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &lt;joybus/bus.h&gt;</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span></div>
+<div class="foldopen" id="foldopen00019" data-start="{" data-end="};">
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno"><a class="line" href="structjoybus__driver__api.html">   19</a></span>__subsystem <span class="keyword">struct </span><a class="code hl_struct" href="structjoybus__driver__api.html">joybus_driver_api</a> {</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>  <span class="keyword">struct </span><a class="code hl_struct" href="structjoybus.html">joybus</a> *(*get_bus)(<span class="keyword">const</span> <span class="keyword">struct </span>device *dev);</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>};</div>
+</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span></div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="structjoybus__driver__api.html#ab4af8536c136d7011ee79be46db7b0b0">   30</a></span><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keyword">struct </span><a class="code hl_struct" href="structjoybus.html">joybus</a> *<a class="code hl_function" href="group__joybus__zephyr.html#ga54ee2f5e8ef1e04e69be4d5ed33fedba">joybus_zephyr_get_bus</a>(<span class="keyword">const</span> <span class="keyword">struct</span> device *dev)</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>{</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  <span class="keyword">const</span> <span class="keyword">struct </span><a class="code hl_struct" href="structjoybus__driver__api.html">joybus_driver_api</a> *api = (<span class="keyword">const</span> <span class="keyword">struct </span><a class="code hl_struct" href="structjoybus__driver__api.html">joybus_driver_api</a> *)dev-&gt;api;</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>  <span class="keywordflow">return</span> api-&gt;<a class="code hl_variable" href="structjoybus__driver__api.html#ab4af8536c136d7011ee79be46db7b0b0">get_bus</a>(dev);</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>}</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span></div>
+<div class="ttc" id="agroup__joybus__zephyr_html_ga54ee2f5e8ef1e04e69be4d5ed33fedba"><div class="ttname"><a href="group__joybus__zephyr.html#ga54ee2f5e8ef1e04e69be4d5ed33fedba">joybus_zephyr_get_bus</a></div><div class="ttdeci">static struct joybus * joybus_zephyr_get_bus(const struct device *dev)</div><div class="ttdoc">Get the libjoybus bus for this Zephyr device.</div><div class="ttdef"><b>Definition</b> device.h:30</div></div>
+<div class="ttc" id="astructjoybus__driver__api_html"><div class="ttname"><a href="structjoybus__driver__api.html">joybus_driver_api</a></div><div class="ttdoc">Joybus driver API.</div><div class="ttdef"><b>Definition</b> device.h:19</div></div>
+<div class="ttc" id="astructjoybus__driver__api_html_ab4af8536c136d7011ee79be46db7b0b0"><div class="ttname"><a href="structjoybus__driver__api.html#ab4af8536c136d7011ee79be46db7b0b0">joybus_driver_api::get_bus</a></div><div class="ttdeci">struct joybus *(* get_bus)(const struct device *dev)</div><div class="ttdoc">Return the libjoybus bus the device drives.</div><div class="ttdef"><b>Definition</b> device.h:21</div></div>
+<div class="ttc" id="astructjoybus_html"><div class="ttname"><a href="structjoybus.html">joybus</a></div><div class="ttdoc">A Joybus instance.</div><div class="ttdef"><b>Definition</b> bus.h:105</div></div>
+</div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
-<div id="page-nav" class="page-nav-panel">
-<div id="page-nav-resize-handle"></div>
-<div id="page-nav-tree">
-<div id="page-nav-contents">
-</div><!-- page-nav-contents -->
-</div><!-- page-nav-tree -->
-</div><!-- page-nav -->
 </div><!-- container -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a href="dir_3f615ade772d23cefe5e20dcb18424a2.html">backend</a></li><li class="navelem"><a href="dir_a0af1123aa73b425e6696dc25ded3916.html">rp2xxx</a></li>
+    <li class="navelem"><a href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a href="dir_11bfe2aeffd25593654c3f2cacc8984c.html">joybus</a></li><li class="navelem"><a href="dir_6b787cd828940736f2da6888b5aacbf9.html">zephyr</a></li><li class="navelem"><b>device.h</b></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.14.0 </li>
   </ul>
 </div>

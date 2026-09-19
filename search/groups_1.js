@@ -1,7 +1,5 @@
 var searchData=
 [
-  ['commands_0',['Commands',['../group__joybus__host__common.html',1,'Common Commands'],['../group__joybus__host__gcn.html',1,'GameCube Commands'],['../group__joybus__host.html',1,'Host Commands'],['../group__joybus__host__n64.html',1,'N64 Commands'],['../group__joybus__host__n64__pak__rumble.html',1,'N64 Rumble Pak Commands']]],
-  ['common_20commands_1',['Common Commands',['../group__joybus__host__common.html',1,'']]],
-  ['controller_20pak_2',['N64 Controller Pak',['../group__joybus__target__n64__pak__controller.html',1,'']]],
-  ['controller_20target_3',['Controller Target',['../group__joybus__target__gcn__controller.html',1,'GameCube Controller Target'],['../group__joybus__target__n64__controller.html',1,'N64 Controller Target']]]
+  ['backend_0',['Backend',['../group__joybus__backend__esp32.html',1,'ESP32 Backend'],['../group__joybus__backend__gecko.html',1,'Gecko Backend'],['../group__joybus__backend__rp2xxx.html',1,'RP2xxx Backend']]],
+  ['backends_1',['Backends',['../group__joybus__backends.html',1,'']]]
 ];
