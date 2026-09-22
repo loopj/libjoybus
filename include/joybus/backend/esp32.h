@@ -77,7 +77,7 @@ struct joybus_esp32_data {
   // Transfer state
   joybus_transfer_cb done_callback;
   void *done_user_data;
-  int64_t last_transfer_us;
+  uint32_t last_transfer_cycles;
 };
 
 /**

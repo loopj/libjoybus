@@ -319,8 +319,8 @@ static IRAM_ATTR void transfer_finish(struct joybus *bus, int status)
   // Disable RX
   rmt_ll_rx_enable(&RMT, data->rmt_rx_ch, false);
 
-  // Record the completion time for enforcing minimum interval between transfers
-  data->last_transfer_us = esp_timer_get_time();
+  // Record the completion time for the inter-transfer gap
+  data->last_transfer_cycles = esp_cpu_get_cycle_count();
 
   // Call the transfer complete callback with status
   if (data->done_callback)
@@ -709,7 +709,9 @@ static int joybus_esp32_transfer(struct joybus *bus, const uint8_t *write_buf, u
   data->done_callback  = callback;
   data->done_user_data = user_data;
 
-  int64_t wait_us = (int64_t)JOYBUS_INTER_TRANSFER_DELAY_US - (esp_timer_get_time() - data->last_transfer_us);
+  // Resolve the cycle rate here rather than at enable, since frequency scaling changes it
+  uint32_t elapsed_cycles = esp_cpu_get_cycle_count() - data->last_transfer_cycles;
+  int64_t wait_us         = (int64_t)JOYBUS_INTER_TRANSFER_DELAY_US - elapsed_cycles / esp_rom_get_cpu_ticks_per_us();
   if (wait_us <= 0) {
     // Kick off the transfer immediately if we are not in an inter-transfer delay
     transfer_start(bus);
@@ -745,7 +747,7 @@ int joybus_esp32_init(struct joybus_esp32 *esp32_bus, struct joybus_esp32_config
   data->rmt_rx_ch                = config.rmt_rx_ch;
   data->rmt_intr                 = NULL;
   data->transfer_start_timer     = NULL;
-  data->last_transfer_us         = 0;
+  data->last_transfer_cycles     = 0;
 
   return 0;
 }
