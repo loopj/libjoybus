@@ -660,6 +660,9 @@ static int joybus_esp32_disable(struct joybus *bus)
   rmt_ll_rx_enable(&RMT, data->rmt_rx_ch, false);
   rmt_ll_tx_stop(&RMT, data->rmt_tx_ch);
 
+  // Stop driving the line
+  gpio_ll_output_disable(&GPIO, data->gpio);
+
   // Disable interrupts for this bus's channels
   uint32_t intr_mask = RMT_LL_EVENT_TX_MASK(data->rmt_tx_ch) | RMT_LL_EVENT_RX_MASK(data->rmt_rx_ch);
   rmt_ll_enable_interrupt(&RMT, intr_mask, false);
