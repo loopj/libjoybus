@@ -8,6 +8,9 @@ if(CONFIG_JOYBUS)
   # Put the public headers on the include path
   zephyr_include_directories(${ZEPHYR_CURRENT_MODULE_DIR}/include)
 
+  # Hand the ESP32 backend its interrupt placement choice
+  zephyr_compile_definitions_ifdef(CONFIG_JOYBUS_ESP32_ISR_IRAM_SAFE JOYBUS_ESP32_ISR_IRAM_SAFE=1)
+
   # Scan those headers for the device API the drivers declare
   zephyr_syscall_include_directories(${ZEPHYR_CURRENT_MODULE_DIR}/include)
 
