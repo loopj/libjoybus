@@ -19,6 +19,7 @@
 #include <hal/gpio_ll.h>
 #include <hal/rmt_ll.h>
 #include <soc/clk_tree_defs.h>
+#include <soc/gpio_sig_map.h>
 #include <soc/soc_caps.h>
 
 #if !SOC_RMT_SUPPORT_RX_PINGPONG
@@ -660,7 +661,8 @@ static int joybus_esp32_disable(struct joybus *bus)
   rmt_ll_rx_enable(&RMT, data->rmt_rx_ch, false);
   rmt_ll_tx_stop(&RMT, data->rmt_tx_ch);
 
-  // Stop driving the line
+  // Hand the pad back to GPIO, since a pad routed to a peripheral takes its output enable from it
+  esp_rom_gpio_connect_out_signal(data->gpio, SIG_GPIO_OUT_IDX, false, false);
   gpio_ll_output_disable(&GPIO, data->gpio);
 
   // Disable interrupts for this bus's channels
