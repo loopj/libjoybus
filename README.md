@@ -248,10 +248,11 @@ cache for the whole operation and masks every interrupt that is not marked
 cache-safe, so the bus receives nothing until the write finishes. This includes
 NVS writes, such as storing Bluetooth pairing keys.
 
-Disable the bus around the write where you can. When you cannot, define
-`JOYBUS_ESP32_ISR_IRAM_SAFE=1` to keep the interrupt running through a flash
-write. Every callback the bus invokes must then be marked `JOYBUS_RAM_FUNC`,
-including the transfer callback passed to host functions.
+Disable the bus around the write where you can. When you cannot, enable
+`CONFIG_JOYBUS_ESP32_ISR_IRAM_SAFE` in `menuconfig` on ESP-IDF or in `prj.conf`
+on Zephyr to keep the interrupt running through a flash write. Every callback
+the bus invokes must then be marked `JOYBUS_RAM_FUNC`, including the transfer
+callback passed to host functions.
 
 ## License
 

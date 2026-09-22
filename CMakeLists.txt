@@ -1,9 +1,29 @@
 # Gather the source lists, which set LIBJOYBUS_ROOT_DIR
 include(${CMAKE_CURRENT_LIST_DIR}/cmake/sources.cmake)
 
-# Hand off to ESP-IDF build if being built from idf.py
+# Register as an ESP-IDF component if being built from idf.py
 if(ESP_PLATFORM)
-  include(${LIBJOYBUS_ROOT_DIR}/cmake/esp-idf.cmake)
+  # ESP-IDF v5 vs v6 compatibility
+  if(IDF_VERSION_MAJOR GREATER_EQUAL 6)
+    set(JOYBUS_RMT_HAL_COMPONENT esp_hal_rmt)
+    set(JOYBUS_GPIO_HAL_COMPONENT esp_hal_gpio)
+  else()
+    set(JOYBUS_RMT_HAL_COMPONENT hal)
+    set(JOYBUS_GPIO_HAL_COMPONENT hal)
+  endif()
+
+  idf_component_register(
+    SRCS ${JOYBUS_SOURCES} ${JOYBUS_ESP32_SOURCES}
+    INCLUDE_DIRS ${LIBJOYBUS_ROOT_DIR}/include
+    REQUIRES esp_timer esp_hw_support soc ${JOYBUS_GPIO_HAL_COMPONENT}
+    PRIV_REQUIRES esp_rom ${JOYBUS_RMT_HAL_COMPONENT}
+  )
+
+  # Pass the Kconfig choice through to the ESP32 backend
+  if(CONFIG_JOYBUS_ESP32_ISR_IRAM_SAFE)
+    target_compile_definitions(${COMPONENT_LIB} PUBLIC JOYBUS_ESP32_ISR_IRAM_SAFE=1)
+  endif()
+
   return()
 endif()
 

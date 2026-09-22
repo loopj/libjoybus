@@ -1,0 +1,11 @@
+menu "libjoybus"
+
+config JOYBUS_ESP32_ISR_IRAM_SAFE
+	bool "Keep the Joybus interrupt live during flash writes"
+	help
+	  Allocate the RMT interrupt with the IRAM flag, so the bus keeps
+	  answering while the cache is off for a flash write. Every callback
+	  the bus invokes, and every table those read, must then live in RAM,
+	  or the first one to run during a write faults.
+
+endmenu

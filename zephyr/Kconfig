@@ -58,13 +58,8 @@ config JOYBUS_ESP32_INIT_PRIORITY
 	  Device init priority, which decides where the bus comes up among the
 	  other POST_KERNEL devices. The driver waits on no other device.
 
-config JOYBUS_ESP32_ISR_IRAM_SAFE
-	bool "Keep the Joybus interrupt live during flash writes"
-	help
-	  Allocate the RMT interrupt with the IRAM flag, so the bus keeps
-	  answering while the cache is off for a flash write. Every callback
-	  the bus invokes, and every table those read, must then live in RAM,
-	  or the first one to run during a write faults.
+# Options the ESP32 backend shares with the ESP-IDF component
+rsource "../Kconfig"
 
 endif # JOYBUS_ESP32
 
