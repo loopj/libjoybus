@@ -98,7 +98,7 @@ static int memory_write_block(struct joybus_target_n64_pak_controller *pak_contr
   return 0;
 }
 
-static const struct joybus_target_n64_pak_api pak_controller_api = {
+static JOYBUS_RAM_DATA const struct joybus_target_n64_pak_api pak_controller_api = {
   .read_block  = pak_controller_read_block,
   .write_block = pak_controller_write_block,
 };

@@ -28,7 +28,7 @@ static int pixelfx_gameid_byte_received(struct joybus_target *target, const uint
   return 0;
 }
 
-static const struct joybus_target_api pixelfx_gameid_api = {
+static JOYBUS_RAM_DATA const struct joybus_target_api pixelfx_gameid_api = {
   .byte_received = pixelfx_gameid_byte_received,
 };
 
