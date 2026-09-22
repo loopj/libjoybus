@@ -9,8 +9,9 @@
  * Pack a "full" input state into a "short" 8-byte input state, depending on the
  * analog mode. See enum joybus_gcn_analog_mode for more details.
  */
-static inline uint8_t *pack_input_state(uint8_t *dest, const struct joybus_gcn_controller_state *src,
-                                        enum joybus_gcn_analog_mode analog_mode)
+JOYBUS_RAM_FUNC
+static uint8_t *pack_input_state(uint8_t *dest, const struct joybus_gcn_controller_state *src,
+                                 enum joybus_gcn_analog_mode analog_mode)
 {
   // Copy button and stick data
   memcpy(dest, src, 4);
@@ -53,7 +54,8 @@ static inline uint8_t *pack_input_state(uint8_t *dest, const struct joybus_gcn_c
 }
 
 // Set or clear the "need origin" flag in the input state and device ID
-static inline void set_need_origin(struct joybus_target_gcn_controller *controller, bool need_origin)
+JOYBUS_RAM_FUNC
+static void set_need_origin(struct joybus_target_gcn_controller *controller, bool need_origin)
 {
   // Always set the need_origin flag in the input state
   if (need_origin) {
@@ -79,8 +81,8 @@ static inline void set_need_origin(struct joybus_target_gcn_controller *controll
  * Response:        A 3-byte controller ID
  */
 JOYBUS_RAM_FUNC
-static inline int handle_reset(struct joybus_target_gcn_controller *controller, const uint8_t *command,
-                               uint8_t bytes_read, joybus_target_response_cb send_response, void *user_data)
+static int handle_reset(struct joybus_target_gcn_controller *controller, const uint8_t *command, uint8_t bytes_read,
+                        joybus_target_response_cb send_response, void *user_data)
 {
   // Respond with the controller ID
   send_response((const uint8_t *)&controller->id, JOYBUS_CMD_RESET_RX, user_data);
@@ -103,8 +105,8 @@ static inline int handle_reset(struct joybus_target_gcn_controller *controller, 
  * Response:        A 3-byte controller ID
  */
 JOYBUS_RAM_FUNC
-static inline int handle_identify(struct joybus_target_gcn_controller *controller, const uint8_t *command,
-                                  uint8_t bytes_read, joybus_target_response_cb send_response, void *user_data)
+static int handle_identify(struct joybus_target_gcn_controller *controller, const uint8_t *command, uint8_t bytes_read,
+                           joybus_target_response_cb send_response, void *user_data)
 {
   // Respond with the controller ID
   send_response((const uint8_t *)&controller->id, JOYBUS_CMD_IDENTIFY_RX, user_data);
@@ -119,8 +121,8 @@ static inline int handle_identify(struct joybus_target_gcn_controller *controlle
  * Response:        An 8-byte packed input state, see `pack_input_state` for details
  */
 JOYBUS_RAM_FUNC
-static inline int handle_read(struct joybus_target_gcn_controller *controller, const uint8_t *command,
-                              uint8_t bytes_read, joybus_target_response_cb send_response, void *user_data)
+static int handle_read(struct joybus_target_gcn_controller *controller, const uint8_t *command, uint8_t bytes_read,
+                       joybus_target_response_cb send_response, void *user_data)
 {
   // We can respond after the first two bytes
   if (bytes_read == 2) {
@@ -145,8 +147,8 @@ static inline int handle_read(struct joybus_target_gcn_controller *controller, c
       controller->input.buttons |= JOYBUS_GCN_USE_ORIGIN;
 
       // Get the previous motor state
-      uint8_t last_motor_state = (controller->id.status & JOYBUS_STATUS_GCN_MOTOR_STATE_MASK) >>
-                                 JOYBUS_STATUS_GCN_MOTOR_STATE_SHIFT;
+      uint8_t last_motor_state =
+        (controller->id.status & JOYBUS_STATUS_GCN_MOTOR_STATE_MASK) >> JOYBUS_STATUS_GCN_MOTOR_STATE_SHIFT;
 
       // Save the analog mode and motor state
       joybus_id_clear_status_flags(&controller->id,
@@ -168,8 +170,9 @@ static inline int handle_read(struct joybus_target_gcn_controller *controller, c
  * Command:         {0x41}
  * Response:        A 10-byte input state representing the current origin.
  */
-static inline int handle_read_origin(struct joybus_target_gcn_controller *controller, const uint8_t *command,
-                                     uint8_t bytes_read, joybus_target_response_cb send_response, void *user_data)
+JOYBUS_RAM_FUNC
+static int handle_read_origin(struct joybus_target_gcn_controller *controller, const uint8_t *command,
+                              uint8_t bytes_read, joybus_target_response_cb send_response, void *user_data)
 {
   // Respond with the controller origin
   send_response((uint8_t *)&controller->origin, JOYBUS_CMD_GCN_READ_ORIGIN_RX, user_data);
@@ -186,8 +189,9 @@ static inline int handle_read_origin(struct joybus_target_gcn_controller *contro
  * Command:         {0x42, 0x00, 0x00}
  * Response:        A 10-byte input state representing the current origin.
  */
-static inline int handle_calibrate(struct joybus_target_gcn_controller *controller, const uint8_t *command,
-                                   uint8_t bytes_read, joybus_target_response_cb send_response, void *user_data)
+JOYBUS_RAM_FUNC
+static int handle_calibrate(struct joybus_target_gcn_controller *controller, const uint8_t *command, uint8_t bytes_read,
+                            joybus_target_response_cb send_response, void *user_data)
 {
   // We can respond after the first byte
   if (bytes_read == 1) {
@@ -212,8 +216,9 @@ static inline int handle_calibrate(struct joybus_target_gcn_controller *controll
  *
  * NOTE: This command is not used by any games, but is included for completeness.
  */
-static inline int handle_read_long(struct joybus_target_gcn_controller *controller, const uint8_t *command,
-                                   uint8_t bytes_read, joybus_target_response_cb send_response, void *user_data)
+JOYBUS_RAM_FUNC
+static int handle_read_long(struct joybus_target_gcn_controller *controller, const uint8_t *command, uint8_t bytes_read,
+                            joybus_target_response_cb send_response, void *user_data)
 {
   // We can respond after the second byte is read
   if (bytes_read == 2) {
@@ -233,8 +238,8 @@ static inline int handle_read_long(struct joybus_target_gcn_controller *controll
       controller->input.buttons |= JOYBUS_GCN_USE_ORIGIN;
 
       // Get the previous motor state
-      uint8_t last_motor_state = (controller->id.status & JOYBUS_STATUS_GCN_MOTOR_STATE_MASK) >>
-                                 JOYBUS_STATUS_GCN_MOTOR_STATE_SHIFT;
+      uint8_t last_motor_state =
+        (controller->id.status & JOYBUS_STATUS_GCN_MOTOR_STATE_MASK) >> JOYBUS_STATUS_GCN_MOTOR_STATE_SHIFT;
 
       // Save the analog mode and motor state
       joybus_id_clear_status_flags(&controller->id,
@@ -264,8 +269,9 @@ static inline int handle_read_long(struct joybus_target_gcn_controller *controll
  * Command:         {0x4D, 0x??, 0x??} - 2nd and 3rd bytes seem to differ every time
  * Response:        8 bytes of zeroes.
  */
-static inline int handle_probe_device(struct joybus_target_gcn_controller *controller, const uint8_t *command,
-                                      uint8_t bytes_read, joybus_target_response_cb send_response, void *user_data)
+JOYBUS_RAM_FUNC
+static int handle_probe_device(struct joybus_target_gcn_controller *controller, const uint8_t *command,
+                               uint8_t bytes_read, joybus_target_response_cb send_response, void *user_data)
 {
   if (bytes_read == 1) {
     // Don't respond to probe commands if we already received data from a controller
@@ -273,8 +279,8 @@ static inline int handle_probe_device(struct joybus_target_gcn_controller *contr
       return -JOYBUS_ERR_NOT_SUPPORTED;
 
     // Respond with 8 bytes of zeroes
-    static const uint8_t zeroes[8] = {0};
-    send_response(zeroes, JOYBUS_CMD_GCN_PROBE_DEVICE_RX, user_data);
+    memset(controller->packed_input, 0, JOYBUS_CMD_GCN_PROBE_DEVICE_RX);
+    send_response(controller->packed_input, JOYBUS_CMD_GCN_PROBE_DEVICE_RX, user_data);
   }
 
   return JOYBUS_CMD_GCN_PROBE_DEVICE_TX - bytes_read;
@@ -288,8 +294,9 @@ static inline int handle_probe_device(struct joybus_target_gcn_controller *contr
  * Command:         {0x4E, wireless_id_h | 0x10, wireless_id_l}
  * Response:        A 3-byte controller ID
  */
-static inline int handle_fix_device(struct joybus_target_gcn_controller *controller, const uint8_t *command,
-                                    uint8_t bytes_read, joybus_target_response_cb send_response, void *user_data)
+JOYBUS_RAM_FUNC
+static int handle_fix_device(struct joybus_target_gcn_controller *controller, const uint8_t *command,
+                             uint8_t bytes_read, joybus_target_response_cb send_response, void *user_data)
 {
   if (bytes_read == JOYBUS_CMD_GCN_FIX_DEVICE_TX) {
     // Extract the wireless ID from the command
@@ -336,7 +343,7 @@ static int gcn_controller_byte_received(struct joybus_target *target, const uint
   return -JOYBUS_ERR_NOT_SUPPORTED;
 }
 
-static const struct joybus_target_api gcn_controller_api = {
+static JOYBUS_RAM_DATA const struct joybus_target_api gcn_controller_api = {
   .byte_received = gcn_controller_byte_received,
 };
 

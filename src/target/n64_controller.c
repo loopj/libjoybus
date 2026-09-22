@@ -13,7 +13,7 @@
 // Helper to check if an pak is currently read for pak read/write commands
 // An pak is "ready" when it is present and pak changed flag has been cleared
 JOYBUS_RAM_FUNC
-static inline bool pak_ready(struct joybus_target_n64_controller *controller)
+static bool pak_ready(struct joybus_target_n64_controller *controller)
 {
   return controller->pak && !joybus_id_n64_pak_changed(&controller->id);
 }
@@ -159,7 +159,8 @@ static int handle_pak_read(struct joybus_target_n64_controller *controller, cons
 
   if (ready) {
     // Calculate and append the data checksum
-    controller->response[JOYBUS_N64_PAK_BLOCK_SIZE] = joybus_data_checksum(controller->response, JOYBUS_N64_PAK_BLOCK_SIZE);
+    controller->response[JOYBUS_N64_PAK_BLOCK_SIZE] =
+      joybus_data_checksum(controller->response, JOYBUS_N64_PAK_BLOCK_SIZE);
   } else {
     // Prepare a zero response with the "no pak" CRC, which the host treats as a transfer error
     memset(controller->response, 0, JOYBUS_CMD_N64_PAK_READ_RX);
@@ -249,7 +250,7 @@ static int n64_controller_byte_received(struct joybus_target *target, const uint
   return -JOYBUS_ERR_NOT_SUPPORTED;
 }
 
-static const struct joybus_target_api n64_controller_api = {
+static JOYBUS_RAM_DATA const struct joybus_target_api n64_controller_api = {
   .byte_received = n64_controller_byte_received,
 };
 

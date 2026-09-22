@@ -1,12 +1,13 @@
 #include <stddef.h>
 #include <string.h>
 
+#include <joybus/attributes.h>
 #include <joybus/errors.h>
 #include <joybus/common/n64_pak_fs.h>
 
 // Offsets of the four ID copies in page 0
 #define ID_COPIES 4
-static const uint16_t id_offsets[ID_COPIES] = {0x20, 0x60, 0x80, 0xC0};
+static JOYBUS_RAM_DATA const uint16_t id_offsets[ID_COPIES] = {0x20, 0x60, 0x80, 0xC0};
 
 // ID block layout, 32 bytes with the checksums covering the first 28
 #define ID_SIZE         32
@@ -106,6 +107,7 @@ bool joybus_n64_pak_fs_valid(const uint8_t *bank0, uint8_t banks)
   return false;
 }
 
+JOYBUS_RAM_FUNC
 bool joybus_n64_pak_fs_is_id_block(uint16_t addr)
 {
   for (int i = 0; i < ID_COPIES; i++) {
@@ -116,6 +118,7 @@ bool joybus_n64_pak_fs_is_id_block(uint16_t addr)
   return false;
 }
 
+JOYBUS_RAM_FUNC
 uint8_t joybus_n64_pak_fs_id_banks(const uint8_t block[JOYBUS_N64_PAK_BLOCK_SIZE])
 {
   return block[ID_BANKS];

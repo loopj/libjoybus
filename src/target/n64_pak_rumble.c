@@ -59,7 +59,7 @@ static int pak_rumble_write_block(struct joybus_target_n64_pak *pak, uint16_t ad
   return 0;
 }
 
-static const struct joybus_target_n64_pak_api pak_rumble_api = {
+static JOYBUS_RAM_DATA const struct joybus_target_n64_pak_api pak_rumble_api = {
   .read_block  = pak_rumble_read_block,
   .write_block = pak_rumble_write_block,
 };

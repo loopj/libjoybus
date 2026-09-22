@@ -191,7 +191,7 @@ static void IRAM_ATTR handle_command_response(const uint8_t *response, uint8_t l
 }
 
 // Frequency-independent bit decode: '1' is short low + long high, '0' the reverse
-static inline uint8_t decode_bit(rmt_symbol_word_t sym)
+static inline IRAM_ATTR uint8_t decode_bit(rmt_symbol_word_t sym)
 {
   return sym.duration0 < sym.duration1;
 }
