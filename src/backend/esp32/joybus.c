@@ -14,6 +14,7 @@
 #include <esp_intr_alloc.h>
 #include <esp_rom_gpio.h>
 #include <esp_rom_sys.h>
+#include <esp_system.h>
 #include <esp_timer.h>
 #include <esp_private/periph_ctrl.h>
 #include <hal/gpio_ll.h>
@@ -99,6 +100,25 @@ extern volatile rmt_symbol_word_t RMTMEM[JOYBUS_RMT_CHANNELS_PER_GROUP][SOC_RMT_
 
 // Absolute RMT channels claimed by enabled joybus buses (bit N = channel N)
 static uint32_t joybus_rmt_claimed_channels;
+
+// GPIOs driven by enabled joybus buses (bit N = GPIO N)
+static uint64_t joybus_claimed_gpios;
+
+// Return a pad to plain GPIO with its output disabled
+static void release_gpio(gpio_num_t gpio)
+{
+  esp_rom_gpio_connect_out_signal(gpio, SIG_GPIO_OUT_IDX, false, false);
+  gpio_ll_output_disable(&GPIO, gpio);
+}
+
+// Release every enabled bus's pad before a restart
+static void release_gpios_on_restart(void)
+{
+  for (int gpio = 0; gpio < SOC_GPIO_PIN_COUNT; gpio++) {
+    if (joybus_claimed_gpios & (1ull << gpio))
+      release_gpio(gpio);
+  }
+}
 
 // De-assert the RMT peripheral reset without first asserting it like
 // rmt_ll_reset_register does. This allows us to coexist with other RMT drivers
@@ -641,6 +661,10 @@ static int joybus_esp32_enable(struct joybus *bus)
   enable_rx(bus, rmt_clk_freq);
   enable_tx(bus, rmt_clk_freq);
 
+  // Mark the gpio as claimed by libjoybus so we can release it on restart
+  joybus_claimed_gpios |= 1ull << data->gpio;
+  esp_register_shutdown_handler(release_gpios_on_restart);
+
   // Enter the appropriate initial state based on the bus mode
   if (bus->mode == JOYBUS_MODE_TARGET) {
     enter_target_rx_mode(bus);
@@ -661,9 +685,9 @@ static int joybus_esp32_disable(struct joybus *bus)
   rmt_ll_rx_enable(&RMT, data->rmt_rx_ch, false);
   rmt_ll_tx_stop(&RMT, data->rmt_tx_ch);
 
-  // Hand the pad back to GPIO, since a pad routed to a peripheral takes its output enable from it
-  esp_rom_gpio_connect_out_signal(data->gpio, SIG_GPIO_OUT_IDX, false, false);
-  gpio_ll_output_disable(&GPIO, data->gpio);
+  // Hand the pad back to GPIO
+  release_gpio(data->gpio);
+  joybus_claimed_gpios &= ~(1ull << data->gpio);
 
   // Disable interrupts for this bus's channels
   uint32_t intr_mask = RMT_LL_EVENT_TX_MASK(data->rmt_tx_ch) | RMT_LL_EVENT_RX_MASK(data->rmt_rx_ch);
