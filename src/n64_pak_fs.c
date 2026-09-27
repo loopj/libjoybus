@@ -61,21 +61,23 @@ static void id_checksums(const uint8_t *id, uint16_t *sum, uint16_t *inverted)
   }
 }
 
-// Check whether one ID copy is intact and describes the given bank count
-static bool id_valid(const uint8_t *id, uint8_t banks)
+// Build the ID block as a console writes one
+static void build_id(uint8_t id[ID_SIZE], uint8_t banks, uint32_t random)
 {
-  // Both checksums must match
+  memset(id, 0, ID_SIZE);
+  write32(&id[ID_REPAIRED], 0xFFFFFFFF);
+
+  // A console compares the whole ID on every access, so the random word is what tells paks apart
+  write32(&id[ID_RANDOM], random);
+  write16(&id[ID_DEVICE], ID_DEVICE_PAK);
+  id[ID_BANKS]   = banks;
+  id[ID_VERSION] = 0;
+
+  // Checksum the ID
   uint16_t sum, inverted;
   id_checksums(id, &sum, &inverted);
-  if (read16(&id[ID_CHECKSUM]) != sum || read16(&id[ID_INV_CHECKSUM]) != inverted)
-    return false;
-
-  // The low bit of the device ID marks a Controller Pak
-  if ((read16(&id[ID_DEVICE]) & 1) == 0)
-    return false;
-
-  // The ID must name the bank count the pak presents
-  return id[ID_BANKS] == banks;
+  write16(&id[ID_CHECKSUM], sum);
+  write16(&id[ID_INV_CHECKSUM], inverted);
 }
 
 // Build an inode page with every data page free
@@ -96,11 +98,27 @@ static void inode_page(uint8_t *page, uint8_t bank, uint8_t banks)
   page[1] = sum;
 }
 
+bool joybus_n64_pak_fs_id_valid(const uint8_t block[JOYBUS_N64_PAK_BLOCK_SIZE], uint8_t banks)
+{
+  // Both checksums must match
+  uint16_t sum, inverted;
+  id_checksums(block, &sum, &inverted);
+  if (read16(&block[ID_CHECKSUM]) != sum || read16(&block[ID_INV_CHECKSUM]) != inverted)
+    return false;
+
+  // The low bit of the device ID marks a Controller Pak
+  if ((read16(&block[ID_DEVICE]) & 1) == 0)
+    return false;
+
+  // The ID must name the bank count the pak presents
+  return block[ID_BANKS] == banks;
+}
+
 bool joybus_n64_pak_fs_valid(const uint8_t *bank0, uint8_t banks)
 {
   // Any one intact copy is enough, a console repairs the rest from it
   for (int i = 0; i < ID_COPIES; i++) {
-    if (id_valid(&bank0[id_offsets[i]], banks))
+    if (joybus_n64_pak_fs_id_valid(&bank0[id_offsets[i]], banks))
       return true;
   }
 
@@ -124,44 +142,39 @@ uint8_t joybus_n64_pak_fs_id_banks(const uint8_t block[JOYBUS_N64_PAK_BLOCK_SIZE
   return block[ID_BANKS];
 }
 
+int joybus_n64_pak_fs_format_page(uint8_t page[JOYBUS_N64_PAK_FS_PAGE_SIZE], uint8_t index, uint8_t banks,
+                                  uint32_t random)
+{
+  if (banks == 0 || banks > JOYBUS_N64_PAK_FS_MAX_BANKS || index >= JOYBUS_N64_PAK_FS_SYSTEM_PAGES(banks))
+    return -JOYBUS_ERR_INVALID_ARG;
+
+  // One inode page per bank from page 1, then a mirror of each
+  if (index >= 1 && index <= 2 * banks) {
+    inode_page(page, (index - 1) % banks, banks);
+    return 0;
+  }
+
+  // Page 0 and the note table are empty, apart from the ID copies in page 0
+  memset(page, 0, JOYBUS_N64_PAK_FS_PAGE_SIZE);
+
+  if (index == 0) {
+    uint8_t id[ID_SIZE];
+    build_id(id, banks, random);
+
+    for (int i = 0; i < ID_COPIES; i++)
+      memcpy(&page[id_offsets[i]], id, ID_SIZE);
+  }
+
+  return 0;
+}
+
 int joybus_n64_pak_fs_format(uint8_t *bank0, uint8_t banks, uint32_t random)
 {
   if (banks == 0 || banks > JOYBUS_N64_PAK_FS_MAX_BANKS)
     return -JOYBUS_ERR_INVALID_ARG;
 
-  int system = JOYBUS_N64_PAK_FS_SYSTEM_PAGES(banks) * JOYBUS_N64_PAK_FS_PAGE_SIZE;
+  for (uint8_t index = 0; index < JOYBUS_N64_PAK_FS_SYSTEM_PAGES(banks); index++)
+    joybus_n64_pak_fs_format_page(&bank0[index * JOYBUS_N64_PAK_FS_PAGE_SIZE], index, banks, random);
 
-  // Clear the system area, which leaves the note table empty
-  memset(bank0, 0, system);
-
-  // Build the ID block as a console writes one
-  uint8_t id[ID_SIZE] = {0};
-  write32(&id[ID_REPAIRED], 0xFFFFFFFF);
-
-  // A console compares the whole ID on every access, so the random word is what tells paks apart
-  write32(&id[ID_RANDOM], random);
-  write16(&id[ID_DEVICE], ID_DEVICE_PAK);
-  id[ID_BANKS]   = banks;
-  id[ID_VERSION] = 0;
-
-  // Checksum the ID
-  uint16_t sum, inverted;
-  id_checksums(id, &sum, &inverted);
-  write16(&id[ID_CHECKSUM], sum);
-  write16(&id[ID_INV_CHECKSUM], inverted);
-
-  // Write all four copies of the ID
-  for (int i = 0; i < ID_COPIES; i++)
-    memcpy(&bank0[id_offsets[i]], id, ID_SIZE);
-
-  // Write one inode page per bank from page 1, then a mirror of each
-  for (uint8_t bank = 0; bank < banks; bank++) {
-    uint8_t *table  = &bank0[(1 + bank) * JOYBUS_N64_PAK_FS_PAGE_SIZE];
-    uint8_t *mirror = &bank0[(1 + banks + bank) * JOYBUS_N64_PAK_FS_PAGE_SIZE];
-
-    inode_page(table, bank, banks);
-    memcpy(mirror, table, JOYBUS_N64_PAK_FS_PAGE_SIZE);
-  }
-
-  return system;
+  return JOYBUS_N64_PAK_FS_SYSTEM_PAGES(banks) * JOYBUS_N64_PAK_FS_PAGE_SIZE;
 }

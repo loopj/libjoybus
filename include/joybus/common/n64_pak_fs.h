@@ -7,7 +7,8 @@
  * ID block in page 0, an inode table and a mirror of it per bank, then two
  * pages of note table. These routines write that area for a given bank count
  * and check whether one is present, so an emulated pak can present itself as
- * formatted. They work on a bank held in memory and do not touch the bus.
+ * formatted. They work on a bank held in memory, or a block or page at a time
+ * for a pak whose banks are not, and do not touch the bus.
  *
  * @{
  */
@@ -45,13 +46,41 @@ bool joybus_n64_pak_fs_is_id_block(uint16_t addr);
 uint8_t joybus_n64_pak_fs_id_banks(const uint8_t block[JOYBUS_N64_PAK_BLOCK_SIZE]);
 
 /**
+ * Check whether an ID block is intact and names the given bank count.
+ *
+ * A pak holds a filesystem when any one of its four ID copies passes.
+ *
+ * @param block an ID block, ::JOYBUS_N64_PAK_BLOCK_SIZE bytes
+ * @param banks how many banks the pak presents
+ * @return true if both checksums match, the block marks a Controller Pak, and it names that many banks
+ */
+bool joybus_n64_pak_fs_id_valid(const uint8_t block[JOYBUS_N64_PAK_BLOCK_SIZE], uint8_t banks);
+
+/**
  * Check whether a bank holds a filesystem for the given bank count.
  *
- * @param bank0 the first bank of the pak, ::JOYBUS_N64_PAK_BANK_SIZE bytes
+ * Only the ID copies in page 0 are read.
+ *
+ * @param bank0 the first bank of the pak, at least ::JOYBUS_N64_PAK_FS_PAGE_SIZE bytes
  * @param banks how many banks the pak presents
  * @return true if an intact ID names that many banks, false otherwise
  */
 bool joybus_n64_pak_fs_valid(const uint8_t *bank0, uint8_t banks);
+
+/**
+ * Fill one page of a fresh system area for the given bank count.
+ *
+ * Every page from 0 to JOYBUS_N64_PAK_FS_SYSTEM_PAGES(banks) - 1, each written
+ * at its index in the first bank, together format the pak.
+ *
+ * @param page   the page to fill, ::JOYBUS_N64_PAK_FS_PAGE_SIZE bytes
+ * @param index  the page's index in the first bank, below JOYBUS_N64_PAK_FS_SYSTEM_PAGES(banks)
+ * @param banks  how many banks the pak presents, 1 to ::JOYBUS_N64_PAK_FS_MAX_BANKS
+ * @param random value stored in the ID to tell this pak apart from others
+ * @return 0 on success, -JOYBUS_ERR_INVALID_ARG for a bank count or index out of range
+ */
+int joybus_n64_pak_fs_format_page(uint8_t page[JOYBUS_N64_PAK_FS_PAGE_SIZE], uint8_t index, uint8_t banks,
+                                  uint32_t random);
 
 /**
  * Write a fresh filesystem for the given bank count into a bank.
