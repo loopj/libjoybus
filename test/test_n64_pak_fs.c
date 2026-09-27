@@ -160,9 +160,60 @@ static void test_format_inodes_one_bank()
   TEST_ASSERT_TRUE(joybus_n64_pak_fs_valid(bank0, 1));
 }
 
+// Test that a single ID block is checked for its checksums and bank count
+static void test_id_valid()
+{
+  uint8_t block[32];
+  memcpy(block, console_id, sizeof(block));
+
+  TEST_ASSERT_TRUE(joybus_n64_pak_fs_id_valid(block, 16));
+  TEST_ASSERT_FALSE(joybus_n64_pak_fs_id_valid(block, 1));
+
+  block[0x1E] ^= 0x01;
+  TEST_ASSERT_FALSE(joybus_n64_pak_fs_id_valid(block, 16));
+}
+
+// Test that a page index or bank count outside the system area is rejected without writing
+static void test_format_page_rejects_out_of_range()
+{
+  uint8_t page[256];
+  memset(page, 0xFF, sizeof(page));
+
+  TEST_ASSERT_EQUAL(-JOYBUS_ERR_INVALID_ARG, joybus_n64_pak_fs_format_page(page, 3 + 2 * 16, 16, 0));
+  TEST_ASSERT_EQUAL(-JOYBUS_ERR_INVALID_ARG, joybus_n64_pak_fs_format_page(page, 0, 0, 0));
+  TEST_ASSERT_EQUAL(-JOYBUS_ERR_INVALID_ARG,
+                    joybus_n64_pak_fs_format_page(page, 0, JOYBUS_N64_PAK_FS_MAX_BANKS + 1, 0));
+  TEST_ASSERT_EACH_EQUAL_HEX8(0xFF, page, sizeof(page));
+
+  TEST_ASSERT_EQUAL(0, joybus_n64_pak_fs_format_page(page, 2 + 2 * 16, 16, 0));
+}
+
+// Test that page 0 built alone holds ID blocks that pass one at a time, as a
+// pak with no bank in memory checks them
+static void test_format_page_ids_valid_by_block()
+{
+  uint8_t page[256];
+  TEST_ASSERT_EQUAL(0, joybus_n64_pak_fs_format_page(page, 0, 16, 0x12345678));
+
+  int copies = 0;
+  for (uint16_t addr = 0; addr < sizeof(page); addr += JOYBUS_N64_PAK_BLOCK_SIZE) {
+    if (!joybus_n64_pak_fs_is_id_block(addr))
+      continue;
+
+    TEST_ASSERT_TRUE(joybus_n64_pak_fs_id_valid(&page[addr], 16));
+    copies++;
+  }
+
+  TEST_ASSERT_EQUAL(4, copies);
+}
+
 int main(int argc, char **argv)
 {
   UNITY_BEGIN();
+
+  RUN_TEST(test_id_valid);
+  RUN_TEST(test_format_page_rejects_out_of_range);
+  RUN_TEST(test_format_page_ids_valid_by_block);
 
   RUN_TEST(test_valid_rejects_erased);
   RUN_TEST(test_valid_accepts_console_id);
