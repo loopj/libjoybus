@@ -84,7 +84,7 @@ static void build_id(uint8_t id[ID_SIZE], uint8_t banks, uint32_t random)
 static void inode_page(uint8_t *page, uint8_t bank, uint8_t banks)
 {
   // Bank 0's data starts after the system area, later banks' after a reserved first page
-  size_t first = bank == 0 ? JOYBUS_N64_PAK_FS_SYSTEM_PAGES(banks) : 1;
+  size_t first = JOYBUS_N64_PAK_FS_FIRST_DATA_PAGE(banks, bank);
 
   // Mark every data page free
   memset(page, 0, JOYBUS_N64_PAK_FS_PAGE_SIZE);
@@ -148,16 +148,22 @@ int joybus_n64_pak_fs_format_page(uint8_t page[JOYBUS_N64_PAK_FS_PAGE_SIZE], uin
   if (banks == 0 || banks > JOYBUS_N64_PAK_FS_MAX_BANKS || index >= JOYBUS_N64_PAK_FS_SYSTEM_PAGES(banks))
     return -JOYBUS_ERR_INVALID_ARG;
 
-  // One inode page per bank from page 1, then a mirror of each
-  if (index >= 1 && index <= 2 * banks) {
-    inode_page(page, (index - 1) % banks, banks);
+  // One inode page per bank, then a mirror of each
+  if (index >= JOYBUS_N64_PAK_FS_INODE_PAGE(0) && index < JOYBUS_N64_PAK_FS_INODE_PAGE(banks)) {
+    inode_page(page, index - JOYBUS_N64_PAK_FS_INODE_PAGE(0), banks);
     return 0;
   }
 
-  // Page 0 and the note table are empty, apart from the ID copies in page 0
+  if (index >= JOYBUS_N64_PAK_FS_INODE_MIRROR_PAGE(banks, 0) &&
+      index < JOYBUS_N64_PAK_FS_INODE_MIRROR_PAGE(banks, banks)) {
+    inode_page(page, index - JOYBUS_N64_PAK_FS_INODE_MIRROR_PAGE(banks, 0), banks);
+    return 0;
+  }
+
+  // The ID page and the note table are empty, apart from the ID copies
   memset(page, 0, JOYBUS_N64_PAK_FS_PAGE_SIZE);
 
-  if (index == 0) {
+  if (index == JOYBUS_N64_PAK_FS_ID_PAGE) {
     uint8_t id[ID_SIZE];
     build_id(id, banks, random);
 

@@ -207,9 +207,37 @@ static void test_format_page_ids_valid_by_block()
   TEST_ASSERT_EQUAL(4, copies);
 }
 
+// Test that the layout macros name the pages the format writes, for sixteen banks and for one
+static void test_layout_pages()
+{
+  TEST_ASSERT_EQUAL(0, JOYBUS_N64_PAK_FS_ID_PAGE);
+  TEST_ASSERT_EQUAL(1, JOYBUS_N64_PAK_FS_INODE_PAGE(0));
+  TEST_ASSERT_EQUAL(16, JOYBUS_N64_PAK_FS_INODE_PAGE(15));
+  TEST_ASSERT_EQUAL(17, JOYBUS_N64_PAK_FS_INODE_MIRROR_PAGE(16, 0));
+  TEST_ASSERT_EQUAL(32, JOYBUS_N64_PAK_FS_INODE_MIRROR_PAGE(16, 15));
+  TEST_ASSERT_EQUAL(33, JOYBUS_N64_PAK_FS_NOTE_TABLE_PAGE(16));
+  TEST_ASSERT_EQUAL(35, JOYBUS_N64_PAK_FS_SYSTEM_PAGES(16));
+  TEST_ASSERT_EQUAL(35, JOYBUS_N64_PAK_FS_FIRST_DATA_PAGE(16, 0));
+  TEST_ASSERT_EQUAL(1, JOYBUS_N64_PAK_FS_FIRST_DATA_PAGE(16, 5));
+
+  TEST_ASSERT_EQUAL(2, JOYBUS_N64_PAK_FS_INODE_MIRROR_PAGE(1, 0));
+  TEST_ASSERT_EQUAL(3, JOYBUS_N64_PAK_FS_NOTE_TABLE_PAGE(1));
+  TEST_ASSERT_EQUAL(5, JOYBUS_N64_PAK_FS_SYSTEM_PAGES(1));
+  TEST_ASSERT_EQUAL(5, JOYBUS_N64_PAK_FS_FIRST_DATA_PAGE(1, 0));
+
+  // Every mirror page matches its inode page once formatted
+  joybus_n64_pak_fs_format(bank0, 16, 0);
+  for (int bank = 0; bank < 16; bank++) {
+    TEST_ASSERT_EQUAL_MEMORY(&bank0[JOYBUS_N64_PAK_FS_INODE_PAGE(bank) * 256],
+                             &bank0[JOYBUS_N64_PAK_FS_INODE_MIRROR_PAGE(16, bank) * 256], 256);
+  }
+}
+
 int main(int argc, char **argv)
 {
   UNITY_BEGIN();
+
+  RUN_TEST(test_layout_pages);
 
   RUN_TEST(test_id_valid);
   RUN_TEST(test_format_page_rejects_out_of_range);
