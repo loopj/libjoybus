@@ -133,12 +133,12 @@ Typedefs</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ga4916224a0e147a2e28199d360fa005dc" id="r_ga4916224a0e147a2e28199d360fa005dc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga4916224a0e147a2e28199d360fa005dc">joybus_target_n64_pak_controller_init</a> (struct <a class="el" href="structjoybus__target__n64__pak__controller.html">joybus_target_n64_pak_controller</a> *pak, uint8_t banks)</td></tr>
-<tr class="memdesc:ga4916224a0e147a2e28199d360fa005dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize a controller pak.  <br /></td></tr>
-<tr class="memitem:ga498ddda7ccefcc189f38864e407ac52d" id="r_ga498ddda7ccefcc189f38864e407ac52d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga498ddda7ccefcc189f38864e407ac52d">joybus_target_n64_pak_controller_set_storage</a> (struct <a class="el" href="structjoybus__target__n64__pak__controller.html">joybus_target_n64_pak_controller</a> *pak, <a class="el" href="#ga7935d5ab775555a7ca5e17605f5ebe75">joybus_target_n64_pak_controller_read_cb</a> read, <a class="el" href="#gaaaa708e64920d402a3c04d01e1412394">joybus_target_n64_pak_controller_write_cb</a> write, void *user_data)</td></tr>
-<tr class="memdesc:ga498ddda7ccefcc189f38864e407ac52d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the storage behind the pak.  <br /></td></tr>
-<tr class="memitem:gab03e1bfe1aa54fe9898c6abb6c05d39d" id="r_gab03e1bfe1aa54fe9898c6abb6c05d39d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#gab03e1bfe1aa54fe9898c6abb6c05d39d">joybus_target_n64_pak_controller_set_memory</a> (struct <a class="el" href="structjoybus__target__n64__pak__controller.html">joybus_target_n64_pak_controller</a> *pak, uint8_t *memory)</td></tr>
-<tr class="memdesc:gab03e1bfe1aa54fe9898c6abb6c05d39d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Back the pak with memory, <span class="tt">banks</span> x <a class="el" href="common_2n64__pak_8h.html#a0a0ac6c10e850c92146c703b19050691" title="Size of one bank in bytes, the storage of an original Controller Pak.">JOYBUS_N64_PAK_BANK_SIZE</a> bytes owned by the caller.  <br /></td></tr>
+<tr class="memitem:ga14827f30152e6e4a1432b722308535ba" id="r_ga14827f30152e6e4a1432b722308535ba"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga14827f30152e6e4a1432b722308535ba">joybus_target_n64_pak_controller_init</a> (struct <a class="el" href="structjoybus__target__n64__pak__controller.html">joybus_target_n64_pak_controller</a> *pak)</td></tr>
+<tr class="memdesc:ga14827f30152e6e4a1432b722308535ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize a controller pak.  <br /></td></tr>
+<tr class="memitem:ga2bf4d5485385178d1f21c4c7f624bf2f" id="r_ga2bf4d5485385178d1f21c4c7f624bf2f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga2bf4d5485385178d1f21c4c7f624bf2f">joybus_target_n64_pak_controller_set_storage</a> (struct <a class="el" href="structjoybus__target__n64__pak__controller.html">joybus_target_n64_pak_controller</a> *pak, uint8_t banks, <a class="el" href="#ga7935d5ab775555a7ca5e17605f5ebe75">joybus_target_n64_pak_controller_read_cb</a> read, <a class="el" href="#gaaaa708e64920d402a3c04d01e1412394">joybus_target_n64_pak_controller_write_cb</a> write, void *user_data)</td></tr>
+<tr class="memdesc:ga2bf4d5485385178d1f21c4c7f624bf2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the storage behind the pak.  <br /></td></tr>
+<tr class="memitem:gaea6b31159a3eb0eb9a3d30cc60f4f2c3" id="r_gaea6b31159a3eb0eb9a3d30cc60f4f2c3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#gaea6b31159a3eb0eb9a3d30cc60f4f2c3">joybus_target_n64_pak_controller_set_memory</a> (struct <a class="el" href="structjoybus__target__n64__pak__controller.html">joybus_target_n64_pak_controller</a> *pak, uint8_t *memory, uint8_t banks)</td></tr>
+<tr class="memdesc:gaea6b31159a3eb0eb9a3d30cc60f4f2c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Back the pak with memory, <span class="tt">banks</span> x <a class="el" href="common_2n64__pak_8h.html#a0a0ac6c10e850c92146c703b19050691" title="Size of one bank in bytes, the storage of an original Controller Pak.">JOYBUS_N64_PAK_BANK_SIZE</a> bytes owned by the caller.  <br /></td></tr>
 <tr class="memitem:gaec7569240d289a373aa0bdd9f8c5329b" id="r_gaec7569240d289a373aa0bdd9f8c5329b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#gaec7569240d289a373aa0bdd9f8c5329b">joybus_target_n64_pak_controller_set_select_cb</a> (struct <a class="el" href="structjoybus__target__n64__pak__controller.html">joybus_target_n64_pak_controller</a> *pak, <a class="el" href="#gae4b908babd3c3394dd7525b236a902b1">joybus_target_n64_pak_controller_select_cb</a> callback)</td></tr>
 <tr class="memdesc:gaec7569240d289a373aa0bdd9f8c5329b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the bank select callback for the controller pak.  <br /></td></tr>
 <tr class="memitem:ga10dc4b0723f71e851296b5163c0bda58" id="r_ga10dc4b0723f71e851296b5163c0bda58"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga10dc4b0723f71e851296b5163c0bda58">joybus_target_n64_pak_controller_set_written_cb</a> (struct <a class="el" href="structjoybus__target__n64__pak__controller.html">joybus_target_n64_pak_controller</a> *pak, <a class="el" href="#ga7c58df2f61550e37492909bd94aeb8e1">joybus_target_n64_pak_controller_written_cb</a> callback)</td></tr>
@@ -147,8 +147,7 @@ Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <p>N64 pak implementation which emulates a Controller Pak, the battery backed save memory that plugs into a controller. </p>
 <p>The pak behaviour lives here, and the storage behind it is a pair of block callbacks, or a buffer for the simple case.</p>
-<p>An original pak is one 32 KB bank, which a console formats and mounts on its own. Larger third party paks hold several banks and present one at a time, switched by a write to the probe area at 0x8000. A banked pak from this target must be formatted with <a class="el" href="group__joybus.html#ga35b44fca7870ff7f7e8b97717e10eda5" title="Write a fresh filesystem for the given bank count into a bank.">joybus_n64_pak_fs_format()</a> before use. A select past the last bank is ignored, which keeps an accessory probe from moving the bank but also stops a console counting the banks of a blank pak.</p>
-<p>A write to an ID block that names another bank count is refused with a transfer error, so the pak cannot be reformatted to a different shape. </p>
+<p>An original pak is one 32 KB bank, which a console formats and mounts on its own. Larger third party paks hold several banks and present one at a time, switched by a write to the probe area at 0x8000. A banked pak from this target must already hold a filesystem for that many banks before use. A select past the last bank is ignored, which keeps an accessory probe from moving the bank but also stops a console counting the banks of a blank pak. </p>
 <a name="doc-define-members" id="doc-define-members"></a><h2 id="header-doc-define-members" class="groupheader">Macro Definition Documentation</h2>
 <a id="ga429e4eec9f26a74c2c3d5b94e5538687" name="ga429e4eec9f26a74c2c3d5b94e5538687"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga429e4eec9f26a74c2c3d5b94e5538687">&#9670;&#160;</a></span>JOYBUS_TARGET_N64_PAK_CONTROLLER</h2>
@@ -165,7 +164,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line">((<span class="keyword">struct </span><a class="code hl_struct" href="structjoybus__target__n64__pak__controller.html">joybus_target_n64_pak_controller</a> *)(pak))</div>
-<div class="ttc" id="astructjoybus__target__n64__pak__controller_html"><div class="ttname"><a href="structjoybus__target__n64__pak__controller.html">joybus_target_n64_pak_controller</a></div><div class="ttdoc">N64 Controller Pak pak.</div><div class="ttdef"><b>Definition</b> n64_pak_controller.h:93</div></div>
+<div class="ttc" id="astructjoybus__target__n64__pak__controller_html"><div class="ttname"><a href="structjoybus__target__n64__pak__controller.html">joybus_target_n64_pak_controller</a></div><div class="ttdoc">N64 Controller Pak pak.</div><div class="ttdef"><b>Definition</b> n64_pak_controller.h:90</div></div>
 </div><!-- fragment -->
 <p>Macro to cast from a generic N64 pak to a controller pak. </p>
 
@@ -276,8 +275,8 @@ Functions</h2></td></tr>
 </div>
 </div>
 <a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Function Documentation</h2>
-<a id="ga4916224a0e147a2e28199d360fa005dc" name="ga4916224a0e147a2e28199d360fa005dc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga4916224a0e147a2e28199d360fa005dc">&#9670;&#160;</a></span>joybus_target_n64_pak_controller_init()</h2>
+<a id="ga14827f30152e6e4a1432b722308535ba" name="ga14827f30152e6e4a1432b722308535ba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga14827f30152e6e4a1432b722308535ba">&#9670;&#160;</a></span>joybus_target_n64_pak_controller_init()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -285,30 +284,25 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">void joybus_target_n64_pak_controller_init </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structjoybus__target__n64__pak__controller.html">joybus_target_n64_pak_controller</a> *</td>          <td class="paramname"><span class="paramname"><em>pak</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramtype">struct <a class="el" href="structjoybus__target__n64__pak__controller.html">joybus_target_n64_pak_controller</a> *</td>          <td class="paramname"><span class="paramname"><em>pak</em></span></td><td>)</td>
           <td></td>
-          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>banks</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Initialize a controller pak. </p>
-<p>The pak answers busy until storage is set with <a class="el" href="#ga498ddda7ccefcc189f38864e407ac52d" title="Set the storage behind the pak.">joybus_target_n64_pak_controller_set_storage()</a> or <a class="el" href="#gab03e1bfe1aa54fe9898c6abb6c05d39d" title="Back the pak with memory, banks x JOYBUS_N64_PAK_BANK_SIZE bytes owned by the caller.">joybus_target_n64_pak_controller_set_memory()</a>.</p>
+<p>The pak answers busy until storage is set with <a class="el" href="#ga2bf4d5485385178d1f21c4c7f624bf2f" title="Set the storage behind the pak.">joybus_target_n64_pak_controller_set_storage()</a> or <a class="el" href="#gaea6b31159a3eb0eb9a3d30cc60f4f2c3" title="Back the pak with memory, banks x JOYBUS_N64_PAK_BANK_SIZE bytes owned by the caller.">joybus_target_n64_pak_controller_set_memory()</a>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">pak</td><td>the controller pak to initialize </td></tr>
-    <tr><td class="paramname">banks</td><td>how many banks it presents, 1 to <a class="el" href="group__joybus.html#ga0639362b7f5fcb03456d5b45b07cd033" title="The most banks whose system area fits in the first bank.">JOYBUS_N64_PAK_FS_MAX_BANKS</a>, not checked here </td></tr>
   </table>
   </dd>
 </dl>
 
 </div>
 </div>
-<a id="gab03e1bfe1aa54fe9898c6abb6c05d39d" name="gab03e1bfe1aa54fe9898c6abb6c05d39d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gab03e1bfe1aa54fe9898c6abb6c05d39d">&#9670;&#160;</a></span>joybus_target_n64_pak_controller_set_memory()</h2>
+<a id="gaea6b31159a3eb0eb9a3d30cc60f4f2c3" name="gaea6b31159a3eb0eb9a3d30cc60f4f2c3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaea6b31159a3eb0eb9a3d30cc60f4f2c3">&#9670;&#160;</a></span>joybus_target_n64_pak_controller_set_memory()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -321,17 +315,23 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">uint8_t *</td>          <td class="paramname"><span class="paramname"><em>memory</em></span>&#160;)</td>
+          <td class="paramtype">uint8_t *</td>          <td class="paramname"><span class="paramname"><em>memory</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>banks</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Back the pak with memory, <span class="tt">banks</span> x <a class="el" href="common_2n64__pak_8h.html#a0a0ac6c10e850c92146c703b19050691" title="Size of one bank in bytes, the storage of an original Controller Pak.">JOYBUS_N64_PAK_BANK_SIZE</a> bytes owned by the caller. </p>
-<p>The buffer is read and written in place, so persisting it is up to the caller, which the written callback helps with. A fresh buffer needs a filesystem before a console will mount it, see <a class="el" href="group__joybus.html#ga35b44fca7870ff7f7e8b97717e10eda5" title="Write a fresh filesystem for the given bank count into a bank.">joybus_n64_pak_fs_format()</a>. A console can format a one bank pak itself, a banked pak it cannot.</p>
+<p>The buffer is read and written in place, so persisting it is up to the caller, which the written callback helps with. A fresh buffer needs a filesystem before a console will mount it. A console can format a one bank pak itself, a banked pak it cannot.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">pak</td><td>the controller pak </td></tr>
     <tr><td class="paramname">memory</td><td>the banks, back to back </td></tr>
+    <tr><td class="paramname">banks</td><td>how many banks the memory holds, 1 to 62, not checked here </td></tr>
   </table>
   </dd>
 </dl>
@@ -370,8 +370,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ga498ddda7ccefcc189f38864e407ac52d" name="ga498ddda7ccefcc189f38864e407ac52d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga498ddda7ccefcc189f38864e407ac52d">&#9670;&#160;</a></span>joybus_target_n64_pak_controller_set_storage()</h2>
+<a id="ga2bf4d5485385178d1f21c4c7f624bf2f" name="ga2bf4d5485385178d1f21c4c7f624bf2f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga2bf4d5485385178d1f21c4c7f624bf2f">&#9670;&#160;</a></span>joybus_target_n64_pak_controller_set_storage()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -380,6 +380,11 @@ Functions</h2></td></tr>
           <td class="memname">void joybus_target_n64_pak_controller_set_storage </td>
           <td>(</td>
           <td class="paramtype">struct <a class="el" href="structjoybus__target__n64__pak__controller.html">joybus_target_n64_pak_controller</a> *</td>          <td class="paramname"><span class="paramname"><em>pak</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>banks</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -400,10 +405,11 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Set the storage behind the pak. </p>
-<p>For a pak that cannot be held in memory, such as one of many banks kept in flash. The callbacks may answer busy while a bank is fetched, which the console retries.</p>
+<p>For a pak that cannot be held in memory, such as one of many banks kept in flash. The callbacks may answer busy while a bank is fetched, which the console retries. Setting storage again swaps the pak, which then starts on bank 0.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">pak</td><td>the controller pak </td></tr>
+    <tr><td class="paramname">banks</td><td>how many banks the storage holds, 1 to 62, not checked here </td></tr>
     <tr><td class="paramname">read</td><td>callback that reads a block of a bank </td></tr>
     <tr><td class="paramname">write</td><td>callback that writes a block of a bank </td></tr>
     <tr><td class="paramname">user_data</td><td>pointer handed back to the callbacks through <span class="tt">pak-&gt;user_data</span> </td></tr>

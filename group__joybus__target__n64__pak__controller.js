@@ -15,9 +15,9 @@ var group__joybus__target__n64__pak__controller =
     [ "joybus_target_n64_pak_controller_select_cb", "group__joybus__target__n64__pak__controller.html#gae4b908babd3c3394dd7525b236a902b1", null ],
     [ "joybus_target_n64_pak_controller_write_cb", "group__joybus__target__n64__pak__controller.html#gaaaa708e64920d402a3c04d01e1412394", null ],
     [ "joybus_target_n64_pak_controller_written_cb", "group__joybus__target__n64__pak__controller.html#ga7c58df2f61550e37492909bd94aeb8e1", null ],
-    [ "joybus_target_n64_pak_controller_init", "group__joybus__target__n64__pak__controller.html#ga4916224a0e147a2e28199d360fa005dc", null ],
-    [ "joybus_target_n64_pak_controller_set_memory", "group__joybus__target__n64__pak__controller.html#gab03e1bfe1aa54fe9898c6abb6c05d39d", null ],
+    [ "joybus_target_n64_pak_controller_init", "group__joybus__target__n64__pak__controller.html#ga14827f30152e6e4a1432b722308535ba", null ],
+    [ "joybus_target_n64_pak_controller_set_memory", "group__joybus__target__n64__pak__controller.html#gaea6b31159a3eb0eb9a3d30cc60f4f2c3", null ],
     [ "joybus_target_n64_pak_controller_set_select_cb", "group__joybus__target__n64__pak__controller.html#gaec7569240d289a373aa0bdd9f8c5329b", null ],
-    [ "joybus_target_n64_pak_controller_set_storage", "group__joybus__target__n64__pak__controller.html#ga498ddda7ccefcc189f38864e407ac52d", null ],
+    [ "joybus_target_n64_pak_controller_set_storage", "group__joybus__target__n64__pak__controller.html#ga2bf4d5485385178d1f21c4c7f624bf2f", null ],
     [ "joybus_target_n64_pak_controller_set_written_cb", "group__joybus__target__n64__pak__controller.html#ga10dc4b0723f71e851296b5163c0bda58", null ]
 ];

@@ -71,7 +71,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"group__joybus__target__gcn__controller.html#gaf3262450dddabfba233a5131076bb32e"
+"group__joybus__target__n64__pak__controller.html#ga2bf4d5485385178d1f21c4c7f624bf2f"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';
