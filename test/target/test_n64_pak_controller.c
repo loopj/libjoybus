@@ -5,7 +5,6 @@
 #include <joybus/commands.h>
 #include <joybus/errors.h>
 #include <joybus/target.h>
-#include <joybus/common/n64_pak_fs.h>
 #include <joybus/target/n64_controller.h>
 #include <joybus/target/n64_pak.h>
 #include <joybus/target/n64_pak_controller.h>
@@ -94,19 +93,11 @@ static int pak_write_fill(uint16_t addr, uint8_t fill)
   return pak_controller.base.api->write_block(&pak_controller.base, addr, buf);
 }
 
-// Write a block whose ID bank count byte is `banks` directly through the pak API
-static int pak_write_id(uint16_t addr, uint8_t banks)
-{
-  uint8_t buf[JOYBUS_N64_PAK_BLOCK_SIZE] = {0};
-  buf[0x1A]                              = banks;
-  return pak_controller.base.api->write_block(&pak_controller.base, addr, buf);
-}
-
 // Set the pak up with the given bank count over the spy storage, hosted in a fresh controller
 static void make_pak(uint8_t banks)
 {
-  joybus_target_n64_pak_controller_init(&pak_controller, banks);
-  joybus_target_n64_pak_controller_set_storage(&pak_controller, spy_read_block, spy_write_block, &storage);
+  joybus_target_n64_pak_controller_init(&pak_controller);
+  joybus_target_n64_pak_controller_set_storage(&pak_controller, banks, spy_read_block, spy_write_block, &storage);
   joybus_target_n64_pak_controller_set_select_cb(&pak_controller, on_select);
   joybus_target_n64_pak_controller_set_written_cb(&pak_controller, on_written);
 
@@ -252,48 +243,6 @@ static void test_banked_select_without_callback()
 }
 
 // ---------------------------------------------------------------------------
-// ID guard
-// ---------------------------------------------------------------------------
-
-// Test that an ID write naming another bank count is refused
-static void test_id_write_with_other_bank_count_dropped()
-{
-  static const uint16_t id_addrs[] = {0x20, 0x60, 0x80, 0xC0};
-
-  for (int i = 0; i < 4; i++) {
-    TEST_ASSERT_EQUAL(-JOYBUS_ERR_INVALID_ARG, pak_write_id(id_addrs[i], 1));
-    TEST_ASSERT_EQUAL(0, storage.writes);
-    TEST_ASSERT_EQUAL(0, written.count);
-  }
-}
-
-// Test that an ID write naming the pak's own bank count goes through
-static void test_id_write_with_own_bank_count_kept()
-{
-  TEST_ASSERT_EQUAL(0, pak_write_id(0x20, 16));
-  TEST_ASSERT_EQUAL(1, storage.writes);
-  TEST_ASSERT_EQUAL_HEX16(0x0020, storage.addr);
-}
-
-// Test that the guard only watches bank 0, the same addresses elsewhere are data
-static void test_id_guard_only_in_bank_zero()
-{
-  TEST_ASSERT_EQUAL(0, pak_write_fill(0x8000, 1));
-  TEST_ASSERT_EQUAL(0, pak_write_id(0x20, 1));
-  TEST_ASSERT_EQUAL(1, storage.writes);
-  TEST_ASSERT_EQUAL(1, storage.bank);
-}
-
-// Test that a one bank pak's guard covers the aliased ID addresses too
-static void test_id_guard_on_one_bank_alias()
-{
-  make_pak(1);
-
-  TEST_ASSERT_EQUAL(-JOYBUS_ERR_INVALID_ARG, pak_write_id(0x8020, 16));
-  TEST_ASSERT_EQUAL(0, storage.writes);
-}
-
-// ---------------------------------------------------------------------------
 // Storage
 // ---------------------------------------------------------------------------
 
@@ -301,10 +250,30 @@ static void test_id_guard_on_one_bank_alias()
 static void test_no_storage_is_busy()
 {
   uint8_t buf[JOYBUS_N64_PAK_BLOCK_SIZE];
-  joybus_target_n64_pak_controller_init(&pak_controller, 16);
+  joybus_target_n64_pak_controller_init(&pak_controller);
 
   TEST_ASSERT_EQUAL(-JOYBUS_ERR_BUSY, pak_read(0x0100, buf));
   TEST_ASSERT_EQUAL(-JOYBUS_ERR_BUSY, pak_write_fill(0x0100, 0));
+
+  // The probe area answers busy too, since the pak has no shape yet
+  TEST_ASSERT_EQUAL(-JOYBUS_ERR_BUSY, pak_read(0x8000, buf));
+  TEST_ASSERT_EQUAL(-JOYBUS_ERR_BUSY, pak_write_fill(0x8000, 0));
+}
+
+// Test that setting storage again takes its bank count and starts on bank 0
+static void test_storage_swap_resets_shape()
+{
+  TEST_ASSERT_EQUAL(0, pak_write_fill(0x8000, 8));
+  TEST_ASSERT_EQUAL(8, pak_controller.selected);
+
+  joybus_target_n64_pak_controller_set_storage(&pak_controller, 4, spy_read_block, spy_write_block, &storage);
+  TEST_ASSERT_EQUAL(0, pak_controller.selected);
+
+  // Selects are now bounded by the new count
+  TEST_ASSERT_EQUAL(0, pak_write_fill(0x8000, 8));
+  TEST_ASSERT_EQUAL(0, pak_controller.selected);
+  TEST_ASSERT_EQUAL(0, pak_write_fill(0x8000, 3));
+  TEST_ASSERT_EQUAL(3, pak_controller.selected);
 }
 
 // Test that a busy backend is reported as busy, with no written event
@@ -338,8 +307,8 @@ static void test_memory_storage()
   memset(memory, 0, sizeof(memory));
   memset(&memory[JOYBUS_N64_PAK_BANK_SIZE + 0x0100], 0x77, JOYBUS_N64_PAK_BLOCK_SIZE);
 
-  joybus_target_n64_pak_controller_init(&pak_controller, 2);
-  joybus_target_n64_pak_controller_set_memory(&pak_controller, memory);
+  joybus_target_n64_pak_controller_init(&pak_controller);
+  joybus_target_n64_pak_controller_set_memory(&pak_controller, memory, 2);
   joybus_target_n64_pak_controller_set_written_cb(&pak_controller, on_written);
 
   // Bank 1 reads back what was put there
@@ -399,12 +368,8 @@ int main(int argc, char **argv)
   RUN_TEST(test_banked_motor_region_write_ignored);
   RUN_TEST(test_banked_select_without_callback);
 
-  RUN_TEST(test_id_write_with_other_bank_count_dropped);
-  RUN_TEST(test_id_write_with_own_bank_count_kept);
-  RUN_TEST(test_id_guard_only_in_bank_zero);
-  RUN_TEST(test_id_guard_on_one_bank_alias);
-
   RUN_TEST(test_no_storage_is_busy);
+  RUN_TEST(test_storage_swap_resets_shape);
   RUN_TEST(test_storage_busy_propagates);
   RUN_TEST(test_written_callback_after_store);
   RUN_TEST(test_memory_storage);

@@ -1,4 +1,3 @@
-#include "pico/rand.h"
 #include "pico/stdlib.h"
 
 #include <joybus/joybus.h>
@@ -24,12 +23,9 @@ int main()
   // Initialize a N64 controller target as a standard controller
   joybus_target_n64_controller_init(&n64_controller);
 
-  // Format the pak, since RAM starts empty on every boot
-  joybus_n64_pak_fs_format(pak_memory, 1, get_rand_32());
-
   // Initialize a single bank controller pak over that memory and plug it into the controller
-  joybus_target_n64_pak_controller_init(&controller_pak, 1);
-  joybus_target_n64_pak_controller_set_memory(&controller_pak, pak_memory);
+  joybus_target_n64_pak_controller_init(&controller_pak);
+  joybus_target_n64_pak_controller_set_memory(&controller_pak, pak_memory, 1);
   joybus_target_n64_controller_attach_pak(&n64_controller, JOYBUS_TARGET_N64_PAK(&controller_pak));
 
   // Attach the target to the bus

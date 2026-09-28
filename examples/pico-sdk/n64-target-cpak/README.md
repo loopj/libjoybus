@@ -2,7 +2,7 @@
 
 Act as a N64 controller with a Controller Pak on Pi Pico device using the Pico SDK. The controller has no inputs wired up, see the `n64-target` example for those.
 
-The Controller Pak is a single bank held in RAM. It is formatted at boot, so a console sees an empty pak, and its contents are lost on reset.
+The Controller Pak is a single bank held in RAM, so its contents are lost on reset.
 
 ## Building
 
