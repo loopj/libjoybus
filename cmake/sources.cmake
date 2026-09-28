@@ -6,7 +6,6 @@ set(
   JOYBUS_SOURCES
   ${LIBJOYBUS_ROOT_DIR}/src/bus.c
   ${LIBJOYBUS_ROOT_DIR}/src/checksum.c
-  ${LIBJOYBUS_ROOT_DIR}/src/n64_pak_fs.c
   ${LIBJOYBUS_ROOT_DIR}/src/host/common.c
   ${LIBJOYBUS_ROOT_DIR}/src/host/gcn.c
   ${LIBJOYBUS_ROOT_DIR}/src/host/n64.c

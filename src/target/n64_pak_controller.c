@@ -4,7 +4,6 @@
 #include <joybus/bus.h>
 #include <joybus/errors.h>
 #include <joybus/common/n64_pak.h>
-#include <joybus/common/n64_pak_fs.h>
 #include <joybus/target/n64_pak.h>
 #include <joybus/target/n64_pak_controller.h>
 
@@ -17,6 +16,10 @@ static int pak_controller_read_block(struct joybus_target_n64_pak *pak, uint16_t
 {
   struct joybus_target_n64_pak_controller *pak_controller = JOYBUS_TARGET_N64_PAK_CONTROLLER(pak);
 
+  // No storage yet reads as a pak that is not ready
+  if (pak_controller->read == NULL)
+    return -JOYBUS_ERR_BUSY;
+
   if (pak_controller->banks == 1) {
     // The probe area aliases onto the bank, which accessory detection relies on
     addr &= PAK_CONTROLLER_BANK_MASK;
@@ -26,10 +29,6 @@ static int pak_controller_read_block(struct joybus_target_n64_pak *pak, uint16_t
     return 0;
   }
 
-  // No storage yet reads as a pak that is not ready
-  if (pak_controller->read == NULL)
-    return -JOYBUS_ERR_BUSY;
-
   return pak_controller->read(pak_controller, pak_controller->selected, addr, buf);
 }
 
@@ -38,6 +37,10 @@ static int pak_controller_write_block(struct joybus_target_n64_pak *pak, uint16_
                                       const uint8_t buf[JOYBUS_N64_PAK_BLOCK_SIZE])
 {
   struct joybus_target_n64_pak_controller *pak_controller = JOYBUS_TARGET_N64_PAK_CONTROLLER(pak);
+
+  // No storage yet reads as a pak that is not ready
+  if (pak_controller->write == NULL)
+    return -JOYBUS_ERR_BUSY;
 
   if (pak_controller->banks == 1) {
     // The probe area aliases onto the bank
@@ -58,15 +61,6 @@ static int pak_controller_write_block(struct joybus_target_n64_pak *pak, uint16_
 
     return 0;
   }
-
-  // Refuse an ID write naming another bank count, so the pak cannot be reformatted to a different shape
-  if (pak_controller->selected == 0 && joybus_n64_pak_fs_is_id_block(addr) &&
-      joybus_n64_pak_fs_id_banks(buf) != pak_controller->banks)
-    return -JOYBUS_ERR_INVALID_ARG;
-
-  // No storage yet reads as a pak that is not ready
-  if (pak_controller->write == NULL)
-    return -JOYBUS_ERR_BUSY;
 
   int result = pak_controller->write(pak_controller, pak_controller->selected, addr, buf);
   if (result != 0)
@@ -103,13 +97,10 @@ static JOYBUS_RAM_DATA const struct joybus_target_n64_pak_api pak_controller_api
   .write_block = pak_controller_write_block,
 };
 
-void joybus_target_n64_pak_controller_init(struct joybus_target_n64_pak_controller *pak_controller, uint8_t banks)
+void joybus_target_n64_pak_controller_init(struct joybus_target_n64_pak_controller *pak_controller)
 {
   // Start from a clean state
   memset(pak_controller, 0, sizeof(*pak_controller));
-
-  // Set the shape of the pak
-  pak_controller->banks = banks;
 
   // Set the base pak API implementation
   struct joybus_target_n64_pak *pak = JOYBUS_TARGET_N64_PAK(pak_controller);
@@ -117,18 +108,22 @@ void joybus_target_n64_pak_controller_init(struct joybus_target_n64_pak_controll
 }
 
 void joybus_target_n64_pak_controller_set_storage(struct joybus_target_n64_pak_controller *pak_controller,
-                                                  joybus_target_n64_pak_controller_read_cb read,
+                                                  uint8_t banks, joybus_target_n64_pak_controller_read_cb read,
                                                   joybus_target_n64_pak_controller_write_cb write, void *user_data)
 {
   pak_controller->read      = read;
   pak_controller->write     = write;
   pak_controller->user_data = user_data;
+
+  // Take the shape of the new storage, starting from its first bank
+  pak_controller->banks    = banks;
+  pak_controller->selected = 0;
 }
 
 void joybus_target_n64_pak_controller_set_memory(struct joybus_target_n64_pak_controller *pak_controller,
-                                                 uint8_t *memory)
+                                                 uint8_t *memory, uint8_t banks)
 {
-  joybus_target_n64_pak_controller_set_storage(pak_controller, memory_read_block, memory_write_block, memory);
+  joybus_target_n64_pak_controller_set_storage(pak_controller, banks, memory_read_block, memory_write_block, memory);
 }
 
 void joybus_target_n64_pak_controller_set_select_cb(struct joybus_target_n64_pak_controller *pak_controller,

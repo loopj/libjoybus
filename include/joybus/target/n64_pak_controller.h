@@ -10,12 +10,9 @@
  * An original pak is one 32 KB bank, which a console formats and mounts on
  * its own. Larger third party paks hold several banks and present one at a
  * time, switched by a write to the probe area at 0x8000. A banked pak from
- * this target must be formatted with joybus_n64_pak_fs_format() before use.
+ * this target must already hold a filesystem for that many banks before use.
  * A select past the last bank is ignored, which keeps an accessory probe from
  * moving the bank but also stops a console counting the banks of a blank pak.
- *
- * A write to an ID block that names another bank count is refused with a
- * transfer error, so the pak cannot be reformatted to a different shape.
  *
  * @{
  */
@@ -109,7 +106,7 @@ struct joybus_target_n64_pak_controller {
   /// Callback for block written events
   joybus_target_n64_pak_controller_written_cb on_written;
 
-  /// Banks the pak presents, 1 for an original pak
+  /// Banks the storage holds, 1 for an original pak
   uint8_t banks;
 
   /// Bank the console has selected, always 0 on a one bank pak
@@ -123,24 +120,25 @@ struct joybus_target_n64_pak_controller {
  * joybus_target_n64_pak_controller_set_storage() or
  * joybus_target_n64_pak_controller_set_memory().
  *
- * @param pak   the controller pak to initialize
- * @param banks how many banks it presents, 1 to ::JOYBUS_N64_PAK_FS_MAX_BANKS, not checked here
+ * @param pak the controller pak to initialize
  */
-void joybus_target_n64_pak_controller_init(struct joybus_target_n64_pak_controller *pak, uint8_t banks);
+void joybus_target_n64_pak_controller_init(struct joybus_target_n64_pak_controller *pak);
 
 /**
  * Set the storage behind the pak.
  *
  * For a pak that cannot be held in memory, such as one of many banks kept in
  * flash. The callbacks may answer busy while a bank is fetched, which the
- * console retries.
+ * console retries. Setting storage again swaps the pak, which then starts on
+ * bank 0.
  *
  * @param pak       the controller pak
+ * @param banks     how many banks the storage holds, 1 to 62, not checked here
  * @param read      callback that reads a block of a bank
  * @param write     callback that writes a block of a bank
  * @param user_data pointer handed back to the callbacks through `pak->user_data`
  */
-void joybus_target_n64_pak_controller_set_storage(struct joybus_target_n64_pak_controller *pak,
+void joybus_target_n64_pak_controller_set_storage(struct joybus_target_n64_pak_controller *pak, uint8_t banks,
                                                   joybus_target_n64_pak_controller_read_cb read,
                                                   joybus_target_n64_pak_controller_write_cb write, void *user_data);
 
@@ -149,13 +147,15 @@ void joybus_target_n64_pak_controller_set_storage(struct joybus_target_n64_pak_c
  *
  * The buffer is read and written in place, so persisting it is up to the
  * caller, which the written callback helps with. A fresh buffer needs a
- * filesystem before a console will mount it, see joybus_n64_pak_fs_format().
- * A console can format a one bank pak itself, a banked pak it cannot.
+ * filesystem before a console will mount it. A console can format a one bank
+ * pak itself, a banked pak it cannot.
  *
  * @param pak    the controller pak
  * @param memory the banks, back to back
+ * @param banks  how many banks the memory holds, 1 to 62, not checked here
  */
-void joybus_target_n64_pak_controller_set_memory(struct joybus_target_n64_pak_controller *pak, uint8_t *memory);
+void joybus_target_n64_pak_controller_set_memory(struct joybus_target_n64_pak_controller *pak, uint8_t *memory,
+                                                 uint8_t banks);
 
 /**
  * Set the bank select callback for the controller pak.
