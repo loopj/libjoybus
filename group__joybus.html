@@ -176,8 +176,22 @@ Macros</h2></td></tr>
 <tr class="memitem:ga0639362b7f5fcb03456d5b45b07cd033" id="r_ga0639362b7f5fcb03456d5b45b07cd033"><td class="memItemLeft" align="right" valign="top"><a id="ga0639362b7f5fcb03456d5b45b07cd033" name="ga0639362b7f5fcb03456d5b45b07cd033"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_N64_PAK_FS_MAX_BANKS</b>&#160;&#160;&#160;62</td></tr>
 <tr class="memdesc:ga0639362b7f5fcb03456d5b45b07cd033"><td class="mdescLeft">&#160;</td><td class="mdescRight">The most banks whose system area fits in the first bank. <br /></td></tr>
+<tr class="memitem:gae94ff382045070f3e1a2da1878708b21" id="r_gae94ff382045070f3e1a2da1878708b21"><td class="memItemLeft" align="right" valign="top"><a id="gae94ff382045070f3e1a2da1878708b21" name="gae94ff382045070f3e1a2da1878708b21"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_N64_PAK_FS_ID_PAGE</b>&#160;&#160;&#160;0</td></tr>
+<tr class="memdesc:gae94ff382045070f3e1a2da1878708b21"><td class="mdescLeft">&#160;</td><td class="mdescRight">Page of the first bank holding the four ID copies. <br /></td></tr>
+<tr class="memitem:ga6c2180f2aacbc6ea30dc526d7866d76b" id="r_ga6c2180f2aacbc6ea30dc526d7866d76b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga6c2180f2aacbc6ea30dc526d7866d76b">JOYBUS_N64_PAK_FS_INODE_PAGE</a>(bank)</td></tr>
+<tr class="memdesc:ga6c2180f2aacbc6ea30dc526d7866d76b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Page of the first bank holding a bank's inode table.  <br /></td></tr>
+<tr class="memitem:ga5018ce81d281e81553e736d4519d98dd" id="r_ga5018ce81d281e81553e736d4519d98dd"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga5018ce81d281e81553e736d4519d98dd">JOYBUS_N64_PAK_FS_INODE_MIRROR_PAGE</a>(banks,  bank)</td></tr>
+<tr class="memdesc:ga5018ce81d281e81553e736d4519d98dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Page of the first bank holding the mirror of a bank's inode table, for a given bank count.  <br /></td></tr>
+<tr class="memitem:gae9fa1ac482efbdba5937e93a6a1e5b3b" id="r_gae9fa1ac482efbdba5937e93a6a1e5b3b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#gae9fa1ac482efbdba5937e93a6a1e5b3b">JOYBUS_N64_PAK_FS_NOTE_TABLE_PAGE</a>(banks)</td></tr>
+<tr class="memdesc:gae9fa1ac482efbdba5937e93a6a1e5b3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">First page of the note table in the first bank, for a given bank count.  <br /></td></tr>
+<tr class="memitem:gaecbb94a5f142b510efc06d766126f105" id="r_gaecbb94a5f142b510efc06d766126f105"><td class="memItemLeft" align="right" valign="top"><a id="gaecbb94a5f142b510efc06d766126f105" name="gaecbb94a5f142b510efc06d766126f105"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>JOYBUS_N64_PAK_FS_NOTE_TABLE_PAGES</b>&#160;&#160;&#160;2</td></tr>
+<tr class="memdesc:gaecbb94a5f142b510efc06d766126f105"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of pages the note table takes. <br /></td></tr>
 <tr class="memitem:ga178a8e4493278b1bb1142b936ab7e72d" id="r_ga178a8e4493278b1bb1142b936ab7e72d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga178a8e4493278b1bb1142b936ab7e72d">JOYBUS_N64_PAK_FS_SYSTEM_PAGES</a>(banks)</td></tr>
 <tr class="memdesc:ga178a8e4493278b1bb1142b936ab7e72d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of system pages in the first bank for a given bank count.  <br /></td></tr>
+<tr class="memitem:ga491545d7caf0d949eb966e92e72be7e2" id="r_ga491545d7caf0d949eb966e92e72be7e2"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga491545d7caf0d949eb966e92e72be7e2">JOYBUS_N64_PAK_FS_FIRST_DATA_PAGE</a>(banks,  bank)</td></tr>
+<tr class="memdesc:ga491545d7caf0d949eb966e92e72be7e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">First page of a bank the filesystem allocates, for a given bank count. Page 0 of every later bank is reserved.  <br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-typedef-members" class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
@@ -277,6 +291,95 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>joybus_sync</b> (int s
 
 </div>
 </div>
+<a id="ga491545d7caf0d949eb966e92e72be7e2" name="ga491545d7caf0d949eb966e92e72be7e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga491545d7caf0d949eb966e92e72be7e2">&#9670;&#160;</a></span>JOYBUS_N64_PAK_FS_FIRST_DATA_PAGE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define JOYBUS_N64_PAK_FS_FIRST_DATA_PAGE</td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>banks</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>bank</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">((bank) == 0 ? <a class="code hl_define" href="#ga178a8e4493278b1bb1142b936ab7e72d">JOYBUS_N64_PAK_FS_SYSTEM_PAGES</a>(banks) : 1)</div>
+<div class="ttc" id="agroup__joybus_html_ga178a8e4493278b1bb1142b936ab7e72d"><div class="ttname"><a href="#ga178a8e4493278b1bb1142b936ab7e72d">JOYBUS_N64_PAK_FS_SYSTEM_PAGES</a></div><div class="ttdeci">#define JOYBUS_N64_PAK_FS_SYSTEM_PAGES(banks)</div><div class="ttdoc">Number of system pages in the first bank for a given bank count.</div><div class="ttdef"><b>Definition</b> n64_pak_fs.h:45</div></div>
+</div><!-- fragment -->
+<p>First page of a bank the filesystem allocates, for a given bank count. Page 0 of every later bank is reserved. </p>
+
+</div>
+</div>
+<a id="ga5018ce81d281e81553e736d4519d98dd" name="ga5018ce81d281e81553e736d4519d98dd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga5018ce81d281e81553e736d4519d98dd">&#9670;&#160;</a></span>JOYBUS_N64_PAK_FS_INODE_MIRROR_PAGE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define JOYBUS_N64_PAK_FS_INODE_MIRROR_PAGE</td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>banks</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>bank</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">(1 + (banks) + (bank))</div>
+</div><!-- fragment -->
+<p>Page of the first bank holding the mirror of a bank's inode table, for a given bank count. </p>
+
+</div>
+</div>
+<a id="ga6c2180f2aacbc6ea30dc526d7866d76b" name="ga6c2180f2aacbc6ea30dc526d7866d76b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga6c2180f2aacbc6ea30dc526d7866d76b">&#9670;&#160;</a></span>JOYBUS_N64_PAK_FS_INODE_PAGE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define JOYBUS_N64_PAK_FS_INODE_PAGE</td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>bank</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">(1 + (bank))</div>
+</div><!-- fragment -->
+<p>Page of the first bank holding a bank's inode table. </p>
+
+</div>
+</div>
+<a id="gae9fa1ac482efbdba5937e93a6a1e5b3b" name="gae9fa1ac482efbdba5937e93a6a1e5b3b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gae9fa1ac482efbdba5937e93a6a1e5b3b">&#9670;&#160;</a></span>JOYBUS_N64_PAK_FS_NOTE_TABLE_PAGE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define JOYBUS_N64_PAK_FS_NOTE_TABLE_PAGE</td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>banks</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">(1 + 2 * (banks))</div>
+</div><!-- fragment -->
+<p>First page of the note table in the first bank, for a given bank count. </p>
+
+</div>
+</div>
 <a id="ga178a8e4493278b1bb1142b936ab7e72d" name="ga178a8e4493278b1bb1142b936ab7e72d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga178a8e4493278b1bb1142b936ab7e72d">&#9670;&#160;</a></span>JOYBUS_N64_PAK_FS_SYSTEM_PAGES</h2>
 
@@ -291,7 +394,9 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>joybus_sync</b> (int s
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">(3 + 2 * (banks))</div>
+<b>Value:</b><div class="fragment"><div class="line">(<a class="code hl_define" href="#gae9fa1ac482efbdba5937e93a6a1e5b3b">JOYBUS_N64_PAK_FS_NOTE_TABLE_PAGE</a>(banks) + <a class="code hl_define" href="#gaecbb94a5f142b510efc06d766126f105">JOYBUS_N64_PAK_FS_NOTE_TABLE_PAGES</a>)</div>
+<div class="ttc" id="agroup__joybus_html_gae9fa1ac482efbdba5937e93a6a1e5b3b"><div class="ttname"><a href="#gae9fa1ac482efbdba5937e93a6a1e5b3b">JOYBUS_N64_PAK_FS_NOTE_TABLE_PAGE</a></div><div class="ttdeci">#define JOYBUS_N64_PAK_FS_NOTE_TABLE_PAGE(banks)</div><div class="ttdoc">First page of the note table in the first bank, for a given bank count.</div><div class="ttdef"><b>Definition</b> n64_pak_fs.h:39</div></div>
+<div class="ttc" id="agroup__joybus_html_gaecbb94a5f142b510efc06d766126f105"><div class="ttname"><a href="#gaecbb94a5f142b510efc06d766126f105">JOYBUS_N64_PAK_FS_NOTE_TABLE_PAGES</a></div><div class="ttdeci">#define JOYBUS_N64_PAK_FS_NOTE_TABLE_PAGES</div><div class="ttdoc">Number of pages the note table takes.</div><div class="ttdef"><b>Definition</b> n64_pak_fs.h:42</div></div>
 </div><!-- fragment -->
 <p>Number of system pages in the first bank for a given bank count. </p>
 

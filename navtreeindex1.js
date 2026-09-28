@@ -1,5 +1,11 @@
 var NAVTREEINDEX1 =
 {
+"group__joybus__target__gcn__controller.html#gaf3262450dddabfba233a5131076bb32e":[6,2,0,4],
+"group__joybus__target__gcn__controller.html#gafa34c47426560a79ba14987b64448eeb":[6,2,0,5],
+"group__joybus__target__n64__controller.html":[6,2,1],
+"group__joybus__target__n64__controller.html#ga322502cc038b67dddf6094c0e0bfc46f":[6,2,1,2],
+"group__joybus__target__n64__controller.html#ga4747a23ab0f0de44f021f613df6aeef8":[6,2,1,8],
+"group__joybus__target__n64__controller.html#ga53d0f42e5ed48d0dfebe2cd6abf1d7d2":[6,2,1,5],
 "group__joybus__target__n64__controller.html#gaa4c28115bc4bcf3296e19cf4ae7c3589":[6,2,1,6],
 "group__joybus__target__n64__controller.html#gac6bb359d4fa66931efa6aea8dbd483d2":[6,2,1,7],
 "group__joybus__target__n64__controller.html#gad33495e7ca669aa18745ef1074353624":[6,2,1,3],
