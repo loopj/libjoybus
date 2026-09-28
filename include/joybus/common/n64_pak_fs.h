@@ -26,8 +26,26 @@
 /// The most banks whose system area fits in the first bank
 #define JOYBUS_N64_PAK_FS_MAX_BANKS 62
 
+/// Page of the first bank holding the four ID copies
+#define JOYBUS_N64_PAK_FS_ID_PAGE 0
+
+/// Page of the first bank holding a bank's inode table
+#define JOYBUS_N64_PAK_FS_INODE_PAGE(bank) (1 + (bank))
+
+/// Page of the first bank holding the mirror of a bank's inode table, for a given bank count
+#define JOYBUS_N64_PAK_FS_INODE_MIRROR_PAGE(banks, bank) (1 + (banks) + (bank))
+
+/// First page of the note table in the first bank, for a given bank count
+#define JOYBUS_N64_PAK_FS_NOTE_TABLE_PAGE(banks) (1 + 2 * (banks))
+
+/// Number of pages the note table takes
+#define JOYBUS_N64_PAK_FS_NOTE_TABLE_PAGES 2
+
 /// Number of system pages in the first bank for a given bank count
-#define JOYBUS_N64_PAK_FS_SYSTEM_PAGES(banks) (3 + 2 * (banks))
+#define JOYBUS_N64_PAK_FS_SYSTEM_PAGES(banks) (JOYBUS_N64_PAK_FS_NOTE_TABLE_PAGE(banks) + JOYBUS_N64_PAK_FS_NOTE_TABLE_PAGES)
+
+/// First page of a bank the filesystem allocates, for a given bank count. Page 0 of every later bank is reserved
+#define JOYBUS_N64_PAK_FS_FIRST_DATA_PAGE(banks, bank) ((bank) == 0 ? JOYBUS_N64_PAK_FS_SYSTEM_PAGES(banks) : 1)
 
 /**
  * Check whether a block address in the first bank holds a copy of the ID.
