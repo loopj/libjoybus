@@ -100,4 +100,14 @@ void joybus_target_n64_controller_detach_pak(struct joybus_target_n64_controller
  * @param controller the controller to calibrate
  */
 void joybus_target_n64_controller_calibrate(struct joybus_target_n64_controller *controller);
+
+/**
+ * Set the stick origin the console's reads are relative to.
+ *
+ * @param controller the controller to set the origin of
+ * @param stick_x the stick X position at rest
+ * @param stick_y the stick Y position at rest
+ */
+void joybus_target_n64_controller_set_origin(struct joybus_target_n64_controller *controller, int8_t stick_x,
+                                             int8_t stick_y);
 /** @} */

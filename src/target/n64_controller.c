@@ -302,3 +302,10 @@ void joybus_target_n64_controller_calibrate(struct joybus_target_n64_controller 
 {
   n64_controller_recalibrate(controller);
 }
+
+void joybus_target_n64_controller_set_origin(struct joybus_target_n64_controller *controller, int8_t stick_x,
+                                             int8_t stick_y)
+{
+  controller->origin.stick_x = stick_x;
+  controller->origin.stick_y = stick_y;
+}
