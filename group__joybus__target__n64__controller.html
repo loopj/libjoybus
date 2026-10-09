@@ -142,6 +142,8 @@ Functions</h2></td></tr>
 <tr class="memdesc:gaa4c28115bc4bcf3296e19cf4ae7c3589"><td class="mdescLeft">&#160;</td><td class="mdescRight">Detach the currently attached pak from the controller.  <br /></td></tr>
 <tr class="memitem:ga53d0f42e5ed48d0dfebe2cd6abf1d7d2" id="r_ga53d0f42e5ed48d0dfebe2cd6abf1d7d2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga53d0f42e5ed48d0dfebe2cd6abf1d7d2">joybus_target_n64_controller_calibrate</a> (struct <a class="el" href="structjoybus__target__n64__controller.html">joybus_target_n64_controller</a> *controller)</td></tr>
 <tr class="memdesc:ga53d0f42e5ed48d0dfebe2cd6abf1d7d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sample the current stick position as the controller's neutral origin.  <br /></td></tr>
+<tr class="memitem:gaa835de956c60b81866bea374dd41d254" id="r_gaa835de956c60b81866bea374dd41d254"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#gaa835de956c60b81866bea374dd41d254">joybus_target_n64_controller_set_origin</a> (struct <a class="el" href="structjoybus__target__n64__controller.html">joybus_target_n64_controller</a> *controller, int8_t <a class="el" href="common_2gcn__controller_8h.html#aaf671508229593fdb9a287a3ecd0a9dd">stick_x</a>, int8_t <a class="el" href="common_2gcn__controller_8h.html#af32d98fc87dfd133a7a71bc4d4d4d2b8">stick_y</a>)</td></tr>
+<tr class="memdesc:gaa835de956c60b81866bea374dd41d254"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the stick origin the console's reads are relative to.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <p>Joybus target implementation for standard N64 controllers. </p>
@@ -292,6 +294,42 @@ Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">controller</td><td>the controller to initialize </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="gaa835de956c60b81866bea374dd41d254" name="gaa835de956c60b81866bea374dd41d254"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaa835de956c60b81866bea374dd41d254">&#9670;&#160;</a></span>joybus_target_n64_controller_set_origin()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void joybus_target_n64_controller_set_origin </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structjoybus__target__n64__controller.html">joybus_target_n64_controller</a> *</td>          <td class="paramname"><span class="paramname"><em>controller</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int8_t</td>          <td class="paramname"><span class="paramname"><em>stick_x</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int8_t</td>          <td class="paramname"><span class="paramname"><em>stick_y</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set the stick origin the console's reads are relative to. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">controller</td><td>the controller to set the origin of </td></tr>
+    <tr><td class="paramname">stick_x</td><td>the stick X position at rest </td></tr>
+    <tr><td class="paramname">stick_y</td><td>the stick Y position at rest </td></tr>
   </table>
   </dd>
 </dl>

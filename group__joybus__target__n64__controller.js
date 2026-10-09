@@ -17,5 +17,6 @@ var group__joybus__target__n64__controller =
     [ "joybus_target_n64_controller_calibrate", "group__joybus__target__n64__controller.html#ga53d0f42e5ed48d0dfebe2cd6abf1d7d2", null ],
     [ "joybus_target_n64_controller_detach_pak", "group__joybus__target__n64__controller.html#gaa4c28115bc4bcf3296e19cf4ae7c3589", null ],
     [ "joybus_target_n64_controller_init", "group__joybus__target__n64__controller.html#gac6bb359d4fa66931efa6aea8dbd483d2", null ],
+    [ "joybus_target_n64_controller_set_origin", "group__joybus__target__n64__controller.html#gaa835de956c60b81866bea374dd41d254", null ],
     [ "joybus_target_n64_controller_set_reset_cb", "group__joybus__target__n64__controller.html#ga4747a23ab0f0de44f021f613df6aeef8", null ]
 ];

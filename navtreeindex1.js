@@ -1,5 +1,6 @@
 var NAVTREEINDEX1 =
 {
+"group__joybus__target__n64__pak__controller.html#ga14827f30152e6e4a1432b722308535ba":[6,2,1,0,0,6],
 "group__joybus__target__n64__pak__controller.html#ga2bf4d5485385178d1f21c4c7f624bf2f":[6,2,1,0,0,9],
 "group__joybus__target__n64__pak__controller.html#ga429e4eec9f26a74c2c3d5b94e5538687":[6,2,1,0,0,1],
 "group__joybus__target__n64__pak__controller.html#ga7935d5ab775555a7ca5e17605f5ebe75":[6,2,1,0,0,2],
