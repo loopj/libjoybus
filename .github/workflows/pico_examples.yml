@@ -49,6 +49,7 @@ jobs:
           - gcn-adapter-usb-hid
           - gcn-host
           - gcn-target
+          - gcn-target-usb-serial
           - n64-adapter-usb-hid
           - n64-host
           - n64-target
